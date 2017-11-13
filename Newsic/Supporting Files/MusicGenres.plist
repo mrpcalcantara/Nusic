@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+    <key>Alternative</key>
+	<dict>
+        <key>Art Punk</key><string></string>
+        <key>Alternative Rock</key><string></string>
+        <key>College Rock</key><string></string>
+        <key>Crossover Thrash</key><string></string>
+        <key>Crust Punk</key><string></string>
+        <key>Experimental Rock</key><string></string>
+        <key>Folk Punk</key><string></string>
+        <key>Goth Rock</key><string></string>
+		<key>Gothic Rock</key><string></string>
+        <key>Grunge</key><string></string>
+        <key>Hardcore Punk</key><string></string>
+        <key>Hard Rock</key><string></string>
+        <key>Indie Rock</key><string></string>
+        <key>Lo-fi</key><string></string>
+        <key>New Wave</key><string></string>
+        <key>Progressive Rock</key><string></string>
+        <key>Punk</key><string></string>
+        <key>Shoegaze</key><string></string>
+        <key>Steampunk</key><string></string>
+	</dict> 
+    <key>Anime</key>
+	<dict>
+	</dict>
+    <key>Blues</key>
+	<dict>
+        <key>Acoustic Blues</key><string></string>
+        <key>Chicago Blues</key><string></string>
+        <key>Classic Blues</key><string></string>
+        <key>Contemporary Blues</key><string></string>
+        <key>Country Blues</key><string></string>
+        <key>Delta Blues</key><string></string>
+        <key>Electric Blues</key><string></string>
+        <key>Ragtime Blues</key><string></string>
+	</dict>
+    <key>Children’s Music</key>
+	<dict>
+		<key>Lullabies</key><string></string>
+        <key>Sing-Along</key><string></string>
+        <key>Stories</key><string></string>
+	</dict>
+    <key>Classical</key>
+	<dict>
+        <key>Avant-Garde</key><string></string>
+        <key>Baroque</key><string></string>
+        <key>Chamber Music</key><string></string>
+        <key>Chant</key><string></string>
+        <key>Choral</key><string></string>
+        <key>Classical Crossover</key><string></string>
+        <key>Contemporary Classical</key><string></string>
+        <key>Early Music</key><string></string>
+        <key>Expressionist</key><string></string>
+        <key>High Classical</key><string></string>
+        <key>Impressionist</key><string></string>
+        <key>Medieval</key><string></string>
+        <key>Minimalism</key><string></string>
+        <key>Modern Composition</key><string></string>
+        <key>Opera</key><string></string>
+        <key>Orchestral</key><string></string>
+        <key>Renaissance</key><string></string>
+        <key>Romantic</key><string></string>
+        <key>Romantic</key><string></string>
+        <key>Wedding Music</key><string></string>
+		</dict>
+    <key>Comedy</key>
+	<dict>
+        <key>Novelty</key><string></string>
+        <key>Standup Comedy</key><string></string>
+        <key>Vaudeville</key><string></string>
+	</dict>
+    <key>Commercial</key>
+    <dict>
+		<key>Jingles</key><string></string>
+        <key>TV Themes</key><string></string>
+   </dict>
+	<key>Country</key>
+    <dict> 
+		<key>Alternative Country</key><string></string>
+        <key>Americana</key><string></string>
+        <key>Bluegrass</key><string></string>
+        <key>Contemporary Bluegrass</key><string></string>
+        <key>Contemporary Country</key><string></string>
+        <key>Country Gospel</key><string></string>
+        <key>Country Pop</key><string></string>
+        <key>Honky Tonk</key><string></string>
+        <key>Outlaw Country</key><string></string>
+        <key>Traditional Bluegrass</key><string></string>
+        <key>Traditional Country</key><string></string>
+        <key>Urban Cowboy</key><string></string>
+   </dict>
+	<key>Dance</key><string></string>
+    <dict>    
+		<key>Club</key><string></string>
+		<key>Club Dance</key><string></string>
+        <key>Breakcore</key><string></string>
+        <key>Breakbeat</key><string></string>
+		<key>Breakstep</key><string></string>
+        <key>Brostep</key><string></string>
+        <key>Chillstep</key><string></string>
+        <key>Deep House</key><string></string>
+        <key>Dubstep</key><string></string>
+        <key>Electro House</key><string></string>
+        <key>Electroswing</key><string></string>
+        <key>Exercise</key><string></string>
+        <key>Future Garage</key><string></string>
+        <key>Garage</key><string></string>
+        <key>Glitch Hop</key><string></string>
+        <key>Glitch Pop</key><string></string>
+        <key>Grime</key><string></string>
+        <key>Hardcore</key><string></string>
+        <key>Hard Dance</key><string></string>
+        <key>Hi-NRG</key><string></string>
+		<key>Eurodance</key><string></string>
+        <key>Horrorcore</key><string></string>
+        <key>House</key><string></string>
+        <key>Jackin House</key><string></string>
+        <key>Jungle</key><string></string>
+		<key>Drum’n’bass</key><string></string>
+        <key>Liquid Dub</key><string></string>
+        <key>Regstep</key><string></string>
+        <key>Speedcore</key><string></string>
+        <key>Techno</key><string></string>
+        <key>Trance</key><string></string>
+        <key>Trap</key><string></string>
+	</dict>
+	<key>Disney</key><string></string>
+    <dict>
+	</dict>
+	<key>Easy Listening</key><string></string>
+    <dict>
+		<key>Bop</key><string></string>
+        <key>Lounge</key><string></string>
+        <key>Swing</key><string></string>
+	</dict>
+	<key>Electronic</key><string></string>
+    <dict>
+		<key>2-Step</key><string></string>
+        <key>8bit</key><string></string>
+        <key>Ambient</key><string></string>
+        <key>Bassline</key><string></string>
+        <key>Chillwave</key><string></string>
+        <key>Chiptune</key><string></string>
+        <key>Crunk</key><string></string>
+        <key>Downtempo</key><string></string>
+        <key>Drum n Bass</key><string></string>
+        <key>Electro</key><string></string>
+        <key>Electro-swing</key><string></string>
+        <key>Electronica</key><string></string>
+        <key>Electronic Rock</key><string></string>
+        <key>Hardstyle</key><string></string>
+		<key>Experimental</key><string></string>
+        <key>Industrial</key><string></string>
+        <key>Trip Hop</key><string></string>
+	</dict>
+    <key>Enka</key><string></string>
+    <dict></dict>
+	<key>French Pop</key><string></string>
+    <dict></dict>
+	<key>German Folk</key><string></string>
+    <dict></dict>
+	<key>German Pop</key><string></string>
+    <dict></dict>
+	<key>Fitness n Workout</key><string></string>
+    <dict></dict>
+	<key>Hip-Hop/Rap</key><string></string>
+    <dict>
+		<key>Alternative Rap</key><string></string>
+        <key>Bounce</key><string></string>
+        <key>Dirty South</key><string></string>
+        <key>East Coast Rap</key><string></string>
+        <key>Gangsta Rap</key><string></string>
+        <key>Hardcore Rap</key><string></string>
+        <key>Hip-Hop</key><string></string>
+        <key>Latin Rap</key><string></string>
+        <key>Old School Rap</key><string></string>
+        <key>Rap</key><string></string>
+        <key>Turntablism</key><string></string>
+        <key>Underground Rap</key><string></string>
+        <key>West Coast Rap</key><string></string>
+    </dict>
+	<key>Holiday</key><string></string>
+    <dict>
+		<key>Chanukah</key><string></string>
+        <key>Christmas</key><string></string>
+        <key>Christmas: Children’s</key><string></string>
+        <key>Christmas: Classic</key><string></string>
+        <key>Christmas: Classical</key><string></string>
+        <key>Christmas: Comedy</key><string></string>
+        <key>Christmas: Jazz</key><string></string>
+        <key>Christmas: Modern</key><string></string>
+        <key>Christmas: Pop</key><string></string>
+        <key>Christmas: RnB</key><string></string>
+        <key>Christmas: Religious</key><string></string>
+        <key>Christmas: Rock</key><string></string>
+        <key>Easter</key><string></string>
+        <key>Halloween</key><string></string>
+        <key>Holiday: Other</key><string></string>
+        <key>Thanksgiving</key><string></string>
+    </dict>
+	<key>Indie Pop</key><string></string>
+    <dict></dict>
+	<key>Industrial</key><string></string>
+    <dict></dict>
+	<key>Inspirational – Christian n Gospel</key><string></string>
+	<dict>
+        <key>CCM</key><string></string>
+        <key>Christian Metal</key><string></string>
+        <key>Christian Pop</key><string></string>
+        <key>Christian Rap</key><string></string>
+        <key>Christian Rock</key><string></string>
+        <key>Classic Christian</key><string></string>
+        <key>Contemporary Gospel</key><string></string>
+        <key>Gospel</key><string></string>
+        <key>Christian n Gospel</key><string></string>
+        <key>Praise n Worship</key><string></string>
+        <key>Qawwali</key><string></string>
+        <key>Southern Gospel</key><string></string>
+        <key>Traditional Gospel</key><string></string>
+    </dict>
+	<key>Instrumental</key><string></string>
+    <dict>
+		<key>March</key><string></string>
+    </dict>
+	<key>J-Pop</key><string></string>
+	<dict>
+        <key>J-Rock</key><string></string>
+        <key>J-Synth</key><string></string>
+        <key>J-Ska</key><string></string>
+        <key>J-Punk</key><string></string>
+    </dict>
+	<key>Jazz</key><string></string>
+	<dict>
+        <key>Acid Jazz</key><string></string>
+        <key>Avant-Garde Jazz</key><string></string>
+        <key>Bebop</key><string></string>
+        <key>Big Band</key><string></string>
+        <key>Blue Note</key><string></string>
+        <key>Contemporary Jazz</key><string></string>
+        <key>Cool</key><string></string>
+        <key>Crossover Jazz</key><string></string>
+        <key>Dixieland</key><string></string>
+        <key>Ethio-jazz</key><string></string>
+        <key>Fusion</key><string></string>
+        <key>Gypsy Jazz</key><string></string>
+        <key>Hard Bop</key><string></string>
+        <key>Latin Jazz</key><string></string>
+        <key>Mainstream Jazz</key><string></string>
+        <key>Ragtime</key><string></string>
+        <key>Smooth Jazz</key><string></string>
+        <key>Trad Jazz</key><string></string>
+    </dict>
+	<key>K-Pop</key><string></string>
+    <dict></dict>
+	<key>Karaoke</key><string></string>
+    <dict></dict>
+	<key>Kayokyoku</key><string></string>
+    <dict></dict>
+	<key>Latin</key><string></string>
+	<dict>
+        <key>Alternativo n Rock Latino</key><string></string>
+        <key>Argentine tango</key><string></string>
+        <key>Baladas</key><string></string>
+		<key>Boleros</key><string></string>
+        <key>Bossa Nova</key><string></string>
+        <key>Brazilian</key><string></string>
+        <key>Contemporary Latin</key><string></string>
+        <key>Cumbia</key><string></string>
+        <key>Flamenco</key><string></string>
+        <key>Latin Jazz</key><string></string>
+        <key>Nuevo Flamenco</key><string></string>
+        <key>Pop Latino</key><string></string>
+        <key>Portuguese fado</key><string></string>
+        <key>Raíces</key><string></string>
+        <key>Reggaeton</key><string></string>
+        <key>Regional Mexicano</key><string></string>
+        <key>Salsa</key><string></string>
+		<key>Tropical</key><string></string>
+    </dict>
+	<key>New Age</key><string></string>
+    <dict>    
+		<key>Environmental</key><string></string>
+        <key>Healing</key><string></string>
+        <key>Meditation</key><string></string>
+        <key>Nature</key><string></string>
+        <key>Relaxation</key><string></string>
+        <key>Travel</key><string></string>
+    </dict>
+	<key>Opera</key><string></string>
+    <dict></dict>
+	<key>Pop</key><string></string>
+    <dict>
+		<key>Adult Contemporary</key><string></string>
+        <key>Britpop</key><string></string>
+        <key>Bubblegum Pop</key><string></string>
+        <key>Chamber Pop</key><string></string>
+        <key>Dance Pop</key><string></string>
+        <key>Dream Pop</key><string></string>
+        <key>Electro Pop</key><string></string>
+        <key>Orchestral Pop</key><string></string>
+        <key>Pop/Rock</key><string></string>
+        <key>Pop Punk</key><string></string>
+        <key>Power Pop</key><string></string>
+        <key>Soft Rock</key><string></string>
+        <key>Synthpop</key><string></string>
+        <key>Teen Pop</key><string></string>
+    </dict>
+	<key>RnB/Soul</key><string></string>
+	<dict>
+        <key>Contemporary RnB</key><string></string>
+        <key>Disco</key><string></string>
+        <key>Doo Wop</key><string></string>
+        <key>Funk</key><string></string>
+        <key>Modern Soul</key><string></string>
+        <key>Motown</key><string></string>
+        <key>Neo-Soul</key><string></string>
+        <key>Northern Soul</key><string></string>
+        <key>Psychedelic Soul</key><string></string>
+        <key>Quiet Storm</key><string></string>
+        <key>Soul</key><string></string>
+        <key>Soul Blues</key><string></string>
+        <key>Southern Soul</key><string></string>
+    </dict>
+	<key>Reggae</key><string></string>
+	<dict>
+        <key>2-Tone</key><string></string>
+        <key>Dancehall</key><string></string>
+        <key>Dub</key><string></string>
+        <key>Roots Reggae</key><string></string>
+        <key>Ska</key><string></string>
+	</dict>
+    <key>Rock</key><string></string>
+    <dict>
+		<key>Acid Rock</key><string></string>
+        <key>Adult-Oriented Rock</key><string></string>
+        <key>Afro Punk</key><string></string>
+        <key>Adult Alternative</key><string></string>
+        <key>Alternative Rock</key><string></string>
+        <key>American Trad Rock</key><string></string>
+        <key>Anatolian Rock</key><string></string>
+        <key>Arena Rock</key><string></string>
+        <key>Art Rock</key><string></string>
+        <key>Blues-Rock</key><string></string>
+        <key>British Invasion</key><string></string>
+        <key>Cock Rock</key><string></string>
+        <key>Death Metal</key><string></string>
+		<key>Black Metal</key><string></string>
+        <key>Doom Metal</key><string></string>
+        <key>Glam Rock</key><string></string>
+        <key>Gothic Metal</key><string></string>
+        <key>Grind Core</key><string></string>
+        <key>Hair Metal</key><string></string>
+        <key>Hard Rock</key><string></string>
+        <key>Math Metal</key><string></string>
+        <key>Math Rock</key><string></string>
+        <key>Metal</key><string></string>
+        <key>Metal Core</key><string></string>
+        <key>Noise Rock</key><string></string>
+        <key>Jam Bands</key><string></string>
+        <key>Post Punk</key><string></string>
+        <key>Prog-Rock</key><string></string>
+		<key>Art Rock</key><string></string>
+        <key>Progressive Metal</key><string></string>
+        <key>Psychedelic</key><string></string>
+        <key>Rock n Roll</key><string></string>
+        <key>Rockabilly</key><string></string>
+        <key>Roots Rock</key><string></string>
+        <key>Singer/Songwriter</key><string></string>
+        <key>Southern Rock</key><string></string>
+        <key>Spazzcore</key><string></string>
+        <key>Stoner Metal</key><string></string>
+        <key>Surf</key><string></string>
+        <key>Technical Death Metal</key><string></string>
+        <key>Tex-Mex</key><string></string>
+        <key>Time Lord Rock</key><string></string>
+        <key>Trash Metal</key><string></string>
+    </dict>
+	<key>Singer/Songwriter</key><string></string>
+    <dict>
+		<key>Alternative Folk</key><string></string>
+        <key>Contemporary Folk</key><string></string>
+        <key>Contemporary Singer/Songwriter</key><string></string>
+        <key>Indie Folk</key><string></string>
+        <key>Folk-Rock</key><string></string>
+        <key>Love Song</key><string></string>
+        <key>New Acoustic</key><string></string>
+        <key>Traditional Folk</key><string></string>
+    </dict>
+	<key>Soundtrack</key><string></string>
+	<dict>
+        <key>Foreign Cinema</key><string></string>
+        <key>Movie Soundtrack</key><string></string>
+        <key>Musicals</key><string></string>
+        <key>Original Score</key><string></string>
+        <key>Soundtrack</key><string></string>
+        <key>TV Soundtrack</key><string></string>
+    </dict>
+	<key>Spoken Word</key><string></string>
+    <dict></dict>
+	<key>Tex-Mex / Tejano</key><string></string>
+    <dict>    
+		<key>Chicano</key><string></string>
+        <key>Classic</key><string></string>
+        <key>Conjunto</key><string></string>
+        <key>Conjunto Progressive</key><string></string>
+        <key>New Mex</key><string></string>
+        <key>Tex-Mex</key><string></string>
+    </dict>
+	<key>Vocal</key><string></string>
+    <dict>
+		<key>A cappella</key><string></string>
+        <key>Barbershop</key><string></string>
+        <key>Doo-wop</key><string></string>
+        <key>Gregorian Chant</key><string></string>
+        <key>Standards</key><string></string>
+        <key>Traditional Pop</key><string></string>
+        <key>Vocal Jazz</key><string></string>
+        <key>Vocal Pop</key><string></string>
+    </dict>
+	<key>World</key><string></string>
+    <dict>
+		<key>Africa</key><string></string>
+        <key>Afro-Beat</key><string></string>
+        <key>Afro-Pop</key><string></string>
+        <key>Asia</key><string></string>
+        <key>Australia</key><string></string>
+        <key>Cajun</key><string></string>
+        <key>Calypso</key><string></string>
+        <key>Caribbean</key><string></string>
+        <key>Carnatic</key><string></string>
+        <key>Celtic</key><string></string>
+        <key>Celtic Folk</key><string></string>
+        <key>Contemporary Celtic</key><string></string>
+        <key>Coupé-décalé</key><string></string>
+        <key>Dangdut</key><string></string>
+        <key>Drinking Songs</key><string></string>
+        <key>Drone</key><string></string>
+        <key>Europe</key><string></string>
+        <key>France</key><string></string>
+        <key>Hawaii</key><string></string>
+        <key>Hindustani</key><string></string>
+        <key>Indian Ghazal</key><string></string>
+        <key>Indian Pop</key><string></string>
+        <key>Japan</key><string></string>
+        <key>Japanese Pop</key><string></string>
+        <key>Klezmer</key><string></string>
+        <key>Mbalax</key><string></string>
+        <key>Middle East</key><string></string>
+        <key>North America</key><string></string>
+        <key>Ode</key><string></string>
+        <key>Piphat</key><string></string>
+        <key>Polka</key><string></string>
+        <key>Soca</key><string></string>
+        <key>South Africa</key><string></string>
+        <key>South America</key><string></string>
+        <key>Traditional Celtic</key><string></string>
+        <key>Worldbeat</key><string></string>
+        <key>Zydeco</key><string></string>
+	</dict>
+</dict>
+</plist>

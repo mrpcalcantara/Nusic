@@ -1,0 +1,1193 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7B5F74827AC66FEE25628BD4 /* Pods_NewsicTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE72F769C47D6A380F86AEA0 /* Pods_NewsicTests.framework */; };
+		8C09622E1F614FA60025A65E /* NewsicArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C09622D1F614FA60025A65E /* NewsicArtist.swift */; };
+		8C0962301F61550D0025A65E /* NewsicGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C09622F1F61550D0025A65E /* NewsicGenre.swift */; };
+		8C0C1E911F5FF3B700CF8516 /* SpotifyTrackFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E901F5FF3B700CF8516 /* SpotifyTrackFeature.swift */; };
+		8C0C1E961F60F7F300CF8516 /* ErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E951F60F7F300CF8516 /* ErrorCodes.swift */; };
+		8C0C1E981F61005100CF8516 /* NewsicUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E971F61005100CF8516 /* NewsicUser.swift */; };
+		8C0C1E9B1F6100CC00CF8516 /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E9A1F6100CC00CF8516 /* FirebaseModel.swift */; };
+		8C0C1E9D1F6114C200CF8516 /* NewsicTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E9C1F6114C100CF8516 /* NewsicTrack.swift */; };
+		8C0C1E9F1F61343900CF8516 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E9E1F61343900CF8516 /* Date.swift */; };
+		8C18E0BC1F55306B002C4A07 /* YouTubeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C18E0BB1F55306B002C4A07 /* YouTubeSearch.swift */; };
+		8C18E0BE1F5530E9002C4A07 /* SpotifyTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C18E0BD1F5530E9002C4A07 /* SpotifyTrack.swift */; };
+		8C2011571F98849A003DE2AD /* SpotifyGenres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2011561F988499003DE2AD /* SpotifyGenres.swift */; };
+		8C3654BC1F5516B7006C12D9 /* Koloda-SongCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */; };
+		8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3654BE1F551ABE006C12D9 /* OverlayView.xib */; };
+		8C3654C11F551B16006C12D9 /* SongOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654C01F551B16006C12D9 /* SongOverlayView.swift */; };
+		8C3654C31F552201006C12D9 /* SongKolodaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654C21F552201006C12D9 /* SongKolodaView.swift */; };
+		8C4D43731F57CF9100FD0A92 /* YoutubeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4D43721F57CF9100FD0A92 /* YoutubeDelegate.swift */; };
+		8C4D43751F57CFD000FD0A92 /* SpotifyDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4D43741F57CFD000FD0A92 /* SpotifyDelegates.swift */; };
+		8C4FBD781F5940A500712873 /* MoodHacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FBD771F5940A500712873 /* MoodHacker.swift */; };
+		8C4FBD7A1F59456200712873 /* Emotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FBD791F59456200712873 /* Emotion.swift */; };
+		8C4FBD7C1F5945CF00712873 /* NewsicMood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FBD7B1F5945CE00712873 /* NewsicMood.swift */; };
+		8C6052481F863DBC00892205 /* NewsicSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */; };
+		8C60524B1F864FB300892205 /* UserSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C60524A1F864FB300892205 /* UserSettingsViewController.swift */; };
+		8C64F45D1F56C9540006B644 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C64F45C1F56C9540006B644 /* Spotify.swift */; };
+		8C7BE3291F78AD70004D9F15 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7BE3281F78AD70004D9F15 /* SideMenuViewController.swift */; };
+		8C7BE32C1F78AE7B004D9F15 /* SideMenuDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7BE32B1F78AE7B004D9F15 /* SideMenuDelegate.swift */; };
+		8C848ED71F5675BF0070C08A /* SpotifyAudioPlayback.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C848ED41F5675BF0070C08A /* SpotifyAudioPlayback.framework */; };
+		8C848ED81F5675BF0070C08A /* SpotifyAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C848ED51F5675BF0070C08A /* SpotifyAuthentication.framework */; };
+		8C848ED91F5675BF0070C08A /* SpotifyMetadata.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C848ED61F5675BF0070C08A /* SpotifyMetadata.framework */; };
+		8C848EDC1F5676A00070C08A /* SpotifyLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C848EDB1F5676A00070C08A /* SpotifyLoginViewController.swift */; };
+		8C8C65971F55A6B4000711AC /* ShowSongViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8C65961F55A6B4000711AC /* ShowSongViewController.swift */; };
+		8C90E8621F53D838002B135F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E8611F53D838002B135F /* AppDelegate.swift */; };
+		8C90E8641F53D838002B135F /* SongPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E8631F53D838002B135F /* SongPickerViewController.swift */; };
+		8C90E8671F53D838002B135F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C90E8651F53D838002B135F /* Main.storyboard */; };
+		8C90E8691F53D838002B135F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C90E8681F53D838002B135F /* Assets.xcassets */; };
+		8C90E86C1F53D838002B135F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C90E86A1F53D838002B135F /* LaunchScreen.storyboard */; };
+		8C90E88B1F53EE87002B135F /* MusicGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E88A1F53EE87002B135F /* MusicGraph.swift */; };
+		8C9C9E911F67C7E10093C14A /* NewsicActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C9E901F67C7E10093C14A /* NewsicActivityIndicator.swift */; };
+		8C9DB4F71F6B840400F35268 /* NewsicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9DB4F61F6B840400F35268 /* NewsicButton.swift */; };
+		8C9DB4F91F6B8FF900F35268 /* SongListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9DB4F81F6B8FF900F35268 /* SongListTableView.swift */; };
+		8C9DB4FD1F6BB38800F35268 /* SongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9DB4FB1F6BB38800F35268 /* SongTableViewCell.swift */; };
+		8C9DB4FE1F6BB38800F35268 /* SongTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C9DB4FC1F6BB38800F35268 /* SongTableViewCell.xib */; };
+		8C9DB5001F6FB02600F35268 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9DB4FF1F6FB02600F35268 /* UIView.swift */; };
+		8C9DB5021F6FD9C600F35268 /* SongTableViewCellBackup.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C9DB5011F6FD9C600F35268 /* SongTableViewCellBackup.xib */; };
+		8CA40DF11F8B7C6800C95B9D /* SpotifyBrowse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA40DF01F8B7C6800C95B9D /* SpotifyBrowse.swift */; };
+		8CA40DF31F8B7C7B00C95B9D /* SpotifyUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA40DF21F8B7C7B00C95B9D /* SpotifyUsers.swift */; };
+		8CA40DF51F8B7C8200C95B9D /* SpotifyArtists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA40DF41F8B7C8200C95B9D /* SpotifyArtists.swift */; };
+		8CA40DF71F8B7C8700C95B9D /* SpotifyPlaylists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA40DF61F8B7C8700C95B9D /* SpotifyPlaylists.swift */; };
+		8CA40DF91F8B7C8C00C95B9D /* SpotifyTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA40DF81F8B7C8C00C95B9D /* SpotifyTracks.swift */; };
+		8CA40DFC1F8B85C200C95B9D /* SongPlayerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA40DFB1F8B85C200C95B9D /* SongPlayerMenu.swift */; };
+		8CA40DFE1F8C99B500C95B9D /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA40DFD1F8C99B400C95B9D /* UIButton.swift */; };
+		8CA40E001F8CAA8100C95B9D /* UserMenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA40DFF1F8CAA8100C95B9D /* UserMenuHeader.swift */; };
+		8CA40E041F8CAACB00C95B9D /* UserMenuHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CA40E031F8CAACB00C95B9D /* UserMenuHeader.xib */; };
+		8CB47FA01F581DC5008D8847 /* SpotifyFollowedArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB47F9F1F581DC5008D8847 /* SpotifyFollowedArtist.swift */; };
+		8CB47FA41F582977008D8847 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB47FA31F582977008D8847 /* UIImageView.swift */; };
+		8CB529D91F83575C00C8050F /* EmotionDyad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB529D81F83575C00C8050F /* EmotionDyad.swift */; };
+		8CB529DD1F83745200C8050F /* MoodViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB529DB1F83745200C8050F /* MoodViewCell.swift */; };
+		8CB529DE1F83745200C8050F /* MoodViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CB529DC1F83745200C8050F /* MoodViewCell.xib */; };
+		8CB529E11F8375D900C8050F /* MoodCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB529E01F8375D900C8050F /* MoodCollectionView.swift */; };
+		8CC6E7161F54044800846080 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6E7151F54044800846080 /* Int.swift */; };
+		8CC6E71F1F5510C300846080 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6E71E1F5510C300846080 /* UIViewController.swift */; };
+		8CCC55341F66587A005090A4 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC55331F66587A005090A4 /* UIImage.swift */; };
+		8CCC55361F67975F005090A4 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC55351F67975F005090A4 /* Double.swift */; };
+		8CD11B561F5FB6E3000004EA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */; };
+		8CF78D251F82020600249C2F /* SongTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF78D241F82020600249C2F /* SongTableViewHeader.swift */; };
+		8CF78D271F82026500249C2F /* SongTableViewHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CF78D261F82026500249C2F /* SongTableViewHeader.xib */; };
+		8CFD735C1F68F57E004E7D08 /* NewsicPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CFD735B1F68F57E004E7D08 /* NewsicPlaylist.swift */; };
+		8CFFBF371F9708F100A69E78 /* NewsicCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */; };
+		E73A4AF07C6809503B8CCB36 /* Pods_Newsic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16EA3F326FCB40183FD4C8ED /* Pods_Newsic.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8C90E8731F53D838002B135F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C90E8561F53D838002B135F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C90E85D1F53D838002B135F;
+			remoteInfo = Newsic;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		16EA3F326FCB40183FD4C8ED /* Pods_Newsic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Newsic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1EDDD7477DB2EDD939758989 /* Pods-NewsicTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NewsicTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-NewsicTests/Pods-NewsicTests.release.xcconfig"; sourceTree = "<group>"; };
+		2A0567402413796844BC0250 /* Pods-NewsicTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NewsicTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NewsicTests/Pods-NewsicTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8C09622D1F614FA60025A65E /* NewsicArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicArtist.swift; sourceTree = "<group>"; };
+		8C09622F1F61550D0025A65E /* NewsicGenre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicGenre.swift; sourceTree = "<group>"; };
+		8C0C1E901F5FF3B700CF8516 /* SpotifyTrackFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyTrackFeature.swift; sourceTree = "<group>"; };
+		8C0C1E951F60F7F300CF8516 /* ErrorCodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorCodes.swift; sourceTree = "<group>"; };
+		8C0C1E971F61005100CF8516 /* NewsicUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicUser.swift; sourceTree = "<group>"; };
+		8C0C1E9A1F6100CC00CF8516 /* FirebaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
+		8C0C1E9C1F6114C100CF8516 /* NewsicTrack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicTrack.swift; sourceTree = "<group>"; };
+		8C0C1E9E1F61343900CF8516 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		8C18E0BB1F55306B002C4A07 /* YouTubeSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouTubeSearch.swift; sourceTree = "<group>"; };
+		8C18E0BD1F5530E9002C4A07 /* SpotifyTrack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyTrack.swift; sourceTree = "<group>"; };
+		8C2011561F988499003DE2AD /* SpotifyGenres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyGenres.swift; sourceTree = "<group>"; };
+		8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Koloda-SongCard.swift"; sourceTree = "<group>"; };
+		8C3654BE1F551ABE006C12D9 /* OverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
+		8C3654C01F551B16006C12D9 /* SongOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongOverlayView.swift; sourceTree = "<group>"; };
+		8C3654C21F552201006C12D9 /* SongKolodaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongKolodaView.swift; sourceTree = "<group>"; };
+		8C4D43721F57CF9100FD0A92 /* YoutubeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeDelegate.swift; sourceTree = "<group>"; };
+		8C4D43741F57CFD000FD0A92 /* SpotifyDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyDelegates.swift; sourceTree = "<group>"; };
+		8C4FBD771F5940A500712873 /* MoodHacker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodHacker.swift; sourceTree = "<group>"; };
+		8C4FBD791F59456200712873 /* Emotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Emotion.swift; sourceTree = "<group>"; };
+		8C4FBD7B1F5945CE00712873 /* NewsicMood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicMood.swift; sourceTree = "<group>"; };
+		8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControl.swift; sourceTree = "<group>"; };
+		8C60524A1F864FB300892205 /* UserSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsViewController.swift; sourceTree = "<group>"; };
+		8C64F45C1F56C9540006B644 /* Spotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
+		8C7BE3281F78AD70004D9F15 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
+		8C7BE32B1F78AE7B004D9F15 /* SideMenuDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuDelegate.swift; sourceTree = "<group>"; };
+		8C848ED41F5675BF0070C08A /* SpotifyAudioPlayback.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyAudioPlayback.framework; sourceTree = "<group>"; };
+		8C848ED51F5675BF0070C08A /* SpotifyAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyAuthentication.framework; sourceTree = "<group>"; };
+		8C848ED61F5675BF0070C08A /* SpotifyMetadata.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyMetadata.framework; sourceTree = "<group>"; };
+		8C848EDB1F5676A00070C08A /* SpotifyLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyLoginViewController.swift; sourceTree = "<group>"; };
+		8C8C65961F55A6B4000711AC /* ShowSongViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowSongViewController.swift; sourceTree = "<group>"; };
+		8C90E85E1F53D838002B135F /* Newsic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Newsic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C90E8611F53D838002B135F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../AppDelegate.swift; sourceTree = "<group>"; };
+		8C90E8631F53D838002B135F /* SongPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongPickerViewController.swift; sourceTree = "<group>"; };
+		8C90E8661F53D838002B135F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8C90E8681F53D838002B135F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../Assets.xcassets; sourceTree = "<group>"; };
+		8C90E86B1F53D838002B135F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8C90E86D1F53D838002B135F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
+		8C90E8721F53D838002B135F /* NewsicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NewsicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C90E88A1F53EE87002B135F /* MusicGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicGraph.swift; sourceTree = "<group>"; };
+		8C9C9E901F67C7E10093C14A /* NewsicActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicActivityIndicator.swift; sourceTree = "<group>"; };
+		8C9DB4F61F6B840400F35268 /* NewsicButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicButton.swift; sourceTree = "<group>"; };
+		8C9DB4F81F6B8FF900F35268 /* SongListTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongListTableView.swift; sourceTree = "<group>"; };
+		8C9DB4FB1F6BB38800F35268 /* SongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongTableViewCell.swift; sourceTree = "<group>"; };
+		8C9DB4FC1F6BB38800F35268 /* SongTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SongTableViewCell.xib; sourceTree = "<group>"; };
+		8C9DB4FF1F6FB02600F35268 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		8C9DB5011F6FD9C600F35268 /* SongTableViewCellBackup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SongTableViewCellBackup.xib; sourceTree = "<group>"; };
+		8CA40DF01F8B7C6800C95B9D /* SpotifyBrowse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyBrowse.swift; sourceTree = "<group>"; };
+		8CA40DF21F8B7C7B00C95B9D /* SpotifyUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyUsers.swift; sourceTree = "<group>"; };
+		8CA40DF41F8B7C8200C95B9D /* SpotifyArtists.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyArtists.swift; sourceTree = "<group>"; };
+		8CA40DF61F8B7C8700C95B9D /* SpotifyPlaylists.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyPlaylists.swift; sourceTree = "<group>"; };
+		8CA40DF81F8B7C8C00C95B9D /* SpotifyTracks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyTracks.swift; sourceTree = "<group>"; };
+		8CA40DFB1F8B85C200C95B9D /* SongPlayerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongPlayerMenu.swift; sourceTree = "<group>"; };
+		8CA40DFD1F8C99B400C95B9D /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
+		8CA40DFF1F8CAA8100C95B9D /* UserMenuHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserMenuHeader.swift; sourceTree = "<group>"; };
+		8CA40E031F8CAACB00C95B9D /* UserMenuHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserMenuHeader.xib; sourceTree = "<group>"; };
+		8CB47F9F1F581DC5008D8847 /* SpotifyFollowedArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyFollowedArtist.swift; sourceTree = "<group>"; };
+		8CB47FA31F582977008D8847 /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
+		8CB529D81F83575C00C8050F /* EmotionDyad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionDyad.swift; sourceTree = "<group>"; };
+		8CB529DB1F83745200C8050F /* MoodViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodViewCell.swift; sourceTree = "<group>"; };
+		8CB529DC1F83745200C8050F /* MoodViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoodViewCell.xib; sourceTree = "<group>"; };
+		8CB529E01F8375D900C8050F /* MoodCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodCollectionView.swift; sourceTree = "<group>"; };
+		8CC6E7151F54044800846080 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		8CC6E71A1F550F8500846080 /* Newsic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Newsic-Bridging-Header.h"; sourceTree = "<group>"; };
+		8CC6E71E1F5510C300846080 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		8CCC55331F66587A005090A4 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		8CCC55351F67975F005090A4 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8CF78D241F82020600249C2F /* SongTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongTableViewHeader.swift; sourceTree = "<group>"; };
+		8CF78D261F82026500249C2F /* SongTableViewHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SongTableViewHeader.xib; sourceTree = "<group>"; };
+		8CFD735B1F68F57E004E7D08 /* NewsicPlaylist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicPlaylist.swift; sourceTree = "<group>"; };
+		8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicCollectionViewLayout.swift; sourceTree = "<group>"; };
+		D232991C9F23B4D9A5F0C1E4 /* Pods-Newsic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Newsic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Newsic/Pods-Newsic.debug.xcconfig"; sourceTree = "<group>"; };
+		F643A48AF41D88F56C32085D /* Pods-Newsic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Newsic.release.xcconfig"; path = "Pods/Target Support Files/Pods-Newsic/Pods-Newsic.release.xcconfig"; sourceTree = "<group>"; };
+		FE72F769C47D6A380F86AEA0 /* Pods_NewsicTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NewsicTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8C90E85B1F53D838002B135F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C848ED71F5675BF0070C08A /* SpotifyAudioPlayback.framework in Frameworks */,
+				8C848ED81F5675BF0070C08A /* SpotifyAuthentication.framework in Frameworks */,
+				8C848ED91F5675BF0070C08A /* SpotifyMetadata.framework in Frameworks */,
+				E73A4AF07C6809503B8CCB36 /* Pods_Newsic.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C90E86F1F53D838002B135F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B5F74827AC66FEE25628BD4 /* Pods_NewsicTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0BA07B93F23C4B0AE0AC38A7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8C848ED41F5675BF0070C08A /* SpotifyAudioPlayback.framework */,
+				8C848ED51F5675BF0070C08A /* SpotifyAuthentication.framework */,
+				8C848ED61F5675BF0070C08A /* SpotifyMetadata.framework */,
+				16EA3F326FCB40183FD4C8ED /* Pods_Newsic.framework */,
+				FE72F769C47D6A380F86AEA0 /* Pods_NewsicTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		80C2490ADB34F83C5098F8DF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D232991C9F23B4D9A5F0C1E4 /* Pods-Newsic.debug.xcconfig */,
+				F643A48AF41D88F56C32085D /* Pods-Newsic.release.xcconfig */,
+				2A0567402413796844BC0250 /* Pods-NewsicTests.debug.xcconfig */,
+				1EDDD7477DB2EDD939758989 /* Pods-NewsicTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		8C0C1E921F60F6D000CF8516 /* Spotify */ = {
+			isa = PBXGroup;
+			children = (
+				8C18E0BD1F5530E9002C4A07 /* SpotifyTrack.swift */,
+				8C0C1E901F5FF3B700CF8516 /* SpotifyTrackFeature.swift */,
+				8CB47F9F1F581DC5008D8847 /* SpotifyFollowedArtist.swift */,
+			);
+			path = Spotify;
+			sourceTree = "<group>";
+		};
+		8C0C1E931F60F6F700CF8516 /* Mood Hacker */ = {
+			isa = PBXGroup;
+			children = (
+				8C4FBD791F59456200712873 /* Emotion.swift */,
+			);
+			path = "Mood Hacker";
+			sourceTree = "<group>";
+		};
+		8C0C1E941F60F7D500CF8516 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				8C0C1E951F60F7F300CF8516 /* ErrorCodes.swift */,
+				8CB529D81F83575C00C8050F /* EmotionDyad.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		8C0C1E991F6100AC00CF8516 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				8C0C1E9A1F6100CC00CF8516 /* FirebaseModel.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		8C2011541F988470003DE2AD /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				8C2011561F988499003DE2AD /* SpotifyGenres.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		8C2011551F988477003DE2AD /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				8CA40DEF1F8B7C5500C95B9D /* Browse */,
+				8CA40DEE1F8B7C3500C95B9D /* Users */,
+				8CA40DED1F8B7C2F00C95B9D /* Artists */,
+				8CA40DEC1F8B7C2500C95B9D /* Playlists */,
+				8CA40DEB1F8B7C2000C95B9D /* Tracks */,
+				8C64F45C1F56C9540006B644 /* Spotify.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		8C3654BA1F551694006C12D9 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */,
+				8C4D43721F57CF9100FD0A92 /* YoutubeDelegate.swift */,
+				8C4D43741F57CFD000FD0A92 /* SpotifyDelegates.swift */,
+				8C9DB4F81F6B8FF900F35268 /* SongListTableView.swift */,
+				8CA40DFB1F8B85C200C95B9D /* SongPlayerMenu.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		8C3654BD1F551A71006C12D9 /* Helper Views */ = {
+			isa = PBXGroup;
+			children = (
+				8CF78D231F82006900249C2F /* Song Table View Header */,
+				8C9DB4FA1F6BAD4C00F35268 /* Song Table View Cell */,
+				8C3654BE1F551ABE006C12D9 /* OverlayView.xib */,
+				8C3654C01F551B16006C12D9 /* SongOverlayView.swift */,
+				8C3654C21F552201006C12D9 /* SongKolodaView.swift */,
+			);
+			path = "Helper Views";
+			sourceTree = "<group>";
+		};
+		8C6052491F864F9000892205 /* User Settings View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8C60524C1F864FBE00892205 /* Extensions */,
+				8C60524A1F864FB300892205 /* UserSettingsViewController.swift */,
+			);
+			path = "User Settings View Controller";
+			sourceTree = "<group>";
+		};
+		8C60524C1F864FBE00892205 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		8C7BE3271F78AD50004D9F15 /* Side Menu View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8C7BE32A1F78AE6C004D9F15 /* Protocols */,
+				8C7BE3281F78AD70004D9F15 /* SideMenuViewController.swift */,
+			);
+			path = "Side Menu View Controller";
+			sourceTree = "<group>";
+		};
+		8C7BE32A1F78AE6C004D9F15 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				8C7BE32B1F78AE7B004D9F15 /* SideMenuDelegate.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		8C848EDA1F5676770070C08A /* Spotify Login View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8C848EDB1F5676A00070C08A /* SpotifyLoginViewController.swift */,
+			);
+			path = "Spotify Login View Controller";
+			sourceTree = "<group>";
+		};
+		8C8C65951F55A600000711AC /* Show Song View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8C3654BD1F551A71006C12D9 /* Helper Views */,
+				8C3654BA1F551694006C12D9 /* Extensions */,
+				8C8C65961F55A6B4000711AC /* ShowSongViewController.swift */,
+			);
+			path = "Show Song View Controller";
+			sourceTree = "<group>";
+		};
+		8C90E8551F53D838002B135F = {
+			isa = PBXGroup;
+			children = (
+				8C90E8601F53D838002B135F /* Newsic */,
+				8C90E85F1F53D838002B135F /* Products */,
+				80C2490ADB34F83C5098F8DF /* Pods */,
+				0BA07B93F23C4B0AE0AC38A7 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8C90E85F1F53D838002B135F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C90E85E1F53D838002B135F /* Newsic.app */,
+				8C90E8721F53D838002B135F /* NewsicTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8C90E8601F53D838002B135F /* Newsic */ = {
+			isa = PBXGroup;
+			children = (
+				8C9C9E8F1F67C2CF0093C14A /* Views */,
+				8C0C1E991F6100AC00CF8516 /* Protocols */,
+				8C0C1E941F60F7D500CF8516 /* Enums */,
+				8CC6E7191F550F6000846080 /* Bridging Headers */,
+				8C90E8891F53EE43002B135F /* Helpers */,
+				8C90E8871F53D8E5002B135F /* Extensions */,
+				8C90E8861F53D8D5002B135F /* Models */,
+				8C90E8851F53D8B2002B135F /* Supporting Files */,
+				8C90E8841F53D897002B135F /* Resources */,
+				8C90E8831F53D885002B135F /* View Controllers */,
+				8C90E8821F53D85E002B135F /* Storyboards */,
+				8C90E8811F53D845002B135F /* Application Delegate */,
+			);
+			path = Newsic;
+			sourceTree = "<group>";
+		};
+		8C90E8811F53D845002B135F /* Application Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				8C90E8611F53D838002B135F /* AppDelegate.swift */,
+			);
+			path = "Application Delegate";
+			sourceTree = "<group>";
+		};
+		8C90E8821F53D85E002B135F /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				8C90E8651F53D838002B135F /* Main.storyboard */,
+				8C90E86A1F53D838002B135F /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		8C90E8831F53D885002B135F /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8C6052491F864F9000892205 /* User Settings View Controller */,
+				8C7BE3271F78AD50004D9F15 /* Side Menu View Controller */,
+				8C848EDA1F5676770070C08A /* Spotify Login View Controller */,
+				8C8C65951F55A600000711AC /* Show Song View Controller */,
+				8CC6E71D1F55101C00846080 /* Song Picker View Controller */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		8C90E8841F53D897002B135F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8C90E8681F53D838002B135F /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		8C90E8851F53D8B2002B135F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */,
+				8C90E86D1F53D838002B135F /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8C90E8861F53D8D5002B135F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8CA40DFA1F8B7DC400C95B9D /* Newsic */,
+				8C0C1E931F60F6F700CF8516 /* Mood Hacker */,
+				8C0C1E921F60F6D000CF8516 /* Spotify */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8C90E8871F53D8E5002B135F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8CC6E7151F54044800846080 /* Int.swift */,
+				8CC6E71E1F5510C300846080 /* UIViewController.swift */,
+				8CB47FA31F582977008D8847 /* UIImageView.swift */,
+				8C0C1E9E1F61343900CF8516 /* Date.swift */,
+				8CCC55331F66587A005090A4 /* UIImage.swift */,
+				8CCC55351F67975F005090A4 /* Double.swift */,
+				8C9DB4FF1F6FB02600F35268 /* UIView.swift */,
+				8CA40DFD1F8C99B400C95B9D /* UIButton.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		8C90E8881F53D92D002B135F /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
+		8C90E8891F53EE43002B135F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				8CA40DEA1F8B7C0900C95B9D /* Spotify */,
+				8C90E88A1F53EE87002B135F /* MusicGraph.swift */,
+				8C18E0BB1F55306B002C4A07 /* YouTubeSearch.swift */,
+				8C4FBD771F5940A500712873 /* MoodHacker.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		8C9C9E8F1F67C2CF0093C14A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8C9C9E901F67C7E10093C14A /* NewsicActivityIndicator.swift */,
+				8C9DB4F61F6B840400F35268 /* NewsicButton.swift */,
+				8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		8C9DB4FA1F6BAD4C00F35268 /* Song Table View Cell */ = {
+			isa = PBXGroup;
+			children = (
+				8C9DB4FB1F6BB38800F35268 /* SongTableViewCell.swift */,
+				8C9DB4FC1F6BB38800F35268 /* SongTableViewCell.xib */,
+				8C9DB5011F6FD9C600F35268 /* SongTableViewCellBackup.xib */,
+			);
+			name = "Song Table View Cell";
+			path = ../Extensions;
+			sourceTree = "<group>";
+		};
+		8CA40DEA1F8B7C0900C95B9D /* Spotify */ = {
+			isa = PBXGroup;
+			children = (
+				8C2011551F988477003DE2AD /* Classes */,
+				8C2011541F988470003DE2AD /* Enums */,
+			);
+			path = Spotify;
+			sourceTree = "<group>";
+		};
+		8CA40DEB1F8B7C2000C95B9D /* Tracks */ = {
+			isa = PBXGroup;
+			children = (
+				8CA40DF81F8B7C8C00C95B9D /* SpotifyTracks.swift */,
+			);
+			path = Tracks;
+			sourceTree = "<group>";
+		};
+		8CA40DEC1F8B7C2500C95B9D /* Playlists */ = {
+			isa = PBXGroup;
+			children = (
+				8CA40DF61F8B7C8700C95B9D /* SpotifyPlaylists.swift */,
+			);
+			path = Playlists;
+			sourceTree = "<group>";
+		};
+		8CA40DED1F8B7C2F00C95B9D /* Artists */ = {
+			isa = PBXGroup;
+			children = (
+				8CA40DF41F8B7C8200C95B9D /* SpotifyArtists.swift */,
+			);
+			path = Artists;
+			sourceTree = "<group>";
+		};
+		8CA40DEE1F8B7C3500C95B9D /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				8CA40DF21F8B7C7B00C95B9D /* SpotifyUsers.swift */,
+			);
+			path = Users;
+			sourceTree = "<group>";
+		};
+		8CA40DEF1F8B7C5500C95B9D /* Browse */ = {
+			isa = PBXGroup;
+			children = (
+				8CA40DF01F8B7C6800C95B9D /* SpotifyBrowse.swift */,
+			);
+			path = Browse;
+			sourceTree = "<group>";
+		};
+		8CA40DFA1F8B7DC400C95B9D /* Newsic */ = {
+			isa = PBXGroup;
+			children = (
+				8C4FBD7B1F5945CE00712873 /* NewsicMood.swift */,
+				8C0C1E971F61005100CF8516 /* NewsicUser.swift */,
+				8C0C1E9C1F6114C100CF8516 /* NewsicTrack.swift */,
+				8C09622D1F614FA60025A65E /* NewsicArtist.swift */,
+				8C09622F1F61550D0025A65E /* NewsicGenre.swift */,
+				8CFD735B1F68F57E004E7D08 /* NewsicPlaylist.swift */,
+			);
+			path = Newsic;
+			sourceTree = "<group>";
+		};
+		8CA40E011F8CAA9E00C95B9D /* User Menu */ = {
+			isa = PBXGroup;
+			children = (
+				8CA40E021F8CAAA800C95B9D /* Menu Header */,
+			);
+			path = "User Menu";
+			sourceTree = "<group>";
+		};
+		8CA40E021F8CAAA800C95B9D /* Menu Header */ = {
+			isa = PBXGroup;
+			children = (
+				8CA40E031F8CAACB00C95B9D /* UserMenuHeader.xib */,
+				8CA40DFF1F8CAA8100C95B9D /* UserMenuHeader.swift */,
+			);
+			path = "Menu Header";
+			sourceTree = "<group>";
+		};
+		8CB529DA1F8373FB00C8050F /* Mood Cell */ = {
+			isa = PBXGroup;
+			children = (
+				8CB529DB1F83745200C8050F /* MoodViewCell.swift */,
+				8CB529DC1F83745200C8050F /* MoodViewCell.xib */,
+			);
+			path = "Mood Cell";
+			sourceTree = "<group>";
+		};
+		8CB529DF1F8375C700C8050F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8CB529E01F8375D900C8050F /* MoodCollectionView.swift */,
+				8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		8CC6E7191F550F6000846080 /* Bridging Headers */ = {
+			isa = PBXGroup;
+			children = (
+				8CC6E71A1F550F8500846080 /* Newsic-Bridging-Header.h */,
+			);
+			path = "Bridging Headers";
+			sourceTree = "<group>";
+		};
+		8CC6E71D1F55101C00846080 /* Song Picker View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8CA40E011F8CAA9E00C95B9D /* User Menu */,
+				8CB529DF1F8375C700C8050F /* Extensions */,
+				8CB529DA1F8373FB00C8050F /* Mood Cell */,
+				8C90E8881F53D92D002B135F /* View Model */,
+				8C90E8631F53D838002B135F /* SongPickerViewController.swift */,
+			);
+			path = "Song Picker View Controller";
+			sourceTree = "<group>";
+		};
+		8CF78D231F82006900249C2F /* Song Table View Header */ = {
+			isa = PBXGroup;
+			children = (
+				8CF78D241F82020600249C2F /* SongTableViewHeader.swift */,
+				8CF78D261F82026500249C2F /* SongTableViewHeader.xib */,
+			);
+			path = "Song Table View Header";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8C90E85D1F53D838002B135F /* Newsic */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C90E87B1F53D838002B135F /* Build configuration list for PBXNativeTarget "Newsic" */;
+			buildPhases = (
+				E3FCC2598DBBECBB50A0D0DF /* [CP] Check Pods Manifest.lock */,
+				8C90E85A1F53D838002B135F /* Sources */,
+				8C90E85B1F53D838002B135F /* Frameworks */,
+				8C90E85C1F53D838002B135F /* Resources */,
+				3274931E586E73798FEADF14 /* [CP] Embed Pods Frameworks */,
+				F344235E047DD744721F1B34 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Newsic;
+			productName = Newsic;
+			productReference = 8C90E85E1F53D838002B135F /* Newsic.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8C90E8711F53D838002B135F /* NewsicTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C90E87E1F53D838002B135F /* Build configuration list for PBXNativeTarget "NewsicTests" */;
+			buildPhases = (
+				A34D4A260BA2AD4E663608A4 /* [CP] Check Pods Manifest.lock */,
+				8C90E86E1F53D838002B135F /* Sources */,
+				8C90E86F1F53D838002B135F /* Frameworks */,
+				8C90E8701F53D838002B135F /* Resources */,
+				BBE04DF67DC9976D56BF496A /* [CP] Embed Pods Frameworks */,
+				A3DDD989D4A78DD9354759F7 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8C90E8741F53D838002B135F /* PBXTargetDependency */,
+			);
+			name = NewsicTests;
+			productName = NewsicTests;
+			productReference = 8C90E8721F53D838002B135F /* NewsicTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8C90E8561F53D838002B135F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0900;
+				ORGANIZATIONNAME = "Miguel Alcantara";
+				TargetAttributes = {
+					8C90E85D1F53D838002B135F = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = VNFY2URN36;
+						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
+					8C90E8711F53D838002B135F = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = P3D83YHARN;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 8C90E85D1F53D838002B135F;
+					};
+				};
+			};
+			buildConfigurationList = 8C90E8591F53D838002B135F /* Build configuration list for PBXProject "Newsic" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8C90E8551F53D838002B135F;
+			productRefGroup = 8C90E85F1F53D838002B135F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8C90E85D1F53D838002B135F /* Newsic */,
+				8C90E8711F53D838002B135F /* NewsicTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8C90E85C1F53D838002B135F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C9DB4FE1F6BB38800F35268 /* SongTableViewCell.xib in Resources */,
+				8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */,
+				8C90E86C1F53D838002B135F /* LaunchScreen.storyboard in Resources */,
+				8CF78D271F82026500249C2F /* SongTableViewHeader.xib in Resources */,
+				8CB529DE1F83745200C8050F /* MoodViewCell.xib in Resources */,
+				8CD11B561F5FB6E3000004EA /* GoogleService-Info.plist in Resources */,
+				8C9DB5021F6FD9C600F35268 /* SongTableViewCellBackup.xib in Resources */,
+				8C90E8691F53D838002B135F /* Assets.xcassets in Resources */,
+				8CA40E041F8CAACB00C95B9D /* UserMenuHeader.xib in Resources */,
+				8C90E8671F53D838002B135F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C90E8701F53D838002B135F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3274931E586E73798FEADF14 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Newsic/Pods-Newsic-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Koloda/Koloda.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftSpinner/SwiftSpinner.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+				"${BUILT_PRODUCTS_DIR}/pop/pop.framework",
+				"${BUILT_PRODUCTS_DIR}/youtube-ios-player-helper/youtube_ios_player_helper.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Koloda.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSpinner.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/pop.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/youtube_ios_player_helper.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Newsic/Pods-Newsic-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A34D4A260BA2AD4E663608A4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NewsicTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A3DDD989D4A78DD9354759F7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NewsicTests/Pods-NewsicTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BBE04DF67DC9976D56BF496A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NewsicTests/Pods-NewsicTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E3FCC2598DBBECBB50A0D0DF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Newsic-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F344235E047DD744721F1B34 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Newsic/Pods-Newsic-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8C90E85A1F53D838002B135F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C3654BC1F5516B7006C12D9 /* Koloda-SongCard.swift in Sources */,
+				8C8C65971F55A6B4000711AC /* ShowSongViewController.swift in Sources */,
+				8CA40DF51F8B7C8200C95B9D /* SpotifyArtists.swift in Sources */,
+				8C0C1E9F1F61343900CF8516 /* Date.swift in Sources */,
+				8CA40DF71F8B7C8700C95B9D /* SpotifyPlaylists.swift in Sources */,
+				8C4FBD7A1F59456200712873 /* Emotion.swift in Sources */,
+				8C2011571F98849A003DE2AD /* SpotifyGenres.swift in Sources */,
+				8C3654C31F552201006C12D9 /* SongKolodaView.swift in Sources */,
+				8C18E0BE1F5530E9002C4A07 /* SpotifyTrack.swift in Sources */,
+				8CA40DFC1F8B85C200C95B9D /* SongPlayerMenu.swift in Sources */,
+				8CF78D251F82020600249C2F /* SongTableViewHeader.swift in Sources */,
+				8CA40DF31F8B7C7B00C95B9D /* SpotifyUsers.swift in Sources */,
+				8CFD735C1F68F57E004E7D08 /* NewsicPlaylist.swift in Sources */,
+				8C9DB4F71F6B840400F35268 /* NewsicButton.swift in Sources */,
+				8C0C1E9D1F6114C200CF8516 /* NewsicTrack.swift in Sources */,
+				8CCC55341F66587A005090A4 /* UIImage.swift in Sources */,
+				8C18E0BC1F55306B002C4A07 /* YouTubeSearch.swift in Sources */,
+				8CB529E11F8375D900C8050F /* MoodCollectionView.swift in Sources */,
+				8CA40DFE1F8C99B500C95B9D /* UIButton.swift in Sources */,
+				8C64F45D1F56C9540006B644 /* Spotify.swift in Sources */,
+				8C9DB4FD1F6BB38800F35268 /* SongTableViewCell.swift in Sources */,
+				8C0C1E961F60F7F300CF8516 /* ErrorCodes.swift in Sources */,
+				8C9C9E911F67C7E10093C14A /* NewsicActivityIndicator.swift in Sources */,
+				8C7BE3291F78AD70004D9F15 /* SideMenuViewController.swift in Sources */,
+				8C0C1E911F5FF3B700CF8516 /* SpotifyTrackFeature.swift in Sources */,
+				8C90E88B1F53EE87002B135F /* MusicGraph.swift in Sources */,
+				8C0962301F61550D0025A65E /* NewsicGenre.swift in Sources */,
+				8C4D43731F57CF9100FD0A92 /* YoutubeDelegate.swift in Sources */,
+				8C4D43751F57CFD000FD0A92 /* SpotifyDelegates.swift in Sources */,
+				8CA40DF91F8B7C8C00C95B9D /* SpotifyTracks.swift in Sources */,
+				8C6052481F863DBC00892205 /* NewsicSegmentedControl.swift in Sources */,
+				8CA40DF11F8B7C6800C95B9D /* SpotifyBrowse.swift in Sources */,
+				8C4FBD7C1F5945CF00712873 /* NewsicMood.swift in Sources */,
+				8C4FBD781F5940A500712873 /* MoodHacker.swift in Sources */,
+				8C90E8641F53D838002B135F /* SongPickerViewController.swift in Sources */,
+				8CB529DD1F83745200C8050F /* MoodViewCell.swift in Sources */,
+				8C60524B1F864FB300892205 /* UserSettingsViewController.swift in Sources */,
+				8CC6E71F1F5510C300846080 /* UIViewController.swift in Sources */,
+				8C3654C11F551B16006C12D9 /* SongOverlayView.swift in Sources */,
+				8CC6E7161F54044800846080 /* Int.swift in Sources */,
+				8C09622E1F614FA60025A65E /* NewsicArtist.swift in Sources */,
+				8C0C1E981F61005100CF8516 /* NewsicUser.swift in Sources */,
+				8CB47FA41F582977008D8847 /* UIImageView.swift in Sources */,
+				8C0C1E9B1F6100CC00CF8516 /* FirebaseModel.swift in Sources */,
+				8CB529D91F83575C00C8050F /* EmotionDyad.swift in Sources */,
+				8C9DB5001F6FB02600F35268 /* UIView.swift in Sources */,
+				8C848EDC1F5676A00070C08A /* SpotifyLoginViewController.swift in Sources */,
+				8C9DB4F91F6B8FF900F35268 /* SongListTableView.swift in Sources */,
+				8C90E8621F53D838002B135F /* AppDelegate.swift in Sources */,
+				8CFFBF371F9708F100A69E78 /* NewsicCollectionViewLayout.swift in Sources */,
+				8CA40E001F8CAA8100C95B9D /* UserMenuHeader.swift in Sources */,
+				8C7BE32C1F78AE7B004D9F15 /* SideMenuDelegate.swift in Sources */,
+				8CCC55361F67975F005090A4 /* Double.swift in Sources */,
+				8CB47FA01F581DC5008D8847 /* SpotifyFollowedArtist.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C90E86E1F53D838002B135F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8C90E8741F53D838002B135F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C90E85D1F53D838002B135F /* Newsic */;
+			targetProxy = 8C90E8731F53D838002B135F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8C90E8651F53D838002B135F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C90E8661F53D838002B135F /* Base */,
+			);
+			name = Main.storyboard;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		8C90E86A1F53D838002B135F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8C90E86B1F53D838002B135F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			path = ..;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8C90E8791F53D838002B135F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8C90E87A1F53D838002B135F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8C90E87C1F53D838002B135F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D232991C9F23B4D9A5F0C1E4 /* Pods-Newsic.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = VNFY2URN36;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Newsic/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"Koloda\"",
+					"-framework",
+					"\"pop\"",
+					"-framework",
+					"\"youtube_ios_player_helper\"",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alctech.Newsic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Newsic/Bridging Headers/Newsic-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		8C90E87D1F53D838002B135F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F643A48AF41D88F56C32085D /* Pods-Newsic.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = VNFY2URN36;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Newsic/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"Koloda\"",
+					"-framework",
+					"\"pop\"",
+					"-framework",
+					"\"youtube_ios_player_helper\"",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alctech.Newsic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Newsic/Bridging Headers/Newsic-Bridging-Header.h";
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+		8C90E87F1F53D838002B135F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2A0567402413796844BC0250 /* Pods-NewsicTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = P3D83YHARN;
+				INFOPLIST_FILE = NewsicTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alctech.NewsicTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Newsic.app/Newsic";
+			};
+			name = Debug;
+		};
+		8C90E8801F53D838002B135F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1EDDD7477DB2EDD939758989 /* Pods-NewsicTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = P3D83YHARN;
+				INFOPLIST_FILE = NewsicTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alctech.NewsicTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Newsic.app/Newsic";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8C90E8591F53D838002B135F /* Build configuration list for PBXProject "Newsic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C90E8791F53D838002B135F /* Debug */,
+				8C90E87A1F53D838002B135F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C90E87B1F53D838002B135F /* Build configuration list for PBXNativeTarget "Newsic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C90E87C1F53D838002B135F /* Debug */,
+				8C90E87D1F53D838002B135F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C90E87E1F53D838002B135F /* Build configuration list for PBXNativeTarget "NewsicTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C90E87F1F53D838002B135F /* Debug */,
+				8C90E8801F53D838002B135F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8C90E8561F53D838002B135F /* Project object */;
+}
