@@ -73,6 +73,9 @@ class SongPickerViewController: UIViewController {
     
     var spinner: SwiftSpinner! = nil
     
+    //Transition Delegate
+    let customNavigationAnimationController = CustomNavigationAnimationController()
+    
     //Segues
     let sideMenuSegue = "showSideMenuSegue"
     let showVideoSegue = "showVideoSegue"
@@ -179,7 +182,10 @@ class SongPickerViewController: UIViewController {
         setupCollectionCellViews();
         setupSegmentedControl()
         setupMenuView();
+        setupTransitionDelegate();
+        //navigationController?.delegate = self
         //hideKeyboardWhenTappedAround();
+        setupCollectionViewTapGestureRecognizer();
         moodHacker = MoodHacker()
         
         extractInformationFromUser { (isFinished) in

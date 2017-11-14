@@ -11,6 +11,78 @@ import SwiftSpinner
 
 extension SongPickerViewController {
     
+    func setupCollectionViewTapGestureRecognizer() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(detectTap(_:)))
+        //tapGestureRecognizer.delegate = self as! UIGestureRecognizerDelegate
+        
+        //moodCollectionView.addGestureRecognizer(tapGestureRecognizer)
+        genreCollectionView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    func detectTap(_ tapRecognizer: UITapGestureRecognizer? = nil) {
+        let view = self.view
+        let location = tapRecognizer?.location(in: self.view)
+        print("location in screen = \(location)")
+        
+        let moodView = genreCollectionView
+        if let moodView = moodView {
+            //                let location = touch?.location(in: moodView)
+            //                if let location = location {
+            //
+            //                }
+            let indexPath = moodView.indexPathForItem(at: location!)
+            
+            
+            
+            if let indexPath = indexPath {
+                //moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
+                //print(location)
+                let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
+                
+                if (cell.borderPathLayer?.path?.contains(location!))! {
+                    print("Touched in indexPath \(indexPath.row)")
+                } else {
+                    print("Touched in indexPath \((indexPath.row)-1)")
+                }
+            }
+        }
+//
+//        if view == moodCollectionView {
+//            let moodView = moodCollectionView
+//            if let moodView = moodView {
+//                //                let location = touch?.location(in: moodView)
+//                //                if let location = location {
+//                //
+//                //                }
+//
+//                let indexPath = moodView.indexPathForItem(at: location!)
+//                if let indexPath = indexPath {
+//                    moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
+//                    print(location)
+//                }
+//            }
+//
+//        }
+        
+        if view == genreCollectionView {
+            let moodView = genreCollectionView
+            if let moodView = moodView {
+//                let location = touch?.location(in: moodView)
+//                if let location = location {
+//
+//                }
+                
+                let indexPath = moodView.indexPathForItem(at: location!)
+                if let indexPath = indexPath {
+                    let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
+                    
+                    moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
+                    print(location)
+                }
+            }
+        }
+    }
+    
     func setupCollectionCellViews() {
         moodCollectionView.delegate = self;
         moodCollectionView.dataSource = self;
@@ -76,6 +148,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
             let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
             selectedGenres.updateValue(1, forKey: genreList[indexPath.row].rawValue.lowercased());
             cell.selectCell()
+            //print("current Path = \(cell.borderPathLayer?.path)")
         }
     }
     
