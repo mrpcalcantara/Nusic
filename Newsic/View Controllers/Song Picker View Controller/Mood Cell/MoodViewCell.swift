@@ -54,9 +54,14 @@ class MoodViewCell: UICollectionViewCell {
             }
         }
         
-        
-        
     }
+    
+    override func point(inside point: CGPoint, with _: UIEvent?) -> Bool {
+        let margin: CGFloat = 5
+        let area = self.bounds.insetBy(dx: -margin, dy: -margin)
+        return area.contains(point)
+    }
+    
     func configure(for index: Int) {
         print("configuring Cell for indexPath \(index)")
         

@@ -62,7 +62,8 @@ class SideMenuViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = item1;
     }
     
-    func dismissMenu() {
+    @objc func dismissMenu() {
+        //self.dismiss(animated: true, completion: nil)
         self.navigationController?.popViewController(animated: true);
     }
     

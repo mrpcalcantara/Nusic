@@ -73,6 +73,8 @@
 		8CD11B561F5FB6E3000004EA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */; };
 		8CF78D251F82020600249C2F /* SongTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF78D241F82020600249C2F /* SongTableViewHeader.swift */; };
 		8CF78D271F82026500249C2F /* SongTableViewHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CF78D261F82026500249C2F /* SongTableViewHeader.xib */; };
+		8CF8D3FE1FBA9C9300E130BC /* CustomNavigationAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF8D3FD1FBA9C9300E130BC /* CustomNavigationAnimationController.swift */; };
+		8CF8D4001FBA9E9100E130BC /* SPTransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF8D3FF1FBA9E9100E130BC /* SPTransitionDelegate.swift */; };
 		8CFD735C1F68F57E004E7D08 /* NewsicPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CFD735B1F68F57E004E7D08 /* NewsicPlaylist.swift */; };
 		8CFFBF371F9708F100A69E78 /* NewsicCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */; };
 		E73A4AF07C6809503B8CCB36 /* Pods_Newsic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16EA3F326FCB40183FD4C8ED /* Pods_Newsic.framework */; };
@@ -161,6 +163,8 @@
 		8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8CF78D241F82020600249C2F /* SongTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongTableViewHeader.swift; sourceTree = "<group>"; };
 		8CF78D261F82026500249C2F /* SongTableViewHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SongTableViewHeader.xib; sourceTree = "<group>"; };
+		8CF8D3FD1FBA9C9300E130BC /* CustomNavigationAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationAnimationController.swift; sourceTree = "<group>"; };
+		8CF8D3FF1FBA9E9100E130BC /* SPTransitionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTransitionDelegate.swift; sourceTree = "<group>"; };
 		8CFD735B1F68F57E004E7D08 /* NewsicPlaylist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicPlaylist.swift; sourceTree = "<group>"; };
 		8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicCollectionViewLayout.swift; sourceTree = "<group>"; };
 		D232991C9F23B4D9A5F0C1E4 /* Pods-Newsic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Newsic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Newsic/Pods-Newsic.debug.xcconfig"; sourceTree = "<group>"; };
@@ -367,6 +371,7 @@
 		8C90E8601F53D838002B135F /* Newsic */ = {
 			isa = PBXGroup;
 			children = (
+				8CF8D3FC1FBA9C6400E130BC /* Interaction Controllers */,
 				8C9C9E8F1F67C2CF0093C14A /* Views */,
 				8C0C1E991F6100AC00CF8516 /* Protocols */,
 				8C0C1E941F60F7D500CF8516 /* Enums */,
@@ -587,6 +592,7 @@
 			children = (
 				8CB529E01F8375D900C8050F /* MoodCollectionView.swift */,
 				8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */,
+				8CF8D3FF1FBA9E9100E130BC /* SPTransitionDelegate.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -618,6 +624,14 @@
 				8CF78D261F82026500249C2F /* SongTableViewHeader.xib */,
 			);
 			path = "Song Table View Header";
+			sourceTree = "<group>";
+		};
+		8CF8D3FC1FBA9C6400E130BC /* Interaction Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8CF8D3FD1FBA9C9300E130BC /* CustomNavigationAnimationController.swift */,
+			);
+			path = "Interaction Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -902,6 +916,7 @@
 				8C0C1E9B1F6100CC00CF8516 /* FirebaseModel.swift in Sources */,
 				8CB529D91F83575C00C8050F /* EmotionDyad.swift in Sources */,
 				8C9DB5001F6FB02600F35268 /* UIView.swift in Sources */,
+				8CF8D4001FBA9E9100E130BC /* SPTransitionDelegate.swift in Sources */,
 				8C848EDC1F5676A00070C08A /* SpotifyLoginViewController.swift in Sources */,
 				8C9DB4F91F6B8FF900F35268 /* SongListTableView.swift in Sources */,
 				8C90E8621F53D838002B135F /* AppDelegate.swift in Sources */,
@@ -910,6 +925,7 @@
 				8C7BE32C1F78AE7B004D9F15 /* SideMenuDelegate.swift in Sources */,
 				8CCC55361F67975F005090A4 /* Double.swift in Sources */,
 				8CB47FA01F581DC5008D8847 /* SpotifyFollowedArtist.swift in Sources */,
+				8CF8D3FE1FBA9C9300E130BC /* CustomNavigationAnimationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
