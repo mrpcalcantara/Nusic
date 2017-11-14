@@ -56,12 +56,6 @@ class MoodViewCell: UICollectionViewCell {
         
     }
     
-    override func point(inside point: CGPoint, with _: UIEvent?) -> Bool {
-        let margin: CGFloat = 5
-        let area = self.bounds.insetBy(dx: -margin, dy: -margin)
-        return area.contains(point)
-    }
-    
     func configure(for index: Int) {
         print("configuring Cell for indexPath \(index)")
         
@@ -113,11 +107,11 @@ class MoodViewCell: UICollectionViewCell {
     private func configureEven() {
         
         
-        moodLabel.textAlignment = .left
-        labelLeadingConstraint.constant = self.bounds.width/16
-        labelTrailingConstraint.constant = self.bounds.width * 0.25
-        labelTopConstraint.constant = self.moodLabel.font.lineHeight
-        self.contentView.layoutIfNeeded()
+        moodLabel.textAlignment = .center
+//        labelLeadingConstraint.constant = self.bounds.width/16
+//        labelTrailingConstraint.constant = self.bounds.width * 0.25
+//        labelTopConstraint.constant = self.moodLabel.font.lineHeight
+//        self.contentView.layoutIfNeeded()
         /*
         print("labelLeadingConstraint.constant = \(labelLeadingConstraint.constant)")
         print("labelTrailingConstraint.constant = \(labelTrailingConstraint.constant)")
@@ -128,11 +122,11 @@ class MoodViewCell: UICollectionViewCell {
     
     private func configureOdd() {
         
-        moodLabel.textAlignment = .right
-        labelTrailingConstraint.constant = self.bounds.width/16
-        labelLeadingConstraint.constant = self.bounds.width * 0.25
-        labelBottomConstraint.constant = self.moodLabel.font.lineHeight
-        self.contentView.layoutIfNeeded()
+        moodLabel.textAlignment = .center
+//        labelTrailingConstraint.constant = self.bounds.width/16
+//        labelLeadingConstraint.constant = self.bounds.width * 0.25
+//        labelBottomConstraint.constant = self.moodLabel.font.lineHeight
+//        self.contentView.layoutIfNeeded()
         /*
         print("labelLeadingConstraint.constant = \(labelLeadingConstraint.constant)")
         print("labelTrailingConstraint.constant = \(labelTrailingConstraint.constant)")
@@ -145,11 +139,21 @@ class MoodViewCell: UICollectionViewCell {
         let width = self.safeAreaLayoutGuide.layoutFrame.width
         let height = self.safeAreaLayoutGuide.layoutFrame.height
         
-        if index % 2 == 0 {
-            return drawPathForEven(width: width, height: height)
-        } else {
-            return drawPathForOdd(width: width, height: height)
-        }
+        let initialX:CGFloat = 0
+        let initialY:CGFloat = 0
+        
+        let bezierPath = UIBezierPath()
+        bezierPath.move(to: CGPoint(x: initialX + 8, y: initialY));
+        bezierPath.addLine(to: CGPoint(x: width - 8, y: initialY))
+        bezierPath.addLine(to: CGPoint(x: width, y: initialY + 8))
+        bezierPath.addLine(to: CGPoint(x: width, y: height - 8))
+        bezierPath.addLine(to: CGPoint(x: width - 8, y: height))
+        bezierPath.addLine(to: CGPoint(x: initialX + 8, y: height))
+        bezierPath.addLine(to: CGPoint(x: initialX, y: height - 8))
+        bezierPath.addLine(to: CGPoint(x: initialX, y: initialY + 8))
+        bezierPath.close()
+        
+        return bezierPath;
     }
     
     private func drawPathForEven(width:CGFloat, height:CGFloat) -> UIBezierPath {
@@ -159,6 +163,7 @@ class MoodViewCell: UICollectionViewCell {
         let initialY:CGFloat = height * 0.25;
         
         let bezierPath = UIBezierPath()
+        
         bezierPath.move(to: CGPoint(x: initialX + 16, y: initialHeight*0.25));
         bezierPath.addLine(to: CGPoint(x: initialWidth - 16, y: initialHeight*0.25))
         bezierPath.addLine(to: CGPoint(x: initialWidth - 8, y: initialHeight*0.625))
