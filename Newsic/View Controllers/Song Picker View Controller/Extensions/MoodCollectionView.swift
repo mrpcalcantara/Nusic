@@ -16,7 +16,7 @@ extension SongPickerViewController {
         //tapGestureRecognizer.delegate = self as! UIGestureRecognizerDelegate
         
         //moodCollectionView.addGestureRecognizer(tapGestureRecognizer)
-        genreCollectionView.addGestureRecognizer(tapGestureRecognizer)
+        //genreCollectionView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     func detectTap(_ tapRecognizer: UITapGestureRecognizer? = nil) {
@@ -232,8 +232,9 @@ extension SongPickerViewController: UICollectionViewDataSource {
 extension SongPickerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let sizeWidth = collectionView.frame.width - sectionInsets.left;
-        return CGSize(width: sizeWidth, height: 150);
+        let sizeWidth = collectionView.frame.width
+            //- sectionInsets.left;
+        return CGSize(width: sizeWidth/2, height: collectionView.frame.height/6);
     }
     /*
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -241,7 +242,7 @@ extension SongPickerViewController: UICollectionViewDelegateFlowLayout {
     }
     */
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return -75
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
