@@ -56,7 +56,7 @@ class ShowSongViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        navigationController?.interactivePopGestureRecognizer?.delegate = self;
+        //navigationController?.interactivePopGestureRecognizer?.delegate = self;
         let dyad = moodObject?.emotions.first?.basicGroup.rawValue;
         SwiftSpinner.show("Mood: \(dyad!)", animated: true);
         setupTableView()
@@ -475,11 +475,11 @@ extension ShowSongViewController {
 */
 extension ShowSongViewController: UIGestureRecognizerDelegate {
     
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        let count = (navigationController?.viewControllers.count)!
-        return count > 1 ? true : false;
-    }
-    
+//    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        let count = (navigationController?.viewControllers.count)!
+//        return count > 1 ? true : false;
+//    }
+//
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true;

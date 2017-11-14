@@ -74,7 +74,8 @@ class SongPickerViewController: UIViewController {
     var spinner: SwiftSpinner! = nil
     
     //Transition Delegate
-    let customNavigationAnimationController = CustomNavigationAnimationController()
+    var customNavigationAnimationController = CustomNavigationAnimationController(direction: UISwipeGestureRecognizerDirection.up)
+    let customInteractionController = CustomInteractionController()
     
     //Segues
     let sideMenuSegue = "showSideMenuSegue"
@@ -162,6 +163,7 @@ class SongPickerViewController: UIViewController {
         
         self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
         self.moodObject?.saveData(saveCompleteHandler: { (reference, error) in  })
+        customNavigationAnimationController.slideDirection = .right
         self.performSegue(withIdentifier: showVideoSegue, sender: self);
     }
     
@@ -200,9 +202,13 @@ class SongPickerViewController: UIViewController {
     
     func setupView() {
         self.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(toggleMenu));
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(toggleMenu));
         self.navigationItem.leftBarButtonItem?.setBackgroundImage(UIImage(named: "MenuIcon"), for: .normal, barMetrics: .default);
         self.mainControlView.layer.zPosition = -1
+//        
+//        let screenEdgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(toggleMenu))
+//        screenEdgeGesture.edges = .left
+//        self.view.addGestureRecognizer(screenEdgeGesture)
         /*
         let leftSwipeCollectionsRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeToShowOtherCollectionView(sender:)))
         leftSwipeCollectionsRecognizer.direction = .left
@@ -223,6 +229,7 @@ class SongPickerViewController: UIViewController {
     }
     
     @objc func toggleMenu() {
+        customNavigationAnimationController.slideDirection = .left
         self.performSegue(withIdentifier: sideMenuSegue, sender: self);
 //
 //        if !isMenuOpen {

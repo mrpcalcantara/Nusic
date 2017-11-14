@@ -200,10 +200,13 @@ extension SongPickerViewController: UICollectionViewDataSource {
             //cell.backgroundColor = UIColor.gray;
             let genre = genreList[indexPath.row].rawValue
             cell.moodLabel.text = "\(genre)"
-            if selectedGenres[genre] != nil {
+            if selectedGenres[genre.lowercased()] != nil {
+//                cell.borderPathLayer?.fillColor = cell.selectedColor.cgColor
                 DispatchQueue.main.async {
-                    let pathSublayer = cell.layer.sublayers!.first as! CAShapeLayer
-                    pathSublayer.fillColor = UIColor.green.withAlphaComponent(0.2).cgColor
+                    print("pathLayer = \(cell.borderPathLayer?.path)")
+//                    let pathSublayer = cell.layer.sublayers!.first as! CAShapeLayer
+//                    let pathSublayer = cell.borderPathLayer
+                    cell.selectCell()
                 }
                 
             } else {
