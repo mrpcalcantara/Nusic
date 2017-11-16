@@ -10,6 +10,11 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Futura.ttc">
+            <string>Futura-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Spotify Login View Controller-->
         <scene sceneID="97z-rB-0Yo">
@@ -134,7 +139,8 @@
                                         </connections>
                                     </collectionView>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="na7-Jq-MEC" customClass="NewsicButton" customModule="Newsic" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="569" width="375" height="34"/>
+                                        <rect key="frame" x="0.0" y="568" width="375" height="35"/>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                         <state key="normal" title="Get Songs"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="borderAlpha">
@@ -288,11 +294,11 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NVp-SR-TRp" userLabel="Profile View">
-                                        <rect key="frame" x="0.0" y="8" width="375" height="227.5"/>
+                                        <rect key="frame" x="0.0" y="8" width="375" height="229.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZCD-WB-AVh" userLabel="Username Label">
-                                                <rect key="frame" x="16" y="191" width="343" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <rect key="frame" x="16" y="191" width="343" height="22.5"/>
+                                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -316,10 +322,11 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z2k-J4-4Vy" userLabel="Buttons View">
-                                        <rect key="frame" x="0.0" y="235.5" width="375" height="367.5"/>
+                                        <rect key="frame" x="0.0" y="237.5" width="375" height="365.5"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CTF-Bo-IKY" customClass="NewsicButton" customModule="Newsic" customModuleProvider="target">
-                                                <rect key="frame" x="16" y="16" width="343" height="30"/>
+                                                <rect key="frame" x="16" y="16" width="343" height="35"/>
+                                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                                 <state key="normal" title="Logout"/>
                                                 <connections>
                                                     <action selector="logoutClicked:" destination="RzT-Hk-gHT" eventType="touchUpInside" id="IQf-IK-458"/>
@@ -327,7 +334,8 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MWJ-NB-Z9J" customClass="NewsicButton" customModule="Newsic" customModuleProvider="target">
-                                                <rect key="frame" x="16" y="54" width="343" height="30"/>
+                                                <rect key="frame" x="16" y="59" width="343" height="35"/>
+                                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                                 <state key="normal" title="About"/>
                                                 <connections>
                                                     <action selector="aboutClicked:" destination="RzT-Hk-gHT" eventType="touchUpInside" id="8cc-Td-hfO"/>

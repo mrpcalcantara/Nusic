@@ -60,7 +60,8 @@ class MoodViewCell: UICollectionViewCell {
         print("configuring Cell for indexPath \(index)")
         self.backgroundColor = .clear
         self.moodLabel.textColor = UIColor.white
-        self.tintColor = UIColor.red
+        self.moodLabel.font = UIFont(name: "Futura", size: 15)
+        //self.tintColor = UIColor.red
         if index % 2 == 0 {
             configureEven();
         } else {
@@ -110,8 +111,8 @@ class MoodViewCell: UICollectionViewCell {
 //
 //        self.insertSubview(containerView, aboveSubview: self.moodLabel!)
         
-        self.layer.addSublayer(layer)
-        
+        //self.layer.addSublayer(layer)
+        self.layer.insertSublayer(layer, at: 0)
         
         
     }
