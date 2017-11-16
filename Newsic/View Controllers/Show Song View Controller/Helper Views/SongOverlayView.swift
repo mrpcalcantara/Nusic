@@ -15,11 +15,18 @@ class SongOverlayView: OverlayView {
     private let songOverlaySwipedLeftImage = "SongOverlaySwipedLeft"
     private let songOverlaySwipedRightImage = "SongOverlaySwipedRight"
     
+    @IBOutlet lazy var swipeImage: UIImageView! = {
+        [unowned self] in
+        var imageView = UIImageView();
+        
+        return imageView
+        }()
+    
     @IBOutlet lazy var albumImage: UIImageView! = {
         [unowned self] in
-        var playerView = UIImageView();
+        var imageView = UIImageView();
         
-        return playerView
+        return imageView
     }()
         
     @IBOutlet lazy var songTitle: UILabel! = {
@@ -74,10 +81,12 @@ class SongOverlayView: OverlayView {
                 //self.backgroundColor = UIColor.red.withAlphaComponent(0.75)
                 albumImage.image = UIImage(named: songOverlaySwipedLeftImage)
                 albumImage.contentMode = .scaleToFill
+                albumImage.alpha = 0.7
             case .right? :
                 //self.backgroundColor = UIColor.green.withAlphaComponent(0.75)
                 albumImage.image = UIImage(named: songOverlaySwipedRightImage)
                 albumImage.contentMode = .scaleToFill
+                albumImage.alpha = 0.7
             default:
                 albumImage.image = nil
             }

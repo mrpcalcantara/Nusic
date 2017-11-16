@@ -8,12 +8,14 @@
 
 import UIKit
 
-class SideMenuViewController: UIViewController {
+class SideMenuViewController: NewsicDefaultViewController {
     
+    @IBOutlet weak var profileView: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var aboutButton: UIButton!
+    @IBOutlet weak var buttonsView: UIView!
     
     //Local variables
     var profileImage: UIImage?
@@ -35,6 +37,7 @@ class SideMenuViewController: UIViewController {
         super.viewDidLoad();
         setupView();
         setupNavigatonBar()
+        
     }
     
     func setupView() {
@@ -49,6 +52,9 @@ class SideMenuViewController: UIViewController {
         
         logoutButton.titleLabel?.text = "Logout from Spotify"
         aboutButton.titleLabel?.text = "About this App"
+        
+        setupProfileView();
+        setupButtonsView();
     }
     
     func setupNavigatonBar() {
@@ -58,8 +64,54 @@ class SideMenuViewController: UIViewController {
         btn1.setImage(UIImage(named: "MoodIcon"), for: .normal)
         btn1.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         btn1.addTarget(self, action: #selector(dismissMenu), for: .touchUpInside)
+        btn1.imageView?.tintColor = UIColor.white
         let item1 = UIBarButtonItem(customView: btn1)
         self.navigationItem.rightBarButtonItem = item1;
+    }
+    
+    func setupProfileView() {
+        profileView.backgroundColor = UIColor.clear
+        usernameLabel.textColor = UIColor.white
+        //profileView.addBlurEffect(style: .extraLight, alpha: 0.25);
+    }
+    
+    func setupButtonsView() {
+        buttonsView.backgroundColor = UIColor.clear
+        //buttonsView.addBlurEffect(style: .dark, alpha: 0.8)
+        drawButtonsViewPath();
+    }
+    
+    func drawButtonsViewPath() {
+        let layer = CAShapeLayer();
+        let yOrigin = buttonsView.bounds.origin.y + 8
+        let xOrigin = buttonsView.bounds.origin.x
+        let width = buttonsView.bounds.width
+        let height = buttonsView.bounds.height
+        layer.strokeColor = UIColor.white.cgColor
+        layer.fillColor = UIColor.clear.cgColor
+        layer.lineWidth = 5
+        
+        
+        
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: xOrigin - 8, y: yOrigin))
+        path.addQuadCurve(to: CGPoint(x: width + 8, y: yOrigin), controlPoint: CGPoint(x: width/2, y: -10))
+        path.addLine(to: CGPoint(x: width + 8, y: height + 8))
+        path.addLine(to: CGPoint(x: xOrigin - 8, y: height + 8))
+        path.close()
+        layer.path = path.cgPath
+        layer.fillColor = UIColor.black.withAlphaComponent(0.5).cgColor
+        let filter = CIFilter(name: "CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: 2])
+        //layer.backgroundFilters = [filter]
+        buttonsView.layer.insertSublayer(layer, at: 0)
+        
+        let animation = CABasicAnimation(keyPath: "strokeEnd");
+        
+        animation.fromValue = 0.5
+        animation.toValue = 1.0
+        animation.duration = 2
+        
+        layer.add(animation, forKey: "drawLineAnimation")
     }
     
     @objc func dismissMenu() {

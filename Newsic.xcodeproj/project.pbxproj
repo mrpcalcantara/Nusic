@@ -19,6 +19,8 @@
 		8C18E0BC1F55306B002C4A07 /* YouTubeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C18E0BB1F55306B002C4A07 /* YouTubeSearch.swift */; };
 		8C18E0BE1F5530E9002C4A07 /* SpotifyTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C18E0BD1F5530E9002C4A07 /* SpotifyTrack.swift */; };
 		8C2011571F98849A003DE2AD /* SpotifyGenres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2011561F988499003DE2AD /* SpotifyGenres.swift */; };
+		8C250AB51FBBF616002A108C /* NewsicDefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C250AB41FBBF616002A108C /* NewsicDefaultViewController.swift */; };
+		8C250AB71FBC02F8002A108C /* NewsicNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C250AB61FBC02F8002A108C /* NewsicNavigationController.swift */; };
 		8C3654BC1F5516B7006C12D9 /* Koloda-SongCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */; };
 		8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3654BE1F551ABE006C12D9 /* OverlayView.xib */; };
 		8C3654C11F551B16006C12D9 /* SongOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654C01F551B16006C12D9 /* SongOverlayView.swift */; };
@@ -106,6 +108,8 @@
 		8C18E0BB1F55306B002C4A07 /* YouTubeSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouTubeSearch.swift; sourceTree = "<group>"; };
 		8C18E0BD1F5530E9002C4A07 /* SpotifyTrack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyTrack.swift; sourceTree = "<group>"; };
 		8C2011561F988499003DE2AD /* SpotifyGenres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyGenres.swift; sourceTree = "<group>"; };
+		8C250AB41FBBF616002A108C /* NewsicDefaultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicDefaultViewController.swift; sourceTree = "<group>"; };
+		8C250AB61FBC02F8002A108C /* NewsicNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicNavigationController.swift; sourceTree = "<group>"; };
 		8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Koloda-SongCard.swift"; sourceTree = "<group>"; };
 		8C3654BE1F551ABE006C12D9 /* OverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
 		8C3654C01F551B16006C12D9 /* SongOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongOverlayView.swift; sourceTree = "<group>"; };
@@ -486,6 +490,7 @@
 				8C9C9E901F67C7E10093C14A /* NewsicActivityIndicator.swift */,
 				8C9DB4F61F6B840400F35268 /* NewsicButton.swift */,
 				8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */,
+				8C250AB41FBBF616002A108C /* NewsicDefaultViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -633,6 +638,7 @@
 			children = (
 				8CF8D3FD1FBA9C9300E130BC /* CustomNavigationAnimationController.swift */,
 				8CF8D4011FBAC7D200E130BC /* CustomInteractionController.swift */,
+				8C250AB61FBC02F8002A108C /* NewsicNavigationController.swift */,
 			);
 			path = "Interaction Controllers";
 			sourceTree = "<group>";
@@ -873,6 +879,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C250AB71FBC02F8002A108C /* NewsicNavigationController.swift in Sources */,
 				8C3654BC1F5516B7006C12D9 /* Koloda-SongCard.swift in Sources */,
 				8C8C65971F55A6B4000711AC /* ShowSongViewController.swift in Sources */,
 				8CA40DF51F8B7C8200C95B9D /* SpotifyArtists.swift in Sources */,
@@ -880,6 +887,7 @@
 				8CA40DF71F8B7C8700C95B9D /* SpotifyPlaylists.swift in Sources */,
 				8C4FBD7A1F59456200712873 /* Emotion.swift in Sources */,
 				8CF8D4021FBAC7D200E130BC /* CustomInteractionController.swift in Sources */,
+				8C250AB51FBBF616002A108C /* NewsicDefaultViewController.swift in Sources */,
 				8C2011571F98849A003DE2AD /* SpotifyGenres.swift in Sources */,
 				8C3654C31F552201006C12D9 /* SongKolodaView.swift in Sources */,
 				8C18E0BE1F5530E9002C4A07 /* SpotifyTrack.swift in Sources */,

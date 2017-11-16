@@ -9,7 +9,7 @@
 import UIKit
 import SwiftSpinner
 
-class SpotifyLoginViewController: UIViewController {
+class SpotifyLoginViewController: NewsicDefaultViewController {
     
     var auth = SPTAuth.defaultInstance()!
     var session:SPTSession!
@@ -44,8 +44,13 @@ class SpotifyLoginViewController: UIViewController {
         
     }
     
+    func setupLabel() {
+        newsicLabl.textColor = UIColor.lightText
+    }
+    
     func setupView() {
         loginButton.setImage(UIImage(named: "SpotifyLogin"), for: .normal);
+        setupLabel()
     }
     
     @objc func moveToMainScreen() {
@@ -100,6 +105,15 @@ class SpotifyLoginViewController: UIViewController {
         UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: {
             self.newsicLabl.center.y += 20
         }, completion: nil)
+        
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.repeat, .autoreverse], animations: {
+            let text = self.newsicLabl.text
+            let mutableText = NSMutableAttributedString(string: text!);
+            mutableText.addAttribute(kCTForegroundColorAttributeName as NSAttributedStringKey, value: UIColor.green, range: NSRange(location:1,length:1))
+            
+        }, completion: nil)
+        
+        
         
         let userDefaults = UserDefaults.standard
         if let sessionObj:AnyObject = userDefaults.object(forKey: "SpotifySession") as AnyObject? {

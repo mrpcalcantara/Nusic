@@ -33,7 +33,7 @@ class NewsicSegmentedControl: UIControl {
         }
     }
     
-    @IBInspectable var selectedLabelColor : UIColor = UIColor.black.withAlphaComponent(0.2) {
+    @IBInspectable var selectedLabelColor : UIColor = UIColor.green {
         didSet {
             setSelectedColors()
         }
@@ -76,9 +76,18 @@ class NewsicSegmentedControl: UIControl {
     
     func setupView(){
         
-        layer.cornerRadius = frame.height / 2
-        layer.borderColor = UIColor(white: 1.0, alpha: 0.5).cgColor
-        layer.borderWidth = 2
+//        let containerEffect = UIBlurEffect(style: .dark)
+//        let containerView = UIVisualEffectView(effect: containerEffect)
+//        containerView.alpha = 0.9
+//        containerView.frame = self.bounds
+//
+//        containerView.isUserInteractionEnabled = false // Edit: so that subview simply passes the event through to the button
+//
+//        self.insertSubview(containerView, at: 0)
+//
+//        layer.cornerRadius = frame.height / 2
+//        layer.borderColor = UIColor(white: 1.0, alpha: 0.5).cgColor
+//        layer.borderWidth = 2
         
         backgroundColor = UIColor.clear
         
@@ -104,6 +113,8 @@ class NewsicSegmentedControl: UIControl {
             //label.clipsToBounds = true;
             label.image = items[index - 1]
             label.backgroundColor = UIColor.clear;
+            label.tintColor = UIColor.white
+            let button = UIButton(type: .system)
             /*
             label.textAlignment = .center
             label.font = UIFont(name: "Avenir-Black", size: 15)

@@ -40,6 +40,13 @@ extension ShowSongViewController {
         //songListTableView.addShadow(shadowOffset: CGSize(width: -7, height: 1));
         songListTableView.rowHeight = UITableViewAutomaticDimension
         songListTableView.estimatedRowHeight = 90.0
+        songListTableView.tableFooterView = UIView();
+        
+        
+        let image = UIImage(named: "SongMenuBackgroundPattern")
+        if let image = image {
+            songListTableView.backgroundColor = UIColor(patternImage: image);
+        }
         
         
         pausePlay.contentMode = .center
@@ -49,7 +56,7 @@ extension ShowSongViewController {
         nextSong.contentMode = .center
         nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
         
-        songListTableView.tableFooterView = UIView();
+        
         //songListTableView.translatesAutoresizingMaskIntoConstraints = true;
         
         let screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
@@ -135,6 +142,10 @@ extension ShowSongViewController: UITableViewDelegate {
             fatalError("Unexpected Index Path")
         }
         */
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

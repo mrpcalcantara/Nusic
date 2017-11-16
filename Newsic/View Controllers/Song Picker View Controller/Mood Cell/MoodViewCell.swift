@@ -13,7 +13,7 @@ class MoodViewCell: UICollectionViewCell {
     @IBOutlet weak var moodLabel: UILabel!
     var borderPathLayer: CAShapeLayer?;
     var selectedColor: UIColor = UIColor.green.withAlphaComponent(0.2)
-    var deselectedColor: UIColor = UIColor.white.withAlphaComponent(0.8);
+    var deselectedColor: UIColor = UIColor.clear
     
     override var bounds: CGRect {
         didSet {
@@ -58,7 +58,9 @@ class MoodViewCell: UICollectionViewCell {
     
     func configure(for index: Int) {
         print("configuring Cell for indexPath \(index)")
-        
+        self.backgroundColor = .clear
+        self.moodLabel.textColor = UIColor.white
+        self.tintColor = UIColor.red
         if index % 2 == 0 {
             configureEven();
         } else {
@@ -66,6 +68,8 @@ class MoodViewCell: UICollectionViewCell {
         }
         
         let path = drawPath(for: index);
+        
+//        self.viewWithTag(111)?.removeFromSuperview()
         
         let sublayers = self.layer.sublayers
         if sublayers != nil {
@@ -82,20 +86,32 @@ class MoodViewCell: UICollectionViewCell {
         
         let layer = CAShapeLayer()
         
+        
+        let color = UIColor(red: 255, green: 69, blue: 0, alpha: 1).cgColor
         layer.strokeColor = UIColor.green.cgColor
-        layer.lineWidth = 5
-        layer.fillColor = deselectedColor.cgColor
+        layer.lineWidth = 2
+        layer.fillColor = self.deselectedColor.cgColor
         layer.path = path.cgPath
         
-        layer.shadowPath = path.cgPath
-        layer.shadowColor = UIColor.gray.cgColor
-        layer.shadowOffset = CGSize(width: 5, height: 10)
-        layer.shadowRadius = 5
-        layer.shadowOpacity = 0.2
+//        layer.shadowPath = path.cgPath
+//        layer.shadowColor = UIColor.gray.cgColor
+//        layer.shadowOffset = CGSize(width: 5, height: 10)
+//        layer.shadowRadius = 5
+//        layer.shadowOpacity = 0.2
         
         borderPathLayer = layer
+        
+//        let containerEffect = UIBlurEffect(style: .dark)
+//        let containerView = UIVisualEffectView(effect: containerEffect)
+//        containerView.alpha = 0.25
+//        containerView.frame = self.bounds
+//        containerView.tag = 111 // Blur Effect view Tag
+//        containerView.isUserInteractionEnabled = false // Edit: so that subview simply passes the event through to the button
+//
+//        self.insertSubview(containerView, aboveSubview: self.moodLabel!)
+        
         self.layer.addSublayer(layer)
-        self.layer.insertSublayer(layer, at: 0)
+        
         
         
     }
@@ -142,18 +158,28 @@ class MoodViewCell: UICollectionViewCell {
         let initialX:CGFloat = 0
         let initialY:CGFloat = 0
         
-        let bezierPath = UIBezierPath()
-        bezierPath.move(to: CGPoint(x: initialX + 8, y: initialY));
-        bezierPath.addLine(to: CGPoint(x: width - 8, y: initialY))
-        bezierPath.addLine(to: CGPoint(x: width, y: initialY + 8))
-        bezierPath.addLine(to: CGPoint(x: width, y: height - 8))
-        bezierPath.addLine(to: CGPoint(x: width - 8, y: height))
-        bezierPath.addLine(to: CGPoint(x: initialX + 8, y: height))
-        bezierPath.addLine(to: CGPoint(x: initialX, y: height - 8))
-        bezierPath.addLine(to: CGPoint(x: initialX, y: initialY + 8))
-        bezierPath.close()
-        
-        return bezierPath;
+        if index % 2 == 0 {
+            return drawPathForEven(width: width, height: height)
+        } else {
+            return drawPathForOdd(width: width, height: height)
+        }
+//
+//        let bezierPath = UIBezierPath()
+//        bezierPath.move(to: CGPoint(x: initialX + 8, y: initialY));
+//        bezierPath.addLine(to: CGPoint(x: width - 8, y: initialY))
+//        bezierPath.addLine(to: CGPoint(x: width, y: initialY + 8))
+//        bezierPath.addLine(to: CGPoint(x: width, y: height - 8))
+//        bezierPath.addLine(to: CGPoint(x: width - 8, y: height))
+//        bezierPath.addLine(to: CGPoint(x: initialX + 8, y: height))
+//        bezierPath.addLine(to: CGPoint(x: initialX, y: height - 8))
+//        bezierPath.addLine(to: CGPoint(x: initialX, y: initialY + 8))
+//
+//
+//        bezierPath.close()
+//
+//        //return bezierPath;
+//
+//        return UIBezierPath(roundedRect: CGRect(origin: self.safeAreaLayoutGuide.layoutFrame.origin, size: self.safeAreaLayoutGuide.layoutFrame.size), cornerRadius: 2)
     }
     
     private func drawPathForEven(width:CGFloat, height:CGFloat) -> UIBezierPath {
@@ -164,14 +190,9 @@ class MoodViewCell: UICollectionViewCell {
         
         let bezierPath = UIBezierPath()
         
-        bezierPath.move(to: CGPoint(x: initialX + 16, y: initialHeight*0.25));
-        bezierPath.addLine(to: CGPoint(x: initialWidth - 16, y: initialHeight*0.25))
-        bezierPath.addLine(to: CGPoint(x: initialWidth - 8, y: initialHeight*0.625))
-        bezierPath.addLine(to: CGPoint(x: (initialWidth*0.5) + 12, y: initialHeight*0.625))
-        bezierPath.addLine(to: CGPoint(x: (initialWidth*0.5) - 12, y: initialHeight*0.875))
-        bezierPath.addLine(to: CGPoint(x: initialX + 8, y: initialHeight*0.875))
-        bezierPath.addLine(to: CGPoint(x: initialX + 8, y: initialHeight*0.5))
-        bezierPath.close()
+        bezierPath.move(to: CGPoint(x: width, y: 0));
+        bezierPath.addLine(to: CGPoint(x: width, y: height))
+        bezierPath.addLine(to: CGPoint(x: 0, y: height))
         
         return bezierPath
     }
@@ -183,40 +204,24 @@ class MoodViewCell: UICollectionViewCell {
         let initialY:CGFloat = height * -0.25 ;
         
         let bezierPath = UIBezierPath();
-        bezierPath.move(to: CGPoint(x: initialX + 8, y: initialHeight*0.375))
-        bezierPath.addLine(to: CGPoint(x: (initialWidth*0.5) - 12, y: initialHeight*0.375))
-        bezierPath.addLine(to: CGPoint(x: (initialWidth*0.5) + 12, y: initialHeight*0.125))
-        bezierPath.addLine(to: CGPoint(x: initialWidth - 8, y: initialHeight*0.125))
-        bezierPath.addLine(to: CGPoint(x: initialWidth - 8, y: initialHeight*0.5))
-        bezierPath.addLine(to: CGPoint(x: initialWidth - 16, y: initialHeight*0.75))
-        bezierPath.addLine(to: CGPoint(x: initialX + 16, y: initialHeight*0.75))
-        bezierPath.close()
+        bezierPath.move(to: CGPoint(x: 0, y: 0));
+        bezierPath.addLine(to: CGPoint(x: 0, y: height))
+        bezierPath.addLine(to: CGPoint(x: width, y: height))
         
         return bezierPath
     }
     
     func selectCell() {
-        UIView.animate(withDuration: 0.3, animations: {
-            DispatchQueue.main.async {
-                if self.layer.sublayers!.contains(self.borderPathLayer!) {
-                    let pathSublayer = self.layer.sublayers!.first as! CAShapeLayer
-                    pathSublayer.fillColor = self.selectedColor.cgColor
-                    //self.backgroundColor = self.selectedColor
-                }
-            }
-        });
+        UIView.animate(withDuration: 0.5, delay: 0, options: [.allowUserInteraction, .repeat, .autoreverse], animations: {
+            self.contentView.backgroundColor = self.selectedColor
+        }, completion: nil)
+        
         self.animateSelection()
     }
     
     func deselectCell() {
         UIView.animate(withDuration: 0.3, animations: {
-            DispatchQueue.main.async {
-                if self.layer.sublayers!.contains(self.borderPathLayer!) {
-                    let pathSublayer = self.layer.sublayers!.first as! CAShapeLayer
-                    pathSublayer.fillColor = self.deselectedColor.cgColor
-                    //self.backgroundColor = self.deselectedColor
-                }
-            }
+            self.contentView.backgroundColor = self.deselectedColor
         });
         self.animateSelection()
     }

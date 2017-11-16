@@ -12,14 +12,16 @@ extension UIView {
     
     
     
-    func addBlurEffect() {
+    func addBlurEffect(style: UIBlurEffectStyle, alpha: CGFloat) {
         
-        let blurEffect = UIBlurEffect(style: .extraLight)
+        let blurEffect = UIBlurEffect(style: style)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.frame = self.bounds
         blurView.autoresizingMask = [.flexibleHeight, .flexibleWidth];
         blurView.tag = 1
-        self.addSubview(blurView)
+        blurView.alpha = alpha
+        self.insertSubview(blurView, at: 0);
+        //self.addSubview(blurView)
         
     }
     
@@ -33,7 +35,7 @@ extension UIView {
         }
     }
     
-    func addShadow(cornerRadius: CGFloat? = 3, shadowColor: CGColor? = UIColor.lightGray.cgColor, shadowOpacity: Float? = 0.5, shadowOffset: CGSize? = CGSize(width: -2, height: -7), shadowRadius: CGFloat? = 2) {
+    func addShadow(cornerRadius: CGFloat? = 3, shadowColor: CGColor? = UIColor.clear.cgColor, shadowOpacity: Float? = 0.5, shadowOffset: CGSize? = CGSize(width: -2, height: -7), shadowRadius: CGFloat? = 2) {
         self.layer.cornerRadius = cornerRadius!
         self.layer.masksToBounds = false
         
