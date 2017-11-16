@@ -9,16 +9,11 @@
 import UIKit
 import SwiftSpinner
 
-class SongPickerViewController: UIViewController {
+class SongPickerViewController: NewsicDefaultViewController {
     
-    //var genreList:[String] = ["acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "children", "chill", "classical", "club", "comedy", "country", "dance", "dancehall", "death-metal", "deep-house", "detroit-techno", "disco", "disney", "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic", "emo", "folk", "forro", "french", "funk", "garage", "german", "gospel", "goth", "grindcore", "groove", "grunge", "guitar", "happy", "hard-rock", "hardcore", "hardstyle", "heavy-metal", "hip-hop", "holidays", "honky-tonk", "house", "idm", "indian", "indie", "indie-pop", "industrial", "iranian", "j@objc -dance", "j-idol", "j-pop", "j-rock", "jazz", "k-pop", "kids", "latin", "latino", "malay", "mandopop", "metal", "metal-misc", "metalcore", "minimal-techno", "movies", "mpb", "new-age", "new-release", "opera", "pagode", "party", "philippines-opm", "piano", "pop", "pop-film", "post-dubstep", "power-pop", "progressive-house", "psych-rock", "punk", "punk-rock", "r-n-b", "rainy-day", "reggae", "reggaeton", "road-trip", "rock", "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes", "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish", "study", "summer", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music"];
-    //var genreList:[String] = ["alternative/indie", "blues", "cast recordings/cabaret", "christian/gospel", "children's", "classical/opera", "comedy/spoken word", "country", "electronica/dance", "folk", "instrumental", "jazz", "latin", "new age", "pop", "rap/hip hop", "reggae/ska", "rock", "seasonal", "soul/r&b", "soundtracks", "vocals", "world", "show music", "contemporary christian", "drum n' bass", "techno", "latin jazz", "swing", "latin pop", "latin rock", "latin urban", "mpb", "regional mexican", "salsa", "tango", "pop ballad", "pop rock", "90's rock", "adult contemporary", "metal", "television", "tropical", "cantopop", "classic chinese pop", "c-pop", "dangdut", "indonesian pop", "j-pop", "malaysian pop", "mandopop", "singaporean pop", "taiwanese pop"];
-    //fileprivate var genreList:[String] = ["Alternative/Indie","Blues","Cast Recordings/Cabaret","Christian/Gospel","Children's","Classical/Opera","Country","Electronica/Dance","Folk","Instrumental","Jazz","Latin","New Age","Pop","Rap/Hip Hop","Reggae/Ska","Rock","Soul/R&B"]
-    var genreList:[SpotifyGenres] = SpotifyGenres.allValues;
-    
+    var genreList:[SpotifyGenres] = SpotifyGenres.allShownValues;
     let itemsPerRow: CGFloat = 2;
-    let sectionInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16);
-    
+    let sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8);
     let numberOfCards:Int = 1;
     let numberOfSongs:Int = 5;
     var dataSource: [UIImage] = {
@@ -32,9 +27,6 @@ class SongPickerViewController: UIViewController {
     let username = "81d1a191-5d1e-47df-934a-c4bf91b63dd0"
     let password = "Ibls3Rzrbuy0"
     var spotifyHandler = Spotify();
-    //let version = ""
-    //var watsonNL: NaturalLanguageUnderstanding? = nil;
-    
     var songImage: UIImage! = UIImage(named: "Test");
     
     var moodObject: NewsicMood? = nil;
@@ -74,7 +66,7 @@ class SongPickerViewController: UIViewController {
     var spinner: SwiftSpinner! = nil
     
     //Transition Delegate
-    var customNavigationAnimationController = CustomNavigationAnimationController(direction: UISwipeGestureRecognizerDirection.up)
+    var customNavigationAnimationController = CustomNavigationAnimationController()
     let customInteractionController = CustomInteractionController()
     
     //Segues
@@ -163,13 +155,13 @@ class SongPickerViewController: UIViewController {
         
         self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
         self.moodObject?.saveData(saveCompleteHandler: { (reference, error) in  })
-        customNavigationAnimationController.slideDirection = .right
+        
         self.performSegue(withIdentifier: showVideoSegue, sender: self);
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        customNavigationAnimationController.slideDirection = .right
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -204,7 +196,19 @@ class SongPickerViewController: UIViewController {
         self.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(toggleMenu));
         self.navigationItem.leftBarButtonItem?.setBackgroundImage(UIImage(named: "MenuIcon"), for: .normal, barMetrics: .default);
-        self.mainControlView.layer.zPosition = -1
+        //self.mainControlView.layer.zPosition = -1
+        self.mainControlView.backgroundColor = UIColor.clear
+        self.genreCollectionView.backgroundColor = UIColor.clear
+        self.moodCollectionView.backgroundColor = UIColor.clear
+        self.newsicControl.backgroundColor = UIColor.clear
+        self.newsicControl.layer.zPosition = 1
+        self.searchButton.backgroundColor = UIColor.clear
+        
+        moodCollectionView.layer.zPosition = -1
+        genreCollectionView.layer.zPosition = -1
+        
+        self.mainControlView.bringSubview(toFront: newsicControl)
+
 //        
 //        let screenEdgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(toggleMenu))
 //        screenEdgeGesture.edges = .left
@@ -289,8 +293,8 @@ class SongPickerViewController: UIViewController {
         
         
         self.spotifyHandler.getUser { (user) in
-            self.spotifyHandler.user = user!;
             if let user = user {
+                self.spotifyHandler.user = user;
                 let username = user.canonicalUserName!
                 
                 let displayName = user.displayName != nil ? user.displayName : ""
@@ -315,7 +319,10 @@ class SongPickerViewController: UIViewController {
                         })
                     }
                 })
+            } else {
+                self.loadingFinished = true
             }
+            
         }
     }
     

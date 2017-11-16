@@ -16,6 +16,7 @@ class NewsicButton: UIButton {
     @IBInspectable var borderColor: UIColor = UIColor.black
     @IBInspectable var borderAlpha: CGFloat = 1.0
     @IBInspectable var bezierPath: UIBezierPath = UIBezierPath()
+    @IBInspectable var allowBlur: Bool = false;
     //
     
     
@@ -26,49 +27,12 @@ class NewsicButton: UIButton {
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
-        // Drawing code
-        // set up border and cornerRadius
-        //self.layer.cornerRadius = cornerSize
-        //self.layer.borderColor = borderColor.withAlphaComponent(borderAlpha).cgColor
-        //self.layer.borderWidth = borderSize
-        //self.layer.masksToBounds = true
-        //self.titleLabel?.textColor = borderColor;
-        
-        //self.setBackgroundColor(color: UIColor.red, forState: .selected)
-        //self.setBackgroundColor(color: UIColor.blue, forState: .normal)
-        //self.titleLabel?.font = 
-        /*
-        // set up gradient
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = rect
-        let c1 = bottomColor.colorWithAlphaComponent(bottomColorAlpha).CGColor
-        let c2 = middleColor.colorWithAlphaComponent(middleColorAlpha).CGColor
-        let c3 = topColor.colorWithAlphaComponent(topColorAlpha).CGColor
-        gradientLayer.colors = [c3, c2, c1]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
-        self.layer.insertSublayer(gradientLayer, atIndex: 0)
-        */
-        
-        //Even indexes
         
         let width = self.bounds.width;
         let height = self.bounds.height;
         let initialX:CGFloat = 0
         let initialY:CGFloat = 0
-        /*
-        //Even indexes
-        bezierPath.move(to: CGPoint(x: initialX + 16, y: initialY));
-        bezierPath.addLine(to: CGPoint(x: width - 24, y: initialY))
-        bezierPath.addLine(to: CGPoint(x: width - 8, y: initialY+(height*0.5)))
-        bezierPath.addLine(to: CGPoint(x: width*0.5, y: initialY+(height*0.5)))
-        bezierPath.addLine(to: CGPoint(x: (width*0.5) - 24, y: initialY+height))
-        bezierPath.addLine(to: CGPoint(x: initialX + 16, y: initialY+height))
-        bezierPath.addLine(to: CGPoint(x: initialX + 8, y: initialY+(height*0.75)))
-        bezierPath.addLine(to: CGPoint(x: initialX + 8, y: initialY+(height*0.25)))
-        bezierPath.close()
-        */
-        //Odd indexes
+        
         self.layer.masksToBounds = true
         self.titleLabel?.textColor = borderColor;
         
@@ -76,29 +40,33 @@ class NewsicButton: UIButton {
         
         //self.layer.borderColor = borderColor.withAlphaComponent(borderAlpha).cgColor
         //self.layer.borderWidth = borderSize
-        //self.titleLabel?.bounds = CGRect(origin: (self.titleLabel?.frame.origin)!, size: CGSize(width: width/2, height: height))
         
-        bezierPath.move(to: CGPoint(x: 0, y: height*0.5));
-        bezierPath.addLine(to: CGPoint(x: width*0.5, y: initialY+(height*0.5)))
-        bezierPath.addLine(to: CGPoint(x: (width*0.5) + 24, y: initialY))
-        bezierPath.addLine(to: CGPoint(x: width - 16, y: initialY))
-        bezierPath.addLine(to: CGPoint(x: width - 8, y: height*0.25))
-        bezierPath.addLine(to: CGPoint(x: width - 8, y: height*0.75))
-        bezierPath.addLine(to: CGPoint(x: width - 16, y: height))
-        bezierPath.addLine(to: CGPoint(x: initialX + 16, y: height))
-        bezierPath.close()
+        if allowBlur {
+            let containerEffect = UIBlurEffect(style: .dark)
+            let containerView = UIVisualEffectView(effect: containerEffect)
+            containerView.alpha = 0.75
+            containerView.frame = self.bounds
+            
+            containerView.isUserInteractionEnabled = false // Edit: so that subview simply passes the event through to the button
+            
+            self.insertSubview(containerView, belowSubview: self.titleLabel!)
+        }
         
-        let layer = CAShapeLayer()
-        layer.strokeColor = UIColor.green.cgColor
-        layer.fillColor = UIColor.red.cgColor;
-        layer.path = bezierPath.cgPath
-        //self.layer.addSublayer(layer)
-        //self.layer.insertSublayer(layer, at: 1);
+
+//        let vibrancy = UIVibrancyEffect(blurEffect: containerEffect)
+//        let vibrancyView = UIVisualEffectView(effect: vibrancy)
+//        vibrancyView.frame = containerView.bounds
+//        containerView.contentView.addSubview(vibrancyView)
+//
+//        vibrancyView.contentView.addSubview(self.titleLabel!)
+//
+//        blurEffectView.insertSubview(vibrancyEffectView, at: 0)
+        
     }
     
     func setBackgroundColor(color: UIColor, forState: UIControlState) {
         UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
-        
+
         UIGraphicsGetCurrentContext()!.setFillColor(color.cgColor)
         UIGraphicsGetCurrentContext()!.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
         let colorImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -106,14 +74,14 @@ class NewsicButton: UIButton {
         self.setBackgroundImage(colorImage, for: forState)
     }
 
-    func handleTouch(button: NewsicButton, event: UIEvent) {
-        if let touch = event.touches(for: button)?.first {
-            let location = touch.location(in: button);
-            
-            if !bezierPath.contains(location) {
-                button.cancelTracking(with: nil);
-            }
-        }
-    }
+//    func handleTouch(button: NewsicButton, event: UIEvent) {
+//        if let touch = event.touches(for: button)?.first {
+//            let location = touch.location(in: button);
+//
+//            if !bezierPath.contains(location) {
+//                button.cancelTracking(with: nil);
+//            }
+//        }
+//    }
     
 }

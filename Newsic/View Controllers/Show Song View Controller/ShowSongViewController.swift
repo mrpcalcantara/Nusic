@@ -12,7 +12,7 @@ import MediaPlayer
 import SwiftSpinner
 
 
-class ShowSongViewController: UIViewController {
+class ShowSongViewController: NewsicDefaultViewController {
     
     
     var user: NewsicUser! = nil;
@@ -175,8 +175,8 @@ class ShowSongViewController: UIViewController {
     
     func openMenu() {
         isMenuOpen = true
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
-            
+        
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
             self.trackStackView.layer.zPosition = -1
             self.songListTableView.layer.zPosition = 1
             self.songListTableView.isUserInteractionEnabled = true
@@ -187,35 +187,19 @@ class ShowSongViewController: UIViewController {
             self.previousTrack.isUserInteractionEnabled = false
             self.nextTrack.isUserInteractionEnabled = false
             self.showMore.isUserInteractionEnabled = false
-            
-            /*
-            self.previousSong.alpha = 0
-            self.nextSong.alpha = 0
- 
-            self.toggleLikeButtons();
-            self.pausePlay.alpha = 0
-            self.previousTrack.alpha = 0
-            self.nextTrack.alpha = 0
-            //self.showMore.alpha = 0
-            */
             self.tableViewLeadingConstraint.constant = self.view.frame.width/6;
             self.tableViewTrailingConstraint.constant = 0
             self.trackStackView.alpha = 0.1
-            //self.trackStackView.addBlurEffect()
-            
             self.view.layoutIfNeeded()
         }, completion: nil)
-        
     }
     
     func closeMenu() {
         //self.view.sendSubview(toBack: self.songListTableView);
         isMenuOpen = false
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
-            
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
             self.trackStackView.layer.zPosition = 1
-            //self.view.sendSubview(toBack: self.songListTableView);
             self.songListTableView.isUserInteractionEnabled = false
             self.songCardView.isUserInteractionEnabled = true
             self.previousSong.isUserInteractionEnabled = true
@@ -224,18 +208,6 @@ class ShowSongViewController: UIViewController {
             self.previousTrack.isUserInteractionEnabled = true
             self.nextTrack.isUserInteractionEnabled = true
             self.showMore.isUserInteractionEnabled = true
-            
-            /*
-            self.previousSong.alpha = 1
-            self.nextSong.alpha = 1
- 
-            self.toggleLikeButtons();
-            self.pausePlay.alpha = 1
-            
-            self.previousTrack.alpha = 1
-            self.nextTrack.alpha = 1
-            self.showMore.alpha = 1
-            */
             self.tableViewLeadingConstraint.constant = self.view.frame.width
             self.tableViewTrailingConstraint.constant -= (5*self.view.frame.width)/6
             self.trackStackView.alpha = 1

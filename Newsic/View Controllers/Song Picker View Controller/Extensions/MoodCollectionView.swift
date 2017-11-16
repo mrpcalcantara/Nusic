@@ -91,6 +91,7 @@ extension SongPickerViewController {
         genreCollectionView.delegate = self;
         genreCollectionView.dataSource = self;
         genreCollectionView.allowsMultipleSelection = true;
+        
     }
     
     func showMoodCollectionView() {
@@ -125,10 +126,6 @@ extension SongPickerViewController {
 }
 
 extension SongPickerViewController: UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.moodCollectionView {
@@ -239,11 +236,11 @@ extension SongPickerViewController: UICollectionViewDelegateFlowLayout {
             //- sectionInsets.left;
         return CGSize(width: sizeWidth/2, height: collectionView.frame.height/6);
     }
-    /*
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return sectionInsets;
-    }
-    */
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        return sectionInsets;
+//    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
@@ -252,72 +249,4 @@ extension SongPickerViewController: UICollectionViewDelegateFlowLayout {
         return 0;
     }
     
-    /*
- 
-     func drawPathForEven(view:UIView, width:CGFloat, height:CGFloat, index: Int) -> UIBezierPath {
-     let initialWidth = width;
-     let initialHeight = height
-     let initialX:CGFloat = 0
-     let initialY:CGFloat = height * 0.25;
-     
-     let bezierPath = UIBezierPath()
-     bezierPath.move(to: CGPoint(x: initialX + 16, y: initialY));
-     bezierPath.addLine(to: CGPoint(x: initialWidth - 16, y: initialY))
-     bezierPath.addLine(to: CGPoint(x: initialWidth - 8, y: initialY+(initialHeight*0.25)))
-     bezierPath.addLine(to: CGPoint(x: (initialWidth*0.5) + 12, y: initialY+(initialHeight*0.25)))
-     bezierPath.addLine(to: CGPoint(x: (initialWidth*0.5) - 12, y: initialY+(initialHeight*0.75)))
-     //bezierPath.addLine(to: CGPoint(x: initialX + 16, y: initialY+height))
-     bezierPath.addLine(to: CGPoint(x: initialX + 8, y: initialY+(initialHeight*0.75)))
-     bezierPath.addLine(to: CGPoint(x: initialX + 8, y: initialY+(initialHeight*0.25)))
-     bezierPath.close()
-     
-     return bezierPath
-     }
-     
-     func drawPathForOdd(width:CGFloat, height:CGFloat, index: Int) -> UIBezierPath {
-     let initialWidth = width;
-     let initialHeight = height
-     let initialX:CGFloat = 0
-     let initialY:CGFloat = height * -0.25 ;
-     
-     let bezierPath = UIBezierPath();
-     bezierPath.move(to: CGPoint(x: initialX + 8, y: initialY+(initialHeight*0.75)))
-     bezierPath.addLine(to: CGPoint(x: (initialWidth*0.5) - 12, y: initialY+(initialHeight*0.75)))
-     bezierPath.addLine(to: CGPoint(x: (initialWidth*0.5) + 12, y: initialY+(initialHeight*0.25)))
-     //bezierPath.addLine(to: CGPoint(x: width - 16, y: initialY))
-     bezierPath.addLine(to: CGPoint(x: initialWidth - 8, y: initialY+(initialHeight*0.25)))
-     bezierPath.addLine(to: CGPoint(x: initialWidth - 8, y: initialY+(initialHeight*0.75)))
-     bezierPath.addLine(to: CGPoint(x: initialWidth - 16, y: initialY+(initialHeight)))
-     bezierPath.addLine(to: CGPoint(x: initialX + 16, y: initialY+(initialHeight)))
-     bezierPath.close()
-     
-     return bezierPath
-     }
-     */
-    
-    func drawPath(width:CGFloat, height:CGFloat) -> UIBezierPath {
-        let width = width;
-        let height = height;
-        let initialX:CGFloat = 0
-        let initialY:CGFloat = 0
-        
-        let bezierPath = UIBezierPath();
-        bezierPath.move(to: CGPoint(x: initialX + 24, y: initialY))
-        bezierPath.addLine(to: CGPoint(x: width - 24, y: initialY))
-        bezierPath.addLine(to: CGPoint(x: width - 8, y: height*0.25))
-        bezierPath.addLine(to: CGPoint(x: width - 8, y: height*0.75))
-        bezierPath.addLine(to: CGPoint(x: width - 24, y: height))
-        bezierPath.addLine(to: CGPoint(x: initialX + 24, y: height))
-        bezierPath.addLine(to: CGPoint(x: initialX + 8, y: height*0.75))
-        bezierPath.addLine(to: CGPoint(x: initialX + 8, y: height*0.25))
-        bezierPath.close()
-        
-        return bezierPath
-    }
 }
-
-extension SongPickerViewController {
-    
-}
-
-
