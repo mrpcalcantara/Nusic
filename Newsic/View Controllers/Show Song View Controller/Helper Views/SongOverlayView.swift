@@ -33,12 +33,14 @@ class SongOverlayView: OverlayView {
         [unowned self] in
         
         var label = UILabel()
+        label.font = UIFont(name: "Futura", size: 15)
         return label;
     }()
     @IBOutlet lazy var songArtist: UILabel! = {
         [unowned self] in
         
         var label = UILabel()
+        label.font = UIFont(name: "Futura", size: 15)
         return label;
     }()
     

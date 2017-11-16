@@ -70,6 +70,8 @@ extension ShowSongViewController: KolodaViewDelegate {
         let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(likeTrack(in:)));
         doubleTapRecognizer.numberOfTapsRequired = 2
         songCardView.addGestureRecognizer(doubleTapRecognizer);
+        
+        
     }
     
     func addSongToPosition(at index: Int, position: Int) {
