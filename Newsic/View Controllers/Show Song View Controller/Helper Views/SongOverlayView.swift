@@ -69,6 +69,7 @@ class SongOverlayView: OverlayView {
         songTitle.layer.zPosition = 1;
         self.addSubview(songArtist);
         songArtist.layer.zPosition = 1;
+        self.layer.cornerRadius = 15
     }
     
     func loadViewFromNib() -> UIView {
@@ -83,12 +84,12 @@ class SongOverlayView: OverlayView {
                 //self.backgroundColor = UIColor.red.withAlphaComponent(0.75)
                 albumImage.image = UIImage(named: songOverlaySwipedLeftImage)
                 albumImage.contentMode = .scaleToFill
-                albumImage.alpha = 0.7
+                albumImage.alpha = 1
             case .right? :
                 //self.backgroundColor = UIColor.green.withAlphaComponent(0.75)
                 albumImage.image = UIImage(named: songOverlaySwipedRightImage)
                 albumImage.contentMode = .scaleToFill
-                albumImage.alpha = 0.7
+                albumImage.alpha = 1
             default:
                 albumImage.image = nil
             }

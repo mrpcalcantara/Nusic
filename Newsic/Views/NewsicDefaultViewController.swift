@@ -17,15 +17,16 @@ class NewsicDefaultViewController: UIViewController {
             let backgroundPattern = UIColor(patternImage: image)
             self.view.backgroundColor = backgroundPattern
         }
-        let containerEffect = UIBlurEffect(style: .dark)
-        let containerView = UIVisualEffectView(effect: containerEffect)
-        containerView.alpha = 0.25
-        containerView.frame = self.view.bounds
-        containerView.tag = 111 // Blur Effect view Tag
-        containerView.isUserInteractionEnabled = false // Edit: so that subview simply passes the event through to the button
-        
-        self.view.addSubview(containerView)
+//        let containerEffect = UIBlurEffect(style: .dark)
+//        let containerView = UIVisualEffectView(effect: containerEffect)
+//        containerView.alpha = 0.25
+//        containerView.frame = self.view.bounds
+//        containerView.tag = 111 // Blur Effect view Tag
+//        containerView.isUserInteractionEnabled = false // Edit: so that subview simply passes the event through to the button
+//
+//        self.view.addSubview(containerView)
         // Do any additional setup after loading the view.
+        //self.navigationController?.navigationBar.tintColor = UIColor.white
     }
 
     override func didReceiveMemoryWarning() {

@@ -38,6 +38,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     var songName: String! = "";
     var selectedGenreList: [String: Int]? = nil
     var initialSongListCenter: CGPoint? = nil
+    var initialPlayerMenuIconCenter: CGRect? = nil
     //var songPosition: Double! = 0
     
     
@@ -53,21 +54,31 @@ class ShowSongViewController: NewsicDefaultViewController {
     @IBOutlet weak var previousTrack: UIButton!
     @IBOutlet weak var nextTrack: UIButton!
     @IBOutlet weak var showMore: UIButton!
+    @IBOutlet weak var songProgressView: UIView!
+    @IBOutlet weak var songProgressSlider: UISlider!
+    @IBOutlet weak var songDurationLabel: UILabel!
+    @IBOutlet weak var songElapsedTime: UILabel!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad();
         //navigationController?.interactivePopGestureRecognizer?.delegate = self;
         let dyad = moodObject?.emotions.first?.basicGroup.rawValue;
         SwiftSpinner.show("Mood: \(dyad!)", animated: true);
+        
+        SwiftSpinner.show("Mood: \(dyad!)", animated: true).addTapHandler({
+            SwiftSpinner.hide()
+        }, subtitle: "Tap the circle to hide the loader and browse your current songs!")
         setupTableView()
         setupSpotify()
         setupSongs()
         setupMenu()
         setupCards()
-        setupCommandCenter()
+        
         setupPlayerMenu()
         //
         UIApplication.shared.beginReceivingRemoteControlEvents()
+        setupCommandCenter()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -89,35 +100,49 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     func setupCommandCenter() {
         let commandCenter = MPRemoteCommandCenter.shared()
-        commandCenter.seekForwardCommand.isEnabled = true
-        commandCenter.seekBackwardCommand.isEnabled = true
+        commandCenter.changePlaybackPositionCommand.isEnabled = true
+        commandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(remoteControlSeekSong))
+        
+//        commandCenter.togglePlayPauseCommand.isEnabled = true
+//        commandCenter.togglePlayPauseCommand.addTarget(self, action: #selector(actionPausePlay))
+        
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.playCommand.addTarget(self, action: #selector(remoteControlPlaySong))
+
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.pauseCommand.addTarget(self, action: #selector(remoteControlPauseSong))
+        
+        commandCenter.nextTrackCommand.isEnabled = true
+        commandCenter.nextTrackCommand.addTarget(self, action: #selector(actionNextSong))
+        
+        commandCenter.previousTrackCommand.isEnabled = true
+        commandCenter.previousTrackCommand.addTarget(self, action: #selector(actionPreviousSong))
+//
+
+        //commandCenter.seekForwardCommand.isEnabled = true
+        //commandCenter.seekBackwardCommand.isEnabled = true
+//        commandCenter.seekForwardCommand.addTarget(self, action: #selector(test))
+    }
+    
+    @objc func test(){
+        print("TEST")
     }
     
     func setupMenu() {
         
-        let btn1 = UIButton(type: .custom)
-        btn1.setImage(UIImage(named: "MusicNote"), for: .normal)
-        btn1.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        btn1.addTarget(self, action: #selector(toggleSongMenu), for: .touchUpInside)
-        let item1 = UIBarButtonItem(customView: btn1)
-        self.navigationItem.rightBarButtonItem = item1;
-        
+        let buttonLeft = UIButton(type: .system)
+        buttonLeft.setImage(UIImage(named: "MusicNote"), for: .normal)
+        buttonLeft.addTarget(self, action: #selector(toggleSongMenu), for: .touchUpInside)
+        let barButton = UIBarButtonItem(customView: buttonLeft);
+        self.navigationItem.rightBarButtonItem = barButton
         //self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "MoodIcon");
         //self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "MoodIcon");
         //self.navigationController?.
-        let btn2 = UIButton(type: .custom)
-        btn2.setImage(UIImage(named: "MoodIcon"), for: .normal)
-        btn2.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        btn2.addTarget(self, action: #selector(backToSongPicker), for: .touchUpInside)
-        let item2 = UIBarButtonItem(customView: btn2)
-        self.navigationItem.leftBarButtonItem = item2;
-        /*
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(backToSongPicker))
-        self.navigationItem.leftBarButtonItem?.setBackgroundImage(UIImage(named: "MoodIcon"), for: .normal, barMetrics: .default)
-        self.navigationItem.leftBarButtonItem?.width = 30
-        */
-        //self.navigationItem.backBarButtonItem?.setBackgroundImage(UIImage(named: "MoodIcon"), for: .normal, barMetrics: .default)
-        //self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        let buttonRight = UIButton(type: .system)
+        buttonRight.setImage(UIImage(named: "MoodIcon"), for: .normal)
+        buttonRight.addTarget(self, action: #selector(backToSongPicker), for: .touchUpInside)
+        let barButton2 = UIBarButtonItem(customView: buttonRight);
+        self.navigationItem.leftBarButtonItem = barButton2
         
         
         self.view.sendSubview(toBack: trackStackView)
@@ -158,6 +183,16 @@ class ShowSongViewController: NewsicDefaultViewController {
         togglePlayerMenu();
     }
     
+    @IBAction func songSeek(_ sender: UISlider) {
+        if sender.isTracking {
+            print("CHANGED SLIDER VALUE")
+            updateElapsedTime(elapsedTime: sender.value)
+        } else {
+            seekSong(interval: sender.value)
+        }
+    }
+    
+    
     @objc func toggleSongMenu() {
         let view = self.navigationItem.rightBarButtonItem?.customView as! UIButton;
         view.animateClick();
@@ -187,6 +222,7 @@ class ShowSongViewController: NewsicDefaultViewController {
             self.previousTrack.isUserInteractionEnabled = false
             self.nextTrack.isUserInteractionEnabled = false
             self.showMore.isUserInteractionEnabled = false
+            self.songProgressSlider.isUserInteractionEnabled = false
             self.tableViewLeadingConstraint.constant = self.view.frame.width/6;
             self.tableViewTrailingConstraint.constant = 0
             self.trackStackView.alpha = 0.1
@@ -208,6 +244,7 @@ class ShowSongViewController: NewsicDefaultViewController {
             self.previousTrack.isUserInteractionEnabled = true
             self.nextTrack.isUserInteractionEnabled = true
             self.showMore.isUserInteractionEnabled = true
+            self.songProgressSlider.isUserInteractionEnabled = true
             self.tableViewLeadingConstraint.constant = self.view.frame.width
             self.tableViewTrailingConstraint.constant -= (5*self.view.frame.width)/6
             self.trackStackView.alpha = 1
@@ -313,18 +350,14 @@ class ShowSongViewController: NewsicDefaultViewController {
         print("fetching new card...")
         let moodObject = self.moodObject
         spotifyHandler.searchMusicInGenres(numberOfSongs: 1, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: selectedGenreList) { (results) in
-        
-            //var newsicTracks:[NewsicTrack] = [];
             for track in results {
                 let newsicTrack = NewsicTrack(trackInfo: track, moodInfo: self.moodObject, userName: self.auth.session.canonicalUsername);
                 
                 self.cardList.append(newsicTrack)
-                //self.cardList.remove(at: 0)
             }
             
             
             DispatchQueue.main.async {
-                //self.songCardView.resetCurrentCardIndex()
                 self.songCardView.reloadData();
             }
             
@@ -354,28 +387,34 @@ class ShowSongViewController: NewsicDefaultViewController {
     }
     
     
-    override func remoteControlReceived(with event: UIEvent?) {
-        
-        if event?.type == UIEventType.remoteControl {
-            print("subtype = \(event?.subtype)");
-            //if event?.subtype == UIEventSubtype.remoteControlTogglePlayPause {
-            if event?.subtype == UIEventSubtype.remoteControlPlay || event?.subtype == UIEventSubtype.remoteControlPause {
-                self.actionPausePlay()
-            } else if event?.subtype == UIEventSubtype.remoteControlNextTrack {
-                self.songCardView.swipe(.left)
-            } else if event?.subtype == UIEventSubtype.remoteControlPreviousTrack {
-                self.songCardView.revertAction();
-            } else if event?.subtype == UIEventSubtype.remoteControlBeginSeekingForward {
-                //self.actionSeekForward()
-                
-                print("BEGIN SEEKING FORWARD")
-            } else if event?.subtype == UIEventSubtype.remoteControlEndSeekingForward {
-                //seekToTime()
-                //self.actionSeekBackward()
-                print("END SEEKING FORWARD")
-            }
-        }
-    }
+//    override func remoteControlReceived(with event: UIEvent?) {
+//
+//        if let event = event {
+//            let test = event as? MPRemoteCommandEvent
+//            if event is MPRemoteCommandEvent {
+//                if event.type == UIEventType.remoteControl {
+//                    print("subtype = \(event.type)");
+//                    print("subtype = \(event.subtype)");
+//                    if event.subtype == UIEventSubtype.remoteControlPlay || event.subtype == UIEventSubtype.remoteControlPause {
+//                        self.actionPausePlay()
+//                    } else if event.subtype == UIEventSubtype.remoteControlNextTrack {
+//                        self.songCardView.swipe(.left)
+//                    } else if event.subtype == UIEventSubtype.remoteControlPreviousTrack {
+//                        self.songCardView.revertAction();
+//                    } else if event.subtype == UIEventSubtype.remoteControlBeginSeekingForward {
+//                        //self.actionSeekForward()
+//
+//                        print("BEGIN SEEKING FORWARD")
+//                    } else if event.subtype == UIEventSubtype.remoteControlEndSeekingForward {
+//                        //seekToTime()
+//                        //self.actionSeekBackward()
+//                        print("END SEEKING FORWARD")
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
     
     @IBAction func previousTrackClicked(_ sender: UIButton) {
         
@@ -402,13 +441,6 @@ class ShowSongViewController: NewsicDefaultViewController {
         
         sender.animateClick();
         likeTrack(in: presentedCardIndex)
-        /*
-        songCardView.swipe(.right)
-        
-        updateCurrentGenresAndFeatures { (genres, trackFeatures) in
-            self.trackFeatures = trackFeatures;
-        }
-        */
     }
     
     @IBAction func pausePlayClicked(_ sender: UIButton) {

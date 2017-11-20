@@ -60,13 +60,11 @@ class SideMenuViewController: NewsicDefaultViewController {
     func setupNavigatonBar() {
         navigationItem.hidesBackButton = true
         
-        let btn1 = UIButton(type: .custom)
-        btn1.setImage(UIImage(named: "MoodIcon"), for: .normal)
-        btn1.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        btn1.addTarget(self, action: #selector(dismissMenu), for: .touchUpInside)
-        btn1.imageView?.tintColor = UIColor.white
-        let item1 = UIBarButtonItem(customView: btn1)
-        self.navigationItem.rightBarButtonItem = item1;
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "MoodIcon"), for: .normal)
+        button.addTarget(self, action: #selector(dismissMenu), for: .touchUpInside)
+        let barButton = UIBarButtonItem(customView: button);
+        self.navigationItem.rightBarButtonItem = barButton
     }
     
     func setupProfileView() {

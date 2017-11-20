@@ -20,8 +20,20 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         //print("position changed");
         let currentTrack = audioStreaming.metadata.currentTrack;
         if let currentTrack = currentTrack {
+            let currentPosition = Float(position)
             //MPNowPlayingInfoCenter.default().nowPlayingInfo?.updateValue(position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime);
+            songProgressSlider.value = currentPosition
+            updateElapsedTime(elapsedTime: currentPosition)
+//            var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo;
+            //nowPlayingInfo?.updateValue(position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime)
+            //nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = position
+            //nowPlayingInfo.updateValue(position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime);
+            //songElapsedTime.text = "\(position.rounded())"
         }
+    }
+    
+    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didSeekToPosition position: TimeInterval) {
+        
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: String!) {
@@ -33,25 +45,31 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
                 let image = UIImage(); image.downloadImage(from: imageURL) { (image) in
                     self.activateAudioSession()
                     self.updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: image, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+                    
                 }
             } else {
                 activateAudioSession()
                 updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: nil, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
             }
+            setupSongProgress(duration: Float(currentTrack.duration))
         } else {
             
         }
         
     }
 
-    /*
+    
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
-        deactivateAudioSession();
-        songCardView.swipe(.down);
+        //deactivateAudioSession();
+        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+        if let nowPlayingInfo = nowPlayingInfo, let currentTrack = audioStreaming.metadata.currentTrack {
+            let elapsedTime = nowPlayingInfo["playbackDuration"] as! Double
+            let duration = Double(currentTrack.duration)
+            if elapsedTime != nil && elapsedTime == duration {
+                songCardView.swipe(.left);
+            }
+        }
     }
-    */
-    
-    
     
     func audioStreamingDidLogin(_ audioStreaming: SPTAudioStreamingController!) {
         
@@ -63,6 +81,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didReceive event: SpPlaybackEvent) {
         //print("RECEIVED EVENT")
+        
     }
     
     
@@ -98,6 +117,17 @@ extension ShowSongViewController {
         self.player?.login(withAccessToken: self.auth.session.accessToken);
     }
     
+    func convertElapsedSecondsToTime(interval: Int) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.zeroFormattingBehavior = .pad
+        formatter.allowedUnits = [.minute, .second]
+        formatter.unitsStyle = .positional
+        
+        let formattedString = formatter.string(from: TimeInterval(interval))!
+        //print(formattedString)
+        return formattedString
+    }
+    
     func togglePausePlayIcon() {
         if isPlaying {
             pausePlay.setImage(UIImage(named: "PauseTrack"), for: .normal)
@@ -112,7 +142,8 @@ extension ShowSongViewController {
         player?.setIsPlaying(isPlaying, callback: { (error) in
             
             self.togglePausePlayIcon()
-            
+//            var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+//            nowPlayingInfo?.updateValue(self.player?.playbackState.position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime)
             if error != nil {
                 print("ERROR PAUSING TRACK");
             }
@@ -122,22 +153,61 @@ extension ShowSongViewController {
     }
     
     func actionPreviousSong() {
-        player?.skipPrevious({ (error) in
-            if error != nil {
-                print("ERROR SET PREVIOUS TRACK");
-            }
-        })
+        songCardView.revertAction()
+//        player?.skipPrevious({ (error) in
+//            if error != nil {
+//                print("ERROR SET PREVIOUS TRACK");
+//            }
+//        })
     }
     
     func actionNextSong() {
-        
-        player?.skipNext({ (error) in
-            if error != nil {
-                print("ERROR SET NEXT TRACK");
-            }
-        })
+        songCardView.swipe(.left)
+//        player?.skipNext({ (error) in
+//            if error != nil {
+//                print("ERROR SET NEXT TRACK");
+//            }
+//        })
     }
     
+    @objc func seekSong(interval: Float) {
+        player?.seek(to: TimeInterval(interval), callback: { (error) in
+            if let error = error {
+                print("Error seeking track!")
+            }
+        })
+        print("END CHANGED SLIDER VALUE")
+    }
+    
+    func remoteControlSeekSong(event: MPRemoteCommandEvent) {
+        let command = event as! MPChangePlaybackPositionCommandEvent
+        seekSong(interval: Float(command.positionTime))
+    }
+    
+    func remoteControlPlaySong(event: MPRemoteCommandEvent) {
+        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+        
+        if var nowPlayingInfo = nowPlayingInfo {
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
+            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.playbackState.position
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            actionPausePlay()
+        }
+        print("TOGGLE PAUSE PLAY");
+    }
+    
+    func remoteControlPauseSong(event: MPRemoteCommandEvent) {
+        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+        
+        if var nowPlayingInfo = nowPlayingInfo {
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 0
+            //nowPlayingInfo.updateValue(0, forKey: MPNowPlayingInfoPropertyPlaybackRate);
+            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.playbackState.position
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            actionPausePlay()
+        }
+        print("TOGGLE PAUSE PLAY");
+    }
     
     func actionPlaySpotifyTrack(spotifyTrackId: String) {
         self.isPlaying = false
@@ -237,18 +307,28 @@ extension ShowSongViewController {
     }
     
     func updateNowPlayingCenter(title: String, artist: String, albumArt: AnyObject?, currentTime: NSNumber, songLength: NSNumber, playbackRate: Double){
-        
+        var albumImage: MPMediaItemArtwork
+        if albumArt != nil {
+            albumImage = MPMediaItemArtwork(image: albumArt as! UIImage)
+        } else {
+            albumImage = MPMediaItemArtwork(boundsSize: CGSize.zero, requestHandler: { (size) -> UIImage in
+                return UIImage()
+            })
+        }
         let trackInfo: [String: AnyObject] = [
             
             MPMediaItemPropertyTitle: title as AnyObject,
             MPMediaItemPropertyArtist: artist as AnyObject,
-            MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: albumArt as! UIImage),
+            MPMediaItemPropertyArtwork: albumImage as AnyObject,
             MPNowPlayingInfoPropertyElapsedPlaybackTime: currentTime as AnyObject,
             MPMediaItemPropertyPlaybackDuration: songLength as AnyObject,
             MPNowPlayingInfoPropertyPlaybackRate: playbackRate as AnyObject
         ]
         
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = trackInfo as [String : AnyObject]
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = trackInfo as [String : AnyObject]
+        }
+        
         
     }
     
