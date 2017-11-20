@@ -12,10 +12,12 @@ extension SongPickerViewController : UIViewControllerTransitioningDelegate, UINa
     
     func setupTransitionDelegate() {
         self.navigationController?.delegate = self;
+        self.navigationController?.transitioningDelegate = self;
     }
     
     func navigationController(navigationController: UINavigationController, interactionControllerForAnimationController animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return customInteractionController.transitionInProgress ? customInteractionController : nil
+        //return customInteractionController.transitionInProgress ? customInteractionController : nil
+        return customInteractionController
     }
 
     func navigationController(_ navigationController: UINavigationController,
@@ -30,6 +32,15 @@ extension SongPickerViewController : UIViewControllerTransitioningDelegate, UINa
         customNavigationAnimationController.reverse = operation == .pop
         return customNavigationAnimationController
     }
+    
+    func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return customInteractionController
+    }
+    
+    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return customInteractionController
+    }
+    
     
 }
 

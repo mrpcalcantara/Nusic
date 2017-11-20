@@ -21,7 +21,7 @@ class NewsicSegmentedControl: UIControl {
     private var labels = [UIImageView]()
     var thumbView = UIView()
     
-    var items: [UIImage] = [UIImage(named: "MoodIcon")!, UIImage(named: "MusicNote")!] {
+    var items: [UIImage] = [UIImage(named: "MoodIcon")!.withRenderingMode(.alwaysTemplate), UIImage(named: "MusicNote")!.withRenderingMode(.alwaysTemplate)] {
         didSet {
             setupLabels()
         }

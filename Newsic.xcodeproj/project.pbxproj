@@ -30,6 +30,9 @@
 		8C4FBD781F5940A500712873 /* MoodHacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FBD771F5940A500712873 /* MoodHacker.swift */; };
 		8C4FBD7A1F59456200712873 /* Emotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FBD791F59456200712873 /* Emotion.swift */; };
 		8C4FBD7C1F5945CF00712873 /* NewsicMood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FBD7B1F5945CE00712873 /* NewsicMood.swift */; };
+		8C5E89291FBD7B2E00FF75AC /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5E89281FBD7B2E00FF75AC /* CustomNavigationController.swift */; };
+		8C5E892B1FBD7C2D00FF75AC /* RightShowPresentAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5E892A1FBD7C2D00FF75AC /* RightShowPresentAnimationController.swift */; };
+		8C5E892D1FBD930600FF75AC /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5E892C1FBD930600FF75AC /* UILabel.swift */; };
 		8C6052481F863DBC00892205 /* NewsicSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */; };
 		8C60524B1F864FB300892205 /* UserSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C60524A1F864FB300892205 /* UserSettingsViewController.swift */; };
 		8C64F45D1F56C9540006B644 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C64F45C1F56C9540006B644 /* Spotify.swift */; };
@@ -119,6 +122,9 @@
 		8C4FBD771F5940A500712873 /* MoodHacker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodHacker.swift; sourceTree = "<group>"; };
 		8C4FBD791F59456200712873 /* Emotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Emotion.swift; sourceTree = "<group>"; };
 		8C4FBD7B1F5945CE00712873 /* NewsicMood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicMood.swift; sourceTree = "<group>"; };
+		8C5E89281FBD7B2E00FF75AC /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
+		8C5E892A1FBD7C2D00FF75AC /* RightShowPresentAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightShowPresentAnimationController.swift; sourceTree = "<group>"; };
+		8C5E892C1FBD930600FF75AC /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControl.swift; sourceTree = "<group>"; };
 		8C60524A1F864FB300892205 /* UserSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsViewController.swift; sourceTree = "<group>"; };
 		8C64F45C1F56C9540006B644 /* Spotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
@@ -462,6 +468,7 @@
 				8CCC55351F67975F005090A4 /* Double.swift */,
 				8C9DB4FF1F6FB02600F35268 /* UIView.swift */,
 				8CA40DFD1F8C99B400C95B9D /* UIButton.swift */,
+				8C5E892C1FBD930600FF75AC /* UILabel.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -639,6 +646,8 @@
 				8CF8D3FD1FBA9C9300E130BC /* CustomNavigationAnimationController.swift */,
 				8CF8D4011FBAC7D200E130BC /* CustomInteractionController.swift */,
 				8C250AB61FBC02F8002A108C /* NewsicNavigationController.swift */,
+				8C5E89281FBD7B2E00FF75AC /* CustomNavigationController.swift */,
+				8C5E892A1FBD7C2D00FF75AC /* RightShowPresentAnimationController.swift */,
 			);
 			path = "Interaction Controllers";
 			sourceTree = "<group>";
@@ -773,6 +782,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Koloda/Koloda.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSpinner/SwiftSpinner.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 				"${BUILT_PRODUCTS_DIR}/pop/pop.framework",
 				"${BUILT_PRODUCTS_DIR}/youtube-ios-player-helper/youtube_ios_player_helper.framework",
@@ -782,6 +792,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Koloda.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSpinner.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/pop.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/youtube_ios_player_helper.framework",
@@ -915,6 +926,8 @@
 				8C6052481F863DBC00892205 /* NewsicSegmentedControl.swift in Sources */,
 				8CA40DF11F8B7C6800C95B9D /* SpotifyBrowse.swift in Sources */,
 				8C4FBD7C1F5945CF00712873 /* NewsicMood.swift in Sources */,
+				8C5E892D1FBD930600FF75AC /* UILabel.swift in Sources */,
+				8C5E89291FBD7B2E00FF75AC /* CustomNavigationController.swift in Sources */,
 				8C4FBD781F5940A500712873 /* MoodHacker.swift in Sources */,
 				8C90E8641F53D838002B135F /* SongPickerViewController.swift in Sources */,
 				8CB529DD1F83745200C8050F /* MoodViewCell.swift in Sources */,
@@ -933,6 +946,7 @@
 				8C9DB4F91F6B8FF900F35268 /* SongListTableView.swift in Sources */,
 				8C90E8621F53D838002B135F /* AppDelegate.swift in Sources */,
 				8CFFBF371F9708F100A69E78 /* NewsicCollectionViewLayout.swift in Sources */,
+				8C5E892B1FBD7C2D00FF75AC /* RightShowPresentAnimationController.swift in Sources */,
 				8CA40E001F8CAA8100C95B9D /* UserMenuHeader.swift in Sources */,
 				8C7BE32C1F78AE7B004D9F15 /* SideMenuDelegate.swift in Sources */,
 				8CCC55361F67975F005090A4 /* Double.swift in Sources */,
@@ -1112,7 +1126,7 @@
 					"\"youtube_ios_player_helper\"",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.alctech.Newsic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alcantech.Newsic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Newsic/Bridging Headers/Newsic-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1146,7 +1160,7 @@
 					"\"youtube_ios_player_helper\"",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.alctech.Newsic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alcantech.Newsic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Newsic/Bridging Headers/Newsic-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;

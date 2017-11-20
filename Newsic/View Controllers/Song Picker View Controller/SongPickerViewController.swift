@@ -6,6 +6,9 @@
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
 //
 
+import AVKit
+import MediaPlayer
+
 import UIKit
 import SwiftSpinner
 
@@ -168,6 +171,10 @@ class SongPickerViewController: NewsicDefaultViewController {
         super.viewWillAppear(animated)
         //SwiftSpinner.show("Loading...", animated: true);
     }
+//
+//    lazy var playerQueue : AVQueuePlayer = {
+//        return AVQueuePlayer()
+//    }()
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -185,7 +192,41 @@ class SongPickerViewController: NewsicDefaultViewController {
         extractInformationFromUser { (isFinished) in
             print(isFinished)
         }
+        
+        
+//        let urlstring = "http://radio.spainmedia.es/wp-content/uploads/2015/12/tailtoddle_lo4.mp3"
+//        let url = URL(string: urlstring)
+//        print("the url = \(url!)")
+//
+//        if let url = url { //this is an URL fetch from somewhere. In this if you make sure that URL is valid
+//            let playerItem = AVPlayerItem.init(url: url)
+//            self.playerQueue.insert(playerItem, after: nil)
+//            self.playerQueue.play()
+//
+//            let trackInfo: [String: AnyObject] = [
+//
+//                MPMediaItemPropertyTitle: "titke" as AnyObject,
+//                MPMediaItemPropertyArtist: "artist" as AnyObject,
+//                MPNowPlayingInfoPropertyElapsedPlaybackTime: 0 as AnyObject,
+//                MPMediaItemPropertyPlaybackDuration: 124 as AnyObject,
+//                MPNowPlayingInfoPropertyPlaybackRate: 1 as AnyObject
+//            ]
+//
+//            MPNowPlayingInfoCenter.default().nowPlayingInfo = trackInfo as [String : AnyObject]
+//        }
+//
+//        do {
+//
+//
+//        } catch let error as NSError {
+//            //self.player = nil
+//            print(error.localizedDescription)
+//        } catch {
+//            print("AVAudioPlayer init failed")
+//        }
+        
     }
+    
     
     func setupSegmentedControl() {
         self.newsicControl.selectedIndex = 0
@@ -194,8 +235,13 @@ class SongPickerViewController: NewsicDefaultViewController {
     
     func setupView() {
         self.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(toggleMenu));
-        self.navigationItem.leftBarButtonItem?.setBackgroundImage(UIImage(named: "MenuIcon"), for: .normal, barMetrics: .default);
+        
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "MenuIcon"), for: .normal)
+        button.addTarget(self, action: #selector(toggleMenu), for: UIControlEvents.touchUpInside)
+        let barButton = UIBarButtonItem(customView: button);
+        self.navigationItem.leftBarButtonItem = barButton
+        
         //self.mainControlView.layer.zPosition = -1
         self.mainControlView.backgroundColor = UIColor.clear
         self.genreCollectionView.backgroundColor = UIColor.clear

@@ -97,23 +97,16 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         loginButton.alpha = 0
         newsicLabl.alpha = 0
         
-        
+        //self.newsicLabl.animate(newText: "Newsic", characterDelay: 0.5)
+        //self.newsicLabl.startShimmering()
         UIView.animate(withDuration: 1, animations: {
             self.newsicLabl.alpha = 1;
         })
-        
+
         UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: {
             self.newsicLabl.center.y += 20
+            self.newsicLabl.center.y -= 20
         }, completion: nil)
-        
-        UIView.animate(withDuration: 0.3, delay: 0, options: [.repeat, .autoreverse], animations: {
-            let text = self.newsicLabl.text
-            let mutableText = NSMutableAttributedString(string: text!);
-            mutableText.addAttribute(kCTForegroundColorAttributeName as NSAttributedStringKey, value: UIColor.green, range: NSRange(location:1,length:1))
-            
-        }, completion: nil)
-        
-        
         
         let userDefaults = UserDefaults.standard
         if let sessionObj:AnyObject = userDefaults.object(forKey: "SpotifySession") as AnyObject? {
@@ -132,7 +125,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
                 //initializePlayer(authSession: session)
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate;
                 appDelegate.auth = self.auth;
-                _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
+                _ = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
                 
             }
             
@@ -140,7 +133,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
             self.session = nil
             self.auth.session = nil
             UIView.animate(withDuration: 1, animations: {
-                self.newsicLabl.center.y = self.view.frame.height / 4
+                self.newsicLabl.center.y = self.view.bounds.height / 4
             })
             UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
                 self.loginButton.alpha = 1;

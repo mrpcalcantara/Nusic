@@ -52,7 +52,6 @@ extension SongPickerViewController: KolodaViewDataSource {
 }
  */
 
-
 extension ShowSongViewController: KolodaViewDelegate {
     
     override func viewWillLayoutSubviews() {
@@ -64,8 +63,6 @@ extension ShowSongViewController: KolodaViewDelegate {
     func setupCards() {
         songCardView.delegate = self;
         songCardView.dataSource = self;
-        
-        
         
         let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(likeTrack(in:)));
         doubleTapRecognizer.numberOfTapsRequired = 2
@@ -120,7 +117,7 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func kolodaShouldTransparentizeNextCard(_ koloda: KolodaView) -> Bool {
-        return true
+        return false
     }
 }
 
@@ -137,16 +134,6 @@ extension ShowSongViewController: KolodaViewDataSource {
     }
     
     func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
-        
-        //print("viewForCardAt index \(index)")
-        
-        /*
-        if index == 2 {
-            DispatchQueue.main.async {
-                SwiftSpinner.show(duration: 2, title: "Done!", animated: true);
-            }
-        }
-        */
         return configure(index: index)
     }
     

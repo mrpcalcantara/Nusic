@@ -59,7 +59,7 @@ class MoodViewCell: UICollectionViewCell {
     func configure(for index: Int) {
         print("configuring Cell for indexPath \(index)")
         self.backgroundColor = .clear
-        self.moodLabel.textColor = UIColor.white
+        self.moodLabel.textColor = UIColor.lightText
         self.moodLabel.font = UIFont(name: "Futura", size: 15)
         //self.tintColor = UIColor.red
         if index % 2 == 0 {

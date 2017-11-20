@@ -20,16 +20,16 @@ class CustomInteractionController: UIPercentDrivenInteractiveTransition {
     
     func attachToViewController(viewController: UIViewController) {
         navigationController = viewController.navigationController
-        setupGestureRecognizer(view: viewController.view)
+        //setupGestureRecognizer(view: viewController.view)
     }
     
     private func setupGestureRecognizer(view: UIView) {
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:))))
     }
     
-    @objc func handlePanGesture(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc func handlePanGesture(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
         let viewTranslation = gestureRecognizer.translation(in: gestureRecognizer.view!.superview!)
-        print("viewTranslation = \(viewTranslation)")
+        //print("viewTranslation = \(viewTranslation)")
         switch gestureRecognizer.state {
         case .began:
             transitionInProgress = true
@@ -38,13 +38,13 @@ class CustomInteractionController: UIPercentDrivenInteractiveTransition {
         case .changed:
             let progress = abs(Float(viewTranslation.x / 200.0))
             let const = CGFloat(fminf(fmaxf(progress, 0.0), 1.0))
-            print("changed, const = \(const)")
+            //print("changed, const = \(const)")
             shouldCompleteTransition = const > 0.9
             update(const)
             
         case .cancelled, .ended:
             transitionInProgress = false
-            print("ended")
+            print("ended, shouldCompleteTransition = \(shouldCompleteTransition)")
             if !shouldCompleteTransition || gestureRecognizer.state == .cancelled {
                 self.cancel()
             } else {
