@@ -28,8 +28,9 @@ extension ShowSongViewController {
         pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
         pausePlay.frame = buttonsInitFrame;
         pausePlay.isHidden = true
-        pausePlay.layer.zPosition = 1;
+        pausePlay.layer.zPosition = -1;
         pausePlay.translatesAutoresizingMaskIntoConstraints = true;
+        pausePlay.transform = CGAffineTransform(scaleX: 1.5, y: 1.5);
         nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
         nextSong.frame = buttonsInitFrame;
         nextSong.isHidden = true
@@ -38,13 +39,15 @@ extension ShowSongViewController {
         previousTrack.setImage(UIImage(named: "Rewind"), for: .normal)
         previousTrack.frame = buttonsInitFrame;
         previousTrack.isHidden = true
-        previousTrack.layer.zPosition = 1;
+        previousTrack.layer.zPosition = -1;
         previousTrack.translatesAutoresizingMaskIntoConstraints = true;
+        previousTrack.transform = CGAffineTransform(scaleX: 1.5, y: 1.5);
         nextTrack.setImage(UIImage(named: "FastForward"), for: .normal)
         nextTrack.frame = buttonsInitFrame;
         nextTrack.isHidden = true
-        nextTrack.layer.zPosition = 1;
+        nextTrack.layer.zPosition = -1;
         nextTrack.translatesAutoresizingMaskIntoConstraints = true;
+        nextTrack.transform = CGAffineTransform(scaleX: 1.5, y: 1.5);
         
 //        songProgressSlider.frame = buttonsInitFrame;
 //        songProgressSlider.setThumbImage(UIImage(named: "SongProgressThumb"), for: .normal)
@@ -73,6 +76,7 @@ extension ShowSongViewController {
         songElapsedTime.text = convertElapsedSecondsToTime(interval: 0)
         songElapsedTime.translatesAutoresizingMaskIntoConstraints = true;
         
+        self.view.layoutIfNeeded()
         
     }
     
@@ -97,48 +101,51 @@ extension ShowSongViewController {
     
     func openPlayerMenu() {
         UIView.animate(withDuration: 0.3) {
+            
+            if let buttonsInitFrame = self.initialPlayerMenuIconCenter {
+                self.previousSong.frame = buttonsInitFrame;
+                self.pausePlay.frame = buttonsInitFrame;
+                self.nextSong.frame = buttonsInitFrame;
+                self.previousTrack.frame = buttonsInitFrame;
+                self.nextTrack.frame = buttonsInitFrame;
+                self.songProgressView.frame = buttonsInitFrame
+                self.showMore.frame = buttonsInitFrame
+            }
             let buttonWidth = self.pausePlay.frame.width
-            //self.pausePlay.frame.size = CGSize(width: 30, height: 30)
-            self.pausePlay.frame.origin.y = self.view.frame.height * 0.85 - buttonWidth
             self.pausePlay.alpha = 1
             self.pausePlay.isHidden = false
-            self.pausePlay.transform = CGAffineTransform(scaleX: 1.5, y: 1.5);
-            self.previousTrack.frame.origin.x = self.view.frame.width * 0.25 - buttonWidth;
-            self.previousTrack.frame.origin.y = self.view.frame.height * 0.85 - buttonWidth
+            self.pausePlay.frame.origin.x = self.view.frame.width * 0.5 - buttonWidth/2
+            
+            self.previousTrack.frame.origin.x = self.view.frame.width * 0.25 - buttonWidth/2
             self.previousTrack.alpha = 1
             self.previousTrack.isHidden = false
-            self.previousTrack.transform = CGAffineTransform(scaleX: 1.5, y: 1.5);
-            //self.previousTrack.frame.size = CGSize(width: 30, height: 30)
-            self.nextTrack.frame.origin.x = self.view.frame.width * 0.75;
-            self.nextTrack.frame.origin.y = self.view.frame.height * 0.85 - buttonWidth
+            
+            self.nextTrack.frame.origin.x = self.view.frame.width * 0.75 - buttonWidth/2
             self.nextTrack.alpha = 1
             self.nextTrack.isHidden = false
-            self.nextTrack.transform = CGAffineTransform(scaleX: 1.5, y: 1.5);
-            self.previousSong.frame.origin.x = self.view.frame.width * 0.25 - buttonWidth;
-            //self.previousSong.transform = CGAffineTransform(scaleX: 1.5, y: 1.5);
+            self.previousSong.frame.origin.x = 0;
+            self.previousSong.alpha = 1
             self.previousSong.isHidden = false
-            self.nextSong.frame.origin.x = self.view.frame.width * 0.75
-            //self.nextSong.transform = CGAffineTransform(scaleX: 1.5, y: 1.5);
+            self.nextSong.frame.origin.x = self.view.frame.width - buttonWidth
+            self.nextSong.alpha = 1
             self.nextSong.isHidden = false
 
-            self.songProgressView.bounds.origin.x = -4
-            self.songProgressView.frame.origin.y = self.view.frame.height * 0.7 - buttonWidth
-//            self.songProgressView.bounds.origin.y = self.view.frame.height * 0.95 - buttonWidth
-            //self.songProgressView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5);
+            self.songProgressView.frame.origin.x = 8
+            self.songProgressView.frame.origin.y = self.view.frame.height * 0.91 - buttonWidth
             self.songProgressView.isHidden = false
             self.songProgressView.alpha = 1
-            self.songProgressView.bounds.size = CGSize(width: self.songCardView.frame.width - buttonWidth/4, height: self.songProgressView.frame.height)
+            self.songProgressView.frame.size = CGSize(width: self.songProgressSlider.frame.width, height: self.songProgressView.frame.height)
+            
+            self.showMore.frame.origin.y = self.view.frame.height * 0.84 - buttonWidth
 
             self.toggleLikeButtons();
-
-
             self.trackStackView.alpha = 0.9;
-            //self.trackStackView.isUserInteractionEnabled = false
+            
             self.view.layoutIfNeeded();
         }
         self.showMore.transform = CGAffineTransform.identity;
         UIView.animate(withDuration: 0.2, animations: {
-            let rotateTransform = CGAffineTransform(rotationAngle: CGFloat.pi*1.5);
+            let rotateTransform = CGAffineTransform(rotationAngle: CGFloat.pi*4.5);
             self.showMore.transform = rotateTransform
         }, completion: nil)
         isPlayerMenuOpen = true

@@ -420,6 +420,50 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="alX-vn-cgC">
+                                <rect key="frame" x="155" y="551" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="alX-vn-cgC" secondAttribute="height" multiplier="1:1" id="MLM-eQ-4za"/>
+                                </constraints>
+                                <color key="tintColor" red="0.1146525223" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <connections>
+                                    <action selector="showMoreClicked:" destination="eJS-am-Jyf" eventType="touchUpInside" id="xex-Qq-bvA"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uVu-im-pgF" userLabel="Song Progress View">
+                                <rect key="frame" x="24" y="551" width="327" height="64"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.14999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="dXd-ii-e2J" userLabel="Elapsed Time Label">
+                                        <rect key="frame" x="0.0" y="19.5" width="42" height="22.5"/>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <slider opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="8qg-KD-JNS">
+                                        <rect key="frame" x="-2" y="34" width="323" height="31"/>
+                                        <connections>
+                                            <action selector="songSeek:" destination="eJS-am-Jyf" eventType="valueChanged" id="SPl-QY-bUM"/>
+                                        </connections>
+                                    </slider>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.14999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="h7B-Kq-TRB" userLabel="Progress Label">
+                                        <rect key="frame" x="277" y="19.5" width="42" height="22.5"/>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="dXd-ii-e2J" firstAttribute="leading" secondItem="uVu-im-pgF" secondAttribute="leading" id="4iW-T8-Bgj"/>
+                                    <constraint firstAttribute="bottom" secondItem="8qg-KD-JNS" secondAttribute="bottom" id="5OT-mi-OMb"/>
+                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="leading" secondItem="uVu-im-pgF" secondAttribute="leading" id="8H5-Pt-Db1"/>
+                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="top" secondItem="h7B-Kq-TRB" secondAttribute="bottom" constant="-8" id="ID3-6Z-ZZk"/>
+                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="top" secondItem="uVu-im-pgF" secondAttribute="top" constant="34" id="LWG-xJ-N6A"/>
+                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="top" secondItem="dXd-ii-e2J" secondAttribute="bottom" constant="-8" id="M3T-BC-JGh"/>
+                                    <constraint firstAttribute="trailing" secondItem="h7B-Kq-TRB" secondAttribute="trailing" constant="8" id="hNX-re-tNq"/>
+                                    <constraint firstAttribute="trailing" secondItem="8qg-KD-JNS" secondAttribute="trailing" constant="8" id="lK0-K1-gf7"/>
+                                </constraints>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k6E-Yi-lJS">
                                 <rect key="frame" x="155.5" y="551" width="64" height="64"/>
                                 <constraints>
@@ -473,50 +517,6 @@
                                     <action selector="likeSongClicked:" destination="eJS-am-Jyf" eventType="touchUpInside" id="ruQ-RY-2Gc"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="alX-vn-cgC">
-                                <rect key="frame" x="155.5" y="551" width="64" height="64"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="alX-vn-cgC" secondAttribute="height" multiplier="1:1" id="MLM-eQ-4za"/>
-                                </constraints>
-                                <color key="tintColor" red="0.1146525223" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <connections>
-                                    <action selector="showMoreClicked:" destination="eJS-am-Jyf" eventType="touchUpInside" id="xex-Qq-bvA"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uVu-im-pgF" userLabel="Song Progress View">
-                                <rect key="frame" x="24" y="551" width="327" height="64"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.14999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="dXd-ii-e2J" userLabel="Elapsed Time Label">
-                                        <rect key="frame" x="0.0" y="19.5" width="42" height="22.5"/>
-                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <slider opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="8qg-KD-JNS">
-                                        <rect key="frame" x="-2" y="34" width="323" height="31"/>
-                                        <connections>
-                                            <action selector="songSeek:" destination="eJS-am-Jyf" eventType="valueChanged" id="SPl-QY-bUM"/>
-                                        </connections>
-                                    </slider>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.14999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="h7B-Kq-TRB" userLabel="Progress Label">
-                                        <rect key="frame" x="277" y="19.5" width="42" height="22.5"/>
-                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="dXd-ii-e2J" firstAttribute="leading" secondItem="uVu-im-pgF" secondAttribute="leading" id="4iW-T8-Bgj"/>
-                                    <constraint firstAttribute="bottom" secondItem="8qg-KD-JNS" secondAttribute="bottom" id="5OT-mi-OMb"/>
-                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="leading" secondItem="uVu-im-pgF" secondAttribute="leading" id="8H5-Pt-Db1"/>
-                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="top" secondItem="h7B-Kq-TRB" secondAttribute="bottom" constant="-8" id="ID3-6Z-ZZk"/>
-                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="top" secondItem="uVu-im-pgF" secondAttribute="top" constant="34" id="LWG-xJ-N6A"/>
-                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="top" secondItem="dXd-ii-e2J" secondAttribute="bottom" constant="-8" id="M3T-BC-JGh"/>
-                                    <constraint firstAttribute="trailing" secondItem="h7B-Kq-TRB" secondAttribute="trailing" constant="8" id="hNX-re-tNq"/>
-                                    <constraint firstAttribute="trailing" secondItem="8qg-KD-JNS" secondAttribute="trailing" constant="8" id="lK0-K1-gf7"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
