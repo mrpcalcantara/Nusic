@@ -68,7 +68,7 @@ extension ShowSongViewController: KolodaViewDelegate {
         doubleTapRecognizer.numberOfTapsRequired = 2
         songCardView.addGestureRecognizer(doubleTapRecognizer);
         
-        
+      
     }
     
     func addSongToPosition(at index: Int, position: Int) {
@@ -90,7 +90,7 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
-        print("Swiped \(direction)")
+//        print("Swiped \(direction)")
         didUserSwipe = true;
         pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
         if direction == .right {
@@ -107,6 +107,11 @@ extension ShowSongViewController: KolodaViewDelegate {
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
         //isPlaying = false
         presentedCardIndex = index
+        if isPlayerMenuOpen {
+            let cardView = koloda.viewForCard(at: index) as! SongOverlayView
+            cardView.genreLabel.alpha = 0
+            cardView.songArtist.alpha = 0
+        }
         isSongLiked = containsTrack(trackId: cardList[index].trackInfo.trackId);
         toggleLikeButtons();
         actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.trackUri);
@@ -147,8 +152,9 @@ extension ShowSongViewController: KolodaViewDataSource {
         
         //print("index = \(index) -> artist = \(self.cardList[index].trackInfo.artist!) and songName = \(self.cardList[index].trackInfo.songName!)");
         
-        view.songArtist.text = self.cardList[index].trackInfo.artist
+        view.songArtist.text = self.cardList[index].trackInfo.artist.artistName
         view.songTitle.text = self.cardList[index].trackInfo.songName;
+        view.genreLabel.text = self.cardList[index].trackInfo.artist.listGenres()
         view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
         view.layer.borderWidth = 0.5;
         view.layer.borderColor = UIColor.lightGray.cgColor
@@ -179,7 +185,7 @@ extension ShowSongViewController {
         let track = cardList[likedCardIndex];
         isSongLiked = didUserSwipe == true ? false : true ; toggleLikeButtons()
         spotifyHandler.addTracksToPlaylist(playlistId: playlist.id!, trackId: track.trackInfo.trackUri, addTrackHandler: { (isAdded) in
-            print("ADDED TRACK");
+//            print("ADDED TRACK");
         })
         spotifyHandler.getTrackDetails(trackId: track.trackInfo.trackId!, fetchedTrackDetailsHandler: { (trackFeatures) in
             if let trackFeatures = trackFeatures {
