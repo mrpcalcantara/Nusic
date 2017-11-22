@@ -44,13 +44,14 @@ class SongOverlayView: OverlayView {
         return label;
     }()
     
-    @IBOutlet lazy var spotifyIcon: UIImageView! = {
+    @IBOutlet lazy var genreLabel: UILabel! = {
         [unowned self] in
         
-        var image = UIImageView()
-        image.image = UIImage();
-        return image;
+        var label = UILabel()
+        label.font = UIFont(name: "Futura", size: 10)
+        return label;
         }()
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -69,6 +70,9 @@ class SongOverlayView: OverlayView {
         songTitle.layer.zPosition = 1;
         self.addSubview(songArtist);
         songArtist.layer.zPosition = 1;
+        self.addSubview(genreLabel);
+        genreLabel.layer.zPosition = 1;
+        genreLabel.alpha = 0.5
         self.layer.cornerRadius = 15
     }
     

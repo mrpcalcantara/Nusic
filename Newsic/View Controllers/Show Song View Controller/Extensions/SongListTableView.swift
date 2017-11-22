@@ -211,7 +211,7 @@ extension ShowSongViewController: UITableViewDataSource {
         //cell.albumImage.bounds = CGRect(x: 0, y: 0, width: cell.bounds.height, height: cell.bounds.height);
         cell.albumImage.contentMode = .scaleAspectFit
         cell.albumImage.image = element.thumbNail;
-        cell.artistLabel.text = element.artist;
+        cell.artistLabel.text = element.artist.artistName;
         cell.trackLabel.text = element.songName;
         //cell.addShadow(shadowOffset: CGSize(width: -5, height: 0))
         cell.setNeedsLayout();

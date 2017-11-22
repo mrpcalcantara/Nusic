@@ -17,11 +17,11 @@ class SpotifyTrack {
     var trackId: String!;
     var trackUri: String!;
     var songName: String!;
-    var artist: String!;
+    var artist: SpotifyArtist!;
     var addedAt: Date?!
     var audioFeatures: SpotifyTrackFeature? = nil
     
-    init(title: String? = "", thumbNail: UIImage? = nil, thumbNailUrl: String? = "", trackUri: String? = "", trackId: String, songName: String? = "", artist: String? = "", addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?) {
+    init(title: String? = "", thumbNail: UIImage? = nil, thumbNailUrl: String? = "", trackUri: String? = "", trackId: String, songName: String? = "", artist: SpotifyArtist?, addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?) {
         self.title = title;
         let image = UIImage()
         image.downloadImage(from: URL(string: thumbNailUrl!)!) { (image) in

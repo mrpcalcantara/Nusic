@@ -60,8 +60,8 @@ class SongPickerViewController: NewsicDefaultViewController {
     var loadingFinished: Bool = false {
         didSet {
             newsicUser.saveFavoriteGenres();
-            print("treatment all finished")
-            print(spotifyHandler.genreCount)
+//            print("treatment all finished")
+//            print(spotifyHandler.genreCount)
             SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
         }
     }
@@ -349,7 +349,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                 self.newsicUser = NewsicUser(userName: username, displayName: displayName!, imageURL: profileImage, territory: territory)
                 self.moodObject?.userName = username;
                 self.newsicUser.getUser(getUserHandler: { (usernameDB) in
-                    print(usernameDB);
+//                    print(usernameDB);
                     if usernameDB == "" {
                         self.newsicUser.saveUser();
                         self.extractGenresFromSpotify();

@@ -63,12 +63,19 @@ class ShowSongViewController: NewsicDefaultViewController {
     override func viewDidLoad() {
         super.viewDidLoad();
         //navigationController?.interactivePopGestureRecognizer?.delegate = self;
-        let dyad = moodObject?.emotions.first?.basicGroup.rawValue;
-        SwiftSpinner.show("Mood: \(dyad!)", animated: true);
+        let dyad = moodObject?.emotions.first?.basicGroup
+        let dyadText = "Mood: \(dyad!.rawValue)"
         
-        SwiftSpinner.show("Mood: \(dyad!)", animated: true).addTapHandler({
-            SwiftSpinner.hide()
-        }, subtitle: "Tap the circle to hide the loader and browse your current songs!")
+        if EmotionDyad.allValues.contains(dyad!) {
+            SwiftSpinner.show(dyadText, animated: true)
+            self.navigationItem.title = dyadText
+            let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.font:UIFont(name: "Futura", size: 25)]
+            navigationController?.navigationBar.titleTextAttributes = textAttributes
+        }
+        
+//        SwiftSpinner.show(dyadText, animated: true).addTapHandler({
+//            SwiftSpinner.hide()
+//        }, subtitle: "Tap the circle to hide the loader and browse your current songs!")
         setupTableView()
         setupSpotify()
         setupSongs()
@@ -79,6 +86,8 @@ class ShowSongViewController: NewsicDefaultViewController {
         //
         UIApplication.shared.beginReceivingRemoteControlEvents()
         setupCommandCenter()
+        
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -122,10 +131,6 @@ class ShowSongViewController: NewsicDefaultViewController {
         //commandCenter.seekForwardCommand.isEnabled = true
         //commandCenter.seekBackwardCommand.isEnabled = true
 //        commandCenter.seekForwardCommand.addTarget(self, action: #selector(test))
-    }
-    
-    @objc func test(){
-        print("TEST")
     }
     
     func setupMenu() {
@@ -185,7 +190,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     @IBAction func songSeek(_ sender: UISlider) {
         if sender.isTracking {
-            print("CHANGED SLIDER VALUE")
+//            print("CHANGED SLIDER VALUE")
             updateElapsedTime(elapsedTime: sender.value)
         } else {
             seekSong(interval: sender.value)

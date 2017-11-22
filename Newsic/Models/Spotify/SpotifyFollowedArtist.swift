@@ -10,17 +10,32 @@ import Foundation
 
 struct SpotifyArtist {
     var artistName: String! = ""
-    var subGenres: [String] = []
-    var popularity: Int! = -1
-    var uri: String! = ""
-    var id: String! = ""
+    var subGenres: [String]? = []
+    var popularity: Int? = -1
+    var uri: String? = ""
+    var id: String? = ""
     
-    init(artistName: String, subGenres: [String], popularity: Int, uri: String, id: String) {
+    init(artistName: String? = nil, subGenres: [String]? = nil, popularity: Int? = nil, uri: String? = nil, id: String? = nil) {
         self.artistName = artistName;
         self.subGenres = subGenres;
         self.popularity = popularity;
         self.uri = uri;
         self.id = id;
+    }
+    
+    func listGenres(showPrefix: Bool? = true) -> String {
+        if let subGenres = subGenres {
+            var genreList = ""
+            for var genre in subGenres {
+                genreList.append("\(genre.capitalizingFirstLetter()), ")
+            }
+            
+            if showPrefix! {
+                return "Genres: \(String(genreList.dropLast(2)))";
+            }
+            return String(genreList.dropLast(2));
+        }
+        return ""
     }
     
 }

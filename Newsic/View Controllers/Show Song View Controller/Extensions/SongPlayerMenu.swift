@@ -25,29 +25,31 @@ extension ShowSongViewController {
         previousSong.isHidden = true
         previousSong.layer.zPosition = 1;
         previousSong.translatesAutoresizingMaskIntoConstraints = true;
+        previousSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
         pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
         pausePlay.frame = buttonsInitFrame;
         pausePlay.isHidden = true
         pausePlay.layer.zPosition = -1;
         pausePlay.translatesAutoresizingMaskIntoConstraints = true;
-        pausePlay.transform = CGAffineTransform(scaleX: 1.5, y: 1.5);
+        pausePlay.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
         nextSong.frame = buttonsInitFrame;
         nextSong.isHidden = true
         nextSong.layer.zPosition = 1;
         nextSong.translatesAutoresizingMaskIntoConstraints = true;
+        nextSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
         previousTrack.setImage(UIImage(named: "Rewind"), for: .normal)
         previousTrack.frame = buttonsInitFrame;
         previousTrack.isHidden = true
         previousTrack.layer.zPosition = -1;
         previousTrack.translatesAutoresizingMaskIntoConstraints = true;
-        previousTrack.transform = CGAffineTransform(scaleX: 1.5, y: 1.5);
+        previousTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         nextTrack.setImage(UIImage(named: "FastForward"), for: .normal)
         nextTrack.frame = buttonsInitFrame;
         nextTrack.isHidden = true
         nextTrack.layer.zPosition = -1;
         nextTrack.translatesAutoresizingMaskIntoConstraints = true;
-        nextTrack.transform = CGAffineTransform(scaleX: 1.5, y: 1.5);
+        nextTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         
 //        songProgressSlider.frame = buttonsInitFrame;
 //        songProgressSlider.setThumbImage(UIImage(named: "SongProgressThumb"), for: .normal)
@@ -62,6 +64,7 @@ extension ShowSongViewController {
         songProgressView.backgroundColor = UIColor.clear
         
         songProgressSlider.setThumbImage(UIImage(named: "SongProgressThumb"), for: .normal)
+        //songProgressSlider.thumbTintColor = UIColor.white
         songProgressSlider.layer.zPosition = 1;
         songProgressSlider.tintColor = UIColor.green
         songProgressSlider.translatesAutoresizingMaskIntoConstraints = true;
@@ -94,7 +97,8 @@ extension ShowSongViewController {
     func setupSlider(duration: Float) {
         songProgressSlider.maximumValue = duration
         songProgressSlider.minimumValue = 0
-        songProgressSlider.value = 0
+        songProgressSlider.setValue(0, animated: true)
+        //songProgressSlider.value = 0
     }
     
     
@@ -131,7 +135,7 @@ extension ShowSongViewController {
             self.nextSong.isHidden = false
 
             self.songProgressView.frame.origin.x = 8
-            self.songProgressView.frame.origin.y = self.view.frame.height * 0.91 - buttonWidth
+            self.songProgressView.frame.origin.y = self.view.frame.height * 0.9 - buttonWidth
             self.songProgressView.isHidden = false
             self.songProgressView.alpha = 1
             self.songProgressView.frame.size = CGSize(width: self.songProgressSlider.frame.width, height: self.songProgressView.frame.height)
@@ -140,6 +144,10 @@ extension ShowSongViewController {
 
             self.toggleLikeButtons();
             self.trackStackView.alpha = 0.9;
+            
+            let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as! SongOverlayView
+            cardView.genreLabel.alpha = 0
+            cardView.songArtist.alpha = 0
             
             self.view.layoutIfNeeded();
         }
@@ -172,7 +180,13 @@ extension ShowSongViewController {
                     self.songProgressView.alpha = 0
                     
                     self.showMore.frame = buttonsInitFrame
+                    
+                    let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as! SongOverlayView
+                    cardView.genreLabel.alpha = 1
+                    cardView.songArtist.alpha = 1
                 }
+                
+                
                 
                 
             }, completion: { (isCompleted) in
@@ -184,6 +198,7 @@ extension ShowSongViewController {
                 self.previousTrack.isHidden = true
                 self.nextTrack.isHidden = true
                 self.songProgressView.isHidden = true
+                
             })
             
             UIView.animate(withDuration: 0.3) {

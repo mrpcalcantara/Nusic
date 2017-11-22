@@ -38,7 +38,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: String!) {
         let currentTrack = audioStreaming.metadata.currentTrack;
-        print("track started");
+//        print("track started");
         if let currentTrack = currentTrack {
             if let imageURL = currentTrack.albumCoverArtURL {
                 let imageURL = URL(string: imageURL)!
@@ -176,7 +176,6 @@ extension ShowSongViewController {
                 print("Error seeking track!")
             }
         })
-        print("END CHANGED SLIDER VALUE")
     }
     
     func remoteControlSeekSong(event: MPRemoteCommandEvent) {
@@ -193,7 +192,6 @@ extension ShowSongViewController {
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
             actionPausePlay()
         }
-        print("TOGGLE PAUSE PLAY");
     }
     
     func remoteControlPauseSong(event: MPRemoteCommandEvent) {
@@ -206,7 +204,6 @@ extension ShowSongViewController {
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
             actionPausePlay()
         }
-        print("TOGGLE PAUSE PLAY");
     }
     
     func actionPlaySpotifyTrack(spotifyTrackId: String) {
