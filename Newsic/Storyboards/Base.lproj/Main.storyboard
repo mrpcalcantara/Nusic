@@ -92,9 +92,6 @@
                                                 <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="moodGenreControlClicked:" destination="BYZ-38-t0r" eventType="valueChanged" id="q6q-bX-AsW"/>
-                                        </connections>
                                     </view>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bqf-Kb-x3U" userLabel="Genre Collection View">
                                         <rect key="frame" x="8" y="36" width="359" height="559"/>

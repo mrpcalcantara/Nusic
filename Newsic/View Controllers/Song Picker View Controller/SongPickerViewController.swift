@@ -126,13 +126,17 @@ class SongPickerViewController: NewsicDefaultViewController {
         }
     }
     
-    @IBAction func moodGenreControlClicked(_ sender: NewsicSegmentedControl) {
-        toggleCollectionViews(for: sender.selectedIndex)
-    }
-    
-    @IBAction func moodGenreSCClicked(_ sender: UISegmentedControl) {
-        toggleCollectionViews(for: sender.selectedSegmentIndex)
-    }
+//    @IBAction func moodGenreControlPanned(_ sender: NewsicSegmentedControl) {
+//        toggleCollectionViews(for: sender.selectedIndex)
+//    }
+//    
+//    @IBAction func moodGenreControlClicked(_ sender: NewsicSegmentedControl) {
+//        toggleCollectionViews(for: sender.selectedIndex)
+//    }
+//    
+//    @IBAction func moodGenreSCClicked(_ sender: UISegmentedControl) {
+//        toggleCollectionViews(for: sender.selectedSegmentIndex)
+//    }
     
     @IBAction func getNewSong(_ sender: Any) {
         
@@ -230,6 +234,7 @@ class SongPickerViewController: NewsicDefaultViewController {
     
     func setupSegmentedControl() {
         self.newsicControl.selectedIndex = 0
+        self.newsicControl.delegate = self
         toggleCollectionViews(for: 0);
     }
     
@@ -446,43 +451,45 @@ class SongPickerViewController: NewsicDefaultViewController {
         }
     }
 
-
 }
 
-extension SongPickerViewController {
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch: UITouch? = touches.first
-        //location is relative to the current view
-        // do something with the touched point
-        if let view = touch?.view {
-            if view == moodCollectionView {
-                let moodView = moodCollectionView
-                if let moodView = moodView {
-                    let location = touch?.location(in: moodView)
-                    if let location = location {
-                        let indexPath = moodView.indexPathForItem(at: location)
-                        if let indexPath = indexPath {
-                            moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
-                            print(location)
-                        }
-                    }
-                }
-                
-            }
-            
-            if view == genreCollectionView {
-                let moodView = genreCollectionView
-                if let moodView = moodView {
-                    let location = touch?.location(in: moodView)
-                    if let location = location {
-                        let indexPath = moodView.indexPathForItem(at: location)
-                        if let indexPath = indexPath {
-                            moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
-                            print(location)
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+
+//
+//extension SongPickerViewController {
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let touch: UITouch? = touches.first
+//        //location is relative to the current view
+//        // do something with the touched point
+//        if let view = touch?.view {
+//            if view == moodCollectionView {
+//                let moodView = moodCollectionView
+//                if let moodView = moodView {
+//                    let location = touch?.location(in: moodView)
+//                    if let location = location {
+//                        let indexPath = moodView.indexPathForItem(at: location)
+//                        if let indexPath = indexPath {
+//                            moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
+//                            print(location)
+//                        }
+//                    }
+//                }
+//
+//            }
+//
+//            if view == genreCollectionView {
+//                let moodView = genreCollectionView
+//                if let moodView = moodView {
+//                    let location = touch?.location(in: moodView)
+//                    if let location = location {
+//                        let indexPath = moodView.indexPathForItem(at: location)
+//                        if let indexPath = indexPath {
+//                            moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
+//                            print(location)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+

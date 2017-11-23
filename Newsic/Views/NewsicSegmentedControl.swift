@@ -8,6 +8,11 @@
 
 import UIKit
 
+public protocol NewsicSegmentedControlDelegate: class {
+    func didSelect(_ segmentIndex: Int)
+}
+
+
 class NewsicSegmentedControl: UIControl {
 
     /*
@@ -19,7 +24,9 @@ class NewsicSegmentedControl: UIControl {
     */
     
     private var labels = [UIImageView]()
-    var thumbView = UIView()
+    private var correction: CGFloat = 0
+    private var thumbView = UIView()
+    open weak var delegate: NewsicSegmentedControlDelegate?
     
     var items: [UIImage] = [UIImage(named: "MoodIcon")!.withRenderingMode(.alwaysTemplate), UIImage(named: "MusicNote")!.withRenderingMode(.alwaysTemplate)] {
         didSet {
@@ -95,6 +102,8 @@ class NewsicSegmentedControl: UIControl {
         
         addIndividualItemConstraints(items: labels, mainView: self, padding: 0)
         insertSubview(thumbView, at: 0)
+        addTapGesture()
+        addDragGesture()
     }
     
     func setupLabels(){
@@ -247,5 +256,71 @@ class NewsicSegmentedControl: UIControl {
         }
         */
     }
+    
+    // MARK: Tap gestures
+    private func addTapGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTap))
+        addGestureRecognizer(tap)
+    }
+    
+    private func addDragGesture() {
+        let drag = UIPanGestureRecognizer(target: self, action: #selector(didPan))
+        thumbView.addGestureRecognizer(drag)
+    }
+    
+    @objc private func didTap(tapGesture: UITapGestureRecognizer) {
+        moveToNearestPoint(basedOn: tapGesture)
+    }
+    
+    @objc private func didPan(panGesture: UIPanGestureRecognizer) {
+        switch panGesture.state {
+        case .cancelled, .ended, .failed:
+            moveToNearestPoint(basedOn: panGesture, velocity: panGesture.velocity(in: thumbView))
+        case .began:
+            correction = panGesture.location(in: thumbView).x - thumbView.frame.width/2
+        case .changed:
+            let location = panGesture.location(in: self)
+            thumbView.center.x = location.x - correction
+        case .possible: ()
+        }
+    }
+    
+    // MARK: Slider position
+    private func moveToNearestPoint(basedOn gesture: UIGestureRecognizer, velocity: CGPoint? = nil) {
+        var location = gesture.location(in: self)
+        if let velocity = velocity {
+            let offset = velocity.x / 12
+            location.x += offset
+        }
+        let index = segmentIndex(for: location)
+        move(to: index)
+        delegate?.didSelect(index)
+    }
+    
+    open func move(to index: Int) {
+        let correctOffset = center(at: index)
+        animate(to: correctOffset)
+        selectedIndex = index
+        displayNewSelectedIndex()
+    }
+    
+    private func segmentIndex(for point: CGPoint) -> Int {
+        var index = Int(point.x / thumbView.frame.width)
+        if index < 0 { index = 0 }
+        if index > labels.count - 1 { index = labels.count - 1 }
+        return index
+    }
+    
+    private func center(at index: Int) -> CGFloat {
+        let xOffset = CGFloat(index) * thumbView.frame.width + thumbView.frame.width / 2
+        return xOffset
+    }
+    
+    private func animate(to position: CGFloat) {
+        UIView.animate(withDuration: 0.2) {
+            self.thumbView.center.x = position
+        }
+    }
+
 
 }
