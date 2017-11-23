@@ -24,12 +24,14 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             //MPNowPlayingInfoCenter.default().nowPlayingInfo?.updateValue(position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime);
             songProgressSlider.value = currentPosition
             updateElapsedTime(elapsedTime: currentPosition)
+            self.updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
 //            var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo;
             //nowPlayingInfo?.updateValue(position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime)
             //nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = position
             //nowPlayingInfo.updateValue(position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime);
             //songElapsedTime.text = "\(position.rounded())"
         }
+        
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didSeekToPosition position: TimeInterval) {
@@ -303,25 +305,27 @@ extension ShowSongViewController {
         }
     }
     
-    func updateNowPlayingCenter(title: String, artist: String, albumArt: AnyObject?, currentTime: NSNumber, songLength: NSNumber, playbackRate: Double){
-        var albumImage: MPMediaItemArtwork
-        if albumArt != nil {
-            albumImage = MPMediaItemArtwork(image: albumArt as! UIImage)
-        } else {
-            albumImage = MPMediaItemArtwork(boundsSize: CGSize.zero, requestHandler: { (size) -> UIImage in
-                return UIImage()
-            })
-        }
-        let trackInfo: [String: AnyObject] = [
+    func updateNowPlayingCenter(title: String, artist: String, albumArt: AnyObject? = nil, currentTime: NSNumber, songLength: NSNumber, playbackRate: Double){
+        
+        var trackInfo: [String: AnyObject] = [
             
             MPMediaItemPropertyTitle: title as AnyObject,
             MPMediaItemPropertyArtist: artist as AnyObject,
-            MPMediaItemPropertyArtwork: albumImage as AnyObject,
             MPNowPlayingInfoPropertyElapsedPlaybackTime: currentTime as AnyObject,
             MPMediaItemPropertyPlaybackDuration: songLength as AnyObject,
             MPNowPlayingInfoPropertyPlaybackRate: playbackRate as AnyObject
         ]
         
+        var albumImage: MPMediaItemArtwork
+        if albumArt != nil {
+            albumImage = MPMediaItemArtwork(image: albumArt as! UIImage)
+            trackInfo[MPMediaItemPropertyArtwork] = albumImage as AnyObject
+        } else {
+            albumImage = MPMediaItemArtwork(boundsSize: CGSize.zero, requestHandler: { (size) -> UIImage in
+                return UIImage()
+            })
+        }
+       
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
             MPNowPlayingInfoCenter.default().nowPlayingInfo = trackInfo as [String : AnyObject]
         }
