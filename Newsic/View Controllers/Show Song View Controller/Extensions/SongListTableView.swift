@@ -41,7 +41,7 @@ extension ShowSongViewController {
         songListTableView.rowHeight = UITableViewAutomaticDimension
         songListTableView.estimatedRowHeight = 90.0
         songListTableView.tableFooterView = UIView();
-        
+//        songListTableView.translatesAutoresizingMaskIntoConstraints = true
         
         let image = UIImage(named: "SongMenuBackgroundPattern")
         if let image = image {
@@ -59,9 +59,11 @@ extension ShowSongViewController {
         
         //songListTableView.translatesAutoresizingMaskIntoConstraints = true;
         
-        let screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
-        screenEdgeRecognizer.edges = .right
-        self.view.addGestureRecognizer(screenEdgeRecognizer);
+//        let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
+//        //screenEdgeRecognizer.edges = .left
+//        screenEdgeRecognizer.cancelsTouchesInView = false
+//        screenEdgeRecognizer.delegate = self
+//        songListTableView.addGestureRecognizer(screenEdgeRecognizer);
         
         /*
         let songListPanRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
@@ -72,6 +74,8 @@ extension ShowSongViewController {
         //self.view.sendSubview(toBack: songListTableView);
         //songListTableView.layer.zPosition = -1
         initialSongListCenter = songListTableView.center;
+//        lastSongMenuCenter = songListTableView.center;
+//        currentSongListCenter = songListTableView.center;
     }
     
     func containsTrack(trackId: String) -> Bool {
@@ -135,6 +139,12 @@ extension ShowSongViewController: UITableViewDelegate {
         gradient.colors = [stopColor,startColor]
         gradient.locations = [0.0,0.4]
         headerCell.layer.addSublayer(gradient)
+        
+        let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
+        //screenEdgeRecognizer.edges = .left
+        screenEdgeRecognizer.cancelsTouchesInView = false
+        screenEdgeRecognizer.delegate = self
+        headerCell.addGestureRecognizer(screenEdgeRecognizer);
         
         return headerCell;
         /*

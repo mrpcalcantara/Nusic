@@ -90,7 +90,7 @@ extension Spotify {
                         
                     } else {
                         let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
-                        print(jsonObject);
+                        //print(jsonObject);
                         let playlistId: String = jsonObject["id"] as! String
                         let newsicPlaylist = NewsicPlaylist(name : playlistName, id: playlistId, userName: username)
                         playlistCreationHandler(true, newsicPlaylist)

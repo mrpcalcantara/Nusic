@@ -33,3 +33,7 @@ class UserSettingsViewController: UIViewController {
     */
 
 }
+
+extension UserSettingsViewController: UINavigationControllerDelegate {
+    
+}
