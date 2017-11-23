@@ -28,7 +28,7 @@ extension Spotify {
             }
         }
         
-        print("urlString for searching music = \(urlString)")
+//        print("urlString for searching music = \(urlString)")
         
         //Create URL Request to get sogs
         let url = URL(string: urlString);
@@ -56,15 +56,35 @@ extension Spotify {
                     let uri = track["uri"] as! String;
                     let id = track["id"] as! String;
                     let album = track["album"] as! [String: AnyObject]; let images = album["images"] as! [[String: AnyObject]]; let hqImage = images[0]["url"] as! String
-                    let artists = track["artists"] as! [[String: AnyObject]]; let artistName = artists[0]["name"] as! String
+                    let artists = track["artists"] as! [[String: AnyObject]]; let artistName = artists[0]["name"] as! String; let artistUri = artists[0]["uri"] as! String
                     let title = "\(artistName) - \(trackName)"
                     
-                    let spotifyObject = SpotifyTrack(title: title, thumbNailUrl: hqImage, trackUri: uri, trackId: id, songName: trackName, artist: artistName, audioFeatures: nil);
-                    print(spotifyObject);
+                    let spotifyObject = SpotifyTrack(title: title, thumbNailUrl: hqImage, trackUri: uri, trackId: id, songName: trackName, artist: SpotifyArtist(artistName: artistName, uri: artistUri), audioFeatures: nil);
                     spotifyResults.append(spotifyObject);
+
                 }
                 
-                completionHandler(spotifyResults)
+                var artistUriList: [String] = []
+                
+                for result in spotifyResults {
+                    artistUriList.append(result.artist.uri!);
+                }
+                
+                self.getAllGenresForArtists(artistUriList, offset: 0, artistGenresHandler: { (artistList) in
+                    if let artistList = artistList {
+                        for artist in artistList {
+                            if let artistIndex = spotifyResults.index(where: { (track) -> Bool in
+                                return track.artist.uri == artist.uri
+                            }) {
+                                spotifyResults[artistIndex].artist = artist;
+                            }
+                        }
+                    }
+                    
+                    completionHandler(spotifyResults)
+                })
+                
+                
             }
             
             

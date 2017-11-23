@@ -39,6 +39,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     var selectedGenreList: [String: Int]? = nil
     var initialSongListCenter: CGPoint? = nil
     var initialPlayerMenuIconCenter: CGRect? = nil
+    var songListMenuProgress: CGFloat! = 0;
     //var songPosition: Double! = 0
     
     
@@ -63,27 +64,16 @@ class ShowSongViewController: NewsicDefaultViewController {
     override func viewDidLoad() {
         super.viewDidLoad();
         //navigationController?.interactivePopGestureRecognizer?.delegate = self;
-        let dyad = moodObject?.emotions.first?.basicGroup
-        let dyadText = "Mood: \(dyad!.rawValue)"
-        
-        if EmotionDyad.allValues.contains(dyad!) {
-            SwiftSpinner.show(dyadText, animated: true)
-            self.navigationItem.title = dyadText
-            let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.font:UIFont(name: "Futura", size: 25)]
-            navigationController?.navigationBar.titleTextAttributes = textAttributes
-        }
-        
-//        SwiftSpinner.show(dyadText, animated: true).addTapHandler({
-//            SwiftSpinner.hide()
-//        }, subtitle: "Tap the circle to hide the loader and browse your current songs!")
+        setupMainView()
+        //        SwiftSpinner.show(dyadText, animated: true).addTapHandler({
+        //            SwiftSpinner.hide()
+        //        }, subtitle: "Tap the circle to hide the loader and browse your current songs!")
         setupTableView()
         setupSpotify()
         setupSongs()
         setupMenu()
         setupCards()
-        
         setupPlayerMenu()
-        //
         UIApplication.shared.beginReceivingRemoteControlEvents()
         setupCommandCenter()
         
@@ -95,7 +85,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-//        actionStopPlayer();
+        //        actionStopPlayer();
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -107,17 +97,34 @@ class ShowSongViewController: NewsicDefaultViewController {
         super.viewDidLayoutSubviews();
     }
     
+    func setupMainView() {
+        let dyad = moodObject?.emotions.first?.basicGroup
+        let dyadText = "Mood: \(dyad!.rawValue)"
+        
+        if EmotionDyad.allValues.contains(dyad!) {
+            SwiftSpinner.show(dyadText, animated: true)
+            self.navigationItem.title = dyadText
+            let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.font:UIFont(name: "Futura", size: 25)]
+            navigationController?.navigationBar.titleTextAttributes = textAttributes
+        }
+        
+        let screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
+        screenEdgeRecognizer.edges = .right
+        //        screenEdgeRecognizer.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(screenEdgeRecognizer);
+    }
+    
     func setupCommandCenter() {
         let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.changePlaybackPositionCommand.isEnabled = true
         commandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(remoteControlSeekSong))
         
-//        commandCenter.togglePlayPauseCommand.isEnabled = true
-//        commandCenter.togglePlayPauseCommand.addTarget(self, action: #selector(actionPausePlay))
+        //        commandCenter.togglePlayPauseCommand.isEnabled = true
+        //        commandCenter.togglePlayPauseCommand.addTarget(self, action: #selector(actionPausePlay))
         
         commandCenter.playCommand.isEnabled = true
         commandCenter.playCommand.addTarget(self, action: #selector(remoteControlPlaySong))
-
+        
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.pauseCommand.addTarget(self, action: #selector(remoteControlPauseSong))
         
@@ -126,11 +133,11 @@ class ShowSongViewController: NewsicDefaultViewController {
         
         commandCenter.previousTrackCommand.isEnabled = true
         commandCenter.previousTrackCommand.addTarget(self, action: #selector(actionPreviousSong))
-//
-
+        //
+        
         //commandCenter.seekForwardCommand.isEnabled = true
         //commandCenter.seekBackwardCommand.isEnabled = true
-//        commandCenter.seekForwardCommand.addTarget(self, action: #selector(test))
+        //        commandCenter.seekForwardCommand.addTarget(self, action: #selector(test))
     }
     
     func setupMenu() {
@@ -190,7 +197,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     @IBAction func songSeek(_ sender: UISlider) {
         if sender.isTracking {
-//            print("CHANGED SLIDER VALUE")
+            //            print("CHANGED SLIDER VALUE")
             updateElapsedTime(elapsedTime: sender.value)
         } else {
             seekSong(interval: sender.value)
@@ -218,7 +225,7 @@ class ShowSongViewController: NewsicDefaultViewController {
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
             self.trackStackView.layer.zPosition = -1
-            self.songListTableView.layer.zPosition = 1
+            //            self.songListTableView.layer.zPosition = 1
             self.songListTableView.isUserInteractionEnabled = true
             self.songCardView.isUserInteractionEnabled = false
             self.previousSong.isUserInteractionEnabled = false
@@ -231,6 +238,7 @@ class ShowSongViewController: NewsicDefaultViewController {
             self.tableViewLeadingConstraint.constant = self.view.frame.width/6;
             self.tableViewTrailingConstraint.constant = 0
             self.trackStackView.alpha = 0.1
+            print(self.songListTableView.center)
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
@@ -254,6 +262,7 @@ class ShowSongViewController: NewsicDefaultViewController {
             self.tableViewTrailingConstraint.constant -= (5*self.view.frame.width)/6
             self.trackStackView.alpha = 1
             //self.trackStackView.removeBlurEffect()
+            print(self.songListTableView.center)
             self.view.layoutIfNeeded()
         }, completion: nil)
         
@@ -374,7 +383,7 @@ class ShowSongViewController: NewsicDefaultViewController {
         
         let index = likedTrackList.count - indexPath.row-1
         let strIndex = String(index)
-        let track = NewsicTrack(trackInfo: likedTrackList[indexPath.row], moodInfo: moodObject, userName: SPTAuth.defaultInstance().session.canonicalUsername) 
+        let track = NewsicTrack(trackInfo: likedTrackList[indexPath.row], moodInfo: moodObject, userName: SPTAuth.defaultInstance().session.canonicalUsername)
         
         let trackDict: [String: String] = [ strIndex : track.trackInfo.trackUri ]
         //print("indexPath = \(indexPath.row)")
@@ -392,34 +401,34 @@ class ShowSongViewController: NewsicDefaultViewController {
     }
     
     
-//    override func remoteControlReceived(with event: UIEvent?) {
-//
-//        if let event = event {
-//            let test = event as? MPRemoteCommandEvent
-//            if event is MPRemoteCommandEvent {
-//                if event.type == UIEventType.remoteControl {
-//                    print("subtype = \(event.type)");
-//                    print("subtype = \(event.subtype)");
-//                    if event.subtype == UIEventSubtype.remoteControlPlay || event.subtype == UIEventSubtype.remoteControlPause {
-//                        self.actionPausePlay()
-//                    } else if event.subtype == UIEventSubtype.remoteControlNextTrack {
-//                        self.songCardView.swipe(.left)
-//                    } else if event.subtype == UIEventSubtype.remoteControlPreviousTrack {
-//                        self.songCardView.revertAction();
-//                    } else if event.subtype == UIEventSubtype.remoteControlBeginSeekingForward {
-//                        //self.actionSeekForward()
-//
-//                        print("BEGIN SEEKING FORWARD")
-//                    } else if event.subtype == UIEventSubtype.remoteControlEndSeekingForward {
-//                        //seekToTime()
-//                        //self.actionSeekBackward()
-//                        print("END SEEKING FORWARD")
-//                    }
-//                }
-//            }
-//        }
-//
-//    }
+    //    override func remoteControlReceived(with event: UIEvent?) {
+    //
+    //        if let event = event {
+    //            let test = event as? MPRemoteCommandEvent
+    //            if event is MPRemoteCommandEvent {
+    //                if event.type == UIEventType.remoteControl {
+    //                    print("subtype = \(event.type)");
+    //                    print("subtype = \(event.subtype)");
+    //                    if event.subtype == UIEventSubtype.remoteControlPlay || event.subtype == UIEventSubtype.remoteControlPause {
+    //                        self.actionPausePlay()
+    //                    } else if event.subtype == UIEventSubtype.remoteControlNextTrack {
+    //                        self.songCardView.swipe(.left)
+    //                    } else if event.subtype == UIEventSubtype.remoteControlPreviousTrack {
+    //                        self.songCardView.revertAction();
+    //                    } else if event.subtype == UIEventSubtype.remoteControlBeginSeekingForward {
+    //                        //self.actionSeekForward()
+    //
+    //                        print("BEGIN SEEKING FORWARD")
+    //                    } else if event.subtype == UIEventSubtype.remoteControlEndSeekingForward {
+    //                        //seekToTime()
+    //                        //self.actionSeekBackward()
+    //                        print("END SEEKING FORWARD")
+    //                    }
+    //                }
+    //            }
+    //        }
+    //
+    //    }
     
     @IBAction func previousTrackClicked(_ sender: UIButton) {
         
@@ -461,34 +470,40 @@ class ShowSongViewController: NewsicDefaultViewController {
 
 //TOUCH/TAP/SWIPE ACTIONS
 /*
-extension ShowSongViewController {
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch: UITouch? = touches.first
-        //location is relative to the current view
-        // do something with the touched point
-        /*
-        if touch?.view == songListTableView {
-            
-            closePlayerMenu(animated: true);
-            isPlayerMenuOpen = false;
-        } else if touch?.view == showMore {
-            closeMenu();
-        } else {
-            //closeMenu();
-            closePlayerMenu(animated: true);
-            isPlayerMenuOpen = false
-        }
-         s*/
-    }
-}
-*/
+ extension ShowSongViewController {
+ override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+ let touch: UITouch? = touches.first
+ //location is relative to the current view
+ // do something with the touched point
+ /*
+ if touch?.view == songListTableView {
+ 
+ closePlayerMenu(animated: true);
+ isPlayerMenuOpen = false;
+ } else if touch?.view == showMore {
+ closeMenu();
+ } else {
+ //closeMenu();
+ closePlayerMenu(animated: true);
+ isPlayerMenuOpen = false
+ }
+ s*/
+ }
+ }
+ */
 extension ShowSongViewController: UIGestureRecognizerDelegate {
     
-//    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-//        let count = (navigationController?.viewControllers.count)!
-//        return count > 1 ? true : false;
-//    }
-//
+    //    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    //        let count = (navigationController?.viewControllers.count)!
+    //        return count > 1 ? true : false;
+    //    }
+    //
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let result = !(touch.view is SongTableViewCell)
+        return result
+        //        return true;
+    }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true;
@@ -496,40 +511,42 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
     
     @objc func handleMenuScreenGesture(_ recognizer: UIPanGestureRecognizer) {
         let translation = recognizer.translation(in: view);
-        
-        //recognizer.setTranslation(translation, in: view)
-        let finalPoint = self.view.frame.width/6;
-        var progress = (translation.x * -1)/finalPoint;
-        progress = CGFloat(fminf(fmaxf(Float(progress), 0.0), 1.0))
+        let finalPoint = self.songListTableView.frame.width;
         
         if recognizer.state == .began {
-            //let point = CGPoint(x: translation.x + (initialSongListCenter?.x)!, y: (initialSongListCenter?.y)!)
-            //songListTableView.center = point
-            //print("point = \(point) and translation = \(translation)")
-            
-            print("pan began")
-            print("leading constant = \(self.tableViewLeadingConstraint.constant)")
-            print("trailing constant = \(self.tableViewTrailingConstraint.constant)")
             
         } else if recognizer.state == .changed {
-            shouldCompleteTransition = progress > 0.5
-            //songListTableView.center = CGPoint(x: translation.x + (initialSongListCenter?.x)!, y: (initialSongListCenter?.y)!)
             
-            self.tableViewLeadingConstraint.constant = translation.x + self.view.frame.width;
-            self.tableViewTrailingConstraint.constant = translation.x - (5 * self.view.frame.width)/6;
+            var translationX: CGFloat = translation.x
+            if translation.x > 0 {
+                self.tableViewLeadingConstraint.constant = self.view.frame.width/6 + translationX
+                self.tableViewTrailingConstraint.constant = translationX * -1
+                
+                songListMenuProgress = (translation.x)/finalPoint
+            } else {
+                print(self.tableViewLeadingConstraint.constant)
+                self.tableViewLeadingConstraint.constant = self.view.frame.width + translationX
+                self.tableViewTrailingConstraint.constant = (self.view.frame.width) * (-5/6) - translationX
+                
+                songListMenuProgress = (translation.x * -1)/finalPoint;
+            }
+            
+            songListMenuProgress = CGFloat(fminf(fmaxf(Float(songListMenuProgress), 0.0), 1.0))
+            shouldCompleteTransition = translation.x > 0 ? songListMenuProgress > CGFloat(0.5) : songListMenuProgress < CGFloat(0.5)
             self.view.layoutIfNeeded();
-            //print("leading constant = \(self.tableViewLeadingConstraint.constant)")
-            //print("trailing constant = \(self.tableViewTrailingConstraint.constant)")
             
         } else if recognizer.state == .ended {
             if shouldCompleteTransition {
-                openMenu()
-            } else {
                 closeMenu()
+            } else {
+                openMenu()
             }
             
             print("edge pan ended")
+            print(songListTableView.center)
+            songListMenuProgress = 0
         }
         
     }
 }
+

@@ -90,7 +90,7 @@ extension Spotify {
                                 let trackId = track["id"] as? String,
                                 let trackUri = track["uri"] as? String,
                                 let albumImage = albumImage {
-                                let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, artist: artists, audioFeatures: nil);
+                                let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, artist: SpotifyArtist(artistName: artists), audioFeatures: nil);
                                 spotifyTrackList.append(track);
                             }
                         }
@@ -258,14 +258,14 @@ extension Spotify {
                             }
                             
                             artists.removeLast(); artists.removeLast();
-                            print(artists)
+                            //print(artists)
                             let albumImage = imageInfo[0]["url"] as? String;
                             
                             if let trackName = trackInfo["name"] as? String,
                                 let trackId = trackInfo["id"] as? String,
                                 let trackUri = trackInfo["uri"] as? String,
                                 let albumImage = albumImage {
-                                let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, artist: artists, addedAt: dateAdded, audioFeatures: nil);
+                                let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, artist: SpotifyArtist(artistName: artists), addedAt: dateAdded, audioFeatures: nil);
                                 currentList.append(track);
                             }
                         }

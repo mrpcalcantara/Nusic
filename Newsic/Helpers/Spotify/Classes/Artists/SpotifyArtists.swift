@@ -256,9 +256,6 @@ extension Spotify {
             
             let trackUrl = URL(string: "spotify:artist:\(artistId)")!
             let artistGenresRequest = try SPTArtist.createRequest(forArtist: trackUrl, withAccessToken: auth?.session.accessToken);
-            //var trackFeaturesRequest = try SPTTrack.createRequest(forTrack: trackUrl, withAccessToken: auth?.session.accessToken, market: "US")
-            //trackFeaturesRequest.url =  URL(string: "https://api.spotify.com/v1/audio-features/\(trackId)")
-            
             let session = URLSession.shared;
             
             session.dataTask(with: artistGenresRequest, completionHandler: { (data, response, error) in
@@ -268,16 +265,12 @@ extension Spotify {
                 } else {
                     do {
                         let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
-                        //let rootObjectTest = try SPTFollow.followingResult(from: data!, with: response)
                         let genres = jsonObject["genres"] as! [String]
                         fetchedArtistGenresHandler(genres);
                     } catch {
                         print("error parsing artist genres for artist \(artistId)");
                     }
                 }
-                
-                
-                
             }).resume()
         } catch {
             fetchedArtistGenresHandler(nil);

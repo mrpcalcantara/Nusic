@@ -57,6 +57,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: "SongPicker") as! SongPickerViewController;
         let navigationController = UINavigationController(rootViewController: viewController)
+//        let navigationController = CustomNavigationController(rootViewController: viewController)
         self.modalPresentationStyle = .popover
         self.present(navigationController, animated: true) {
             //SwiftSpinner.show(duration: 2, title: "Welcome!");

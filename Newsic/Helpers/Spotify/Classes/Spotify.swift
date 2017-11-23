@@ -194,12 +194,14 @@ class Spotify {
         var countDictionary:[String: Int] = genreCount;
         
         for artist in artistList {
-            for subGenre in artist.subGenres {
-                if genreList.contains(subGenre) {
-                    if countDictionary.index(forKey: subGenre) != nil {
-                        countDictionary.updateValue(countDictionary[subGenre]!+1, forKey: subGenre)
-                    } else {
-                        countDictionary[subGenre] = 1;
+            if let subGenres = artist.subGenres {
+                for subGenre in subGenres {
+                    if genreList.contains(subGenre) {
+                        if countDictionary.index(forKey: subGenre) != nil {
+                            countDictionary.updateValue(countDictionary[subGenre]!+1, forKey: subGenre)
+                        } else {
+                            countDictionary[subGenre] = 1;
+                        }
                     }
                 }
             }
