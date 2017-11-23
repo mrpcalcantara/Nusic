@@ -540,6 +540,7 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
                 closeMenu()
             } else {
                 openMenu()
+                closePlayerMenu(animated: true)
             }
             
             print("edge pan ended")
