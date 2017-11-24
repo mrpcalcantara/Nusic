@@ -8,13 +8,16 @@
 
 import UIKit
 import Firebase
+import SafariServices
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var auth = SPTAuth()
-    var player: SPTAudioStreamingController?
+    //var player: SPTAudioStreamingController?
+    var safariViewController: SFSafariViewController?
+
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Setup Spotify Values
@@ -42,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        
+        safariViewController?.dismiss(animated: true, completion: nil)
         // 2- check if app can handle redirect URL
         if auth.canHandle(url) {
             // 3 - handle callback in closure

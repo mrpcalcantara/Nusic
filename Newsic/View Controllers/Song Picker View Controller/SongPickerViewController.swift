@@ -286,12 +286,6 @@ class SongPickerViewController: NewsicDefaultViewController {
     @objc func toggleMenu() {
         customNavigationAnimationController.slideDirection = .left
         self.performSegue(withIdentifier: sideMenuSegue, sender: self);
-//
-//        if !isMenuOpen {
-//            openMenu();
-//        } else {
-//            closeMenu();
-//        }
     }
     
     func openMenu() {

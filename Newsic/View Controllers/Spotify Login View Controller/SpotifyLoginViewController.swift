@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftSpinner
+import SafariServices
 
 class SpotifyLoginViewController: NewsicDefaultViewController {
     
@@ -15,6 +16,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     var session:SPTSession!
     var loginUrl: URL?
     var loading: SwiftSpinner!;
+    var safariViewController: SFSafariViewController!
     
     //Objects for extracting User and Genres
     
@@ -22,13 +24,19 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     @IBOutlet weak var newsicLabl: UILabel!
     
     @IBAction func spotifyLoginButton(_ sender: UIButton) {
+       
         
-        UIApplication.shared.open(loginUrl!, options: [:]) { (result) in
-            if self.auth.canHandle(self.auth.redirectURL) {
-                // To do - build in error handling
-            }
-        }
-            
+        safariViewController = SFSafariViewController(url: loginUrl!);
+        (UIApplication.shared.delegate as! AppDelegate).safariViewController = safariViewController;
+        
+        self.present(safariViewController, animated: true, completion: nil)
+        //window?.insertSubview(safariViewController.view, atIndex: 0)
+//        UIApplication.shared.open(loginUrl!, options: [:]) { (result) in
+//            if self.auth.canHandle(self.auth.redirectURL) {
+//                // To do - build in error handling
+//            }
+//        }
+        
     }
     
     override func viewDidLoad() {
@@ -123,7 +131,6 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
                 self.session = firstTimeSession
                 self.auth.session = firstTimeSession;
                 
-                //initializePlayer(authSession: session)
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate;
                 appDelegate.auth = self.auth;
                 _ = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
@@ -141,15 +148,6 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
                 self.view.layoutIfNeeded()
             }, completion: nil)
         }
-        
-    }
-    
-    func initializePlayer(authSession:SPTSession){
-        let player = SPTAudioStreamingController.sharedInstance()
-        try! player?.start(withClientId: auth.clientID)
-        player!.login(withAccessToken: authSession.accessToken)
-        
-        (UIApplication.shared.delegate as! AppDelegate).player = player;
         
     }
     
