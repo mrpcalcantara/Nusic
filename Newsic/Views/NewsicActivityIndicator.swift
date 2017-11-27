@@ -54,7 +54,6 @@ class NewsicActivityIndicator: UIView {
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.textColor = UIColor.white
         
-        titleLabel.text = "TEST";
         //titleLabel.leadingAnchor.constraint(equalTo: blurView.leadingAnchor, constant: 8)
         
         blurView.contentView.addSubview(titleLabel)
