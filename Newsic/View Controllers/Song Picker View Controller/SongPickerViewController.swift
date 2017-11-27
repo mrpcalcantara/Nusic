@@ -17,6 +17,10 @@ class SongPickerViewController: NewsicDefaultViewController {
     var genreList:[SpotifyGenres] = SpotifyGenres.allShownValues;
     let itemsPerRow: CGFloat = 2;
     let sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8);
+    var sectionTitles: [String] = []
+    var sectionGenres: [[SpotifyGenres]] = [[]]
+    var sectionHeaderFrame: CGRect = CGRect(x: 16, y: 8, width: 0, height: 0)
+    var currentSection: Int = 0
     let numberOfCards:Int = 1;
     let numberOfSongs:Int = 5;
     var dataSource: [UIImage] = {
@@ -168,11 +172,18 @@ class SongPickerViewController: NewsicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        customNavigationAnimationController.slideDirection = .right
+//        customNavigationAnimationController.slideDirection = .right
+        genreCollectionView.layoutIfNeeded()
+        moodCollectionView.layoutIfNeeded()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        genreCollectionView.collectionViewLayout.invalidateLayout()
+        genreCollectionView.layoutIfNeeded()
+        
+        moodCollectionView.collectionViewLayout.invalidateLayout()
+        moodCollectionView.layoutIfNeeded()
         //SwiftSpinner.show("Loading...", animated: true);
     }
 //
