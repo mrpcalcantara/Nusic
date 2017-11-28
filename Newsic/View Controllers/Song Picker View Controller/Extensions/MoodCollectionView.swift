@@ -85,11 +85,17 @@ extension SongPickerViewController {
     
     func setupCollectionCellViews() {
         
+        let headerNib = UINib(nibName: "CollectionViewHeader", bundle: nil)
+        let view = UINib(nibName: "MoodViewCell", bundle: nil);
+        
         genreCollectionView.delegate = self;
         genreCollectionView.dataSource = self;
         genreCollectionView.allowsMultipleSelection = true;
+        genreCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "collectionViewHeader")
+        genreCollectionView.register(view, forCellWithReuseIdentifier: "moodCell");
         sectionTitles = getSectionTitles()
         setupGenresPerSection()
+        
         let genreLayout = genreCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         genreLayout.sectionHeadersPinToVisibleBounds = true
         let genreHeaderSize = CGSize(width: genreCollectionView.bounds.width, height: 45)
@@ -98,6 +104,8 @@ extension SongPickerViewController {
         moodCollectionView.delegate = self;
         moodCollectionView.dataSource = self;
         moodCollectionView.allowsMultipleSelection = false;
+        moodCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "collectionViewHeader")
+        moodCollectionView.register(view, forCellWithReuseIdentifier: "moodCell");
         let moodLayout = moodCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         moodLayout.sectionHeadersPinToVisibleBounds = true
         let moodHeaderSize = CGSize(width: moodCollectionView.bounds.width, height: 45)
@@ -179,7 +187,17 @@ extension SongPickerViewController {
 extension SongPickerViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
+        let newsicCell = cell as! MoodViewCell
+        if let genre = newsicCell.moodLabel.text {
+            let test = selectedGenres[genre.lowercased()]
+            //            let sectionId =
+            if selectedGenres[genre.lowercased()] != nil {
+                DispatchQueue.main.async {
+//                    print("pathLayer = \(cell.borderPathLayer?.path)")
+                    newsicCell.selectCell()
+                }
+            }
+        }
         
     }
     
@@ -200,9 +218,11 @@ extension SongPickerViewController: UICollectionViewDelegate {
             self.performSegue(withIdentifier: "showVideoSegue", sender: self);
         } else {
             let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
-            selectedGenres.updateValue(1, forKey: genreList[indexPath.row].rawValue.lowercased());
+            //Get genre from section genre for section and row.
+            let selectedGenre = sectionGenres[indexPath.section-1][indexPath.row].rawValue.lowercased()
+            selectedGenres.updateValue(1, forKey: selectedGenre);
             cell.selectCell()
-            //print("current Path = \(cell.borderPathLayer?.path)")
+//            print("current Path = \(cell.borderPathLayer?.path)")
         }
     }
     
@@ -257,8 +277,7 @@ extension SongPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         if kind == UICollectionElementKindSectionHeader {
-            let headerNib = UINib(nibName: "CollectionViewHeader", bundle: nil)
-            collectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "collectionViewHeader")
+            
             let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "collectionViewHeader", for: indexPath) as! CollectionViewHeader
             if collectionView == genreCollectionView {
                 if indexPath.section == 0 {
@@ -284,52 +303,26 @@ extension SongPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         var isLastRow: Bool = false
-        let view = UINib(nibName: "MoodViewCell", bundle: nil);
-        var cell: MoodViewCell;
+        var cell: MoodViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "moodCell", for: indexPath) as! MoodViewCell;
         print("indexPath.row = \(indexPath.row)")
         if collectionView == self.moodCollectionView {
-            collectionView.register(view, forCellWithReuseIdentifier: "moodCell");
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "moodCell", for: indexPath) as! MoodViewCell
             let mood = EmotionDyad.allValues[indexPath.row].rawValue
             cell.moodLabel.text = "\(mood)"
             isLastRow = indexPath.row == EmotionDyad.allValues.count - 1
-            
         } else {
-            let identifier = "genreCell\(indexPath.section)"
-            print(identifier)
-            collectionView.register(view, forCellWithReuseIdentifier: identifier);
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! MoodViewCell
-            if indexPath.section > 0 {
-                let genres = sectionGenres[indexPath.section-1]
-                let genre = genres[indexPath.row].rawValue
-                cell.moodLabel.text = "\(genre)"
-                if selectedGenres[genre.lowercased()] != nil {
-                    DispatchQueue.main.async {
-                        print("pathLayer = \(cell.borderPathLayer?.path)")
-                        cell.selectCell()
-                    }
-                    
-                }
-                isLastRow = indexPath.row == genres.count - 1
-                print("isLastRow = \(isLastRow)")
-            }
-            
-            
+            let genres = sectionGenres[indexPath.section-1]
+            let genre = genres[indexPath.row].rawValue
+            cell.moodLabel.text = "\(genre)"
+            isLastRow = indexPath.row == genres.count - 1
         }
-        //cell.layer.borderColor = UIColor.black.cgColor
-        //cell.layer.borderWidth = 0.3
-        
         
         DispatchQueue.main.async {
             cell.configure(for: indexPath.row, offsetRect: self.sectionHeaderFrame, isLastRow: isLastRow);
-            cell.layer.zPosition = 0
             cell.layoutIfNeeded()
         }
         
-        
-
-        
         return cell;
+
     }
     
 }

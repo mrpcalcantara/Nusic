@@ -25,6 +25,6 @@ class CollectionViewHeader: UICollectionReusableView {
     func configure(label: String) {
         self.sectionHeaderLabel.text = label
         self.sectionHeaderLabel.textColor = UIColor.green
-        self.addBlurEffect(style: .dark, alpha: 0.7);
+        self.addBlurEffect(style: .dark, alpha: 1);
     }
 }
