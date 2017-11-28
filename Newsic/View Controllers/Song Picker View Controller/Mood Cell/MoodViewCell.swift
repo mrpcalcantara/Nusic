@@ -306,15 +306,21 @@ class MoodViewCell: UICollectionViewCell {
             let animation = CABasicAnimation(keyPath: "strokeEnd")
             animation.fromValue = 0
             animation.duration = 0.2
-            borderPathLayer.add(animation, forKey: animation.keyPath)
+//            borderPathLayer.add(animation, forKey: animation.keyPath)
             
             let flashAnimation = CABasicAnimation(keyPath: "fillColor")
             flashAnimation.fromValue = self.deselectedColor.cgColor
             flashAnimation.toValue = self.selectedColor.cgColor
-            flashAnimation.duration = 0.2
+//            flashAnimation.beginTime = 0.5
+            flashAnimation.duration = 0.5
             flashAnimation.autoreverses = true
-            flashAnimation.repeatCount = 15
-            borderPathLayer.add(animation, forKey: flashAnimation.keyPath)
+            flashAnimation.repeatCount = .infinity
+//            borderPathLayer.add(animation, forKey: flashAnimation.keyPath)
+            
+            let animationGroup = CAAnimationGroup()
+            animationGroup.animations = [animation, flashAnimation]
+            animationGroup.duration = .greatestFiniteMagnitude
+            borderPathLayer.add(animationGroup, forKey: "myAnimation")
             
             self.layer.insertSublayer(borderPathLayer, at: 0)
         }
@@ -325,12 +331,20 @@ class MoodViewCell: UICollectionViewCell {
         if let borderPathLayer = borderPathLayer {
             borderPathLayer.removeAllAnimations()
             borderPathLayer.strokeColor = self.deselectedColor.cgColor
-            let animation = CABasicAnimation(keyPath: "strokeStart")
-            animation.fromValue = 0
-            animation.duration = 0.2
-            borderPathLayer.add(animation, forKey: animation.keyPath)
+            let animation = CABasicAnimation(keyPath: "strokeEnd")
+            animation.fromValue = 1
+            animation.toValue = 0
+            animation.duration = 0.5
             
+            let flashAnimation = CABasicAnimation(keyPath: "fillColor")
+            flashAnimation.toValue = self.deselectedColor.cgColor
+            flashAnimation.duration = 0.5
+            flashAnimation.autoreverses = true
             
+            let animationGroup = CAAnimationGroup()
+            animationGroup.animations = [animation, flashAnimation]
+            animationGroup.duration = 0.5
+            borderPathLayer.add(animationGroup, forKey: "myAnimation")
         }
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
