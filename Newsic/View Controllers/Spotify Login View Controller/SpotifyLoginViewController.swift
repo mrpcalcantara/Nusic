@@ -63,14 +63,22 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     
     @objc func moveToMainScreen() {
         
-        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "SongPicker") as! SongPickerViewController;
-        let navigationController = UINavigationController(rootViewController: viewController)
-//        let navigationController = CustomNavigationController(rootViewController: viewController)
-        self.modalPresentationStyle = .popover
-        self.present(navigationController, animated: true) {
-            //SwiftSpinner.show(duration: 2, title: "Welcome!");
-        }
+//        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "SongPicker") as! SongPickerViewController;
         
+        
+//        let navigationController = CustomNavigationController(rootViewController: viewController)
+//        self.modalPresentationStyle = .popover
+//        self.present(navigationController, animated: true) {
+//
+//        }
+        let pageViewController = NewsicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+//        pageViewController.automaticallyAdjustsScrollViewInsets = false
+//        let navigationController = UINavigationController(rootViewController: pageViewController)
+        
+//        navigationController.automaticallyAdjustsScrollViewInsets = false
+//        navigationController.setNavigationBarHidden(true, animated: false)
+//        self.present(navigationController, animated: true, completion: nil);
+        self.present(pageViewController, animated: false, completion: nil);
         //self.performSegue(withIdentifier: "showWatsonSegue", sender: self)
         
         

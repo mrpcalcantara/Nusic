@@ -24,11 +24,13 @@
 		8C21E7121FC6B2730033B477 /* NewsicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21E7111FC6B2730033B477 /* NewsicViewController.swift */; };
 		8C250AB51FBBF616002A108C /* NewsicDefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C250AB41FBBF616002A108C /* NewsicDefaultViewController.swift */; };
 		8C250AB71FBC02F8002A108C /* NewsicNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C250AB61FBC02F8002A108C /* NewsicNavigationController.swift */; };
+		8C281B541FCE636200C8CA35 /* SegueFromLeft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C281B531FCE636200C8CA35 /* SegueFromLeft.swift */; };
 		8C2911AE1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */; };
 		8C3654BC1F5516B7006C12D9 /* Koloda-SongCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */; };
 		8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3654BE1F551ABE006C12D9 /* OverlayView.xib */; };
 		8C3654C11F551B16006C12D9 /* SongOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654C01F551B16006C12D9 /* SongOverlayView.swift */; };
 		8C3654C31F552201006C12D9 /* SongKolodaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654C21F552201006C12D9 /* SongKolodaView.swift */; };
+		8C3A6F1B1FCD769C00BA7981 /* ShowSongDataTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3A6F1A1FCD769C00BA7981 /* ShowSongDataTransfer.swift */; };
 		8C4D43731F57CF9100FD0A92 /* YoutubeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4D43721F57CF9100FD0A92 /* YoutubeDelegate.swift */; };
 		8C4D43751F57CFD000FD0A92 /* SpotifyDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4D43741F57CFD000FD0A92 /* SpotifyDelegates.swift */; };
 		8C4FBD781F5940A500712873 /* MoodHacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FBD771F5940A500712873 /* MoodHacker.swift */; };
@@ -121,11 +123,13 @@
 		8C21E7111FC6B2730033B477 /* NewsicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicViewController.swift; sourceTree = "<group>"; };
 		8C250AB41FBBF616002A108C /* NewsicDefaultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicDefaultViewController.swift; sourceTree = "<group>"; };
 		8C250AB61FBC02F8002A108C /* NewsicNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicNavigationController.swift; sourceTree = "<group>"; };
+		8C281B531FCE636200C8CA35 /* SegueFromLeft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueFromLeft.swift; sourceTree = "<group>"; };
 		8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControlDelegate.swift; sourceTree = "<group>"; };
 		8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Koloda-SongCard.swift"; sourceTree = "<group>"; };
 		8C3654BE1F551ABE006C12D9 /* OverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
 		8C3654C01F551B16006C12D9 /* SongOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongOverlayView.swift; sourceTree = "<group>"; };
 		8C3654C21F552201006C12D9 /* SongKolodaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongKolodaView.swift; sourceTree = "<group>"; };
+		8C3A6F1A1FCD769C00BA7981 /* ShowSongDataTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSongDataTransfer.swift; sourceTree = "<group>"; };
 		8C4D43721F57CF9100FD0A92 /* YoutubeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeDelegate.swift; sourceTree = "<group>"; };
 		8C4D43741F57CFD000FD0A92 /* SpotifyDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyDelegates.swift; sourceTree = "<group>"; };
 		8C4FBD771F5940A500712873 /* MoodHacker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodHacker.swift; sourceTree = "<group>"; };
@@ -318,6 +322,7 @@
 		8C3654BA1F551694006C12D9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8CF8D3FF1FBA9E9100E130BC /* SPTransitionDelegate.swift */,
 				8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */,
 				8C4D43721F57CF9100FD0A92 /* YoutubeDelegate.swift */,
 				8C4D43741F57CFD000FD0A92 /* SpotifyDelegates.swift */,
@@ -644,8 +649,9 @@
 			children = (
 				8CB529E01F8375D900C8050F /* MoodCollectionView.swift */,
 				8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */,
-				8CF8D3FF1FBA9E9100E130BC /* SPTransitionDelegate.swift */,
 				8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */,
+				8C3A6F1A1FCD769C00BA7981 /* ShowSongDataTransfer.swift */,
+				8C281B531FCE636200C8CA35 /* SegueFromLeft.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -932,12 +938,14 @@
 			files = (
 				8C250AB71FBC02F8002A108C /* NewsicNavigationController.swift in Sources */,
 				8C3654BC1F5516B7006C12D9 /* Koloda-SongCard.swift in Sources */,
+				8C281B541FCE636200C8CA35 /* SegueFromLeft.swift in Sources */,
 				8C8C65971F55A6B4000711AC /* ShowSongViewController.swift in Sources */,
 				8CA40DF51F8B7C8200C95B9D /* SpotifyArtists.swift in Sources */,
 				8C0C1E9F1F61343900CF8516 /* Date.swift in Sources */,
 				8CA40DF71F8B7C8700C95B9D /* SpotifyPlaylists.swift in Sources */,
 				8C4FBD7A1F59456200712873 /* Emotion.swift in Sources */,
 				8C5B18F21FCBBEF400EBFAE1 /* CollectionViewHeader.swift in Sources */,
+				8C3A6F1B1FCD769C00BA7981 /* ShowSongDataTransfer.swift in Sources */,
 				8C2911AE1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift in Sources */,
 				8CF8D4021FBAC7D200E130BC /* CustomInteractionController.swift in Sources */,
 				8C250AB51FBBF616002A108C /* NewsicDefaultViewController.swift in Sources */,

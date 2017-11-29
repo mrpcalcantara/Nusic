@@ -44,7 +44,7 @@ class NewsicButton: UIButton {
         if allowBlur {
             let containerEffect = UIBlurEffect(style: .dark)
             let containerView = UIVisualEffectView(effect: containerEffect)
-            containerView.alpha = 0.75
+            containerView.alpha = borderAlpha
             containerView.frame = self.bounds
             
             containerView.isUserInteractionEnabled = false // Edit: so that subview simply passes the event through to the button

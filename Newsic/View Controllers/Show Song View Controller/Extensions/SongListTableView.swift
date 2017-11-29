@@ -13,6 +13,13 @@ extension ShowSongViewController {
     func setupTableView() {
         songListTableView.delegate = self;
         songListTableView.dataSource = self;
+        
+        let view = UINib(nibName: "SongTableViewCell", bundle: nil);
+        songListTableView.register(view, forCellReuseIdentifier: "songCell");
+        
+        let headerView = UINib(nibName: "SongTableViewHeader", bundle: nil);
+        songListTableView.register(headerView, forHeaderFooterViewReuseIdentifier: "SongTableViewHeader")
+        
         setupView();
     }
     
@@ -103,12 +110,10 @@ extension ShowSongViewController: UITableViewDelegate {
     }
  
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UINib(nibName: "SongTableViewHeader", bundle: nil);
         
-        tableView.register(view, forHeaderFooterViewReuseIdentifier: "SongTableViewHeader")
         let headerCell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SongTableViewHeader") as! SongTableViewHeader
         
-        print("headerCell frame = \(headerCell.frame)");
+//        print("headerCell frame = \(headerCell.frame)");
         if isMoodSelected {
             let emotion = moodObject?.emotions.first?.basicGroup.rawValue
             headerCell.displayName.text = "Mood: \(emotion!)"
@@ -155,7 +160,7 @@ extension ShowSongViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.backgroundColor = .clear
+//        cell.backgroundColor = .clear
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -204,9 +209,6 @@ extension ShowSongViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let view = UINib(nibName: "SongTableViewCell", bundle: nil);
-        
-        tableView.register(view, forCellReuseIdentifier: "songCell");
         guard let regCell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongTableViewCell else {
             fatalError("Unexpected Index Path")
         }
@@ -223,8 +225,10 @@ extension ShowSongViewController: UITableViewDataSource {
         cell.albumImage.image = element.thumbNail;
         cell.artistLabel.text = element.artist.artistName;
         cell.trackLabel.text = element.songName;
+        cell.backgroundColor = .clear
         //cell.addShadow(shadowOffset: CGSize(width: -5, height: 0))
-        cell.setNeedsLayout();
+//        cell.setNeedsLayout();
+        cell.layoutIfNeeded()
     }
     
 }

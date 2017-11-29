@@ -10,7 +10,7 @@ extension Spotify {
     
     func getUser(completion: @escaping(SPTUser?) -> ()) {
         let auth = SPTAuth.defaultInstance();
-        print("\(String(describing: auth?.session))");
+//        print("\(String(describing: auth?.session))");
         SPTUser.requestCurrentUser(withAccessToken: auth?.session.accessToken) { (error, results) in
             if error != nil {
                 print("error getting user")

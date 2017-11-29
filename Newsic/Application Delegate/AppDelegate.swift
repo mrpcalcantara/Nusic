@@ -39,7 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // change navigation item title color
         
         navigationBarAppearance.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.black]
-        
+        //NOTE: DELETE WHEN RELEASE. Suppressing the constraint errors for the cards
+        UserDefaults.standard.setValue(false, forKey:"_UIConstraintBasedLayoutLogUnsatisfiable")
         // Override point for customization after application launch.
         return true
     }
@@ -55,13 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     print("error!: \(String(describing: error?.localizedDescription))")
 
                 }
-                /*
-                print("canonical username = \(String(describing: session?.canonicalUsername!))")
-                print("expiration date = \(String(describing: session?.expirationDate))")
-                print("token Type = \(String(describing: session?.tokenType))")
-                print("REFRESH TOKEN \(String(describing: session?.encryptedRefreshToken))")
-                print("ACCESS TOKEN \(String(describing: session?.accessToken))")
-                */
                 // 5- Add session to User Defaults
                 
                 let userDefaults = UserDefaults.standard

@@ -20,6 +20,7 @@ class SideMenuViewController: NewsicDefaultViewController {
     //Local variables
     var profileImage: UIImage?
     var username: String?
+    var profileImageURL: URL?
     
     @IBAction func logoutClicked(_ sender: Any) {
         UserDefaults.standard.removeObject(forKey: "SpotifySession");
@@ -34,18 +35,31 @@ class SideMenuViewController: NewsicDefaultViewController {
     }
     
     override func viewDidLoad() {
+        
+        let root = self.navigationController?.topViewController
+        if root is NewsicPageViewController {
+            
+            print("ROOT IS PAGEVIEW")
+        }
+        
         super.viewDidLoad();
         setupView();
-        setupNavigatonBar()
+        setupNavigationBar()
         
     }
     
     func setupView() {
-        profileImageView.roundImage();
-        if let profileImage = profileImage {
-            profileImageView.image = profileImage;
+        if let profileImageURL = profileImageURL {
+            profileImageView.downloadedFrom(url: profileImageURL, contentMode: .scaleAspectFit, roundImage: true);
+        } else {
+            profileImageView.backgroundColor = UIColor.black
         }
         
+//        profileImageView.roundImage();
+//        if let profileImage = profileImage {
+//            profileImageView.image = profileImage;
+//        }
+//
         if let username = username {
             usernameLabel.text = username
         }
@@ -57,14 +71,27 @@ class SideMenuViewController: NewsicDefaultViewController {
         setupButtonsView();
     }
     
-    func setupNavigatonBar() {
-        navigationItem.hidesBackButton = true
+    func setupNavigationBar() {
         
+        let navbar  = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: 44));
+        navbar.barStyle = .default
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "MoodIcon"), for: .normal)
         button.addTarget(self, action: #selector(dismissMenu), for: .touchUpInside)
         let barButton = UIBarButtonItem(customView: button);
+        let barButton2 = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(dismissMenu));
         self.navigationItem.rightBarButtonItem = barButton
+        
+        let navItem = self.navigationItem
+        navbar.items = [navItem]
+//        navbar.layer.zPosition = 1
+//        self.view.insertSubview(navbar, at: 0)
+        self.view.addSubview(navbar)
+        
+//        navigationItem.hidesBackButton = true
+        
+        
+        
     }
     
     func setupProfileView() {
@@ -113,8 +140,19 @@ class SideMenuViewController: NewsicDefaultViewController {
     }
     
     @objc func dismissMenu() {
-        //self.dismiss(animated: true, completion: nil)
-        self.navigationController?.popViewController(animated: true);
+//        self.dismiss(animated: true, completion: nil)
+//        self.navigationController?.popViewController(animated: true);
+        //let root = self.navigationController?.topViewController
+        let vc = self.parent as! NewsicPageViewController
+        vc.scrollToViewController(index: 1)
+        
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        let touch = touches.first
+        let view = touch?.view
+        print(touch?.view.debugDescription)
     }
     
 }

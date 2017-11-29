@@ -19,12 +19,13 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePosition position: TimeInterval) {
         //print("position changed");
         let currentTrack = audioStreaming.metadata.currentTrack;
-        if let currentTrack = currentTrack {
+        if let currentTrack = currentTrack, let currentPlayingTrack = currentPlayingTrack {
             let currentPosition = Float(position)
             //MPNowPlayingInfoCenter.default().nowPlayingInfo?.updateValue(position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime);
             songProgressSlider.value = currentPosition
             updateElapsedTime(elapsedTime: currentPosition)
-            self.updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+//            self.updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+            self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: currentPlayingTrack.thumbNail as AnyObject, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
 //            var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo;
             //nowPlayingInfo?.updateValue(position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime)
             //nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = position
@@ -40,13 +41,18 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: String!) {
         let currentTrack = audioStreaming.metadata.currentTrack;
+        
 //        print("track started");
         if let currentTrack = currentTrack {
             if let imageURL = currentTrack.albumCoverArtURL {
                 let imageURL = URL(string: imageURL)!
                 let image = UIImage(); image.downloadImage(from: imageURL) { (image) in
+                    let songTitle = "\(currentTrack.artistName) - \(currentTrack.name)"
+                    let currentPlayingTrack = SpotifyTrack(title: songTitle, thumbNail: image, trackUri: currentTrack.uri, trackId: Spotify.transformToID(trackUri: currentTrack.uri), songName: currentTrack.name ,artist: SpotifyArtist(artistName: currentTrack.artistName, subGenres: nil, popularity: nil, uri: currentTrack.artistUri), audioFeatures: nil)
+                    self.currentPlayingTrack = currentPlayingTrack;
                     self.activateAudioSession()
-                    self.updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: image, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+                    self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+//                    self.updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: image, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
                     
                 }
             } else {

@@ -32,7 +32,7 @@ extension Spotify {
         var trackUriList: [URL] = []
         
         for trackURI in currentTrackList {
-            trackUriList.append(URL(string: transformToURI(trackId: trackURI))!)
+            trackUriList.append(URL(string: Spotify.transformToURI(trackId: trackURI))!)
         }
         
         do {
@@ -83,15 +83,14 @@ extension Spotify {
                             }
                             
                             artists.removeLast(); artists.removeLast();
-                            print(artists)
+//                            print(artists)
                             let albumImage = imageInfo[0]["url"] as? String;
-                            
                             if let trackName = track["name"] as? String,
                                 let trackId = track["id"] as? String,
                                 let trackUri = track["uri"] as? String,
                                 let albumImage = albumImage {
-                                let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, artist: SpotifyArtist(artistName: artists), audioFeatures: nil);
-                                spotifyTrackList.append(track);
+                                    let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, artist: SpotifyArtist(artistName: artists), audioFeatures: nil);
+                                    spotifyTrackList.append(track);
                             }
                         }
                         
@@ -260,13 +259,13 @@ extension Spotify {
                             artists.removeLast(); artists.removeLast();
                             //print(artists)
                             let albumImage = imageInfo[0]["url"] as? String;
-                            
+                            print(albumImage!)
                             if let trackName = trackInfo["name"] as? String,
                                 let trackId = trackInfo["id"] as? String,
                                 let trackUri = trackInfo["uri"] as? String,
                                 let albumImage = albumImage {
-                                let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, artist: SpotifyArtist(artistName: artists), addedAt: dateAdded, audioFeatures: nil);
-                                currentList.append(track);
+                                    let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, artist: SpotifyArtist(artistName: artists), addedAt: dateAdded, audioFeatures: nil);
+                                    currentList.append(track);
                             }
                         }
                         

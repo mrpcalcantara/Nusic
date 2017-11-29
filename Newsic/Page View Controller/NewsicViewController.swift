@@ -10,7 +10,7 @@ import UIKit
 
 class NewsicViewController: UIViewController {
     
-    @IBOutlet weak var pageControl: UIPageControl!
+    
     @IBOutlet weak var containerView: UIView!
     
     var newsicPageViewController: NewsicPageViewController? {
@@ -22,12 +22,12 @@ class NewsicViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    //
-    //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    //        if let newsicPageViewController = segue.destination as? NewsicPageViewController {
-    //            self.newsicPageViewController = newsicPageViewController
-    //        }
-    //    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let newsicPageViewController = segue.destination as? NewsicPageViewController {
+            self.newsicPageViewController = newsicPageViewController
+        }
+    }
     
 }
 

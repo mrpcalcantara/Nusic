@@ -18,6 +18,7 @@ extension UIImage {
                 let data = data, error == nil,
                 let image = UIImage(data: data)
                 else { downloadImageHandler(nil); return; }
+            
             downloadImageHandler(image);
         }.resume()
     }

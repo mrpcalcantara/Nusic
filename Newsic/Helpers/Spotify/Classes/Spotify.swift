@@ -246,7 +246,13 @@ class Spotify {
         return genres;
     }
     
-    func transformToURI(trackId: String) -> String {
+    static func transformToURI(trackId: String) -> String {
         return "spotify:track:\(trackId)"
+    }
+    
+    static func transformToID(trackUri: String) -> String {
+        var uri = trackUri
+        uri.removeSubrange(trackUri.range(of: "spotify:track:")!)
+        return uri
     }
 }
