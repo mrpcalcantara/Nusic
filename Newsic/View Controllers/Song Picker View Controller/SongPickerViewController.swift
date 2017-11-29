@@ -42,14 +42,14 @@ class SongPickerViewController: NewsicDefaultViewController {
         didSet {
             self.usernameLabel.text = newsicUser.displayName;
             if let imageURL = self.spotifyHandler.user.smallestImage.imageURL {
-                self.userProfileImageView.downloadedFrom(url: imageURL, contentMode: .scaleAspectFit, roundImage: true);
-                self.newsicUser.profileImage?.downloadImage(from: imageURL, downloadImageHandler: { (image) in
-                    self.userProfileImageView.image? = image!;
-                    
-                })
-            } else {
-                self.userProfileImageView.backgroundColor = UIColor.black
+                let parent = self.parent as! NewsicPageViewController
+                let sideMenu = parent.sideMenuVC as! SideMenuViewController
+                
+                sideMenu.username = self.newsicUser.displayName
+                sideMenu.profileImageURL = imageURL
+                
             }
+            
         }
     }
     var newsicPlaylist: NewsicPlaylist! = nil;
@@ -167,23 +167,20 @@ class SongPickerViewController: NewsicDefaultViewController {
         self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
         self.moodObject?.saveData(saveCompleteHandler: { (reference, error) in  })
         
-        self.performSegue(withIdentifier: showVideoSegue, sender: self);
+        passDataToShowSong();
+        //self.performSegue(withIdentifier: showVideoSegue, sender: self);
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 //        customNavigationAnimationController.slideDirection = .right
+        
         genreCollectionView.layoutIfNeeded()
         moodCollectionView.layoutIfNeeded()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        genreCollectionView.collectionViewLayout.invalidateLayout()
-        genreCollectionView.layoutIfNeeded()
-        
-        moodCollectionView.collectionViewLayout.invalidateLayout()
-        moodCollectionView.layoutIfNeeded()
         //SwiftSpinner.show("Loading...", animated: true);
     }
 //
@@ -193,12 +190,14 @@ class SongPickerViewController: NewsicDefaultViewController {
  
     override func viewDidLoad() {
         super.viewDidLoad()
+//        self.modalTransitionStyle = .crossDissolve
         
         setupView()
+        setupNavigationBar()
         setupCollectionCellViews();
         setupSegmentedControl()
         setupMenuView();
-        setupTransitionDelegate();
+        
         //navigationController?.delegate = self
         //hideKeyboardWhenTappedAround();
         setupCollectionViewTapGestureRecognizer();
@@ -249,14 +248,19 @@ class SongPickerViewController: NewsicDefaultViewController {
         toggleCollectionViews(for: 0);
     }
     
-    func setupView() {
-        self.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+    func setupNavigationBar() {
+        let navbar  = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: 44));
+        navbar.barStyle = .default
+        let barButton2 = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .plain, target: self, action: #selector(toggleMenu));
+        self.navigationItem.leftBarButtonItem = barButton2
         
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "MenuIcon"), for: .normal)
-        button.addTarget(self, action: #selector(toggleMenu), for: UIControlEvents.touchUpInside)
-        let barButton = UIBarButtonItem(customView: button);
-        self.navigationItem.leftBarButtonItem = barButton
+        let navItem = self.navigationItem
+        navbar.items = [navItem]
+        
+        self.view.addSubview(navbar)
+    }
+    
+    func setupView() {
         
         //self.mainControlView.layer.zPosition = -1
         self.mainControlView.backgroundColor = UIColor.clear
@@ -295,8 +299,10 @@ class SongPickerViewController: NewsicDefaultViewController {
     }
     
     @objc func toggleMenu() {
-        customNavigationAnimationController.slideDirection = .left
-        self.performSegue(withIdentifier: sideMenuSegue, sender: self);
+//        customNavigationAnimationController.slideDirection = .left
+//        self.performSegue(withIdentifier: sideMenuSegue, sender: self);
+        let parent = self.parent as! NewsicPageViewController
+        parent.scrollToViewController(index: 0)
     }
     
     func openMenu() {
@@ -441,6 +447,7 @@ class SongPickerViewController: NewsicDefaultViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == showVideoSegue {
             let playerViewController = segue.destination as! ShowSongViewController
             playerViewController.user = newsicUser;
@@ -449,6 +456,8 @@ class SongPickerViewController: NewsicDefaultViewController {
             playerViewController.moodObject = moodObject
             playerViewController.selectedGenreList = !selectedGenres.isEmpty ? selectedGenres : nil;
             playerViewController.isMoodSelected = isMoodSelected
+            
+            
         } else if segue.identifier == sideMenuSegue {
             let sideMenuViewController = segue.destination as! SideMenuViewController
             sideMenuViewController.profileImage = newsicUser.profileImage
@@ -497,4 +506,16 @@ class SongPickerViewController: NewsicDefaultViewController {
 //        }
 //    }
 //}
+
+extension SongPickerViewController: UIPageViewControllerDelegate {
+    
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        for vc in pendingViewControllers {
+            if vc is ShowSongViewController {
+                print("SHOWING SONG")
+            }
+        }
+    }
+    
+}
 

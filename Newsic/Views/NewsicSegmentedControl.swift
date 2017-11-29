@@ -10,6 +10,7 @@ import UIKit
 
 public protocol NewsicSegmentedControlDelegate: class {
     func didSelect(_ segmentIndex: Int)
+    func didMove(_ control: UIControl, _ progress: CGFloat, _ toIndex: Int)
 }
 
 
@@ -23,6 +24,7 @@ class NewsicSegmentedControl: UIControl {
     }
     */
     
+    private var lastSetPoint: CGPoint? = CGPoint.zero
     private var labels = [UIImageView]()
     private var correction: CGFloat = 0
     private var thumbView = UIView()
@@ -52,7 +54,7 @@ class NewsicSegmentedControl: UIControl {
         }
     }
     
-    @IBInspectable var thumbColor : UIColor = UIColor.clear {
+    @IBInspectable var thumbColor : UIColor = UIColor.green {
         didSet {
             setSelectedColors()
         }
@@ -276,11 +278,41 @@ class NewsicSegmentedControl: UIControl {
         switch panGesture.state {
         case .cancelled, .ended, .failed:
             moveToNearestPoint(basedOn: panGesture, velocity: panGesture.velocity(in: thumbView))
+            lastSetPoint = thumbView.center
         case .began:
             correction = panGesture.location(in: thumbView).x - thumbView.frame.width/2
+            lastSetPoint = thumbView.center
         case .changed:
+            
             let location = panGesture.location(in: self)
             thumbView.center.x = location.x - correction
+            let trans = panGesture.translation(in: self)
+            print("trans = \(trans)")
+//            let progress = (CGFloat(location.x) - (lastSetPoint?.x)!)/2
+            var progress = trans.x / self.thumbView.frame.width
+            print("progress = \(progress)")
+            var toIndex = progress < 0 ? selectedIndex - 1 : selectedIndex + 1
+            
+            var allowMove: Bool = true;
+            
+            //Set minimum index to 0
+            if toIndex < 0 {
+                toIndex = 0
+                allowMove = progress < 0 ? false : true
+            }
+            //Set maximum index to last index of the labels
+            else if toIndex > labels.count - 1 {
+                toIndex = labels.count - 1
+                allowMove = progress > 0 ? false : true
+            }
+            
+            let const = CGFloat(fminf(fmaxf(abs(Float(progress)), 0.0), 1.0))
+            print("const = \(const)")
+            
+            //Disallow delegate method trigger if user moves to the left on the first index or to the right on the last index.
+            if allowMove {
+                delegate?.didMove(self, const, toIndex);
+            }
         case .possible: ()
         }
     }

@@ -131,16 +131,33 @@ extension SongPickerViewController {
         genreCollectionView.isHidden = true;
     }
     
-    func toggleCollectionViews(for index: Int) {
+    func toggleCollectionViews(for index: Int, progress: CGFloat? = 0) {
         if index == 0 {
-            showMoodCollectionView();
-            hideGenreCollectionView();
-            searchButton.isHidden = true;
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.moodCollectionView.alpha = 1
+                self.genreCollectionView.alpha = 0
+                self.searchButton.alpha = 0
+            }, completion: { (completed) in
+//                self.showMoodCollectionView();
+//                self.hideGenreCollectionView();
+//                self.searchButton.isHidden = true;
+            })
+            
+            
             isMoodSelected = true
         } else {
-            showGenreCollectionView();
-            hideMoodCollectionView();
-            searchButton.isHidden = false;
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.moodCollectionView.alpha = 0
+                self.genreCollectionView.alpha = 1
+                self.searchButton.alpha = 1
+            }, completion: { (completed) in
+//                self.showGenreCollectionView();
+//                self.hideMoodCollectionView();
+//                self.searchButton.isHidden = false;
+            })
+            
             isMoodSelected = false
         }
     }
@@ -186,6 +203,7 @@ extension SongPickerViewController {
 
 extension SongPickerViewController: UICollectionViewDelegate {
     
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let newsicCell = cell as! MoodViewCell
         if let genre = newsicCell.moodLabel.text {
@@ -215,7 +233,9 @@ extension SongPickerViewController: UICollectionViewDelegate {
             self.moodObject = NewsicMood(emotions: [emotion], isAmbiguous: false, sentiment: 0.5, date: Date(), userName: spotifyHandler.auth.session.canonicalUsername, associatedGenres: [], associatedTracks: []);
             self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
             self.moodObject?.saveData(saveCompleteHandler: { (reference, error) in  })
-            self.performSegue(withIdentifier: "showVideoSegue", sender: self);
+            
+            passDataToShowSong()
+            //self.performSegue(withIdentifier: "showVideoSegue", sender: self);
         } else {
             let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
             //Get genre from section genre for section and row.
@@ -249,6 +269,20 @@ extension SongPickerViewController: UICollectionViewDelegate {
 }
 
 extension SongPickerViewController: UICollectionViewDataSource {
+//    
+//    func indexTitles(for collectionView: UICollectionView) -> [String]? {
+//        if collectionView == genreCollectionView {
+//            return sectionTitles;
+//        } else {
+//            return nil
+//        }
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, indexPathForIndexTitle title: String, at index: Int) -> IndexPath {
+//        print(index);
+//        return IndexPath(row: 1, section: 1)
+//    }
+    
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         if collectionView == moodCollectionView {
@@ -304,7 +338,7 @@ extension SongPickerViewController: UICollectionViewDataSource {
         
         var isLastRow: Bool = false
         var cell: MoodViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "moodCell", for: indexPath) as! MoodViewCell;
-        print("indexPath.row = \(indexPath.row)")
+//        print("indexPath.row = \(indexPath.row)")
         if collectionView == self.moodCollectionView {
             let mood = EmotionDyad.allValues[indexPath.row].rawValue
             cell.moodLabel.text = "\(mood)"

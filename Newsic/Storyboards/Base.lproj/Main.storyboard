@@ -61,7 +61,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0EX-ux-1tR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-348" y="-786"/>
+            <point key="canvasLocation" x="49" y="-1565"/>
         </scene>
         <!--Song Picker View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -93,7 +93,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bqf-Kb-x3U" userLabel="Genre Collection View">
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bqf-Kb-x3U" userLabel="Genre Collection View">
                                         <rect key="frame" x="8" y="36" width="359" height="559"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="z9q-vZ-mww">
                                             <size key="itemSize" width="50" height="50"/>
@@ -116,17 +116,17 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </collectionReusableView>
                                     </collectionView>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8t3-hW-Upx">
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8t3-hW-Upx">
                                         <rect key="frame" x="8" y="36" width="359" height="559"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cp9-Te-6Sc">
                                             <size key="itemSize" width="50" height="50"/>
-                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="headerReferenceSize" width="50" height="50"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="moodCell" id="gVj-gB-4We" customClass="MoodViewCell" customModule="Newsic" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <rect key="frame" x="0.0" y="50" width="50" height="50"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -134,6 +134,10 @@
                                                 </view>
                                             </collectionViewCell>
                                         </cells>
+                                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="cg7-Jf-YtF">
+                                            <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionReusableView>
                                         <connections>
                                             <outlet property="dataSource" destination="BYZ-38-t0r" id="an4-Rg-UjP"/>
                                             <outlet property="delegate" destination="BYZ-38-t0r" id="nds-7t-3X8"/>
@@ -145,7 +149,7 @@
                                         <state key="normal" title="Get Songs"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="borderAlpha">
-                                                <real key="value" value="0.5"/>
+                                                <real key="value" value="1"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="borderSize">
                                                 <real key="value" value="2"/>
@@ -238,7 +242,7 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="Sau-Kp-Sny" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="2Sc-5t-NYT"/>
-                            <constraint firstItem="Sau-Kp-Sny" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="B8n-w9-qAO"/>
+                            <constraint firstItem="Sau-Kp-Sny" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="44" id="B8n-w9-qAO"/>
                             <constraint firstAttribute="trailing" secondItem="Sau-Kp-Sny" secondAttribute="trailing" id="LMl-sm-W11"/>
                             <constraint firstItem="ezb-Mk-cJL" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="TOo-Bu-RSf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ezb-Mk-cJL" secondAttribute="trailing" constant="130" id="f8t-EZ-ele"/>
@@ -271,7 +275,7 @@
                         <outlet property="userProfileImageView" destination="RyK-SL-NJ2" id="bQy-iE-bqD"/>
                         <outlet property="userView" destination="JLn-6R-Eqo" id="N6K-d0-yWj"/>
                         <outlet property="usernameLabel" destination="IIl-jS-1xq" id="ahT-ZM-rmO"/>
-                        <segue destination="eJS-am-Jyf" kind="show" identifier="showVideoSegue" id="c9F-Gf-aWx"/>
+                        <segue destination="eJS-am-Jyf" kind="show" identifier="showVideoSegue" animates="NO" action="showDetailViewController:sender:" id="c9F-Gf-aWx"/>
                         <segue destination="RzT-Hk-gHT" kind="show" identifier="showSideMenuSegue" id="eqn-mp-xJN"/>
                     </connections>
                 </viewController>
@@ -282,7 +286,7 @@
         <!--Side Menu View Controller-->
         <scene sceneID="Ooa-oW-iKR">
             <objects>
-                <viewController id="RzT-Hk-gHT" customClass="SideMenuViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SideMenu" id="RzT-Hk-gHT" customClass="SideMenuViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="IjQ-YL-nVc"/>
                         <viewControllerLayoutGuide type="bottom" id="qhc-gA-d8q"/>
@@ -370,7 +374,7 @@
                         <constraints>
                             <constraint firstItem="kHk-NN-9ze" firstAttribute="leading" secondItem="J7D-4g-GGT" secondAttribute="leading" id="GNq-52-fhI"/>
                             <constraint firstItem="qhc-gA-d8q" firstAttribute="top" secondItem="kHk-NN-9ze" secondAttribute="bottom" id="HRe-KI-3cj"/>
-                            <constraint firstItem="kHk-NN-9ze" firstAttribute="top" secondItem="IjQ-YL-nVc" secondAttribute="bottom" id="Vwn-hu-LRj"/>
+                            <constraint firstItem="kHk-NN-9ze" firstAttribute="top" secondItem="IjQ-YL-nVc" secondAttribute="bottom" constant="44" id="Vwn-hu-LRj"/>
                             <constraint firstItem="kHk-NN-9ze" firstAttribute="trailing" secondItem="J7D-4g-GGT" secondAttribute="trailing" id="vQw-Xg-zHj"/>
                         </constraints>
                     </view>
@@ -390,7 +394,7 @@
         <!--Show Song View Controller-->
         <scene sceneID="0N8-Rd-hNt">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="eJS-am-Jyf" customClass="ShowSongViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ShowSong" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="flipHorizontal" modalPresentationStyle="overFullScreen" id="eJS-am-Jyf" customClass="ShowSongViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YgY-HS-9oM"/>
                         <viewControllerLayoutGuide type="bottom" id="F5G-5z-bLG"/>
@@ -400,10 +404,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="700" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="b3r-mr-Y8T" userLabel="Track Stack View">
-                                <rect key="frame" x="24" y="72" width="327" height="471"/>
+                                <rect key="frame" x="24" y="64" width="327" height="479"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lxK-RZ-2XL" customClass="SongKolodaView" customModule="Newsic" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="327" height="471"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="327" height="479"/>
                                     </view>
                                 </subviews>
                             </stackView>
@@ -534,10 +538,10 @@
                             <constraint firstItem="alX-vn-cgC" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="Yzb-nM-FQD"/>
                             <constraint firstItem="Iig-1D-otX" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="c8r-0N-0Ki"/>
                             <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="HQy-9W-NO5" secondAttribute="bottom" constant="8" id="c9f-1V-cd7"/>
-                            <constraint firstItem="b3r-mr-Y8T" firstAttribute="top" secondItem="YgY-HS-9oM" secondAttribute="bottom" constant="8" id="cEx-Rd-wxv"/>
+                            <constraint firstItem="b3r-mr-Y8T" firstAttribute="top" secondItem="YgY-HS-9oM" secondAttribute="bottom" constant="44" id="cEx-Rd-wxv"/>
                             <constraint firstItem="V03-pk-egn" firstAttribute="centerX" secondItem="Yet-46-QVi" secondAttribute="centerX" id="gkI-as-pns"/>
                             <constraint firstItem="k6E-Yi-lJS" firstAttribute="centerX" secondItem="Yet-46-QVi" secondAttribute="centerX" id="hbC-F6-Ape"/>
-                            <constraint firstItem="Any-Pf-dnV" firstAttribute="top" secondItem="YgY-HS-9oM" secondAttribute="bottom" id="hgB-44-2Hq"/>
+                            <constraint firstItem="Any-Pf-dnV" firstAttribute="top" secondItem="YgY-HS-9oM" secondAttribute="bottom" constant="44" id="hgB-44-2Hq"/>
                             <constraint firstItem="HQy-9W-NO5" firstAttribute="centerX" secondItem="Yet-46-QVi" secondAttribute="centerX" id="hrT-wC-tiN"/>
                             <constraint firstItem="b3r-mr-Y8T" firstAttribute="trailing" secondItem="Yet-46-QVi" secondAttribute="trailingMargin" constant="-8" id="jRq-Q6-LzD"/>
                             <constraint firstItem="Iig-1D-otX" firstAttribute="centerX" secondItem="Yet-46-QVi" secondAttribute="centerX" id="lTg-3Y-Eq7"/>
@@ -577,23 +581,48 @@
             </objects>
             <point key="canvasLocation" x="2184.8000000000002" y="42.728635682158924"/>
         </scene>
-        <!--Custom Navigation Controller-->
-        <scene sceneID="c1Y-Gz-1wQ">
+        <!--Newsic View Controller-->
+        <scene sceneID="nR0-Mq-T1f">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="VwA-xC-kwq" customClass="CustomNavigationController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="m30-0m-vDa">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
+                <viewController id="PP7-iy-gZe" customClass="NewsicViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="amq-Nj-CyB"/>
+                        <viewControllerLayoutGuide type="bottom" id="b9D-7G-LPF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5WI-mz-G2n">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kwr-dP-F4f">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <connections>
+                                    <segue destination="q9d-7g-4cf" kind="embed" id="OrX-vS-EGF"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Kwr-dP-F4f" firstAttribute="leading" secondItem="5WI-mz-G2n" secondAttribute="leading" id="6XY-wP-sBk"/>
+                            <constraint firstItem="Kwr-dP-F4f" firstAttribute="top" secondItem="amq-Nj-CyB" secondAttribute="bottom" id="RiY-cF-ir1"/>
+                            <constraint firstItem="b9D-7G-LPF" firstAttribute="top" secondItem="Kwr-dP-F4f" secondAttribute="bottom" id="YtO-YB-Ps8"/>
+                            <constraint firstAttribute="trailing" secondItem="Kwr-dP-F4f" secondAttribute="trailing" id="kej-h9-CSo"/>
+                        </constraints>
+                    </view>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Qgc-te-DRl"/>
+                        <outlet property="containerView" destination="Kwr-dP-F4f" id="1Ez-Ih-Ei1"/>
                     </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ruP-5w-kgc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Pi-a8-pFh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1370" y="-787"/>
+            <point key="canvasLocation" x="1370" y="-1565"/>
+        </scene>
+        <!--Newsic Page View Controller-->
+        <scene sceneID="myP-Ue-yU6">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="q9d-7g-4cf" customClass="NewsicPageViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DJb-df-dVx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1370" y="-778"/>
         </scene>
     </scenes>
     <resources>

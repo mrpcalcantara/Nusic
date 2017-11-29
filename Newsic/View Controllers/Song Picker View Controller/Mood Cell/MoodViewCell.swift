@@ -9,7 +9,7 @@
 import UIKit
 
 class MoodViewCell: UICollectionViewCell {
-
+    
     @IBOutlet weak var moodLabel: UILabel!
     var borderPathLayer: CAShapeLayer?;
     var pointerPathLayer: CAShapeLayer?;
@@ -17,6 +17,7 @@ class MoodViewCell: UICollectionViewCell {
     var deselectedColor: UIColor = UIColor.clear
     var offsetPath: CGRect = CGRect.zero
     var offsetSelectedPoint: CGPoint = CGPoint.zero
+    var leftOffset: CGFloat = 8
     
     override var bounds: CGRect {
         didSet {
@@ -33,7 +34,6 @@ class MoodViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
     
     override init(frame: CGRect) {
@@ -46,17 +46,8 @@ class MoodViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-//        let paragraphStyle = NSMutableParagraphStyle()
-//        paragraphStyle.firstLineHeadIndent = offsetSelectedPoint.x + 8
-//        let attributes = [NSAttributedStringKey.paragraphStyle: paragraphStyle]
-//
-//        let myMutableString = NSMutableAttributedString(
-//            string: "",
-//            attributes: attributes)
-//
-//        self.moodLabel.attributedText = myMutableString
         labelTrailingConstraint.constant = 0
-        labelLeadingConstraint.constant = offsetSelectedPoint.x + 8
+        labelLeadingConstraint.constant = offsetSelectedPoint.x + leftOffset * 2
         labelBottomConstraint.constant = 0
         labelTopConstraint.constant = 0
         if var sublayers = self.layer.sublayers {
@@ -68,35 +59,19 @@ class MoodViewCell: UICollectionViewCell {
     }
     
     func configure(for index: Int, offsetRect: CGRect, isLastRow: Bool? = false) {
-//        print("configuring Cell for indexPath \(index)")
         self.backgroundColor = .clear
         self.moodLabel.textColor = UIColor.lightText
-        self.moodLabel.font = UIFont(name: "Futura", size: 15)
-        //self.tintColor = UIColor.red
-//        if index % 2 == 0 {
-//            configureEven();
-//        } else {
-//            configureOdd();
-//        }
-        offsetPath = offsetRect;
-//        if pointerPathLayer == nil {
-//            addPointerPath(isLastRow)
-//        }
-//        
-//        if borderPathLayer == nil {
-//            addPath(for: index)
-//        }
+        self.moodLabel.font = UIFont(name: "Futura", size: 22)
+        self.moodLabel.minimumScaleFactor = 0.1
+        offsetPath = offsetRect
         
         addPointerPath(isLastRow)
         addPath(for: index)
+        
         labelTrailingConstraint.constant = 0
-        labelLeadingConstraint.constant = offsetSelectedPoint.x + 8
+        labelLeadingConstraint.constant = offsetSelectedPoint.x + leftOffset * 2
         labelBottomConstraint.constant = 0
         labelTopConstraint.constant = 0
-//        labelLeadingConstraint.constant = offsetSelectedPoint.x 
-//        let edgeInsets = UIEdgeInsets(top: 0, left: offsetRect.origin.x, bottom: 0, right: 0)
-//        let insets = UIEdgeInsetsInsetRect(self.moodLabel.frame, edgeInsets)
-//        self.moodLabel.drawText(in: insets)
         
     }
     
@@ -104,7 +79,7 @@ class MoodViewCell: UICollectionViewCell {
         let width = self.safeAreaLayoutGuide.layoutFrame.width
         let height = self.safeAreaLayoutGuide.layoutFrame.height
         
-        let initialX:CGFloat = offsetPath.origin.x + 8
+        let initialX:CGFloat = offsetPath.origin.x
         let initialY:CGFloat = 0
         
         let pointerPath = UIBezierPath();
@@ -131,28 +106,14 @@ class MoodViewCell: UICollectionViewCell {
         
         pointerPathLayer = layer
         if !(self.layer.sublayers?.contains(pointerPathLayer!))! {
-            print("pointer path added")
             self.layer.insertSublayer(layer, at: 0)
         }
         
     }
     
-    private func configureEven() {
-        
-        
-//        moodLabel.textAlignment = .center
-//        labelLeadingConstraint.constant = self.bounds.width/16
-//        labelTrailingConstraint.constant = self.bounds.width * 0.25
-//        labelTopConstraint.constant = self.moodLabel.font.lineHeight
-//        self.contentView.layoutIfNeeded()
-        /*
-        print("labelLeadingConstraint.constant = \(labelLeadingConstraint.constant)")
-        print("labelTrailingConstraint.constant = \(labelTrailingConstraint.constant)")
-        print("labelTopConstraint.constant = \(labelTopConstraint.constant)")
-        self.layoutIfNeeded()
-        */
+    private func configureLabel() {
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.firstLineHeadIndent = offsetSelectedPoint.x + 8
+        paragraphStyle.firstLineHeadIndent = offsetSelectedPoint.x + leftOffset
         let attributes = [NSAttributedStringKey.paragraphStyle: paragraphStyle]
         
         let myMutableString = NSMutableAttributedString(
@@ -160,53 +121,62 @@ class MoodViewCell: UICollectionViewCell {
             attributes: attributes)
         
         self.moodLabel.attributedText = myMutableString
-//        self.layoutIfNeeded()
     }
-    
-    private func configureOdd() {
-        
-//        moodLabel.textAlignment = .center
-        //        labelTrailingConstraint.constant = self.bounds.width/16
-        //        labelLeadingConstraint.constant = self.bounds.width * 0.25
-        //        labelBottomConstraint.constant = self.moodLabel.font.lineHeight
-        //        self.contentView.layoutIfNeeded()
-        /*
-         print("labelLeadingConstraint.constant = \(labelLeadingConstraint.constant)")
-         print("labelTrailingConstraint.constant = \(labelTrailingConstraint.constant)")
-         print("labelBottomConstraint.constant = \(labelBottomConstraint.constant)")
-         self.layoutIfNeeded()
-         */
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.firstLineHeadIndent = offsetSelectedPoint.x + 8
-        let attributes = [NSAttributedStringKey.paragraphStyle: paragraphStyle]
-        
-        let myMutableString = NSMutableAttributedString(
-            string: self.moodLabel.text!,
-            attributes: attributes)
-
-        self.moodLabel.attributedText = myMutableString
-//        self.layoutIfNeeded()
-    }
+    //
+    //    private func configureEven() {
+    //
+    //
+    ////        moodLabel.textAlignment = .center
+    ////        labelLeadingConstraint.constant = self.bounds.width/16
+    ////        labelTrailingConstraint.constant = self.bounds.width * 0.25
+    ////        labelTopConstraint.constant = self.moodLabel.font.lineHeight
+    ////        self.contentView.layoutIfNeeded()
+    //        /*
+    //        print("labelLeadingConstraint.constant = \(labelLeadingConstraint.constant)")
+    //        print("labelTrailingConstraint.constant = \(labelTrailingConstraint.constant)")
+    //        print("labelTopConstraint.constant = \(labelTopConstraint.constant)")
+    //        self.layoutIfNeeded()
+    //        */
+    //        let paragraphStyle = NSMutableParagraphStyle()
+    //        paragraphStyle.firstLineHeadIndent = offsetSelectedPoint.x + leftOffset
+    //        let attributes = [NSAttributedStringKey.paragraphStyle: paragraphStyle]
+    //
+    //        let myMutableString = NSMutableAttributedString(
+    //            string: self.moodLabel.text!,
+    //            attributes: attributes)
+    //
+    //        self.moodLabel.attributedText = myMutableString
+    ////        self.layoutIfNeeded()
+    //    }
+    //
+    //    private func configureOdd() {
+    //
+    ////        moodLabel.textAlignment = .center
+    //        //        labelTrailingConstraint.constant = self.bounds.width/16
+    //        //        labelLeadingConstraint.constant = self.bounds.width * 0.25
+    //        //        labelBottomConstraint.constant = self.moodLabel.font.lineHeight
+    //        //        self.contentView.layoutIfNeeded()
+    //        /*
+    //         print("labelLeadingConstraint.constant = \(labelLeadingConstraint.constant)")
+    //         print("labelTrailingConstraint.constant = \(labelTrailingConstraint.constant)")
+    //         print("labelBottomConstraint.constant = \(labelBottomConstraint.constant)")
+    //         self.layoutIfNeeded()
+    //         */
+    //        let paragraphStyle = NSMutableParagraphStyle()
+    //        paragraphStyle.firstLineHeadIndent = offsetSelectedPoint.x + leftOffset
+    //        let attributes = [NSAttributedStringKey.paragraphStyle: paragraphStyle]
+    //
+    //        let myMutableString = NSMutableAttributedString(
+    //            string: self.moodLabel.text!,
+    //            attributes: attributes)
+    //
+    //        self.moodLabel.attributedText = myMutableString
+    ////        self.layoutIfNeeded()
+    //    }
     
     
     private func addPath(for index: Int) {
         let path = drawPath(for: index);
-        
-        //        self.viewWithTag(111)?.removeFromSuperview()
-//
-//        let sublayers = self.layer.sublayers
-//        if sublayers != nil {
-//            if (sublayers?.count)! > 1 {
-//                var index = 0;
-//
-//                while index < (sublayers?.count)! - 1 {
-//                    self.layer.sublayers![index].removeFromSuperlayer();
-//                    index += 1
-//                }
-//
-//            }
-//        }
-        
         let layer = CAShapeLayer()
         
         
@@ -218,8 +188,7 @@ class MoodViewCell: UICollectionViewCell {
         layer.path = path.cgPath
         
         borderPathLayer = layer
-        //self.layer.addSublayer(layer)
-        //self.layer.insertSublayer(layer, at: 0)
+        
     }
     
     
@@ -232,90 +201,32 @@ class MoodViewCell: UICollectionViewCell {
         let initialY:CGFloat = 0
         
         let bezierPath = UIBezierPath()
-        bezierPath.move(to: CGPoint(x: initialX + 8, y: initialY));
+        bezierPath.move(to: CGPoint(x: initialX, y: height/2))
+        bezierPath.addLine(to: CGPoint(x: initialX + 8, y: initialY));
         bezierPath.addLine(to: CGPoint(x: width - 8, y: initialY))
         bezierPath.addLine(to: CGPoint(x: width, y: height/2))
         bezierPath.addLine(to: CGPoint(x: width - 8, y: height))
-//        bezierPath.addLine(to: CGPoint(x: width - 8, y: height))
         bezierPath.addLine(to: CGPoint(x: initialX + 8, y: height))
-        bezierPath.addLine(to: CGPoint(x: initialX, y: height/2))
-//        bezierPath.addLine(to: CGPoint(x: initialX, y: initialY + 8))
         bezierPath.close()
         
-
         return bezierPath;
         
-        if index % 2 == 0 {
-            return drawPathForEven(width: width, height: height)
-        } else {
-            return drawPathForOdd(width: width, height: height)
-        }
-//
-//        let bezierPath = UIBezierPath()
-//        bezierPath.move(to: CGPoint(x: initialX + 8, y: initialY));
-//        bezierPath.addLine(to: CGPoint(x: width - 8, y: initialY))
-//        bezierPath.addLine(to: CGPoint(x: width, y: initialY + 8))
-//        bezierPath.addLine(to: CGPoint(x: width, y: height - 8))
-//        bezierPath.addLine(to: CGPoint(x: width - 8, y: height))
-//        bezierPath.addLine(to: CGPoint(x: initialX + 8, y: height))
-//        bezierPath.addLine(to: CGPoint(x: initialX, y: height - 8))
-//        bezierPath.addLine(to: CGPoint(x: initialX, y: initialY + 8))
-//
-//
-//        bezierPath.close()
-//
-//        //return bezierPath;
-//
-//        return UIBezierPath(roundedRect: CGRect(origin: self.safeAreaLayoutGuide.layoutFrame.origin, size: self.safeAreaLayoutGuide.layoutFrame.size), cornerRadius: 2)
-    }
-    
-    private func drawPathForEven(width:CGFloat, height:CGFloat) -> UIBezierPath {
-        let initialWidth = width;
-        let initialHeight = height
-        let initialX:CGFloat = 0
-        let initialY:CGFloat = height * 0.25;
-        
-        let bezierPath = UIBezierPath()
-        
-        bezierPath.move(to: CGPoint(x: width, y: 0));
-        bezierPath.addLine(to: CGPoint(x: width, y: height))
-        bezierPath.addLine(to: CGPoint(x: 0, y: height))
-        
-        return bezierPath
-    }
-    
-    private func drawPathForOdd(width:CGFloat, height:CGFloat) -> UIBezierPath {
-        let initialWidth = width;
-        let initialHeight = height
-        let initialX:CGFloat = 0
-        let initialY:CGFloat = height * -0.25 ;
-        
-        let bezierPath = UIBezierPath();
-        bezierPath.move(to: CGPoint(x: 0, y: 0));
-        bezierPath.addLine(to: CGPoint(x: 0, y: height))
-        bezierPath.addLine(to: CGPoint(x: width, y: height))
-        
-        return bezierPath
     }
     
     func setPathSelectAnimation() {
         if let borderPathLayer = borderPathLayer {
             borderPathLayer.removeAllAnimations()
             borderPathLayer.strokeColor = UIColor.green.cgColor
-//            borderPathLayer.lineWidth = 4
             let animation = CABasicAnimation(keyPath: "strokeEnd")
             animation.fromValue = 0
             animation.duration = 0.2
-//            borderPathLayer.add(animation, forKey: animation.keyPath)
             
             let flashAnimation = CABasicAnimation(keyPath: "fillColor")
             flashAnimation.fromValue = self.deselectedColor.cgColor
             flashAnimation.toValue = self.selectedColor.cgColor
-//            flashAnimation.beginTime = 0.5
             flashAnimation.duration = 0.5
             flashAnimation.autoreverses = true
             flashAnimation.repeatCount = .infinity
-//            borderPathLayer.add(animation, forKey: flashAnimation.keyPath)
             
             let animationGroup = CAAnimationGroup()
             animationGroup.animations = [animation, flashAnimation]
@@ -354,41 +265,11 @@ class MoodViewCell: UICollectionViewCell {
     
     func selectCell() {
         setPathSelectAnimation()
-        UIView.animate(withDuration: 0.5, delay: 0, options: [.allowUserInteraction, .repeat, .autoreverse], animations: {
-            //self.contentView.backgroundColor = self.selectedColor
-
-//            if self.layer.sublayers!.contains(self.borderPathLayer!) {
-//                let pathSublayer = self.layer.sublayers!.first as! CAShapeLayer
-//                pathSublayer.fillColor = self.selectedColor.cgColor
-//                //self.backgroundColor = self.selectedColor
-//            }
-        }, completion: nil)
-        
-        
-        
-//        self.animateSelection()
     }
     
     func deselectCell() {
-//        UIView.animate(withDuration: 0.3, animations: {
-//            //self.contentView.backgroundColor = self.deselectedColor
-//            
-////            self.borderPathLayer?.removeFromSuperlayer()
-////            if self.layer.sublayers!.contains(self.borderPathLayer!) {
-////                let pathSublayer = self.layer.sublayers!.first as! CAShapeLayer
-////                pathSublayer.fillColor = self.deselectedColor.cgColor
-////                //self.backgroundColor = self.selectedColor
-////            }
-//
-//        });
         setPathDeselectAnimation()
-//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
-//
-//        }
-        
-//        self.animateSelection()
     }
     
-    
-    
 }
+

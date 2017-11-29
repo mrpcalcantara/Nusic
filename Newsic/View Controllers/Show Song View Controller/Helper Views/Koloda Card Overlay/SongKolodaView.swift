@@ -35,7 +35,7 @@ class SongKolodaView: KolodaView {
             let horizontalMargin = -self.bounds.width
             let width = self.bounds.width
             let height = width * defaultHeightRatio
-            return CGRect(x: 0, y: -self.bounds.height*2, width: width, height: height)
+            return CGRect(x: 0, y: -self.bounds.height*6, width: width, height: height)
         }
  
         return CGRect.zero

@@ -17,7 +17,14 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     var user: NewsicUser! = nil;
     var player: SPTAudioStreamingController?
-    var likedTrackList:[SpotifyTrack] = []
+    var likedTrackList:[SpotifyTrack] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.songListTableView.reloadData()
+                self.songListTableView.layoutIfNeeded()
+            }
+        }
+    }
     var cardList:[NewsicTrack] = [];
     var playlist:NewsicPlaylist! = nil
     var spotifyHandler: Spotify! = nil;
@@ -40,6 +47,8 @@ class ShowSongViewController: NewsicDefaultViewController {
     var initialSongListCenter: CGPoint? = nil
     var initialPlayerMenuIconCenter: CGRect? = nil
     var songListMenuProgress: CGFloat! = 0;
+    var initialSwipeLocation: CGPoint! = CGPoint.zero
+    var currentPlayingTrack: SpotifyTrack?
     //var songPosition: Double! = 0
     
     
@@ -69,6 +78,7 @@ class ShowSongViewController: NewsicDefaultViewController {
         //            SwiftSpinner.hide()
         //        }, subtitle: "Tap the circle to hide the loader and browse your current songs!")
         setupTableView()
+        setupNavigationBar()
         setupSpotify()
         setupSongs()
         setupMenu()
@@ -82,6 +92,19 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        let dyad = moodObject?.emotions.first?.basicGroup
+        let dyadText = "Mood: \(dyad!.rawValue)"
+        
+        if EmotionDyad.allValues.contains(dyad!) {
+            SwiftSpinner.show(dyadText, animated: true)
+        } else {
+            SwiftSpinner.show("Loading...", animated: true)
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -91,6 +114,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         actionStopPlayer();
+    
     }
     
     override func viewDidLayoutSubviews() {
@@ -98,20 +122,32 @@ class ShowSongViewController: NewsicDefaultViewController {
     }
     
     func setupMainView() {
-        let dyad = moodObject?.emotions.first?.basicGroup
-        let dyadText = "Mood: \(dyad!.rawValue)"
+//        let dyad = moodObject?.emotions.first?.basicGroup
+//        if dyad != nil {
+//
+//        }
+//        let dyadText = "Mood: \(dyad!.rawValue)"
+//
+//        if EmotionDyad.allValues.contains(dyad!) {
+//            SwiftSpinner.show(dyadText, animated: true)
+//            self.navigationItem.title = dyadText
+//
+//            let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.font:UIFont(name: "Futura", size: 25)]
+//
+//            navigationController?.navigationBar.titleTextAttributes = textAttributes
+//        }
         
-        if EmotionDyad.allValues.contains(dyad!) {
-            SwiftSpinner.show(dyadText, animated: true)
-            self.navigationItem.title = dyadText
-            let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.font:UIFont(name: "Futura", size: 25)]
-            navigationController?.navigationBar.titleTextAttributes = textAttributes
-        }
+//        SwiftSpinner.show("LOADING")
         
-        let screenEdgeRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
-        screenEdgeRecognizer.edges = .right
+        let screenEdgeRecognizerSongMenu = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
+        screenEdgeRecognizerSongMenu.edges = .right
         //        screenEdgeRecognizer.cancelsTouchesInView = false
-        self.view.addGestureRecognizer(screenEdgeRecognizer);
+        self.view.addGestureRecognizer(screenEdgeRecognizerSongMenu);
+        
+        let screenEdgeRecognizerDismiss = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleDismissSwipe(_:)))
+        screenEdgeRecognizerDismiss.edges = .left
+        //        screenEdgeRecognizer.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(screenEdgeRecognizerDismiss);
     }
     
     func setupCommandCenter() {
@@ -140,22 +176,35 @@ class ShowSongViewController: NewsicDefaultViewController {
         //        commandCenter.seekForwardCommand.addTarget(self, action: #selector(test))
     }
     
-    func setupMenu() {
+    func setupNavigationBar() {
+        let navbar  = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: 44));
+        navbar.barStyle = .default
+        navbar.tintColor = UIColor.white
+        UINavigationBar.appearance().tintColor = UIColor.white
         
         let buttonLeft = UIButton(type: .system)
-        buttonLeft.setImage(UIImage(named: "MusicNote"), for: .normal)
-        buttonLeft.addTarget(self, action: #selector(toggleSongMenu), for: .touchUpInside)
-        let barButton = UIBarButtonItem(customView: buttonLeft);
-        self.navigationItem.rightBarButtonItem = barButton
-        //self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "MoodIcon");
-        //self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "MoodIcon");
-        //self.navigationController?.
-        let buttonRight = UIButton(type: .system)
-        buttonRight.setImage(UIImage(named: "MoodIcon"), for: .normal)
-        buttonRight.addTarget(self, action: #selector(backToSongPicker), for: .touchUpInside)
-        let barButton2 = UIBarButtonItem(customView: buttonRight);
-        self.navigationItem.leftBarButtonItem = barButton2
+        buttonLeft.setImage(UIImage(named: "MoodIcon"), for: .normal)
+        buttonLeft.addTarget(self, action: #selector(backToSongPicker), for: .touchUpInside)
+        let barButtonLeft = UIBarButtonItem(customView: buttonLeft);
+        self.navigationItem.leftBarButtonItem = barButtonLeft
         
+        
+        let buttonRight = UIButton(type: .system)
+        buttonRight.setImage(UIImage(named: "MusicNote"), for: .normal)
+        buttonRight.addTarget(self, action: #selector(toggleSongMenu), for: .touchUpInside)
+        let barButtonRight = UIBarButtonItem(customView: buttonRight);
+        
+        self.navigationItem.rightBarButtonItem = barButtonRight
+        
+        self.navigationItem.title = "TEST"
+        
+        
+        let navItem = self.navigationItem
+        navbar.items = [navItem]
+        self.view.addSubview(navbar)
+    }
+    
+    func setupMenu() {
         
         self.view.sendSubview(toBack: trackStackView)
         self.view.sendSubview(toBack: songCardView)
@@ -168,9 +217,12 @@ class ShowSongViewController: NewsicDefaultViewController {
             spotifyHandler.getAllTracksForPlaylist(playlistId: playlist.id!) { (spotifyTracks) in
                 if let spotifyTracks = spotifyTracks {
                     self.likedTrackList = spotifyTracks;
-                    DispatchQueue.main.async {
-                        self.songListTableView.reloadData()
-                    }
+//
+//                    DispatchQueue.main.async {
+//
+//                        self.songListTableView.reloadData()
+//                        self.songListTableView.layoutIfNeeded()
+//                    }
                     
                 }
             }
@@ -180,9 +232,10 @@ class ShowSongViewController: NewsicDefaultViewController {
                     self.spotifyHandler.getTrackInfo(for: trackList, offset: 0, currentExtractedTrackList: [], trackInfoListHandler: { (spotifyTracks) in
                         if let spotifyTracks = spotifyTracks {
                             self.likedTrackList = spotifyTracks;
-                            DispatchQueue.main.async {
-                                self.songListTableView.reloadData()
-                            }
+//                            DispatchQueue.main.async {
+//                                self.songListTableView.reloadData()
+//                                self.songListTableView.layoutIfNeeded()
+//                            }
                             
                         }
                     })
@@ -222,7 +275,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     func openMenu() {
         isMenuOpen = true
-        
+        self.songListTableView.layoutIfNeeded()
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
             self.trackStackView.layer.zPosition = -1
             //            self.songListTableView.layer.zPosition = 1
@@ -238,7 +291,7 @@ class ShowSongViewController: NewsicDefaultViewController {
             self.tableViewLeadingConstraint.constant = self.view.frame.width/6;
             self.tableViewTrailingConstraint.constant = 0
             self.trackStackView.alpha = 0.1
-            print(self.songListTableView.center)
+            
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
@@ -262,16 +315,32 @@ class ShowSongViewController: NewsicDefaultViewController {
             self.tableViewTrailingConstraint.constant -= (5*self.view.frame.width)/6
             self.trackStackView.alpha = 1
             //self.trackStackView.removeBlurEffect()
-            print(self.songListTableView.center)
+//            print(self.songListTableView.center)
             self.view.layoutIfNeeded()
         }, completion: nil)
         
     }
     
-    @objc func backToSongPicker() {
+    @objc func backToSongPicker(_ startProgress: AnyObject?) {
+        
+        let isButton = startProgress is UIButton
+        //Check if called from button or swipe
+        let progress:Float = startProgress is UIButton ? 0 : Float(startProgress as! NSNumber)//Float(startProgress)
+        
         let view = self.navigationItem.leftBarButtonItem?.customView as! UIButton;
         view.animateClick();
-        swipeBack(sender: nil)
+//        swipeBack(sender: nil)
+        let transition: CATransition = CATransition()
+        transition.duration = 0.2
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        transition.startProgress = progress
+        
+        transition.type = kCATransitionFade
+        transition.subtype = kCATransitionFromLeft
+        self.view.window!.layer.add(transition, forKey: nil)
+//        self.dismissViewControllerAnimated(false, completion: nil)
+        self.dismiss(animated: false, completion: nil);
+        
         actionStopPlayer();
     }
     
@@ -524,7 +593,6 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
                 
                 songListMenuProgress = (translation.x)/finalPoint
             } else {
-                print(self.tableViewLeadingConstraint.constant)
                 self.tableViewLeadingConstraint.constant = self.view.frame.width + translationX
                 self.tableViewTrailingConstraint.constant = (self.view.frame.width) * (-5/6) - translationX
                 
@@ -543,11 +611,34 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
                 closePlayerMenu(animated: true)
             }
             
-            print("edge pan ended")
-            print(songListTableView.center)
+            
             songListMenuProgress = 0
         }
         
     }
+    
+    @objc func handleDismissSwipe(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
+        let touchPoint = gestureRecognizer.location(in: self.view)
+        let finalPoint = self.view.frame.width
+        
+        if gestureRecognizer.state == .began {
+            initialSwipeLocation = touchPoint
+        } else if gestureRecognizer.state == .changed {
+            if touchPoint.x - initialSwipeLocation.x > 0 {
+                self.view.frame = CGRect(x: touchPoint.x - initialSwipeLocation.x, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+            }
+        } else if gestureRecognizer.state == .cancelled || gestureRecognizer.state == .ended {
+            if touchPoint.x - initialSwipeLocation.x > 100 {
+//                self.dismiss(animated: true, completion: nil)
+                let progress = Float(fminf(fmaxf(Float(touchPoint.x/finalPoint), 0.0), 1.0))
+                backToSongPicker(NSNumber(value: progress));
+            } else {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+                })
+            }
+        }
+    }
+    
 }
 

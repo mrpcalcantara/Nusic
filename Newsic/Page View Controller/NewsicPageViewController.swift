@@ -12,6 +12,10 @@ class NewsicPageViewController: UIPageViewController {
     
     weak var newsicDelegate: NewsicPageViewControllerDelegate?
     
+    var songPickerVC: UIViewController?
+    var sideMenuVC: UIViewController?
+    var showSongVC: UIViewController?
+    
     private(set) lazy var orderedViewControllers: [UIViewController] = {
         // The view controllers will be shown in this order
 //        return [self.newColoredViewController(color: "Green"),
@@ -26,9 +30,34 @@ class NewsicPageViewController: UIPageViewController {
         dataSource = self
         delegate = self
         
-        if let initialViewController = orderedViewControllers.first {
-            scrollToViewController(viewController: initialViewController)
+        
+        
+        songPickerVC = UIStoryboard(name: "Main", bundle: nil) .
+            instantiateViewController(withIdentifier: "SongPicker")
+        sideMenuVC = UIStoryboard(name: "Main", bundle: nil) .
+            instantiateViewController(withIdentifier: "SideMenu")
+        showSongVC = UIStoryboard(name: "Main", bundle: nil) .
+            instantiateViewController(withIdentifier: "ShowSong")
+        
+        if let sideMenuVC = sideMenuVC {
+            orderedViewControllers.insert(sideMenuVC, at: 0)
         }
+        
+        if let songPickerVC = songPickerVC {
+            orderedViewControllers.insert(songPickerVC, at: 1)
+        }
+        
+//        if let showSongVC = showSongVC {
+//            orderedViewControllers.insert(showSongVC, at: 2)
+//        }
+        
+//        self.navigationController?.pushViewController(songPicker, animated: true)
+//        self.navigationController?.pushViewController(songPicker, animated: true)
+        let initialViewController = orderedViewControllers[1]
+        scrollToViewController(viewController: initialViewController)
+//        if let initialViewController = orderedViewControllers.last {
+//            scrollToViewController(viewController: initialViewController)
+//        }
         
         newsicDelegate?.newsicPageViewController(newsicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
         
@@ -69,6 +98,11 @@ class NewsicPageViewController: UIPageViewController {
      */
     private func scrollToViewController(viewController: UIViewController,
                                         direction: UIPageViewControllerNavigationDirection = .forward) {
+//        if !(viewController is ShowSongViewController) {
+//
+//        }
+//        self.pageViewController(self, willTransitionTo: [viewController])
+//        self.pageViewController(self, viewControllerAfter: viewController)
         setViewControllers([viewController],
                            direction: direction,
                            animated: true,
@@ -77,6 +111,7 @@ class NewsicPageViewController: UIPageViewController {
                             // any delegate methods, so we have to manually notify the
                             // 'newsicDelegate' of the new index.
                             self.notifyNewsicDelegateOfNewIndex()
+                            
         })
     }
     
@@ -105,7 +140,7 @@ extension NewsicPageViewController: UIPageViewControllerDataSource {
         // User is on the first view controller and swiped left to loop to
         // the last view controller.
         guard previousIndex >= 0 else {
-            return orderedViewControllers.last
+            return nil
         }
         
         guard orderedViewControllers.count > previousIndex else {
@@ -116,6 +151,7 @@ extension NewsicPageViewController: UIPageViewControllerDataSource {
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        
         guard let viewControllerIndex = orderedViewControllers.index(of: viewController) else {
             return nil
         }
@@ -123,20 +159,24 @@ extension NewsicPageViewController: UIPageViewControllerDataSource {
         let nextIndex = viewControllerIndex + 1
         let orderedViewControllersCount = orderedViewControllers.count
         
+        
         // User is on the last view controller and swiped right to loop to
         // the first view controller.
         guard orderedViewControllersCount != nextIndex else {
-            return orderedViewControllers.first
+            return nil
         }
         
         guard orderedViewControllersCount > nextIndex else {
             return nil
         }
         
+        
+        
         return orderedViewControllers[nextIndex]
     }
     
 }
+
 
 extension NewsicPageViewController: UIPageViewControllerDelegate {
     
@@ -145,6 +185,11 @@ extension NewsicPageViewController: UIPageViewControllerDelegate {
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
         notifyNewsicDelegateOfNewIndex()
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        print("transitioning to \(pendingViewControllers.first.debugDescription)")
+        self.pageViewController(self, viewControllerAfter: pendingViewControllers.first!)
     }
     
 }
