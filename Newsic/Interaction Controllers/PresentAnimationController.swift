@@ -32,7 +32,7 @@ class PresentAnimationController: NSObject, UIViewControllerAnimatedTransitionin
         toViewController.view.frame = rectOffset.offsetBy(dx: bounds.size.width, dy: 0)
         containerView.addSubview(toViewController.view)
         
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0.0, options: .curveEaseInOut, animations: {
             toViewController.view.frame = finalFrameForVC
         }, completion: {
             finished in

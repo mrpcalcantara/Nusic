@@ -47,20 +47,18 @@ class DismissAnimationController: NSObject, UIViewControllerAnimatedTransitionin
         
         fromViewController.view.alpha = 0
         toViewController.view.alpha = 0
-        
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0.0, options: .curveEaseInOut, animations: {
             snapshotView.frame = finalFrameForVC
             snapshotFromView.frame = CGRect(origin: CGPoint(x: snapshotFromView.frame.origin.x + snapshotFromView.frame.width, y: snapshotFromView.frame.origin.y), size: snapshotFromView.frame.size)
-            snapshotFromView.alpha = 0.5
-        }, completion: {
-            finished in
+            snapshotFromView.alpha = 0.3
+        }) { (finished) in
             snapshotView.removeFromSuperview()
             snapshotFromView.removeFromSuperview()
             let wasCancelled = transitionContext.transitionWasCancelled
             fromViewController.view.alpha = 1
             toViewController.view.alpha = 1
             transitionContext.completeTransition(!wasCancelled)
-        })
+        }
         
     }
     

@@ -171,39 +171,32 @@ extension SongPickerViewController {
     
     func toggleCollectionViews(for index: Int, progress: CGFloat? = 0) {
         if index == 0 {
-            
             self.moodCollectionLeadingConstraint.constant = 8
             self.moodCollectionTrailingConstraint.constant = 8
             self.genreCollectionLeadingConstraint.constant =  -self.genreCollectionView.frame.width + 8
             self.genreCollectionTrailingConstraint.constant =  self.genreCollectionView.frame.width + 8
             UIView.animate(withDuration: 0.3, animations: {
-                self.mainControlView.layoutIfNeeded()
                 self.genreCollectionView.alpha = 0
                 self.searchButton.alpha = 0
                 self.moodCollectionView.alpha = 1
-                
+                self.mainControlView.layoutIfNeeded()
             }, completion: { (completed) in
                 
             })
-            
             
             isMoodSelected = true
         } else {
             self.moodCollectionLeadingConstraint.constant = self.moodCollectionView.frame.width + 8
             self.moodCollectionTrailingConstraint.constant =  -self.moodCollectionView.frame.width + 8
-            
             self.genreCollectionLeadingConstraint.constant = 8
             self.genreCollectionTrailingConstraint.constant = 8
             UIView.animate(withDuration: 0.3, animations: {
-                self.mainControlView.layoutIfNeeded()
                 self.moodCollectionView.alpha = 0
                 self.genreCollectionView.alpha = 1
                 self.searchButton.alpha = 1
+                self.mainControlView.layoutIfNeeded()
             }, completion: { (completed) in
                 
-//                self.showGenreCollectionView();
-//                self.hideMoodCollectionView();
-//                self.searchButton.isHidden = false;
             })
             
             isMoodSelected = false
@@ -281,7 +274,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
             self.moodObject = NewsicMood(emotions: [emotion], isAmbiguous: false, sentiment: 0.5, date: Date(), userName: spotifyHandler.auth.session.canonicalUsername, associatedGenres: [], associatedTracks: []);
             self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
             self.moodObject?.saveData(saveCompleteHandler: { (reference, error) in  })
-            
+            self.selectedGenres.removeAll()
             passDataToShowSong()
             //self.performSegue(withIdentifier: "showVideoSegue", sender: self);
         } else {

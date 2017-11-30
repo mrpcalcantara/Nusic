@@ -11,11 +11,10 @@ import UIKit
 class CollectionViewHeader: UICollectionReusableView {
 
     @IBOutlet weak var sectionHeaderLabel: UILabel!
-//    @IBOutlet lazy var sectionHeaderLabel: UILabel! = {
-//        [unowned self] in
-//        let label = UILabel()
-//        return label;
-//    }()
+    
+    override class var layerClass: AnyClass {
+        get { return CustomLayer.self }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
