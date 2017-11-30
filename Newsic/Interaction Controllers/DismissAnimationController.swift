@@ -24,35 +24,38 @@ class DismissAnimationController: NSObject, UIViewControllerAnimatedTransitionin
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
-        
-        // 1
         let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)!
         let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
         let finalFrameForVC = transitionContext.finalFrame(for: toViewController)
         let containerView = transitionContext.containerView
         let bounds = UIScreen.main.bounds
         let rectOffset = CGRect(origin: finalFrameForVC.origin, size: finalFrameForVC.size)
-        let snapshotView = toViewController.view.snapshotView(afterScreenUpdates: false)
+        
+        guard
+            let snapshotView = toViewController.view.snapshotView(afterScreenUpdates: false),
+            let snapshotFromView = fromViewController.view.snapshotView(afterScreenUpdates: false) else {
+                return;
+        }
         
         
-        snapshotView?.frame = rectOffset.offsetBy(dx: -bounds.size.width, dy: 0)
-        containerView.addSubview(snapshotView!)
+        snapshotView.frame = rectOffset.offsetBy(dx: -bounds.size.width, dy: 0)
+        containerView.addSubview(snapshotView)
         
-        let snapshotFromView = fromViewController.view.snapshotView(afterScreenUpdates: false)
+        
         //containerView.addSubview(snapshotFromView!)
-        containerView.insertSubview(snapshotFromView!, belowSubview: snapshotView!)
+        containerView.insertSubview(snapshotFromView, belowSubview: snapshotView)
         
         fromViewController.view.alpha = 0
         toViewController.view.alpha = 0
         
         UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
-            snapshotView?.frame = finalFrameForVC
-            snapshotFromView?.frame = fromViewController.view.frame.insetBy(dx: fromViewController.view.frame.width / 20, dy: fromViewController.view.frame.height / 20)
-            snapshotFromView?.alpha = 0.5
+            snapshotView.frame = finalFrameForVC
+            snapshotFromView.frame = CGRect(origin: CGPoint(x: snapshotFromView.frame.origin.x + snapshotFromView.frame.width, y: snapshotFromView.frame.origin.y), size: snapshotFromView.frame.size)
+            snapshotFromView.alpha = 0.5
         }, completion: {
             finished in
-            snapshotView?.removeFromSuperview()
-            snapshotFromView?.removeFromSuperview()
+            snapshotView.removeFromSuperview()
+            snapshotFromView.removeFromSuperview()
             let wasCancelled = transitionContext.transitionWasCancelled
             fromViewController.view.alpha = 1
             toViewController.view.alpha = 1
