@@ -265,6 +265,9 @@ class SongPickerViewController: NewsicDefaultViewController {
         rightSwipeCollectionsRecognizer.direction = .right
         self.mainControlView.addGestureRecognizer(rightSwipeCollectionsRecognizer);
         */
+        
+        let collectionViewsPanGestureRecoginizer = UIPanGestureRecognizer(target: self, action: #selector(panCollectionViews(_:)))
+        self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecoginizer)
     }
     
     func setupMenuView() {
@@ -446,44 +449,40 @@ class SongPickerViewController: NewsicDefaultViewController {
 }
 
 
-//
-//extension SongPickerViewController {
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        let touch: UITouch? = touches.first
-//        //location is relative to the current view
-//        // do something with the touched point
-//        if let view = touch?.view {
-//            if view == moodCollectionView {
-//                let moodView = moodCollectionView
-//                if let moodView = moodView {
-//                    let location = touch?.location(in: moodView)
-//                    if let location = location {
-//                        let indexPath = moodView.indexPathForItem(at: location)
-//                        if let indexPath = indexPath {
-//                            moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
-//                            print(location)
-//                        }
-//                    }
-//                }
-//
-//            }
-//
-//            if view == genreCollectionView {
-//                let moodView = genreCollectionView
-//                if let moodView = moodView {
-//                    let location = touch?.location(in: moodView)
-//                    if let location = location {
-//                        let indexPath = moodView.indexPathForItem(at: location)
-//                        if let indexPath = indexPath {
-//                            moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
-//                            print(location)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
+extension SongPickerViewController: UIGestureRecognizerDelegate {
+    
+    @objc func panCollectionViews(_ gestureRecognizer: UIPanGestureRecognizer) {
+        let translation = gestureRecognizer.translation(in: gestureRecognizer.view!)
+        let divisor = gestureRecognizer.view != nil ? gestureRecognizer.view!.frame.width : 200
+        var progress = (translation.x / divisor )
+        let panDirection: UISwipeGestureRecognizerDirection = translation.x < 0 ? .left : .right;
+        progress = CGFloat(fminf(fmaxf(Float(abs(progress)), 0.0), 1.0))
+        var toIndex = panDirection == .right ? newsicControl.selectedIndex + 1 : newsicControl.selectedIndex - 1
+        var allowMove = true
+        if toIndex < 0 {
+            toIndex = 0
+            allowMove = panDirection == .left ? false : true
+        } else if toIndex > newsicControl.items.count - 1 {
+            toIndex = newsicControl.items.count - 1
+            allowMove = panDirection == .right ? false : true
+        }
+        switch gestureRecognizer.state {
+        case .began:
+            break
+        case .changed:
+            if allowMove {
+                segmentedControlMove(progress, toIndex);
+            }
+        case .cancelled:
+            segmentedControlMove(1, newsicControl.selectedIndex)
+        case .ended:
+            newsicControl.move(to: toIndex)
+            newsicControl.delegate?.didSelect(toIndex)
+        default:
+            break
+        }
+    }
+}
 
 extension SongPickerViewController: UIPageViewControllerDelegate {
     
