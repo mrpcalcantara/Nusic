@@ -444,7 +444,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uVu-im-pgF" userLabel="Song Progress View">
-                                <rect key="frame" x="24" y="551" width="327" height="64"/>
+                                <rect key="frame" x="32" y="551" width="311" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.14999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="dXd-ii-e2J" userLabel="Elapsed Time Label">
                                         <rect key="frame" x="0.0" y="23.5" width="34.5" height="18.5"/>
@@ -453,13 +453,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="8qg-KD-JNS">
-                                        <rect key="frame" x="-2" y="34" width="323" height="31"/>
+                                        <rect key="frame" x="-2" y="34" width="307" height="31"/>
                                         <connections>
                                             <action selector="songSeek:" destination="eJS-am-Jyf" eventType="valueChanged" id="SPl-QY-bUM"/>
                                         </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.14999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="h7B-Kq-TRB" userLabel="Progress Label">
-                                        <rect key="frame" x="284.5" y="23.5" width="34.5" height="18.5"/>
+                                        <rect key="frame" x="268.5" y="23.5" width="34.5" height="18.5"/>
                                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -538,9 +538,9 @@
                             <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="Iig-1D-otX" secondAttribute="bottom" constant="8" id="3eq-9V-kik"/>
                             <constraint firstItem="Any-Pf-dnV" firstAttribute="leading" secondItem="Yet-46-QVi" secondAttribute="leading" constant="60" id="9Ib-eq-uoR"/>
                             <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="80" id="HDx-N2-1Fw"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="uVu-im-pgF" secondAttribute="trailing" constant="8" id="Ill-Y3-Qti"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="uVu-im-pgF" secondAttribute="trailing" constant="16" id="Ill-Y3-Qti"/>
                             <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="k6E-Yi-lJS" secondAttribute="bottom" constant="8" id="KtE-le-FYf"/>
-                            <constraint firstItem="uVu-im-pgF" firstAttribute="leading" secondItem="Yet-46-QVi" secondAttribute="leadingMargin" constant="8" id="Lpd-zq-eJ8"/>
+                            <constraint firstItem="uVu-im-pgF" firstAttribute="leading" secondItem="Yet-46-QVi" secondAttribute="leadingMargin" constant="16" id="Lpd-zq-eJ8"/>
                             <constraint firstItem="alX-vn-cgC" firstAttribute="centerX" secondItem="Yet-46-QVi" secondAttribute="centerX" id="XQo-Fy-Buo"/>
                             <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="Qgp-ff-fLa" secondAttribute="bottom" constant="8" id="YpW-ge-llq"/>
                             <constraint firstItem="alX-vn-cgC" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="Yzb-nM-FQD"/>
@@ -574,6 +574,7 @@
                         <outlet property="previousSong" destination="HQy-9W-NO5" id="UXb-dN-Qzf"/>
                         <outlet property="previousTrack" destination="k6E-Yi-lJS" id="ka1-MA-DHN"/>
                         <outlet property="showMore" destination="alX-vn-cgC" id="mtA-kE-ekt"/>
+                        <outlet property="songCardLeadingConstraint" destination="uCK-lc-dd6" id="Bel-A6-3aK"/>
                         <outlet property="songCardView" destination="lxK-RZ-2XL" id="DTA-id-vZl"/>
                         <outlet property="songDurationLabel" destination="h7B-Kq-TRB" id="Wu8-ub-Rem"/>
                         <outlet property="songElapsedTime" destination="dXd-ii-e2J" id="cKE-qX-ye9"/>

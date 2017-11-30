@@ -134,11 +134,11 @@ extension ShowSongViewController {
             self.nextSong.alpha = 1
             self.nextSong.isHidden = false
 
-            self.songProgressView.frame.origin.x = 8
+            self.songProgressView.frame.origin.x = self.trackStackView.frame.origin.x - 8
             self.songProgressView.frame.origin.y = self.view.frame.height * 0.9 - buttonWidth
             self.songProgressView.isHidden = false
             self.songProgressView.alpha = 1
-            self.songProgressView.frame.size = CGSize(width: self.songProgressSlider.frame.width, height: self.songProgressView.frame.height)
+            self.songProgressView.frame.size = CGSize(width: self.trackStackView.frame.width-self.trackStackView.frame.origin.x, height: self.songProgressView.frame.height)
             
             self.showMore.frame.origin.y = self.view.frame.height * 0.84 - buttonWidth
 
