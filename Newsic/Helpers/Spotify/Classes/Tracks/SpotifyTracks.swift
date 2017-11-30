@@ -259,7 +259,6 @@ extension Spotify {
                             artists.removeLast(); artists.removeLast();
                             //print(artists)
                             let albumImage = imageInfo[0]["url"] as? String;
-                            print(albumImage!)
                             if let trackName = trackInfo["name"] as? String,
                                 let trackId = trackInfo["id"] as? String,
                                 let trackUri = trackInfo["uri"] as? String,
