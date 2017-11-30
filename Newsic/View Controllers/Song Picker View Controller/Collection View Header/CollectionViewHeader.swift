@@ -13,7 +13,7 @@ class CollectionViewHeader: UICollectionReusableView {
     @IBOutlet weak var sectionHeaderLabel: UILabel!
     
     override class var layerClass: AnyClass {
-        get { return CustomLayer.self }
+        get { return NewsicCustomLayer.self }
     }
     
     override func awakeFromNib() {

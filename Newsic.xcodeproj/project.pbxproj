@@ -28,7 +28,7 @@
 		8C268B521FCFAF3200BB4C6F /* TransitionAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B511FCFAF3200BB4C6F /* TransitionAnimation.swift */; };
 		8C268B541FCFB53100BB4C6F /* DismissAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B531FCFB53100BB4C6F /* DismissAnimationController.swift */; };
 		8C268B561FCFD62F00BB4C6F /* SwipeInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B551FCFD62F00BB4C6F /* SwipeInteractionController.swift */; };
-		8C268B581FD0086E00BB4C6F /* CustomLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B571FD0086E00BB4C6F /* CustomLayer.swift */; };
+		8C268B581FD0086E00BB4C6F /* NewsicCustomLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B571FD0086E00BB4C6F /* NewsicCustomLayer.swift */; };
 		8C2911AE1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */; };
 		8C3654BC1F5516B7006C12D9 /* Koloda-SongCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */; };
 		8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3654BE1F551ABE006C12D9 /* OverlayView.xib */; };
@@ -131,7 +131,7 @@
 		8C268B511FCFAF3200BB4C6F /* TransitionAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimation.swift; sourceTree = "<group>"; };
 		8C268B531FCFB53100BB4C6F /* DismissAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissAnimationController.swift; sourceTree = "<group>"; };
 		8C268B551FCFD62F00BB4C6F /* SwipeInteractionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeInteractionController.swift; sourceTree = "<group>"; };
-		8C268B571FD0086E00BB4C6F /* CustomLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayer.swift; sourceTree = "<group>"; };
+		8C268B571FD0086E00BB4C6F /* NewsicCustomLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicCustomLayer.swift; sourceTree = "<group>"; };
 		8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControlDelegate.swift; sourceTree = "<group>"; };
 		8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Koloda-SongCard.swift"; sourceTree = "<group>"; };
 		8C3654BE1F551ABE006C12D9 /* OverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
@@ -549,7 +549,7 @@
 				8C9DB4F61F6B840400F35268 /* NewsicButton.swift */,
 				8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */,
 				8C250AB41FBBF616002A108C /* NewsicDefaultViewController.swift */,
-				8C268B571FD0086E00BB4C6F /* CustomLayer.swift */,
+				8C268B571FD0086E00BB4C6F /* NewsicCustomLayer.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -977,7 +977,7 @@
 				8CA40DFE1F8C99B500C95B9D /* UIButton.swift in Sources */,
 				8C64F45D1F56C9540006B644 /* Spotify.swift in Sources */,
 				8C9DB4FD1F6BB38800F35268 /* SongTableViewCell.swift in Sources */,
-				8C268B581FD0086E00BB4C6F /* CustomLayer.swift in Sources */,
+				8C268B581FD0086E00BB4C6F /* NewsicCustomLayer.swift in Sources */,
 				8C0C1E961F60F7F300CF8516 /* ErrorCodes.swift in Sources */,
 				8C9C9E911F67C7E10093C14A /* NewsicActivityIndicator.swift in Sources */,
 				8C7BE3291F78AD70004D9F15 /* SideMenuViewController.swift in Sources */,

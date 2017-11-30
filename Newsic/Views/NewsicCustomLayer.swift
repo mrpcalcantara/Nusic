@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CustomLayer: CALayer {
+class NewsicCustomLayer: CALayer {
     override var zPosition: CGFloat {
         get { return 0 }
         set {}
