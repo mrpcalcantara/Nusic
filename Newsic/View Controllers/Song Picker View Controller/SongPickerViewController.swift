@@ -476,8 +476,13 @@ extension SongPickerViewController: UIGestureRecognizerDelegate {
         case .cancelled:
             segmentedControlMove(1, newsicControl.selectedIndex)
         case .ended:
-            newsicControl.move(to: toIndex)
-            newsicControl.delegate?.didSelect(toIndex)
+            if progress > 0.5 {
+                newsicControl.move(to: toIndex)
+                newsicControl.delegate?.didSelect(toIndex)
+            } else {
+                newsicControl.delegate?.didSelect(newsicControl.selectedIndex)
+            }
+            
         default:
             break
         }
