@@ -28,8 +28,6 @@ extension Spotify {
             }
         }
         
-//        print("urlString for searching music = \(urlString)")
-        
         //Create URL Request to get sogs
         let url = URL(string: urlString);
         var request = URLRequest(url: url!)
