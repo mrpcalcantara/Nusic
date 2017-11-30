@@ -143,14 +143,12 @@ extension SongPickerViewController {
         let showProgress = progress
         let hideProgress = 1 - progress
         
-        moodCollectionLeadingConstraint.constant = ( moodCollectionView.frame.width * hideProgress ) + 8
-        moodCollectionTrailingConstraint.constant = ( -moodCollectionView.frame.width * hideProgress ) + 8
-        
-        genreCollectionLeadingConstraint.constant = ( -genreCollectionView.frame.width * showProgress ) + 8
-        genreCollectionTrailingConstraint.constant = ( genreCollectionView.frame.width * showProgress ) + 8
-        
-        
-        
+        moodCollectionLeadingConstraint.constant = ( -moodCollectionView.frame.width * hideProgress ) + 8
+        moodCollectionTrailingConstraint.constant = ( moodCollectionView.frame.width * hideProgress ) + 8
+
+        genreCollectionLeadingConstraint.constant = ( genreCollectionView.frame.width * showProgress ) + 8
+        genreCollectionTrailingConstraint.constant = ( -genreCollectionView.frame.width * showProgress ) + 8
+
         genreCollectionView.layoutIfNeeded()
         moodCollectionView.layoutIfNeeded()
     }
@@ -159,11 +157,11 @@ extension SongPickerViewController {
         let showProgress = progress
         let hideProgress = 1 - progress
         
-        moodCollectionLeadingConstraint.constant = ( moodCollectionView.frame.width * showProgress ) + 8
-        moodCollectionTrailingConstraint.constant = ( -moodCollectionView.frame.width * showProgress ) + 8
-        
-        genreCollectionLeadingConstraint.constant = ( -genreCollectionView.frame.width * hideProgress ) + 8
-        genreCollectionTrailingConstraint.constant = ( genreCollectionView.frame.width * hideProgress ) + 8
+        moodCollectionLeadingConstraint.constant = ( -moodCollectionView.frame.width * showProgress ) + 8
+        moodCollectionTrailingConstraint.constant = ( moodCollectionView.frame.width * showProgress ) + 8
+
+        genreCollectionLeadingConstraint.constant = ( genreCollectionView.frame.width * hideProgress ) + 8
+        genreCollectionTrailingConstraint.constant = ( -genreCollectionView.frame.width * hideProgress ) + 8
         
         genreCollectionView.layoutIfNeeded()
         moodCollectionView.layoutIfNeeded()
@@ -173,8 +171,9 @@ extension SongPickerViewController {
         if index == 0 {
             self.moodCollectionLeadingConstraint.constant = 8
             self.moodCollectionTrailingConstraint.constant = 8
-            self.genreCollectionLeadingConstraint.constant =  -self.genreCollectionView.frame.width + 8
-            self.genreCollectionTrailingConstraint.constant =  self.genreCollectionView.frame.width + 8
+            self.genreCollectionLeadingConstraint.constant =  self.genreCollectionView.frame.width + 8
+            self.genreCollectionTrailingConstraint.constant =  -self.genreCollectionView.frame.width + 8
+            
             UIView.animate(withDuration: 0.3, animations: {
                 self.genreCollectionView.alpha = 0
                 self.searchButton.alpha = 0
@@ -186,10 +185,11 @@ extension SongPickerViewController {
             
             isMoodSelected = true
         } else {
-            self.moodCollectionLeadingConstraint.constant = self.moodCollectionView.frame.width + 8
-            self.moodCollectionTrailingConstraint.constant =  -self.moodCollectionView.frame.width + 8
+            self.moodCollectionLeadingConstraint.constant = -self.moodCollectionView.frame.width + 8
+            self.moodCollectionTrailingConstraint.constant =  self.moodCollectionView.frame.width + 8
             self.genreCollectionLeadingConstraint.constant = 8
             self.genreCollectionTrailingConstraint.constant = 8
+            
             UIView.animate(withDuration: 0.3, animations: {
                 self.moodCollectionView.alpha = 0
                 self.genreCollectionView.alpha = 1
