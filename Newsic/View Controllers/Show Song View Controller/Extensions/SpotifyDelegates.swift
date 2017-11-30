@@ -66,17 +66,8 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         
     }
 
-    
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
-        //deactivateAudioSession();
-        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-        if let nowPlayingInfo = nowPlayingInfo, let currentTrack = audioStreaming.metadata.currentTrack {
-            let elapsedTime = nowPlayingInfo["playbackDuration"] as! Double
-            let duration = Double(currentTrack.duration)
-            if elapsedTime != nil && elapsedTime == duration {
-                songCardView.swipe(.left);
-            }
-        }
+        deactivateAudioSession();
     }
     
     func audioStreamingDidLogin(_ audioStreaming: SPTAudioStreamingController!) {
@@ -119,10 +110,13 @@ extension ShowSongViewController {
         setupStreamingDelegate();
         setupPlaybackDelegate();
         
-        do {
-            try self.player?.start(withClientId: self.auth.clientID);
-        } catch { print("error starting") }
+        if !(self.player?.initialized)! {
+            do {
+                try self.player?.start(withClientId: self.auth.clientID);
+            } catch { print("error starting") }
+        }
         self.player?.login(withAccessToken: self.auth.session.accessToken);
+        
     }
     
     func convertElapsedSecondsToTime(interval: Int) -> String {
@@ -187,8 +181,10 @@ extension ShowSongViewController {
     }
     
     func remoteControlSeekSong(event: MPRemoteCommandEvent) {
-        let command = event as! MPChangePlaybackPositionCommandEvent
-        seekSong(interval: Float(command.positionTime))
+        if event is MPChangePlaybackPositionCommandEvent {
+            let command = event as! MPChangePlaybackPositionCommandEvent
+            seekSong(interval: Float(command.positionTime))
+        }
     }
     
     func remoteControlPlaySong(event: MPRemoteCommandEvent) {
@@ -230,10 +226,12 @@ extension ShowSongViewController {
         DispatchQueue.main.async {
             self.isPlaying = false
             do {
-                //try self.player?.stop()
-                self.deactivateAudioSession()
+//                try self.player?.stop()
                 self.player?.logout()
+                self.deactivateAudioSession()
+                
             } catch { }
+            
             UIApplication.shared.endReceivingRemoteControlEvents();
         }
     }

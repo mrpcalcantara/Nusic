@@ -61,7 +61,7 @@ class MoodViewCell: UICollectionViewCell {
     func configure(for index: Int, offsetRect: CGRect, isLastRow: Bool? = false) {
         self.backgroundColor = .clear
         self.moodLabel.textColor = UIColor.lightText
-        self.moodLabel.font = UIFont(name: "Futura", size: 22)
+        self.moodLabel.font = UIFont(name: "Futura", size: 20)
         self.moodLabel.minimumScaleFactor = 0.1
         offsetPath = offsetRect
         

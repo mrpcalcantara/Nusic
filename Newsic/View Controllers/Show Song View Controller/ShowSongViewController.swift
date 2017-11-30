@@ -30,6 +30,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     var spotifyHandler: Spotify! = nil;
     var auth: SPTAuth! = nil;
     var moodObject: NewsicMood? = nil;
+    var currentMoodDyad: EmotionDyad? = EmotionDyad.unknown
     var trackFeatures: [SpotifyTrackFeature]? = nil
     var isPlaying: Bool = false;
     var isMenuOpen: Bool = false;
@@ -48,6 +49,9 @@ class ShowSongViewController: NewsicDefaultViewController {
     var initialPlayerMenuIconCenter: CGRect? = nil
     var songListMenuProgress: CGFloat! = 0;
     var initialSwipeLocation: CGPoint! = CGPoint.zero
+    var dismissProgress: CGFloat! = 0
+    var seguePerformed: Bool = false;
+    var swipeInteractionController: SwipeInteractionController?
     var currentPlayingTrack: SpotifyTrack?
     //var songPosition: Double! = 0
     
@@ -92,14 +96,21 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let dyad = moodObject?.emotions.first?.basicGroup
-        let dyadText = "Mood: \(dyad!.rawValue)"
         
-        if EmotionDyad.allValues.contains(dyad!) {
-            SwiftSpinner.show(dyadText, animated: true)
-        } else {
-            SwiftSpinner.show("Loading...", animated: true)
+        if let swipeInteractionController = swipeInteractionController {
+            if !swipeInteractionController.interactionWasCancelled {
+                
+                var dyadText = "Loading..."
+                if let currentMoodDyad = currentMoodDyad {
+                    if EmotionDyad.allValues.contains(currentMoodDyad) {
+                        SwiftSpinner.show("Mood: \(currentMoodDyad.rawValue)", animated: true)
+                    } else {
+                        SwiftSpinner.show("Loading...", animated: true)
+                    }
+                }
+            }
         }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -139,15 +150,19 @@ class ShowSongViewController: NewsicDefaultViewController {
         
 //        SwiftSpinner.show("LOADING")
         
+        currentMoodDyad = moodObject?.emotions.first?.basicGroup
+        
         let screenEdgeRecognizerSongMenu = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
         screenEdgeRecognizerSongMenu.edges = .right
         //        screenEdgeRecognizer.cancelsTouchesInView = false
         self.view.addGestureRecognizer(screenEdgeRecognizerSongMenu);
         
+        swipeInteractionController = SwipeInteractionController(viewController: self)
+        
         let screenEdgeRecognizerDismiss = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleDismissSwipe(_:)))
         screenEdgeRecognizerDismiss.edges = .left
         //        screenEdgeRecognizer.cancelsTouchesInView = false
-        self.view.addGestureRecognizer(screenEdgeRecognizerDismiss);
+//        self.view.addGestureRecognizer(screenEdgeRecognizerDismiss);
     }
     
     func setupCommandCenter() {
@@ -196,7 +211,15 @@ class ShowSongViewController: NewsicDefaultViewController {
         
         self.navigationItem.rightBarButtonItem = barButtonRight
         
-        self.navigationItem.title = "TEST"
+        let labelView = UILabel()
+        labelView.font = UIFont(name: "Futura", size: 20)
+        labelView.textColor = UIColor.white
+        if let currentMoodDyad = currentMoodDyad {
+            labelView.text = currentMoodDyad == EmotionDyad.unknown ? "" : "Mood: \(currentMoodDyad.rawValue)"
+        }
+        
+        labelView.sizeToFit()
+        self.navigationItem.titleView = labelView
         
         
         let navItem = self.navigationItem
@@ -337,11 +360,22 @@ class ShowSongViewController: NewsicDefaultViewController {
         
         transition.type = kCATransitionFade
         transition.subtype = kCATransitionFromLeft
-        self.view.window!.layer.add(transition, forKey: nil)
-//        self.dismissViewControllerAnimated(false, completion: nil)
-        self.dismiss(animated: false, completion: nil);
+        //self.view.window!.layer.add(transition, forKey: nil)
+//        self.view.alpha = CGFloat(progress)
+        self.dismiss(animated: true, completion: nil);
+//        UIView.animate(withDuration: 0.3, animations: {
+//            self.view.frame.origin.x += self.view.frame.width
+//        }) { (isCompleted) in
+//            if isCompleted {
+//                self.dismiss(animated: false, completion: nil);
+//            }
+//            
+//        }
         
-        actionStopPlayer();
+//        self.dismissViewControllerAnimated(false, completion: nil)
+    
+        
+//        actionStopPlayer();
     }
     
     func setupSongs() {
@@ -620,18 +654,16 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
     @objc func handleDismissSwipe(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
         let touchPoint = gestureRecognizer.location(in: self.view)
         let finalPoint = self.view.frame.width
+        let translation = gestureRecognizer.translation(in: self.view)
         
         if gestureRecognizer.state == .began {
             initialSwipeLocation = touchPoint
         } else if gestureRecognizer.state == .changed {
-            if touchPoint.x - initialSwipeLocation.x > 0 {
-                self.view.frame = CGRect(x: touchPoint.x - initialSwipeLocation.x, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-            }
+            self.view.frame = CGRect(x: translation.x, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+            dismissProgress = CGFloat(fminf(fmaxf(Float(translation.x/finalPoint), 0.0), 1.0))
         } else if gestureRecognizer.state == .cancelled || gestureRecognizer.state == .ended {
-            if touchPoint.x - initialSwipeLocation.x > 100 {
-//                self.dismiss(animated: true, completion: nil)
-                let progress = Float(fminf(fmaxf(Float(touchPoint.x/finalPoint), 0.0), 1.0))
-                backToSongPicker(NSNumber(value: progress));
+            if dismissProgress > 0.5 {
+                backToSongPicker(NSNumber(value: Float(dismissProgress)));
             } else {
                 UIView.animate(withDuration: 0.3, animations: {
                     self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
