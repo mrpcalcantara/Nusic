@@ -55,9 +55,11 @@ class ShowSongViewController: NewsicDefaultViewController {
     var currentPlayingTrack: SpotifyTrack?
     //var songPosition: Double! = 0
     
-    
+    //Constraints
     @IBOutlet weak var tableViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var songCardLeadingConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var songCardView: SongKolodaView!
     @IBOutlet weak var songListTableView: UITableView!
     @IBOutlet weak var trackStackView: UIStackView!
