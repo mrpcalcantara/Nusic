@@ -64,17 +64,11 @@ class SongPickerViewController: NewsicDefaultViewController {
     var loadingFinished: Bool = false {
         didSet {
             newsicUser.saveFavoriteGenres();
-//            print("treatment all finished")
-//            print(spotifyHandler.genreCount)
             SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
         }
     }
     
     var spinner: SwiftSpinner! = nil
-    
-    //Transition Delegate
-//    var customNavigationAnimationController = CustomNavigationAnimationController()
-//    let customInteractionController = CustomInteractionController()
     
     //Segues
     let sideMenuSegue = "showSideMenuSegue"
@@ -116,49 +110,13 @@ class SongPickerViewController: NewsicDefaultViewController {
         UserDefaults.standard.synchronize();
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: "SpotifyLogin") as! SpotifyLoginViewController
         self.present(viewController, animated: true, completion: nil);
-        //self.navigationController?.popViewController(animated: true);
     }
-    
-    func swipeToShowOtherCollectionView(sender: UISwipeGestureRecognizer) {
-        if sender.direction == .right {
-            if !isMoodSelected {
-                toggleCollectionViews(for: 1)
-                DispatchQueue.main.async {
-                    UIView.transition(from: self.moodCollectionView, to: self.genreCollectionView, duration: 1, options: [.transitionFlipFromLeft, .showHideTransitionViews], completion: nil)
-                }
-                
-            }
-        } else if sender.direction == .left {
-            if isMoodSelected {
-                toggleCollectionViews(for: 0)
-                DispatchQueue.main.async {
-                    UIView.transition(from: self.genreCollectionView, to: self.moodCollectionView, duration: 1, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: nil)
-                }
-                
-            }
-        }
-    }
-    
-//    @IBAction func moodGenreControlPanned(_ sender: NewsicSegmentedControl) {
-//        toggleCollectionViews(for: sender.selectedIndex)
-//    }
-//    
-//    @IBAction func moodGenreControlClicked(_ sender: NewsicSegmentedControl) {
-//        toggleCollectionViews(for: sender.selectedIndex)
-//    }
-//    
-//    @IBAction func moodGenreSCClicked(_ sender: UISegmentedControl) {
-//        toggleCollectionViews(for: sender.selectedSegmentIndex)
-//    }
     
     @IBAction func getNewSong(_ sender: Any) {
         
-        
         UIView.animate(withDuration: 0.2, animations: {
-            //self.searchButton.titleLabel?.frame.origin.x = self.view.frame.width + 8;
             self.searchButton.titleLabel?.bounds.origin.x = self.view.frame.width + 8;
         }, completion: nil)
-        
         
         let spinnerLabel = "Loading.."
         DispatchQueue.main.async {
@@ -182,8 +140,6 @@ class SongPickerViewController: NewsicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        customNavigationAnimationController.slideDirection = .right
-        
         genreCollectionView.layoutIfNeeded()
         moodCollectionView.layoutIfNeeded()
     }
@@ -251,20 +207,6 @@ class SongPickerViewController: NewsicDefaultViewController {
         genreCollectionView.layer.zPosition = -1
         
         self.mainControlView.bringSubview(toFront: newsicControl)
-
-//        
-//        let screenEdgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(toggleMenu))
-//        screenEdgeGesture.edges = .left
-//        self.view.addGestureRecognizer(screenEdgeGesture)
-        /*
-        let leftSwipeCollectionsRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeToShowOtherCollectionView(sender:)))
-        leftSwipeCollectionsRecognizer.direction = .left
-        self.mainControlView.addGestureRecognizer(leftSwipeCollectionsRecognizer);
-        
-        let rightSwipeCollectionsRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeToShowOtherCollectionView(sender:)))
-        rightSwipeCollectionsRecognizer.direction = .right
-        self.mainControlView.addGestureRecognizer(rightSwipeCollectionsRecognizer);
-        */
         
         let collectionViewsPanGestureRecoginizer = UIPanGestureRecognizer(target: self, action: #selector(panCollectionViews(_:)))
         self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecoginizer)
@@ -279,8 +221,6 @@ class SongPickerViewController: NewsicDefaultViewController {
     }
     
     @objc func toggleMenu() {
-//        customNavigationAnimationController.slideDirection = .left
-//        self.performSegue(withIdentifier: sideMenuSegue, sender: self);
         let parent = self.parent as! NewsicPageViewController
         parent.scrollToViewController(index: 0)
     }
@@ -345,7 +285,6 @@ class SongPickerViewController: NewsicDefaultViewController {
                 self.newsicUser = NewsicUser(userName: username, displayName: displayName!, imageURL: profileImage, territory: territory)
                 self.moodObject?.userName = username;
                 self.newsicUser.getUser(getUserHandler: { (usernameDB) in
-//                    print(usernameDB);
                     if usernameDB == "" {
                         self.newsicUser.saveUser();
                         self.extractGenresFromSpotify();
@@ -457,14 +396,14 @@ extension SongPickerViewController: UIGestureRecognizerDelegate {
         var progress = (translation.x / divisor )
         let panDirection: UISwipeGestureRecognizerDirection = translation.x < 0 ? .left : .right;
         progress = CGFloat(fminf(fmaxf(Float(abs(progress)), 0.0), 1.0))
-        var toIndex = panDirection == .right ? newsicControl.selectedIndex + 1 : newsicControl.selectedIndex - 1
+        var toIndex = panDirection == .left ? newsicControl.selectedIndex + 1 : newsicControl.selectedIndex - 1
         var allowMove = true
         if toIndex < 0 {
             toIndex = 0
-            allowMove = panDirection == .left ? false : true
+            allowMove = panDirection == .right ? false : true
         } else if toIndex > newsicControl.items.count - 1 {
             toIndex = newsicControl.items.count - 1
-            allowMove = panDirection == .right ? false : true
+            allowMove = panDirection == .left ? false : true
         }
         switch gestureRecognizer.state {
         case .began:

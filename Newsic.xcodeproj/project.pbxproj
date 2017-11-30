@@ -29,7 +29,6 @@
 		8C268B541FCFB53100BB4C6F /* DismissAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B531FCFB53100BB4C6F /* DismissAnimationController.swift */; };
 		8C268B561FCFD62F00BB4C6F /* SwipeInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B551FCFD62F00BB4C6F /* SwipeInteractionController.swift */; };
 		8C268B581FD0086E00BB4C6F /* CustomLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B571FD0086E00BB4C6F /* CustomLayer.swift */; };
-		8C281B541FCE636200C8CA35 /* SegueFromLeft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C281B531FCE636200C8CA35 /* SegueFromLeft.swift */; };
 		8C2911AE1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */; };
 		8C3654BC1F5516B7006C12D9 /* Koloda-SongCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */; };
 		8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3654BE1F551ABE006C12D9 /* OverlayView.xib */; };
@@ -133,7 +132,6 @@
 		8C268B531FCFB53100BB4C6F /* DismissAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissAnimationController.swift; sourceTree = "<group>"; };
 		8C268B551FCFD62F00BB4C6F /* SwipeInteractionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeInteractionController.swift; sourceTree = "<group>"; };
 		8C268B571FD0086E00BB4C6F /* CustomLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayer.swift; sourceTree = "<group>"; };
-		8C281B531FCE636200C8CA35 /* SegueFromLeft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueFromLeft.swift; sourceTree = "<group>"; };
 		8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControlDelegate.swift; sourceTree = "<group>"; };
 		8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Koloda-SongCard.swift"; sourceTree = "<group>"; };
 		8C3654BE1F551ABE006C12D9 /* OverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
@@ -662,7 +660,6 @@
 				8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */,
 				8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */,
 				8C3A6F1A1FCD769C00BA7981 /* ShowSongDataTransfer.swift */,
-				8C281B531FCE636200C8CA35 /* SegueFromLeft.swift */,
 				8C268B511FCFAF3200BB4C6F /* TransitionAnimation.swift */,
 			);
 			path = Extensions;
@@ -953,7 +950,6 @@
 			files = (
 				8C250AB71FBC02F8002A108C /* NewsicNavigationController.swift in Sources */,
 				8C3654BC1F5516B7006C12D9 /* Koloda-SongCard.swift in Sources */,
-				8C281B541FCE636200C8CA35 /* SegueFromLeft.swift in Sources */,
 				8C8C65971F55A6B4000711AC /* ShowSongViewController.swift in Sources */,
 				8CA40DF51F8B7C8200C95B9D /* SpotifyArtists.swift in Sources */,
 				8C268B521FCFAF3200BB4C6F /* TransitionAnimation.swift in Sources */,
