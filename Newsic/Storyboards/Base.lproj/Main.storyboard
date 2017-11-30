@@ -275,7 +275,7 @@
                         <outlet property="userProfileImageView" destination="RyK-SL-NJ2" id="bQy-iE-bqD"/>
                         <outlet property="userView" destination="JLn-6R-Eqo" id="N6K-d0-yWj"/>
                         <outlet property="usernameLabel" destination="IIl-jS-1xq" id="ahT-ZM-rmO"/>
-                        <segue destination="eJS-am-Jyf" kind="show" identifier="showVideoSegue" animates="NO" action="showDetailViewController:sender:" id="c9F-Gf-aWx"/>
+                        <segue destination="eJS-am-Jyf" kind="presentation" identifier="showVideoSegue" animates="NO" id="c9F-Gf-aWx"/>
                         <segue destination="RzT-Hk-gHT" kind="show" identifier="showSideMenuSegue" id="eqn-mp-xJN"/>
                     </connections>
                 </viewController>

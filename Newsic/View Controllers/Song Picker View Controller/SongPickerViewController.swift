@@ -73,8 +73,8 @@ class SongPickerViewController: NewsicDefaultViewController {
     var spinner: SwiftSpinner! = nil
     
     //Transition Delegate
-    var customNavigationAnimationController = CustomNavigationAnimationController()
-    let customInteractionController = CustomInteractionController()
+//    var customNavigationAnimationController = CustomNavigationAnimationController()
+//    let customInteractionController = CustomInteractionController()
     
     //Segues
     let sideMenuSegue = "showSideMenuSegue"
@@ -206,38 +206,6 @@ class SongPickerViewController: NewsicDefaultViewController {
         extractInformationFromUser { (isFinished) in
             print(isFinished)
         }
-        
-        
-//        let urlstring = "http://radio.spainmedia.es/wp-content/uploads/2015/12/tailtoddle_lo4.mp3"
-//        let url = URL(string: urlstring)
-//        print("the url = \(url!)")
-//
-//        if let url = url { //this is an URL fetch from somewhere. In this if you make sure that URL is valid
-//            let playerItem = AVPlayerItem.init(url: url)
-//            self.playerQueue.insert(playerItem, after: nil)
-//            self.playerQueue.play()
-//
-//            let trackInfo: [String: AnyObject] = [
-//
-//                MPMediaItemPropertyTitle: "titke" as AnyObject,
-//                MPMediaItemPropertyArtist: "artist" as AnyObject,
-//                MPNowPlayingInfoPropertyElapsedPlaybackTime: 0 as AnyObject,
-//                MPMediaItemPropertyPlaybackDuration: 124 as AnyObject,
-//                MPNowPlayingInfoPropertyPlaybackRate: 1 as AnyObject
-//            ]
-//
-//            MPNowPlayingInfoCenter.default().nowPlayingInfo = trackInfo as [String : AnyObject]
-//        }
-//
-//        do {
-//
-//
-//        } catch let error as NSError {
-//            //self.player = nil
-//            print(error.localizedDescription)
-//        } catch {
-//            print("AVAudioPlayer init failed")
-//        }
         
     }
     
@@ -450,6 +418,7 @@ class SongPickerViewController: NewsicDefaultViewController {
         
         if segue.identifier == showVideoSegue {
             let playerViewController = segue.destination as! ShowSongViewController
+            playerViewController.transitioningDelegate = self
             playerViewController.user = newsicUser;
             playerViewController.playlist = newsicPlaylist;
             playerViewController.spotifyHandler = spotifyHandler;
