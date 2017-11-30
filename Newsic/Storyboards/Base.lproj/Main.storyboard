@@ -260,12 +260,20 @@
                     </view>
                     <navigationItem key="navigationItem" id="sG0-bm-crL"/>
                     <connections>
+                        <outlet property="genreCollectionBottomConstraint" destination="Ces-kB-F38" id="30L-qf-08R"/>
+                        <outlet property="genreCollectionLeadingConstraint" destination="5va-tl-3sv" id="J5g-e4-05M"/>
+                        <outlet property="genreCollectionTopConstraint" destination="Ua2-yh-9BK" id="lIq-5K-T3x"/>
+                        <outlet property="genreCollectionTrailingConstraint" destination="M8o-Gf-jPJ" id="Tlk-NU-x3d"/>
                         <outlet property="genreCollectionView" destination="bqf-Kb-x3U" id="HnR-77-MHD"/>
                         <outlet property="logoutButton" destination="CTF-Bo-IKY" id="YYp-uG-ael"/>
                         <outlet property="mainControlView" destination="Sau-Kp-Sny" id="ecR-4A-EXA"/>
                         <outlet property="menuLeadingConstraint" destination="TOo-Bu-RSf" id="tdz-aT-bfD"/>
                         <outlet property="menuTrailingConstraint" destination="f8t-EZ-ele" id="Khw-jA-WrZ"/>
                         <outlet property="menuView" destination="ezb-Mk-cJL" id="435-La-Atp"/>
+                        <outlet property="moodCollectionBottomConstraint" destination="urm-x2-i9Q" id="tLR-av-o3N"/>
+                        <outlet property="moodCollectionLeadingConstraint" destination="ovA-Q4-o9q" id="ly1-ne-dKh"/>
+                        <outlet property="moodCollectionTopConstraint" destination="e1E-Wi-HHp" id="rGx-JL-gLB"/>
+                        <outlet property="moodCollectionTrailingConstraint" destination="x2t-3J-uM9" id="qZV-qu-vpu"/>
                         <outlet property="moodCollectionView" destination="8t3-hW-Upx" id="z5u-GH-yc4"/>
                         <outlet property="moodGenreSegmentedControl" destination="U97-fq-ODQ" id="Bai-mJ-M2o"/>
                         <outlet property="moodText" destination="TAz-3t-wPY" id="DEN-pS-dby"/>
@@ -275,7 +283,7 @@
                         <outlet property="userProfileImageView" destination="RyK-SL-NJ2" id="bQy-iE-bqD"/>
                         <outlet property="userView" destination="JLn-6R-Eqo" id="N6K-d0-yWj"/>
                         <outlet property="usernameLabel" destination="IIl-jS-1xq" id="ahT-ZM-rmO"/>
-                        <segue destination="eJS-am-Jyf" kind="presentation" identifier="showVideoSegue" animates="NO" id="c9F-Gf-aWx"/>
+                        <segue destination="eJS-am-Jyf" kind="presentation" identifier="showVideoSegue" id="c9F-Gf-aWx"/>
                         <segue destination="RzT-Hk-gHT" kind="show" identifier="showSideMenuSegue" id="eqn-mp-xJN"/>
                     </connections>
                 </viewController>

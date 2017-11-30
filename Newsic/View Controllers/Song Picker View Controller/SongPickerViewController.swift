@@ -84,6 +84,15 @@ class SongPickerViewController: NewsicDefaultViewController {
     @IBOutlet weak var menuTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var menuLeadingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var moodCollectionTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var moodCollectionLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var moodCollectionBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var moodCollectionTrailingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var genreCollectionLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var genreCollectionBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var genreCollectionTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var genreCollectionTopConstraint: NSLayoutConstraint!
     
     //Outlets
     @IBOutlet weak var mainControlView: UIView!

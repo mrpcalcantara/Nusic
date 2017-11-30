@@ -14,21 +14,19 @@ extension SongPickerViewController: NewsicSegmentedControlDelegate {
     }
     
     func didMove(_ control: UIControl, _ progress: CGFloat, _ toIndex: Int) {
-        print("moving to Index \(toIndex)")
+        updateConstraintsMoveTo(for: toIndex, progress: progress)
+        let showProgress = progress
+        let hideProgress = 1 - progress
+        
         if toIndex == 0 {
-            self.moodCollectionView.alpha = progress
-            self.genreCollectionView.alpha = 1 - progress
-            self.searchButton.alpha = 1 - progress
+            moodCollectionView.alpha = showProgress
+            genreCollectionView.alpha = hideProgress
+            searchButton.alpha = hideProgress
         } else {
-            self.moodCollectionView.alpha = 1 - progress
-            self.genreCollectionView.alpha = progress
-            self.searchButton.alpha = progress
+            moodCollectionView.alpha = hideProgress
+            genreCollectionView.alpha = showProgress
+            searchButton.alpha = showProgress
         }
     }
     
-    func didMove(_ control: UIControl, _ location: CGPoint) {
-        print(location)
-        
-        
-    }
 }
