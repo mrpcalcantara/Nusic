@@ -90,20 +90,24 @@ extension NewsicUser: FirebaseModel {
         var closureSelf = self;
         reference.child("genres").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
-            let convertedDict = value as! [String: Int]
-            
-            var iterator = convertedDict.makeIterator()
-            
-            var nextElement = iterator.next();
-            var genreList: [NewsicGenre]? = []
-            while nextElement != nil {
-                if let element = nextElement {
-                    genreList?.append(NewsicGenre(mainGenre: element.key, count: element.value, userName: closureSelf.userName))
+            var convertedDict: [String: Int] = [:]
+            if value != nil {
+                convertedDict = value as! [String: Int]
+                
+                var iterator = convertedDict.makeIterator()
+                
+                var nextElement = iterator.next();
+                var genreList: [NewsicGenre]? = []
+                while nextElement != nil {
+                    if let element = nextElement {
+                        genreList?.append(NewsicGenre(mainGenre: element.key, count: element.value, userName: closureSelf.userName))
+                    }
+                    nextElement = iterator.next()
                 }
-                nextElement = iterator.next()
-            }
-            //let extractedUsername = value?["canonicalUserName"] as? String ?? ""
-            closureSelf.favoriteGenres = genreList;
+                //let extractedUsername = value?["canonicalUserName"] as? String ?? ""
+                closureSelf.favoriteGenres = genreList;
+            } 
+            
             getGenresHandler(convertedDict);
         })
     }

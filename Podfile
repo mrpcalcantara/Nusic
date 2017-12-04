@@ -11,6 +11,7 @@ target 'Newsic' do
   pod 'Firebase/Core'
   pod 'Firebase/Database'
   pod 'SwiftSpinner'
+  pod 'PopupDialog'
 
   target 'NewsicTests' do
     inherit! :search_paths

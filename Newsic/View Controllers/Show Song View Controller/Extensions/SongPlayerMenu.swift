@@ -263,16 +263,24 @@ extension ShowSongViewController {
     
     func toggleLikeButtons() {
         if !self.isSongLiked {
-            self.previousSong.alpha = 1
-            self.previousSong.isUserInteractionEnabled = true
-            self.nextSong.alpha = 1
-            self.nextSong.isUserInteractionEnabled = true
+            showLikeButtons()
         } else {
-            self.previousSong.alpha = 0.25
-            self.previousSong.isUserInteractionEnabled = false
-            self.nextSong.alpha = 0.25
-            self.nextSong.isUserInteractionEnabled = false
+            hideLikeButtons()
         }
+    }
+    
+    func showLikeButtons() {
+        self.previousSong.alpha = 1
+        self.previousSong.isUserInteractionEnabled = true
+        self.nextSong.alpha = 1
+        self.nextSong.isUserInteractionEnabled = true
+    }
+    
+    func hideLikeButtons() {
+        self.previousSong.alpha = 0.25
+        self.previousSong.isUserInteractionEnabled = false
+        self.nextSong.alpha = 0.25
+        self.nextSong.isUserInteractionEnabled = false
     }
     
 }

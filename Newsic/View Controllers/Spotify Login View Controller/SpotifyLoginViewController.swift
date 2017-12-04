@@ -42,6 +42,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     override func viewDidLoad() {
         super.viewDidLoad();
         NotificationCenter.default.addObserver(self, selector: #selector(updateAfterFirstLogin), name: NSNotification.Name(rawValue: "loginSuccessfull"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setupSpotify), name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
         
     }
     
@@ -85,7 +86,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     }
     
     
-    fileprivate func setupSpotify() {
+    @objc fileprivate func setupSpotify() {
         auth.clientID = Spotify.clientId;
         auth.redirectURL = URL(string: Spotify.redirectURI!);
         auth.requestedScopes = [SPTAuthStreamingScope, SPTAuthPlaylistReadPrivateScope, SPTAuthPlaylistModifyPrivateScope, SPTAuthPlaylistModifyPublicScope, SPTAuthUserFollowReadScope];
@@ -146,15 +147,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
             }
             
         } else {
-            self.session = nil
-            self.auth.session = nil
-            UIView.animate(withDuration: 1, animations: {
-                self.newsicLabl.center.y = self.view.bounds.height / 4
-            })
-            UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
-                self.loginButton.alpha = 1;
-                self.view.layoutIfNeeded()
-            }, completion: nil)
+            self.resetLogin()
         }
         
     }
@@ -174,11 +167,23 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
                 print("error refreshing session: \(error?.localizedDescription ?? "sdsdasasd")");
                 self.loginButton.isHidden = false;
                 self.loginUrl = self.auth.spotifyWebAuthenticationURL();
+                self.resetLogin()
                 
             }
         })
     }
     
+    func resetLogin() {
+        self.session = nil
+        self.auth.session = nil
+        UIView.animate(withDuration: 1, animations: {
+            self.newsicLabl.center.y = self.view.bounds.height / 4
+        })
+        UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
+            self.loginButton.alpha = 1;
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
     
     
 }

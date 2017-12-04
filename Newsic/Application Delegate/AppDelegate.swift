@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // 4- handle error
                 if error != nil {
                     print("error!: \(String(describing: error?.localizedDescription))")
-
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "loginUnsuccessful"), object: nil)
                 }
                 // 5- Add session to User Defaults
                 

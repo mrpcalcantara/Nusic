@@ -91,6 +91,9 @@ extension ShowSongViewController: KolodaViewDelegate {
     
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
 //        print("Swiped \(direction)")
+        DispatchQueue.main.async {
+            self.hideLikeButtons()
+        }
         didUserSwipe = true;
         pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
         if direction == .right {
@@ -184,26 +187,36 @@ extension ShowSongViewController {
         }
         let track = cardList[likedCardIndex];
         isSongLiked = didUserSwipe == true ? false : true ; toggleLikeButtons()
-        spotifyHandler.addTracksToPlaylist(playlistId: playlist.id!, trackId: track.trackInfo.trackUri, addTrackHandler: { (isAdded) in
+        spotifyHandler.addTracksToPlaylist(playlistId: playlist.id!, trackId: track.trackInfo.trackUri, addTrackHandler: { (isAdded, error) in
 //            print("ADDED TRACK");
+            if let error = error {
+//                self.present(error.popupDialog!, animated: true, completion: nil)
+                error.presentPopup(for: self)
+            }
         })
-        spotifyHandler.getTrackDetails(trackId: track.trackInfo.trackId!, fetchedTrackDetailsHandler: { (trackFeatures) in
-            if let trackFeatures = trackFeatures {
-                self.updateCurrentGenresAndFeatures { (genres, trackFeatures) in
-                    self.trackFeatures = trackFeatures;
-                }
-                
-                track.trackInfo.audioFeatures = trackFeatures;
-                track.saveData(saveCompleteHandler: { (reference, error) in
-                    self.likedTrackList.insert(track.trackInfo, at: 0);
-                    DispatchQueue.main.async {
-                        self.songListTableView.reloadData();
-                        
-                        //SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
+        spotifyHandler.getTrackDetails(trackId: track.trackInfo.trackId!, fetchedTrackDetailsHandler: { (trackFeatures, error) in
+            if let error = error {
+//                self.present(error.popupDialog!, animated: true, completion: nil)
+                error.presentPopup(for: self)
+            } else {
+                if let trackFeatures = trackFeatures {
+                    self.updateCurrentGenresAndFeatures { (genres, trackFeatures) in
+                        self.trackFeatures = trackFeatures;
                     }
                     
-                });
+                    track.trackInfo.audioFeatures = trackFeatures;
+                    track.saveData(saveCompleteHandler: { (reference, error) in
+                        self.likedTrackList.insert(track.trackInfo, at: 0);
+                        DispatchQueue.main.async {
+                            self.songListTableView.reloadData();
+                            
+                            //SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
+                        }
+                        
+                    });
+                }
             }
+            
         })
     }
 }
