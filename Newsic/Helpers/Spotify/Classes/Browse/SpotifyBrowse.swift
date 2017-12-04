@@ -8,7 +8,40 @@
 
 extension Spotify {
     
-    func searchMusicInGenres(numberOfSongs: Int, moodObject: NewsicMood?, preferredTrackFeatures: [SpotifyTrackFeature]? = nil, selectedGenreList: [String: Int]? = nil, completionHandler: @escaping ([SpotifyTrack]) -> ()) {
+    func retry(retryNumberLeft: Int, retryAfter: Int? = 2, taskRequest: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?, Bool) -> ()) {
+        var retryNumber = retryNumberLeft
+        let session = URLSession.shared;
+        session.dataTask(with: taskRequest) { (data, response, error) in
+            let httpResponse = response as! HTTPURLResponse
+            let statusCode = httpResponse.statusCode
+            if (200...299).contains(statusCode) {
+                completionHandler(data, response, error, true)
+            }
+            else {
+//            else if (400...499).contains(statusCode) || (500...599).contains(statusCode) {
+            
+                if var retryAfter = retryAfter {
+                    if statusCode == HTTPErrorCodes.tooManyRequests.rawValue {
+                        retryAfter = Int(httpResponse.allHeaderFields["retry-after"] as! String)!;
+                        retryNumber += 1;
+                    }
+                    if retryNumber > 0 {
+                        let timeToWait = DispatchTime.now()+Double(retryAfter)
+                        DispatchQueue.main.asyncAfter(deadline: timeToWait, execute: {
+                            self.retry(retryNumberLeft: retryNumber-1, retryAfter: retryAfter, taskRequest: taskRequest, completionHandler: { (data, response, error, false) in
+                                
+                            })
+                        })
+                    } else {
+                        completionHandler(data, response, error, false);
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func searchMusicInGenres(numberOfSongs: Int, moodObject: NewsicMood?, preferredTrackFeatures: [SpotifyTrackFeature]? = nil, selectedGenreList: [String: Int]? = nil, completionHandler: @escaping ([SpotifyTrack], NewsicError?) -> ()) {
         
         let auth = SPTAuth.defaultInstance()
         //Get Genres
@@ -16,7 +49,6 @@ extension Spotify {
         let genres = getGenreListString(numberOfSongs: numberOfSongs, hasList: hasList, selectedGenreList: selectedGenreList);
         
         //Get Emotions
-        var emotionValues: [String: AnyObject] = [:];
         var urlString = "https://api.spotify.com/v1/recommendations?seed_genres=\(genres)&limit=\(numberOfSongs)"
         //&min_popularity=\(popularity)
         
@@ -35,18 +67,10 @@ extension Spotify {
         var spotifyResults:[SpotifyTrack] = [];
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization");
         let session = URLSession.shared;
-        session.dataTask(with: request) { (data, response, error) in
-            let httpResponse = response as! HTTPURLResponse
-            if httpResponse.statusCode == ErrorCodes.tooManyRequests.rawValue {
-                let retryTimer = Double(httpResponse.allHeaderFields["retry-after"] as! String);
-                let dispatchTime = DispatchTime.now();
-                
-                DispatchQueue.main.asyncAfter(deadline: dispatchTime+retryTimer!, execute: {
-                    self.searchMusicInGenres(numberOfSongs: numberOfSongs, moodObject: moodObject, preferredTrackFeatures: preferredTrackFeatures, completionHandler: { (tracks) in
-                        
-                    })
-                })
-            } else if httpResponse.statusCode == ErrorCodes.okResponse.rawValue {
+        
+        session.executeCall(with: request) { (data, httpResponse, error, isSuccess) in
+            let statusCode:Int! = httpResponse?.statusCode
+            if isSuccess {
                 let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
                 let trackList = jsonObject["tracks"] as! [[String: AnyObject]]
                 for track in trackList {
@@ -59,16 +83,13 @@ extension Spotify {
                     
                     let spotifyObject = SpotifyTrack(title: title, thumbNailUrl: hqImage, trackUri: uri, trackId: id, songName: trackName, artist: SpotifyArtist(artistName: artistName, uri: artistUri), audioFeatures: nil);
                     spotifyResults.append(spotifyObject);
-
+                    
                 }
-                
                 var artistUriList: [String] = []
-                
                 for result in spotifyResults {
                     artistUriList.append(result.artist.uri!);
                 }
-                
-                self.getAllGenresForArtists(artistUriList, offset: 0, artistGenresHandler: { (artistList) in
+                self.getAllGenresForArtists(artistUriList, offset: 0, artistGenresHandler: { (artistList, error) in
                     if let artistList = artistList {
                         for artist in artistList {
                             if let artistIndex = spotifyResults.index(where: { (track) -> Bool in
@@ -79,11 +100,24 @@ extension Spotify {
                         }
                     }
                     
-                    completionHandler(spotifyResults)
+                    completionHandler(spotifyResults, nil)
                 })
-                
-                
+            } else {
+                switch statusCode {
+                //                case (300...199):
+                case (400...499):
+                    completionHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
+                case (500...599):
+                    completionHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
+                default:
+                    return;
+                }
             }
+            
+        }
+        session.dataTask(with: request) { (data, response, error) in
+            let httpResponse = response as! HTTPURLResponse
+            let statusCode = httpResponse.statusCode
             
             
             }.resume()

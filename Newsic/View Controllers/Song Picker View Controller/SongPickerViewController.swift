@@ -47,6 +47,13 @@ class SongPickerViewController: NewsicDefaultViewController {
                 
                 sideMenu.username = self.newsicUser.displayName
                 sideMenu.profileImageURL = imageURL
+                let iconImage = UIImage(); iconImage.downloadImage(from: imageURL, downloadImageHandler: { (image) in
+                    DispatchQueue.main.async {
+                        
+//                        self.setupNavigationBar(image: image)
+                    }
+                    
+                })
                 
             }
             
@@ -61,6 +68,7 @@ class SongPickerViewController: NewsicDefaultViewController {
     var fullArtistList:[SpotifyArtist] = [];
     var fullPlaylistList:[SPTPartialPlaylist] = []
     var currentPlaylistIndex: Int = 0
+    var navbar: UINavigationBar = UINavigationBar()
     var loadingFinished: Bool = false {
         didSet {
             newsicUser.saveFavoriteGenres();
@@ -181,10 +189,11 @@ class SongPickerViewController: NewsicDefaultViewController {
         toggleCollectionViews(for: 0);
     }
     
-    func setupNavigationBar() {
+    func setupNavigationBar(image: UIImage? = UIImage(named: "MenuIcon")) {
         let navbar  = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: 44));
         navbar.barStyle = .default
-        let barButton2 = UIBarButtonItem(image: UIImage(named: "MenuIcon"), style: .plain, target: self, action: #selector(toggleMenu));
+        
+        let barButton2 = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
         self.navigationItem.leftBarButtonItem = barButton2
         
         let navItem = self.navigationItem
@@ -262,55 +271,67 @@ class SongPickerViewController: NewsicDefaultViewController {
         newsicPlaylist = NewsicPlaylist(userName: SPTAuth.defaultInstance().session.canonicalUsername);
         newsicPlaylist.getPlaylist { (playlist) in
             if playlist == nil {
-                self.spotifyHandler.createNewsicPlaylist(playlistName: "Liked in Newsic", playlistCreationHandler: { (isCreated, playlist) in
-                    if isCreated! {
-                        self.newsicPlaylist = playlist;
-                        playlist?.saveData(saveCompleteHandler: { (reference, error) in
-                            
-                        })
+                self.spotifyHandler.createNewsicPlaylist(playlistName: "Liked in Newsic", playlistCreationHandler: { (isCreated, playlist, error) in
+                    if let error = error {
+//                        self.present(error.popupDialog!, animated: true, completion: nil)
+                        error.presentPopup(for: self, description: SpotifyErrorCodeDescription.createPlaylist.rawValue)
+                    } else {
+                        if let isCreated = isCreated {
+                            if isCreated {
+                                self.newsicPlaylist = playlist;
+                                playlist?.saveData(saveCompleteHandler: { (reference, error) in
+                                    
+                                })
+                            }
+                        }
                     }
                 })
             } 
         }
         
         
-        self.spotifyHandler.getUser { (user) in
-            if let user = user {
-                self.spotifyHandler.user = user;
-                let username = user.canonicalUserName!
-                
-                let displayName = user.displayName != nil ? user.displayName : ""
-                let profileImage = user.smallestImage.imageURL.absoluteString
-                let territory = "";
-                self.newsicUser = NewsicUser(userName: username, displayName: displayName!, imageURL: profileImage, territory: territory)
-                self.moodObject?.userName = username;
-                self.newsicUser.getUser(getUserHandler: { (usernameDB) in
-                    if usernameDB == "" {
-                        self.newsicUser.saveUser();
-                        self.extractGenresFromSpotify();
-                    } else {
-                        DispatchQueue.main.async {
-                            SwiftSpinner.show("Getting Favorite Genres..", animated: true);
-                        }
-                        self.newsicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount) in
-                            if let dbGenreCount = dbGenreCount {
-                                self.spotifyHandler.genreCount = dbGenreCount;
-                                self.loadingFinished = true;
-                            }
-                        })
-                    }
-                })
-            } else {
+        self.spotifyHandler.getUser { (user, error) in
+            if let error = error {
+//                self.present(error.popupDialog!, animated: true, completion: nil)
+                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getUser.rawValue)
                 self.loadingFinished = true
+            } else {
+                if let user = user {
+                    self.spotifyHandler.user = user;
+                    let username = user.canonicalUserName!
+                    
+                    let displayName = user.displayName != nil ? user.displayName : ""
+                    let profileImage = user.smallestImage.imageURL.absoluteString
+                    let territory = "";
+                    self.newsicUser = NewsicUser(userName: username, displayName: displayName!, imageURL: profileImage, territory: territory)
+                    self.moodObject?.userName = username;
+                    self.newsicUser.getUser(getUserHandler: { (usernameDB) in
+                        if usernameDB == "" {
+                            self.newsicUser.saveUser();
+                            self.extractGenresFromSpotify();
+                        } else {
+                            DispatchQueue.main.async {
+                                SwiftSpinner.show("Getting Favorite Genres..", animated: true);
+                            }
+                            self.newsicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount) in
+                                if let dbGenreCount = dbGenreCount {
+                                    self.spotifyHandler.genreCount = dbGenreCount;
+                                    self.loadingFinished = true;
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    self.loadingFinished = true
+                }
             }
-            
         }
     }
     
     func extractGenresFromSpotify() {
         //Get Followed Artists
         SwiftSpinner.show("Extracting Followed Artists..", animated: true)
-        spotifyHandler.getFollowedArtistsForUser(user: spotifyHandler.user, followedArtistsHandler: { (followedArtistsList) in
+        spotifyHandler.getFollowedArtistsForUser(user: spotifyHandler.user, followedArtistsHandler: { (followedArtistsList, error) in
             DispatchQueue.main.sync {
                 for artist in followedArtistsList {
                     self.fullArtistList.append(artist)
@@ -320,7 +341,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                 SwiftSpinner.show("Extracting Playlists..", animated: true)
             }
             //Get All Playlists from user
-            self.spotifyHandler.getAllPlaylists(fetchedPlaylistsHander: { (playlistList) in
+            self.spotifyHandler.getAllPlaylists(fetchedPlaylistsHander: { (playlistList, error) in
                 self.fullPlaylistList = playlistList
                 //Get All Artists for each playlist
                 print(self.fullPlaylistList.count)
@@ -330,9 +351,9 @@ class SongPickerViewController: NewsicDefaultViewController {
                 }
                 for playlist in self.fullPlaylistList {
                     let playlistId = playlist.uri.absoluteString.substring(from: (playlist.uri.absoluteString.range(of: "playlist:")?.upperBound)!)
-                    self.spotifyHandler.getAllArtistsForPlaylist(userId: playlist.owner.canonicalUserName!, playlistId: playlistId, fetchedPlaylistArtists: { (results) in
+                    self.spotifyHandler.getAllArtistsForPlaylist(userId: playlist.owner.canonicalUserName!, playlistId: playlistId, fetchedPlaylistArtists: { (results, error) in
                         
-                        self.spotifyHandler.getAllGenresForArtists(results, offset: 0, artistGenresHandler: { (artistList) in
+                        self.spotifyHandler.getAllGenresForArtists(results, offset: 0, artistGenresHandler: { (artistList, error) in
                             
                             DispatchQueue.main.async {
                                 if let artistList = artistList {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum ErrorCodes: Int {
+public enum HTTPErrorCodes: Int {
     case okResponse = 200
     case badRequest = 400
     case unauthorized = 401

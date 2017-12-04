@@ -52,6 +52,10 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
                     self.currentPlayingTrack = currentPlayingTrack;
                     self.activateAudioSession()
                     self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+                    DispatchQueue.main.async {
+                        self.showLikeButtons()
+                    }
+                    
 //                    self.updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: image, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
                     
                 }
@@ -67,7 +71,19 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     }
 
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
-        deactivateAudioSession();
+//        deactivateAudioSession();
+        
+        DispatchQueue.main.async {
+            self.hideLikeButtons()
+        }
+        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+        if let nowPlayingInfo = nowPlayingInfo, let currentTrack = audioStreaming.metadata.currentTrack {
+            let elapsedTime = nowPlayingInfo["playbackDuration"] as! Double
+            let duration = Double(currentTrack.duration)
+            if elapsedTime != nil && elapsedTime == duration {
+                songCardView.swipe(.left);
+            }
+        }
     }
     
     func audioStreamingDidLogin(_ audioStreaming: SPTAudioStreamingController!) {

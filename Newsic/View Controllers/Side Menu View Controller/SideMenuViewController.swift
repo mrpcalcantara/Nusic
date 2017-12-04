@@ -21,6 +21,7 @@ class SideMenuViewController: NewsicDefaultViewController {
     var profileImage: UIImage?
     var username: String?
     var profileImageURL: URL?
+    var navbar: UINavigationBar?
     
     @IBAction func logoutClicked(_ sender: Any) {
         UserDefaults.standard.removeObject(forKey: "SpotifySession");
@@ -31,6 +32,11 @@ class SideMenuViewController: NewsicDefaultViewController {
     }
     
     @IBAction func aboutClicked(_ sender: Any) {
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
     }
     
@@ -73,25 +79,24 @@ class SideMenuViewController: NewsicDefaultViewController {
     
     func setupNavigationBar() {
         
-        let navbar  = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: 44));
-        navbar.barStyle = .default
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "MoodIcon"), for: .normal)
-        button.addTarget(self, action: #selector(dismissMenu), for: .touchUpInside)
-        let barButton = UIBarButtonItem(customView: button);
-        let barButton2 = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(dismissMenu));
-        self.navigationItem.rightBarButtonItem = barButton
-        
-        let navItem = self.navigationItem
-        navbar.items = [navItem]
-//        navbar.layer.zPosition = 1
-//        self.view.insertSubview(navbar, at: 0)
-        self.view.addSubview(navbar)
-        
-//        navigationItem.hidesBackButton = true
-        
-        
-        
+        navbar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: 44));
+        if let navbar = navbar {
+            navbar.barStyle = .default
+            let button = UIButton(type: .system)
+            button.setImage(UIImage(named: "MoodIcon"), for: .normal)
+            button.addTarget(self, action: #selector(dismissMenu), for: .touchUpInside)
+            let barButton = UIBarButtonItem(customView: button);
+            let barButton2 = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(dismissMenu));
+            self.navigationItem.rightBarButtonItem = barButton
+            
+            let navItem = self.navigationItem
+            navbar.items = [navItem]
+            //        navbar.layer.zPosition = 1
+            //        self.view.insertSubview(navbar, at: 0)
+            self.view.addSubview(navbar)
+            
+            //        navigationItem.hidesBackButton = true
+        }
     }
     
     func setupProfileView() {

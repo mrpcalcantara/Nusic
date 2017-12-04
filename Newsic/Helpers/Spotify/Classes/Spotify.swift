@@ -26,42 +26,44 @@ class Spotify {
     var user: SPTUser! = nil;
     var genreCount: [String: Int] = [:]
     
-    func getGenreForTrack(trackId: String, trackGenreHandler: @escaping([String]?) -> ()) {
-        getTrackArtist(trackId: trackId) { (fetchedArtistId) in
-            if let fetchedArtistId = fetchedArtistId {
-                self.getGenresForArtist(artistId: fetchedArtistId, fetchedArtistGenresHandler: { (artistGenres) in
-                    trackGenreHandler(artistGenres);
-                })
+    func getGenreForTrack(trackId: String, trackGenreHandler: @escaping([String]?, NewsicError?) -> ()) {
+        getTrackArtist(trackId: trackId) { (fetchedArtistId, error) in
+            if error != nil {
+                trackGenreHandler(nil, error)
             } else {
-                trackGenreHandler(nil)
+                if let fetchedArtistId = fetchedArtistId {
+                    self.getGenresForArtist(artistId: fetchedArtistId, fetchedArtistGenresHandler: { (artistGenres, error) in
+                        trackGenreHandler(artistGenres, nil);
+                    })
+                }
             }
-            
         }
     }
     
-    func getGenresForTrackList(trackIdList: [String], trackGenreHandler: @escaping([String]?) -> ()) {
+    func getGenresForTrackList(trackIdList: [String], trackGenreHandler: @escaping([String]?, NewsicError?) -> ()) {
         let count = trackIdList.count;
         var index = 0
         var allGenres:[String] = [];
         
         if trackIdList.count == 0 {
-            trackGenreHandler(nil)
+            trackGenreHandler(nil, nil)
         } else {
             for trackId in trackIdList {
-                getGenreForTrack(trackId: trackId, trackGenreHandler: { (genres) in
-                    if let genres = genres {
-                        allGenres.append(contentsOf: genres)
-                    }
-                    index += 1
-                    if index == count {
-                        trackGenreHandler(allGenres);
+                getGenreForTrack(trackId: trackId, trackGenreHandler: { (genres, error) in
+                    if error != nil {
+                        trackGenreHandler(nil, error)
+                    } else {
+                        if let genres = genres {
+                            allGenres.append(contentsOf: genres)
+                        }
+                        index += 1
+                        if index == count {
+                            trackGenreHandler(allGenres, nil);
+                        }
                     }
                 })
             }
         }
-        
-        
-        
     }
     
     
@@ -84,25 +86,34 @@ class Spotify {
         for trackFeatures in preferredTrackFeatures {
             
             acousticness = trackFeatures.acousticness != nil ? acousticness + trackFeatures.acousticness! : 0
-            danceability += trackFeatures.danceability != nil ? danceability + trackFeatures.danceability! : 0
-            energy += trackFeatures.energy != nil ? energy + trackFeatures.energy! : 0
-            instrumentalness += trackFeatures.instrumentalness != nil ? instrumentalness + trackFeatures.instrumentalness! : 0
-            liveness += trackFeatures.liveness != nil ? liveness + trackFeatures.liveness! : 0
-            loudness += trackFeatures.loudness != nil ? loudness + trackFeatures.loudness! : 0
-            speechiness += trackFeatures.speechiness != nil ? speechiness + trackFeatures.speechiness! : 0
-            tempo += trackFeatures.tempo != nil ?  tempo + trackFeatures.tempo! : 0
-            valence += trackFeatures.valence != nil ? valence + trackFeatures.valence! : 0
+            danceability = trackFeatures.danceability != nil ? danceability + trackFeatures.danceability! : 0
+            energy = trackFeatures.energy != nil ? energy + trackFeatures.energy! : 0
+            instrumentalness = trackFeatures.instrumentalness != nil ? instrumentalness + trackFeatures.instrumentalness! : 0
+            liveness = trackFeatures.liveness != nil ? liveness + trackFeatures.liveness! : 0
+            loudness = trackFeatures.loudness != nil ? loudness + trackFeatures.loudness! : 0
+            speechiness = trackFeatures.speechiness != nil ? speechiness + trackFeatures.speechiness! : 0
+            tempo = trackFeatures.tempo != nil ?  tempo + trackFeatures.tempo! : 0
+            valence = trackFeatures.valence != nil ? valence + trackFeatures.valence! : 0
         }
         
-        acousticness = (acousticness/Double(trackCount)); acousticness.randomInRange(value: acousticness, range: 0.3, acceptNegativeValues: false)
-        danceability = danceability/Double(trackCount); danceability.randomInRange(value: danceability, range: 0.3, acceptNegativeValues: false)
-        energy = energy/Double(trackCount); energy.randomInRange(value: energy, range: 0.3, acceptNegativeValues: false)
-        instrumentalness = instrumentalness/Double(trackCount); instrumentalness.randomInRange(value: instrumentalness, range: 0.3, acceptNegativeValues: false)
-        liveness = liveness/Double(trackCount); liveness.randomInRange(value: liveness, range: 3, acceptNegativeValues: true)
-        loudness = loudness/Double(trackCount); loudness.randomInRange(value: loudness, range: 0.3, acceptNegativeValues: false)
-        speechiness = speechiness/Double(trackCount); speechiness.randomInRange(value: speechiness, range: 0.3, acceptNegativeValues: false)
-        tempo = tempo/Double(trackCount); tempo.randomInRange(value: tempo, range: 20, acceptNegativeValues: false, maxValue: 250)
-        valence = valence/Double(trackCount); valence.randomInRange(value: valence, range: 0.3, acceptNegativeValues: false)
+        acousticness = (acousticness/Double(trackCount));
+        acousticness.randomInRange(value: acousticness, range: 0.2, acceptNegativeValues: false)
+        danceability = danceability/Double(trackCount);
+        danceability.randomInRange(value: danceability, range: 0.2, acceptNegativeValues: false)
+        energy = energy/Double(trackCount);
+        energy.randomInRange(value: energy, range: 0.2, acceptNegativeValues: false)
+        instrumentalness = instrumentalness/Double(trackCount);
+        instrumentalness.randomInRange(value: instrumentalness, range: 0.2, acceptNegativeValues: false)
+        liveness = liveness/Double(trackCount);
+        liveness.randomInRange(value: liveness, range: 3, acceptNegativeValues: true)
+        loudness = loudness/Double(trackCount);
+        loudness.randomInRange(value: loudness, range: 0.2, acceptNegativeValues: false)
+        speechiness = speechiness/Double(trackCount);
+        speechiness.randomInRange(value: speechiness, range: 0.2, acceptNegativeValues: false)
+        tempo = tempo/Double(trackCount);
+        tempo.randomInRange(value: tempo, range: 20, acceptNegativeValues: false, maxValue: 250)
+        valence = valence/Double(trackCount);
+        valence.randomInRange(value: valence, range: 0.2, acceptNegativeValues: false)
         
         if preferredTrackFeatures.first?.acousticness != nil {
             emotionValues["acousticness"] = acousticness as AnyObject

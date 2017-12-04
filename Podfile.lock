@@ -30,6 +30,7 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - pop (1.0.10)
+  - PopupDialog (0.6.1)
   - SwiftSpinner (1.5.0)
   - youtube-ios-player-helper (0.1.6)
 
@@ -37,6 +38,7 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - Koloda (~> 4.0)
+  - PopupDialog
   - SwiftSpinner
   - youtube-ios-player-helper (~> 0.1.4)
 
@@ -51,9 +53,10 @@ SPEC CHECKSUMS:
   leveldb-library: 44ef425bfde64f5b41daef86b38db2d13edbbee1
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
+  PopupDialog: 1bdd1efbfb49eb619a280faa9a3bbaac76f94120
   SwiftSpinner: 4c058c7a1d6b444dd2e1d70988ead40783097133
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: e710a9af9075a28210e55dc158f574c00fd3c10d
+PODFILE CHECKSUM: 9da4edfa39d9810db2ee182d9bc5a1b216b18ad0
 
 COCOAPODS: 1.3.1
