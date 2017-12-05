@@ -53,6 +53,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     var seguePerformed: Bool = false;
     var swipeInteractionController: SwipeInteractionController?
     var currentPlayingTrack: SpotifyTrack?
+    var playedSongsHistory: [SpotifyTrack]? = []
     //var songPosition: Double! = 0
     
     //Constraints
@@ -205,8 +206,9 @@ class ShowSongViewController: NewsicDefaultViewController {
             spotifyHandler.getAllTracksForPlaylist(playlistId: playlist.id!) { (spotifyTracks, error) in
                 if let error = error {
 //                    self.present(error.popupDialog!, animated: true, completion: nil)
-                    
+//                    SwiftSpinner.hide()
                     error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue)
+                    
                 } else {
                     if let spotifyTracks = spotifyTracks {
                         self.likedTrackList = spotifyTracks;
@@ -338,9 +340,9 @@ class ShowSongViewController: NewsicDefaultViewController {
         fetchSongsAndSetup(moodObject: self.moodObject)
     }
     
-    func fetchSongsAndSetup(numberOfSongs: Int? = 5, moodObject: NewsicMood?) {
-        
-        self.spotifyHandler.searchMusicInGenres(numberOfSongs: 5, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: self.selectedGenreList) { (results, error) in
+    func fetchSongsAndSetup(numberOfSongs: Int? = nil, moodObject: NewsicMood?) {
+        let songCountToSearch = numberOfSongs == nil ? self.cardCount : numberOfSongs
+        self.spotifyHandler.searchMusicInGenres(numberOfSongs: songCountToSearch!, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: self.selectedGenreList) { (results, error) in
             if let error = error {
 //                self.present(error.popupDialog!, animated: true, completion: nil);
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
@@ -352,6 +354,8 @@ class ShowSongViewController: NewsicDefaultViewController {
             for track in results {
                 let newsicTrack = NewsicTrack(trackInfo: track, moodInfo: self.moodObject, userName: self.auth.session.canonicalUsername);
                 newsicTracks.append(newsicTrack);
+                
+                self.playedSongsHistory?.append(track)
             }
             self.cardList = newsicTracks;
             
@@ -388,7 +392,7 @@ class ShowSongViewController: NewsicDefaultViewController {
                 self.spotifyHandler.getGenresForTrackList(trackIdList: trackIdList, trackGenreHandler: { (genres, error) in
                     if let error = error {
 //                        self.present(error.popupDialog!, animated: true, completion: nil)
-                        error.presentPopup(for: self)
+                        error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getGenresForTrackList.rawValue)
                     } else {
                         if let genres = genres {
                             //print("GENRES EXTRACTED = \(genres)");
@@ -421,17 +425,38 @@ class ShowSongViewController: NewsicDefaultViewController {
 //                self.present(error.popupDialog!, animated: true, completion: nil);
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
             }
-            for track in results {
-                let newsicTrack = NewsicTrack(trackInfo: track, moodInfo: self.moodObject, userName: self.auth.session.canonicalUsername);
-                self.cardList.append(newsicTrack)
+            
+            if let track = results.first {
+                let containsCheck = self.playedSongsHistory?.contains(where: { (trackInHistory) -> Bool in
+                    return trackInHistory.trackId == track.trackId
+                })
+                if containsCheck! {
+                    print("REFETCHING NEW CARD.. \(track.trackId) already in list")
+                    self.spotifyHandler.searchMusicInGenres(numberOfSongs: 1, moodObject: moodObject, completionHandler: { (results, error) in
+                        
+//                        if let track = results.first {
+//                            print("Got new song. \(track.trackId)");
+//                            self.addSongToCardPlaylist(track: track)
+//                            DispatchQueue.main.async {
+//                                self.songCardView.reloadData();
+//                            }
+//                        }
+                        cardFetchingHandler!(false)
+                    })
+                } else {
+                    if let track = results.first {
+                        self.addSongToCardPlaylist(track: track)
+                    }
+                    
+                    
+                    DispatchQueue.main.async {
+                        self.songCardView.reloadData();
+                    }
+                    
+                    cardFetchingHandler!(true);
+                }
             }
             
-            
-            DispatchQueue.main.async {
-                self.songCardView.reloadData();
-            }
-            
-            cardFetchingHandler!(true);
         }
     }
     
@@ -458,6 +483,12 @@ class ShowSongViewController: NewsicDefaultViewController {
                 })
             }
         }
+    }
+    
+    func addSongToCardPlaylist(track: SpotifyTrack) {
+        let newsicTrack = NewsicTrack(trackInfo: track, moodInfo: self.moodObject, userName: self.auth.session.canonicalUsername);
+        self.cardList.append(newsicTrack)
+        self.playedSongsHistory?.append(track)
     }
     
     @IBAction func previousTrackClicked(_ sender: UIButton) {

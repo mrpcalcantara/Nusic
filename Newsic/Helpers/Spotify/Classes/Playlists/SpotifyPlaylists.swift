@@ -14,9 +14,10 @@ extension Spotify {
         
         let playlistRequest = pageRequest != nil ? pageRequest : try? SPTPlaylistList.createRequestForGettingPlaylists(forUser: self.user.canonicalUserName, withAccessToken: self.auth.session.accessToken);
         
-        let session = URLSession.shared;
-        
-        session.executeCall(with: playlistRequest!) { (data, httpResponse, error, isSuccess) in
+
+        executeSpotifyCall(with: playlistRequest!, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+//        let session = URLSession.shared;
+//        session.executeCall(with: playlistRequest!) { (data, httpResponse, error, isSuccess) in
             let statusCode:Int! = httpResponse?.statusCode
             if isSuccess {
                 
@@ -46,7 +47,7 @@ extension Spotify {
                 default: return;
                 }
             }
-        }
+        })
     }
 //
 //        session.dataTask(with: playlistRequest!) { (data, response, error) in
@@ -108,12 +109,15 @@ extension Spotify {
             createPlaylistRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
             
             createPlaylistRequest.httpMethod = "POST";
-            let session = URLSession.shared;
+           
+            
             
             let body = "{\"name\":\"\(playlistName)\"}";
             createPlaylistRequest.httpBody = body.data(using: .utf8)
-            
-            session.executeCall(with: createPlaylistRequest) { (data, httpResponse, error, isSuccess) in
+
+            executeSpotifyCall(with: createPlaylistRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+//            let session = URLSession.shared
+//            session.executeCall(with: createPlaylistRequest) { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse?.statusCode
                 if isSuccess {
                     let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
@@ -130,7 +134,7 @@ extension Spotify {
                     default: return;
                     }
                 }
-            }
+            })
         } catch {
             playlistCreationHandler(false, nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError))
             print("error creating request creating playlist list with name \(playlistName)");

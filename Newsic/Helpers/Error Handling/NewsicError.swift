@@ -39,10 +39,11 @@ class NewsicError: NSObject, Error {
             popupMessage.append(" "); popupMessage.append(description)
         }
         
-        let dialog = PopupDialog(title: "Error!", message: popupMessage)
-        dialog.transitionStyle = .zoomIn
+        let dialog = PopupDialog(title: "Error!", message: popupMessage, gestureDismissal: false)
+//        dialog.transitionStyle = .zoomIn
+        dialog.transitionStyle = .fadeIn
         
-        let okButton = PopupDialogButton(title: "Got it!") {
+        let okButton = DefaultButton(title: "Got it!") {
             self.popupDialog?.dismiss(animated: true, completion: nil)
         }
         

@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import SafariServices
+import PopupDialog
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,17 +31,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Setup Firebase
         FirebaseApp.configure();
         
+        setupNavigationBarAppearance()
+        setupPopupDialogAppearance()
         
-        let navigationBarAppearance = UINavigationBar.appearance()
-        navigationBarAppearance.shadowImage = UIImage();
-        navigationBarAppearance.setBackgroundImage(UIImage(), for: .default);
-        navigationBarAppearance.tintColor = UIColor.white
-        navigationBarAppearance.barTintColor = UIColor.white
-        // change navigation item title color
-        
-        navigationBarAppearance.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.black]
         //NOTE: DELETE WHEN RELEASE. Suppressing the constraint errors for the cards
         UserDefaults.standard.setValue(false, forKey:"_UIConstraintBasedLayoutLogUnsatisfiable")
+        
+        
         // Override point for customization after application launch.
         return true
     }
@@ -64,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 userDefaults.synchronize()
                 
                 // 6 - Tell notification center login is successful
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "loginSuccessfull"), object: nil)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "loginSuccessful"), object: nil)
                 
                 
             })
@@ -100,6 +97,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    func setupNavigationBarAppearance() {
+        let navigationBarAppearance = UINavigationBar.appearance()
+        navigationBarAppearance.shadowImage = UIImage();
+        navigationBarAppearance.setBackgroundImage(UIImage(), for: .default);
+        navigationBarAppearance.tintColor = UIColor.white
+        navigationBarAppearance.barTintColor = UIColor.white
+        // change navigation item title color
+        navigationBarAppearance.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.black]
+    }
+    
+    func setupPopupDialogAppearance() {
+        let dialogAppearance = PopupDialogDefaultView.appearance()
+        dialogAppearance.titleFont            = UIFont(name: "Futura", size: 16)!
+        dialogAppearance.titleColor           = UIColor(white: 1, alpha: 1)
+        dialogAppearance.titleTextAlignment   = .center
+        dialogAppearance.messageFont          = UIFont(name: "Futura", size: 16)!
+        dialogAppearance.messageColor         = UIColor(white: 0.6, alpha: 1)
+        dialogAppearance.messageTextAlignment = .center
+        
+        let containerAppearance = PopupDialogContainerView.appearance()
+        
+        containerAppearance.backgroundColor = UIColor(white: 0.15, alpha: 1)
+        containerAppearance.cornerRadius    = 2
+        containerAppearance.shadowEnabled   = true
+        containerAppearance.shadowColor     = UIColor.black
+        
+        //        let overlayAppearance = PopupDialogOverlayView.appearance()
+        //
+        //        overlayAppearance.color       = UIColor.black
+        //        overlayAppearance.blurRadius  = 20
+        //        overlayAppearance.blurEnabled = true
+        //        overlayAppearance.liveBlur    = false
+        //        overlayAppearance.opacity     = 0.7
+        
+        var buttonAppearance = DefaultButton.appearance()
+        
+        // Default button
+        buttonAppearance.titleFont      = UIFont(name: "Futura", size: 16)!
+        buttonAppearance.titleColor     = UIColor.green
+        buttonAppearance.buttonColor    = UIColor(white: 0.15, alpha: 1)
+        buttonAppearance.separatorColor = UIColor(white: 0.9, alpha: 1)
+        
+        // Below, only the differences are highlighted
+        
+        // Default Button
+        
+        
+        // Cancel button
+        CancelButton.appearance().titleColor = UIColor.lightGray
+        
+        // Destructive button
+        DestructiveButton.appearance().titleColor = UIColor.red
+    }
 }
 

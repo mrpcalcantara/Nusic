@@ -10,7 +10,6 @@ import Foundation
 
 extension URLSession {
     
-//    func dataTask(with request: URLRequest, completionHandler: @e)
     func executeCall(with request: URLRequest, retryNumber: Int? = 3, retryAfter: Int? = 2, completionHandler: @escaping (Data?, HTTPURLResponse?, Error?, Bool) -> ()) {
         var retryNumberLeft = retryNumber!
         
@@ -19,8 +18,8 @@ extension URLSession {
             let httpResponse = response as! HTTPURLResponse
             let statusCode = httpResponse.statusCode
             if (200...299).contains(statusCode) {
-                if let url = request.url {
-//                    print("Call OK for URL: \(url.absoluteString)")
+                if let url = request.url, retryNumber! < 3 {
+                    print("Call OK for URL: \(url.absoluteString)")
                 }
                 completionHandler(data, httpResponse, error, true)
             }
@@ -37,9 +36,7 @@ extension URLSession {
                         }
                         
                         DispatchQueue.main.asyncAfter(deadline: timeToWait, execute: {
-                            self.executeCall(with: request, retryNumber: retryNumberLeft-1, retryAfter: retryAfter, completionHandler: { (data, httpResponse, error, isSuccess) in
-                                completionHandler(data, httpResponse, error, isSuccess)
-                            })
+                            self.executeCall(with: request, retryNumber: retryNumberLeft-1, retryAfter: retryAfter, completionHandler: completionHandler)
                         })
                     } else {
                         completionHandler(data, httpResponse, error, false);

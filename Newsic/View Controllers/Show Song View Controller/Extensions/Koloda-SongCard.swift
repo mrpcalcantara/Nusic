@@ -100,9 +100,15 @@ extension ShowSongViewController: KolodaViewDelegate {
             likeTrack(in: index);
         }
         didUserSwipe = false;
-        fetchNewCard { (fetched) in
-            if self.songCardView.countOfVisibleCards < 3 {
-                self.fetchNewCard(cardFetchingHandler: nil);
+        fetchNewCard { (isFetched) in
+            print("COUNT OF CARDS = \(self.songCardView.countOfVisibleCards)")
+            
+            if self.songCardView.countOfVisibleCards < 3 || !isFetched {
+//                self.fetchNewCard(cardFetchingHandler: nil);
+                self.fetchNewCard(cardFetchingHandler: { (isFetched) in
+                    
+                })
+                
             }
         }
     }

@@ -41,7 +41,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        NotificationCenter.default.addObserver(self, selector: #selector(updateAfterFirstLogin), name: NSNotification.Name(rawValue: "loginSuccessfull"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateAfterFirstLogin), name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setupSpotify), name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
         
     }
@@ -115,8 +115,6 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         loginButton.alpha = 0
         newsicLabl.alpha = 0
         
-        //self.newsicLabl.animate(newText: "Newsic", characterDelay: 0.5)
-        //self.newsicLabl.startShimmering()
         UIView.animate(withDuration: 1, animations: {
             self.newsicLabl.alpha = 1;
         })
@@ -135,7 +133,9 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
             print("ACCESS TOKEN \(firstTimeSession.accessToken)");
             
             if !firstTimeSession.isValid() {
-                self.getRefreshToken(currentSession: firstTimeSession);
+                self.getRefreshToken(currentSession: firstTimeSession, refreshTokenCompletionHandler: { (isRefreshed) in
+                    _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
+                });
             } else {
                 self.session = firstTimeSession
                 self.auth.session = firstTimeSession;
@@ -152,7 +152,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         
     }
     
-    func getRefreshToken(currentSession: SPTSession) {
+    func getRefreshToken(currentSession: SPTSession, refreshTokenCompletionHandler: @escaping (Bool) -> ()) {
         let userDefaults = UserDefaults.standard;
         SPTAuth.defaultInstance().renewSession(currentSession, callback: { (error, session) in
             if error == nil {
@@ -162,13 +162,15 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
                 userDefaults.synchronize()
                 
                 self.auth.session = session;
-                _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
+                refreshTokenCompletionHandler(true)
+//                _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
             } else {
                 print("error refreshing session: \(error?.localizedDescription ?? "sdsdasasd")");
                 self.loginButton.isHidden = false;
                 self.loginUrl = self.auth.spotifyWebAuthenticationURL();
                 self.resetLogin()
-                
+                self.setViewResetLogin()
+                refreshTokenCompletionHandler(false)
             }
         })
     }
@@ -176,6 +178,9 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     func resetLogin() {
         self.session = nil
         self.auth.session = nil
+    }
+    
+    func setViewResetLogin() {
         UIView.animate(withDuration: 1, animations: {
             self.newsicLabl.center.y = self.view.bounds.height / 4
         })

@@ -66,9 +66,10 @@ extension Spotify {
         let accessToken = (auth?.session.accessToken)!
         var spotifyResults:[SpotifyTrack] = [];
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization");
-        let session = URLSession.shared;
         
-        session.executeCall(with: request) { (data, httpResponse, error, isSuccess) in
+//        let session = URLSession.shared;
+//        session.executeCall(with: request) { (data, httpResponse, error, isSuccess) in
+        executeSpotifyCall(with: request, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
             let statusCode:Int! = httpResponse?.statusCode
             if isSuccess {
                 let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
@@ -104,7 +105,7 @@ extension Spotify {
                 })
             } else {
                 switch statusCode {
-                //                case (300...199):
+                //                case (300...399):
                 case (400...499):
                     completionHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
                 case (500...599):
@@ -114,14 +115,7 @@ extension Spotify {
                 }
             }
             
-        }
-        session.dataTask(with: request) { (data, response, error) in
-            let httpResponse = response as! HTTPURLResponse
-            let statusCode = httpResponse.statusCode
-            
-            
-            }.resume()
-        
+        })
         
     }
 }
