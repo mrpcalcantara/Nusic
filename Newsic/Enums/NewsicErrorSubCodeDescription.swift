@@ -15,5 +15,6 @@ enum NewsicErrorSubCodeDescription {
         case getMusicInGenres = "An error occurred while fetching a new card."
         case getTrackIdFeaturesForMood = "An error occured while fetching the tracks information for the chosen mood."
         case removeTrack = "An error occured while removing the track from the Spotify playlist."
+        case getGenresForTrackList = "An error occurred extracting the genres for the track list."
     }
 }

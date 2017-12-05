@@ -16,4 +16,5 @@ enum SpotifyErrorCodeDescription : String {
     case removeTrack = "An error occured while removing the track from the Spotify playlist."
     case createPlaylist = "An error occured while creating the playlist on Spotify."
     case getUser = "An error occured while extracting the user information from Spotify."
+    case getGenresForTrackList = "An error occurred extracting the genres for the track list."
 }

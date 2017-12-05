@@ -6,9 +6,9 @@
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
 //
 
-import AVKit
-import MediaPlayer
-
+//import AVKit
+//import MediaPlayer
+import PopupDialog
 import UIKit
 import SwiftSpinner
 
@@ -156,23 +156,15 @@ class SongPickerViewController: NewsicDefaultViewController {
         super.viewWillAppear(animated)
         //SwiftSpinner.show("Loading...", animated: true);
     }
-//
-//    lazy var playerQueue : AVQueuePlayer = {
-//        return AVQueuePlayer()
-//    }()
  
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.modalTransitionStyle = .crossDissolve
         
         setupView()
         setupNavigationBar()
         setupCollectionCellViews();
         setupSegmentedControl()
         setupMenuView();
-        
-        //navigationController?.delegate = self
-        //hideKeyboardWhenTappedAround();
         setupCollectionViewTapGestureRecognizer();
         moodHacker = MoodHacker()
         
@@ -292,7 +284,6 @@ class SongPickerViewController: NewsicDefaultViewController {
         
         self.spotifyHandler.getUser { (user, error) in
             if let error = error {
-//                self.present(error.popupDialog!, animated: true, completion: nil)
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getUser.rawValue)
                 self.loadingFinished = true
             } else {

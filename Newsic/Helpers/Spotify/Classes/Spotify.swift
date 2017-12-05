@@ -111,7 +111,7 @@ class Spotify {
         speechiness = speechiness/Double(trackCount);
         speechiness.randomInRange(value: speechiness, range: 0.2, acceptNegativeValues: false)
         tempo = tempo/Double(trackCount);
-        tempo.randomInRange(value: tempo, range: 20, acceptNegativeValues: false, maxValue: 250)
+        tempo.randomInRange(value: tempo, range: 100, acceptNegativeValues: false, maxValue: 250)
         valence = valence/Double(trackCount);
         valence.randomInRange(value: valence, range: 0.2, acceptNegativeValues: false)
         
@@ -238,7 +238,14 @@ class Spotify {
         var index = 0
         var genres = ""
         let genreListCount = selectedGenreList != nil ? selectedGenreList?.count : numberOfSongs;
-        let totalCount = numberOfSongs > genreListCount! ? selectedGenreList?.count : numberOfSongs
+        var totalCount = numberOfSongs > genreListCount! ? selectedGenreList?.count : numberOfSongs
+        
+        //NOTE: Spotify recommendations max seed genres is 5. This is a workaround by fixing the max count to 5.
+        if numberOfSongs > 5 {
+           totalCount = 5
+        }
+        
+        
         while index < totalCount! {
             var separator = ","
             if index == totalCount!-1 {
@@ -256,6 +263,58 @@ class Spotify {
         }
         return genres;
     }
+    
+    func getRefreshToken(currentSession: SPTSession, refreshTokenCompletionHandler: @escaping (Bool) -> ()) {
+        let userDefaults = UserDefaults.standard;
+        SPTAuth.defaultInstance().renewSession(currentSession, callback: { (error, session) in
+            if error == nil {
+                print("refresh successful");
+                let sessionData = NSKeyedArchiver.archivedData(withRootObject: session!)
+                userDefaults.set(sessionData, forKey: "SpotifySession")
+                userDefaults.synchronize()
+                
+                self.auth.session = session;
+                //                _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
+                refreshTokenCompletionHandler(true)
+            } else {
+                print("error refreshing session: \(error?.localizedDescription ?? "sdsdasasd")");
+                refreshTokenCompletionHandler(false)
+            }
+            
+        })
+    }
+    
+    func executeSpotifyCall(with request: URLRequest, retryNumber: Int? = 3, retryAfter: Int? = 2, spotifyCallCompletionHandler: @escaping (Data?, HTTPURLResponse?, Error?, Bool) -> ()) {
+        let session = URLSession.shared;
+        session.executeCall(with: request) { (data, response, error, isSuccess) in
+            let statusCode = response?.statusCode
+            if isSuccess {
+                spotifyCallCompletionHandler(data, response, error, true)
+            } else {
+                switch statusCode! {
+                case 400...499:
+                    if statusCode == HTTPErrorCodes.unauthorized.rawValue {
+                        self.getRefreshToken(currentSession: self.auth.session, refreshTokenCompletionHandler: { (isRefreshSuccessful) in
+                            if isRefreshSuccessful {
+//                                self.executeSpotifyCall(with: request, spotifyCallCompletionHandler: { (data, response, error, isSuccess) in
+//                                    spotifyCallCompletionHandler(data, response, error, isSuccess);
+//                                })
+                                self.executeSpotifyCall(with: request, spotifyCallCompletionHandler: spotifyCallCompletionHandler)
+                            } else {
+                                spotifyCallCompletionHandler(data, response, error, isSuccess);
+                            }
+                        })
+                    }
+                case 500...599:
+                    spotifyCallCompletionHandler(data, response, error, false);
+                default: return;
+                }
+            }
+        }
+    }
+    
+    
+    // STATIC FUNCTIONS
     
     static func transformToURI(trackId: String) -> String {
         return "spotify:track:\(trackId)"

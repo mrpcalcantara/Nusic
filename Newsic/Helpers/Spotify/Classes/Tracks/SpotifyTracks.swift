@@ -1,4 +1,4 @@
-//
+
 //  SpotifyBrowse.swift
 //  Newsic
 //
@@ -9,8 +9,9 @@
 extension Spotify {
     
     func getTrackInfo(for trackList: [String], offset: Int, currentExtractedTrackList: [SpotifyTrack], trackInfoListHandler: @escaping([SpotifyTrack]?, NewsicError?) -> ()) {
+        
         if trackList.count <= 0 {
-            trackInfoListHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.functionalError));
+//            trackInfoListHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.functionalError));
             return;
         }
         var spotifyTrackList: [SpotifyTrack] = currentExtractedTrackList != nil ? currentExtractedTrackList : []
@@ -39,8 +40,8 @@ extension Spotify {
             let request = try SPTTrack.createRequest(forTracks: trackUriList, withAccessToken: self.auth.session.accessToken!, market: self.user.territory);
             
             let session = URLSession.shared;
-            
-            session.executeCall(with: request) { (data, httpResponse, error, isSuccess) in
+            executeSpotifyCall(with: request, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+//            session.executeCall(with: request) { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse?.statusCode
                 if isSuccess {
                     let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
@@ -96,7 +97,8 @@ extension Spotify {
                     default: return;
                     }
                 }
-            }
+            })
+            
         } catch { }
     }
 //
@@ -188,9 +190,8 @@ extension Spotify {
             var trackFeaturesRequest = try SPTTrack.createRequest(forTrack: trackUrl, withAccessToken: auth?.session.accessToken, market: self.user.territory)
             trackFeaturesRequest.url =  URL(string: "https://api.spotify.com/v1/audio-features/\(trackId)")
             
-            let session = URLSession.shared;
-            
-            session.executeCall(with: trackFeaturesRequest) { (data, httpResponse, error, isSuccess) in
+            executeSpotifyCall(with: trackFeaturesRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+//            session.executeCall(with: trackFeaturesRequest) { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse?.statusCode
                 if isSuccess {
                     do {
@@ -211,7 +212,7 @@ extension Spotify {
                     default: return;
                     }
                 }
-            }
+            })
             
 //            session.dataTask(with: trackFeaturesRequest, completionHandler: { (data, response, error) in
 //                if error != nil {
@@ -255,9 +256,9 @@ extension Spotify {
             let trackUrl = URL(string: "spotify:track:\(trackId)")!
             let trackRequest = try SPTTrack.createRequest(forTrack: trackUrl, withAccessToken: auth?.session.accessToken, market: self.user.territory)
             
-            let session = URLSession.shared;
-            
-            session.executeCall(with: trackRequest) { (data, httpResponse, error, isSuccess) in
+            executeSpotifyCall(with: trackRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+//            let session = URLSession.shared;
+//            session.executeCall(with: trackRequest) { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse?.statusCode
                 if isSuccess {
                     do {
@@ -278,7 +279,7 @@ extension Spotify {
                     default: return;
                     }
                 }
-            }
+            })
             
 //            session.dataTask(with: trackRequest, completionHandler: { (data, response, error) in
 //                if error != nil {
@@ -328,6 +329,7 @@ extension Spotify {
     
     
     func getAllTracksForPlaylist(playlistId: String, nextTrackPageRequest: URLRequest? = nil, currentTrackList: [SpotifyTrack]? = nil, fetchedPlaylistTracks: @escaping([SpotifyTrack]?, NewsicError?) -> ()) {
+        
         let userId = SPTAuth.defaultInstance().session.canonicalUsername;
         var currentList: [SpotifyTrack] = currentTrackList != nil ? currentTrackList! : [];
         var pageRequest = nextTrackPageRequest;
@@ -338,9 +340,10 @@ extension Spotify {
         }
         
         pageRequest?.addValue("Bearer \(self.auth.session.accessToken!)", forHTTPHeaderField: "Authorization")
-        let session = URLSession.shared;
-        
-        session.executeCall(with: pageRequest!) { (data, httpResponse, error, isSuccess) in
+
+        executeSpotifyCall(with: pageRequest!, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+//        let session = URLSession.shared;
+//        session.executeCall(with: pageRequest!) { (data, httpResponse, error, isSuccess) in
             let statusCode:Int! = httpResponse?.statusCode
             if isSuccess {
                 do {
@@ -407,7 +410,7 @@ extension Spotify {
                 default: return;
                 }
             }
-        }
+        })
         
         
 //        session.dataTask(with: pageRequest!) { (data, response, error) in
@@ -509,9 +512,10 @@ extension Spotify {
             createPlaylistRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
             
             createPlaylistRequest.httpMethod = "POST";
-            let session = URLSession.shared;
-            
-            session.executeCall(with: createPlaylistRequest) { (data, httpResponse, error, isSuccess) in
+
+            executeSpotifyCall(with: createPlaylistRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+//            let session = URLSession.shared;
+//            session.executeCall(with: createPlaylistRequest) { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse?.statusCode
                 if isSuccess {
                     addTrackHandler(true, nil);
@@ -524,7 +528,7 @@ extension Spotify {
                     default: return;
                     }
                 }
-            }
+            })
 //
 //            session.dataTask(with: createPlaylistRequest, completionHandler: { (data, response, error) in
 //                if error != nil {
@@ -576,7 +580,7 @@ extension Spotify {
             removeTrackRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
             
             removeTrackRequest.httpMethod = "DELETE";
-            let session = URLSession.shared;
+            
             
             var iterator = tracks.makeIterator();
             var element = iterator.next()
@@ -593,8 +597,10 @@ extension Spotify {
             
             let body = "{\"tracks\":[\(tracksToRemove)]}";
             removeTrackRequest.httpBody = body.data(using: .utf8)
-            
-            session.executeCall(with: removeTrackRequest) { (data, httpResponse, error, isSuccess) in
+
+            executeSpotifyCall(with: removeTrackRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+//            let session = URLSession.shared;
+//            session.executeCall(with: removeTrackRequest) { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse?.statusCode
                 if isSuccess {
                     removeTrackHandler(true, nil);
@@ -607,7 +613,7 @@ extension Spotify {
                     default: return;
                     }
                 }
-            }
+            })
 //            
 //            session.dataTask(with: createPlaylistRequest, completionHandler: { (data, response, error) in
 //                if error != nil {

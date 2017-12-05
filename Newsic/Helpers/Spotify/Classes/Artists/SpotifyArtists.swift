@@ -21,9 +21,10 @@ extension Spotify {
                 followedArtistsRequest.url = URL(string: "https://api.spotify.com/v1/me/following?type=artist&limit=50");
             }
             
-            let session = URLSession.shared;
-            
-            session.executeCall(with: followedArtistsRequest) { (data, httpResponse, error, isSuccess) in
+
+            executeSpotifyCall(with: followedArtistsRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+//            let session = URLSession.shared;
+//            session.executeCall(with: followedArtistsRequest) { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse?.statusCode
                 if isSuccess {
                     do {
@@ -65,7 +66,7 @@ extension Spotify {
                     default: return;
                     }
                 }
-            }
+            })
             
 //            session.dataTask(with: followedArtistsRequest, completionHandler: { (data, response, error) in
 //                if error != nil {
@@ -147,7 +148,8 @@ extension Spotify {
         let session = URLSession.shared;
         
         if let pageRequest = pageRequest {
-            session.executeCall(with: pageRequest, completionHandler: { (data, httpResponse, error, isSuccess) in
+            executeSpotifyCall(with: pageRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+//            session.executeCall(with: pageRequest, completionHandler: { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse?.statusCode
                 if isSuccess {
                     do {
@@ -282,9 +284,10 @@ extension Spotify {
         do {
             let request = try SPTArtist.createRequest(forArtists: artistUriList, withAccessToken: self.auth.session.accessToken!)
             
-            let session = URLSession.shared;
-            
-            session.executeCall(with: request) { (data, httpResponse, error, isSuccess) in
+
+            executeSpotifyCall(with: request, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+//            let session = URLSession.shared;
+//            session.executeCall(with: request) { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse?.statusCode
                 if isSuccess {
                     do {
@@ -334,7 +337,7 @@ extension Spotify {
                     default: return;
                     }
                 }
-            }
+            })
             
 //            session.dataTask(with: request, completionHandler: { (data, response, error) in
 //
@@ -419,9 +422,10 @@ extension Spotify {
             
             let trackUrl = URL(string: "spotify:artist:\(artistId)")!
             let artistGenresRequest = try SPTArtist.createRequest(forArtist: trackUrl, withAccessToken: auth?.session.accessToken);
-            let session = URLSession.shared;
-            
-            session.executeCall(with: artistGenresRequest) { (data, httpResponse, error, isSuccess) in
+
+            executeSpotifyCall(with: artistGenresRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+//            let session = URLSession.shared;
+//            session.executeCall(with: artistGenresRequest) { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse?.statusCode
                 if isSuccess {
                     do {
@@ -440,7 +444,7 @@ extension Spotify {
                     default: return;
                     }
                 }
-            }
+            })
         } catch { fetchedArtistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                         print("error creating request for artist genres for artist \(artistId)");
             
