@@ -9,9 +9,7 @@
 extension Spotify {
     
     func getUser(completion: @escaping(SPTUser?, NewsicError?) -> ()) {
-        let auth = SPTAuth.defaultInstance();
-//        print("\(String(describing: auth?.session))");
-        SPTUser.requestCurrentUser(withAccessToken: auth?.session.accessToken) { (error, results) in
+        SPTUser.requestCurrentUser(withAccessToken: auth.session.accessToken) { (error, results) in
             if error != nil {
                 print("error getting user: \(error?.localizedDescription)")
                 let error = NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError)

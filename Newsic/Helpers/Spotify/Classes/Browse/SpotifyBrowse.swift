@@ -8,42 +8,8 @@
 
 extension Spotify {
     
-    func retry(retryNumberLeft: Int, retryAfter: Int? = 2, taskRequest: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?, Bool) -> ()) {
-        var retryNumber = retryNumberLeft
-        let session = URLSession.shared;
-        session.dataTask(with: taskRequest) { (data, response, error) in
-            let httpResponse = response as! HTTPURLResponse
-            let statusCode = httpResponse.statusCode
-            if (200...299).contains(statusCode) {
-                completionHandler(data, response, error, true)
-            }
-            else {
-//            else if (400...499).contains(statusCode) || (500...599).contains(statusCode) {
-            
-                if var retryAfter = retryAfter {
-                    if statusCode == HTTPErrorCodes.tooManyRequests.rawValue {
-                        retryAfter = Int(httpResponse.allHeaderFields["retry-after"] as! String)!;
-                        retryNumber += 1;
-                    }
-                    if retryNumber > 0 {
-                        let timeToWait = DispatchTime.now()+Double(retryAfter)
-                        DispatchQueue.main.asyncAfter(deadline: timeToWait, execute: {
-                            self.retry(retryNumberLeft: retryNumber-1, retryAfter: retryAfter, taskRequest: taskRequest, completionHandler: { (data, response, error, false) in
-                                
-                            })
-                        })
-                    } else {
-                        completionHandler(data, response, error, false);
-                    }
-                }
-            }
-            
-        }
-    }
-    
     func searchMusicInGenres(numberOfSongs: Int, moodObject: NewsicMood?, preferredTrackFeatures: [SpotifyTrackFeature]? = nil, selectedGenreList: [String: Int]? = nil, completionHandler: @escaping ([SpotifyTrack], NewsicError?) -> ()) {
         
-        let auth = SPTAuth.defaultInstance()
         //Get Genres
         let hasList = moodObject?.associatedGenres != nil ? true : false;
         let genres = getGenreListString(numberOfSongs: numberOfSongs, hasList: hasList, selectedGenreList: selectedGenreList);
@@ -60,15 +26,13 @@ extension Spotify {
             }
         }
         
-        //Create URL Request to get sogs
+        //Create URL Request to get songs
         let url = URL(string: urlString);
         var request = URLRequest(url: url!)
-        let accessToken = (auth?.session.accessToken)!
+        let accessToken = auth.session.accessToken!
         var spotifyResults:[SpotifyTrack] = [];
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization");
         
-//        let session = URLSession.shared;
-//        session.executeCall(with: request) { (data, httpResponse, error, isSuccess) in
         executeSpotifyCall(with: request, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
             let statusCode:Int! = httpResponse?.statusCode
             if isSuccess {
