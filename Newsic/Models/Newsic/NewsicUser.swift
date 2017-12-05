@@ -113,16 +113,33 @@ extension NewsicUser: FirebaseModel {
     }
     
     func saveFavoriteGenres() {
-        
-        var dict:[String: Int] = [:]
-        
-        for genre in favoriteGenres! {
-            dict[genre.mainGenre] = genre.count
+        if let favoriteGenres = favoriteGenres {
+            var dict:[String: Int] = [:]
+            for genre in favoriteGenres {
+                dict[genre.mainGenre] = genre.count
+            }
+            Database.database().reference().child("genres").child(userName).updateChildValues(dict)
         }
-        Database.database().reference().child("genres").child(userName).updateChildValues(dict)
     }
     
-    
+    func updateGenreCount(for genre: String) {
+        var closureSelf = self;
+        if let favoriteGenres = favoriteGenres {
+            if let genreIndex = favoriteGenres.index(where: { (localGenre) -> Bool in
+                return localGenre.mainGenre == genre
+            }) {
+                let localGenre = favoriteGenres[genreIndex]
+                let key = reference.child("genres").child(userName)
+                let updatedValue = [genre:localGenre.count+1];
+                let childUpdateValues = ["/genres/\(userName)/" : updatedValue]
+                print("childUpdateValues = \(childUpdateValues)")
+                Database.database().reference().child("genres").child(userName).updateChildValues(updatedValue)
+            }
+            
+            
+        }
+        
+    }
     
 }
 

@@ -18,7 +18,7 @@ extension URLSession {
             let httpResponse = response as! HTTPURLResponse
             let statusCode = httpResponse.statusCode
             if (200...299).contains(statusCode) {
-                if let url = request.url, retryNumber! < 3 {
+                if let url = request.url {
                     print("Call OK for URL: \(url.absoluteString)")
                 }
                 completionHandler(data, httpResponse, error, true)

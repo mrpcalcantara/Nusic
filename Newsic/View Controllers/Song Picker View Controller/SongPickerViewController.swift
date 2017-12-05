@@ -71,7 +71,6 @@ class SongPickerViewController: NewsicDefaultViewController {
     var navbar: UINavigationBar = UINavigationBar()
     var loadingFinished: Bool = false {
         didSet {
-            newsicUser.saveFavoriteGenres();
             SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
         }
     }
@@ -265,7 +264,6 @@ class SongPickerViewController: NewsicDefaultViewController {
             if playlist == nil {
                 self.spotifyHandler.createNewsicPlaylist(playlistName: "Liked in Newsic", playlistCreationHandler: { (isCreated, playlist, error) in
                     if let error = error {
-//                        self.present(error.popupDialog!, animated: true, completion: nil)
                         error.presentPopup(for: self, description: SpotifyErrorCodeDescription.createPlaylist.rawValue)
                     } else {
                         if let isCreated = isCreated {
@@ -299,7 +297,13 @@ class SongPickerViewController: NewsicDefaultViewController {
                     self.newsicUser.getUser(getUserHandler: { (usernameDB) in
                         if usernameDB == "" {
                             self.newsicUser.saveUser();
-                            self.extractGenresFromSpotify();
+                            self.extractGenresFromSpotify(genreExtractionHandler: { (isSuccessful) in
+                                if !isSuccessful {
+                                    if let error = error {
+                                        error.presentPopup(for: self, description: SpotifyErrorCodeDescription.extractGenresFromUser.rawValue)
+                                    }
+                                }
+                            })
                         } else {
                             DispatchQueue.main.async {
                                 SwiftSpinner.show("Getting Favorite Genres..", animated: true);
@@ -307,6 +311,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                             self.newsicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount) in
                                 if let dbGenreCount = dbGenreCount {
                                     self.spotifyHandler.genreCount = dbGenreCount;
+                                    self.newsicUser.saveFavoriteGenres();
                                     self.loadingFinished = true;
                                 }
                             })
@@ -319,10 +324,13 @@ class SongPickerViewController: NewsicDefaultViewController {
         }
     }
     
-    func extractGenresFromSpotify() {
+    func extractGenresFromSpotify(genreExtractionHandler: @escaping (Bool) -> ()) {
         //Get Followed Artists
         SwiftSpinner.show("Extracting Followed Artists..", animated: true)
         spotifyHandler.getFollowedArtistsForUser(user: spotifyHandler.user, followedArtistsHandler: { (followedArtistsList, error) in
+            if let error = error {
+                genreExtractionHandler(false)
+            }
             DispatchQueue.main.sync {
                 for artist in followedArtistsList {
                     self.fullArtistList.append(artist)
@@ -333,6 +341,9 @@ class SongPickerViewController: NewsicDefaultViewController {
             }
             //Get All Playlists from user
             self.spotifyHandler.getAllPlaylists(fetchedPlaylistsHander: { (playlistList, error) in
+                if let error = error {
+                    genreExtractionHandler(false)
+                }
                 self.fullPlaylistList = playlistList
                 //Get All Artists for each playlist
                 print(self.fullPlaylistList.count)
@@ -343,7 +354,12 @@ class SongPickerViewController: NewsicDefaultViewController {
                 for playlist in self.fullPlaylistList {
                     let playlistId = playlist.uri.absoluteString.substring(from: (playlist.uri.absoluteString.range(of: "playlist:")?.upperBound)!)
                     self.spotifyHandler.getAllArtistsForPlaylist(userId: playlist.owner.canonicalUserName!, playlistId: playlistId, fetchedPlaylistArtists: { (results, error) in
-                        
+                        if let error = error {
+                            genreExtractionHandler(false)
+                        }
+                        DispatchQueue.main.async {
+                            SwiftSpinner.show("Extracting Genres..", animated: true)
+                        }
                         self.spotifyHandler.getAllGenresForArtists(results, offset: 0, artistGenresHandler: { (artistList, error) in
                             
                             DispatchQueue.main.async {
@@ -359,6 +375,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                                 if self.currentPlaylistIndex == self.fullPlaylistList.count {
                                     let dict = self.spotifyHandler.getGenreCount(for: self.fullArtistList);
                                     self.newsicUser.favoriteGenres = NewsicGenre.convertGenreCountToGenres(userName: self.newsicUser.userName, dict: dict);
+                                    genreExtractionHandler(true)
                                     self.loadingFinished = true;
                                 }
                                 

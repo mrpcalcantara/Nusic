@@ -422,7 +422,6 @@ class ShowSongViewController: NewsicDefaultViewController {
         let moodObject = self.moodObject
         spotifyHandler.searchMusicInGenres(numberOfSongs: 1, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: selectedGenreList) { (results, error)  in
             if let error = error {
-//                self.present(error.popupDialog!, animated: true, completion: nil);
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
             }
             
@@ -434,14 +433,10 @@ class ShowSongViewController: NewsicDefaultViewController {
                     print("REFETCHING NEW CARD.. \(track.trackId) already in list")
                     self.spotifyHandler.searchMusicInGenres(numberOfSongs: 1, moodObject: moodObject, completionHandler: { (results, error) in
                         
-//                        if let track = results.first {
-//                            print("Got new song. \(track.trackId)");
-//                            self.addSongToCardPlaylist(track: track)
-//                            DispatchQueue.main.async {
-//                                self.songCardView.reloadData();
-//                            }
-//                        }
-                        cardFetchingHandler!(false)
+                        if let cardFetchingHandler = cardFetchingHandler {
+                            cardFetchingHandler(false)
+                        }
+                        
                     })
                 } else {
                     if let track = results.first {
@@ -453,7 +448,10 @@ class ShowSongViewController: NewsicDefaultViewController {
                         self.songCardView.reloadData();
                     }
                     
-                    cardFetchingHandler!(true);
+                    if let cardFetchingHandler = cardFetchingHandler {
+                        cardFetchingHandler(true);
+                    }
+                    
                 }
             }
             

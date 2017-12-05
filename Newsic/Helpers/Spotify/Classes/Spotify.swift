@@ -172,8 +172,10 @@ class Spotify {
             nextElement = iterator.next();
         }
         
-        let index = result.index(before: result.endIndex);
-        return result.substring(to: index);
+//        let index = result.index(before: result.endIndex);
+//        return result.substring(to: index);
+        result.removeLast()
+        return result;
     }
     
     func getRandomGenreBasedOnPercentage(hasGenreListForEmotion: Bool, selectedGenreList: [String: Int]? = nil) -> String{
@@ -231,7 +233,6 @@ class Spotify {
             }
         }
         return filteredList;
-        //return genreList.contains(genre);
     }
     
     func getGenreListString(numberOfSongs:Int, hasList: Bool, selectedGenreList:[String: Int]? = nil) -> String {
@@ -274,7 +275,6 @@ class Spotify {
                 userDefaults.synchronize()
                 
                 self.auth.session = session;
-                //                _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
                 refreshTokenCompletionHandler(true)
             } else {
                 print("error refreshing session: \(error?.localizedDescription ?? "sdsdasasd")");
@@ -296,10 +296,9 @@ class Spotify {
                     if statusCode == HTTPErrorCodes.unauthorized.rawValue {
                         self.getRefreshToken(currentSession: self.auth.session, refreshTokenCompletionHandler: { (isRefreshSuccessful) in
                             if isRefreshSuccessful {
-//                                self.executeSpotifyCall(with: request, spotifyCallCompletionHandler: { (data, response, error, isSuccess) in
-//                                    spotifyCallCompletionHandler(data, response, error, isSuccess);
-//                                })
-                                self.executeSpotifyCall(with: request, spotifyCallCompletionHandler: spotifyCallCompletionHandler)
+                                var newRequest = request
+                                newRequest.setValue("Bearer \(self.auth.session.accessToken)", forHTTPHeaderField: "Authorization")
+                                self.executeSpotifyCall(with: newRequest, spotifyCallCompletionHandler: spotifyCallCompletionHandler)
                             } else {
                                 spotifyCallCompletionHandler(data, response, error, isSuccess);
                             }

@@ -100,15 +100,10 @@ extension ShowSongViewController: KolodaViewDelegate {
             likeTrack(in: index);
         }
         didUserSwipe = false;
+        
         fetchNewCard { (isFetched) in
-            print("COUNT OF CARDS = \(self.songCardView.countOfVisibleCards)")
-            
             if self.songCardView.countOfVisibleCards < 3 || !isFetched {
-//                self.fetchNewCard(cardFetchingHandler: nil);
-                self.fetchNewCard(cardFetchingHandler: { (isFetched) in
-                    
-                })
-                
+                self.fetchNewCard(cardFetchingHandler: nil)
             }
         }
     }
@@ -193,16 +188,28 @@ extension ShowSongViewController {
         }
         let track = cardList[likedCardIndex];
         isSongLiked = didUserSwipe == true ? false : true ; toggleLikeButtons()
-        spotifyHandler.addTracksToPlaylist(playlistId: playlist.id!, trackId: track.trackInfo.trackUri, addTrackHandler: { (isAdded, error) in
-//            print("ADDED TRACK");
-            if let error = error {
-//                self.present(error.popupDialog!, animated: true, completion: nil)
-                error.presentPopup(for: self)
+        spotifyHandler.isTrackInPlaylist(trackId: track.trackInfo.trackId, playlistId: playlist.id!) { (isInPlaylist) in
+            if !isInPlaylist {
+                self.spotifyHandler.addTracksToPlaylist(playlistId: self.playlist.id!, trackId: track.trackInfo.trackUri, addTrackHandler: { (isAdded, error) in
+                    
+                    if let error = error {
+                        error.presentPopup(for: self, description: SpotifyErrorCodeDescription.addTrack.rawValue)
+                    } else {
+                        if let genres = track.trackInfo.artist.subGenres {
+                            for genre in genres {
+                                self.user.updateGenreCount(for: genre)
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                })
             }
-        })
+        }
+        
         spotifyHandler.getTrackDetails(trackId: track.trackInfo.trackId!, fetchedTrackDetailsHandler: { (trackFeatures, error) in
             if let error = error {
-//                self.present(error.popupDialog!, animated: true, completion: nil)
                 error.presentPopup(for: self)
             } else {
                 if let trackFeatures = trackFeatures {
@@ -215,8 +222,6 @@ extension ShowSongViewController {
                         self.likedTrackList.insert(track.trackInfo, at: 0);
                         DispatchQueue.main.async {
                             self.songListTableView.reloadData();
-                            
-                            //SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
                         }
                         
                     });

@@ -14,7 +14,9 @@ enum SpotifyErrorCodeDescription : String {
     case getMusicInGenres = "An error occurred while fetching a new card."
     case getTrackIdFeaturesForMood = "An error occured while fetching the tracks information for the chosen mood."
     case removeTrack = "An error occured while removing the track from the Spotify playlist."
+    case addTrack = "An error occured while adding the track to the Spotify playlist."
     case createPlaylist = "An error occured while creating the playlist on Spotify."
     case getUser = "An error occured while extracting the user information from Spotify."
     case getGenresForTrackList = "An error occurred extracting the genres for the track list."
+    case extractGenresFromUser = "An error occured extracting your preferred genres."
 }

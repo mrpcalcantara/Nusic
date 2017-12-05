@@ -129,8 +129,8 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
             //SwiftSpinner.show("Logging in..", animated: true);
             let sessionDataObj = sessionObj as! Data
             let firstTimeSession = NSKeyedUnarchiver.unarchiveObject(with: sessionDataObj) as! SPTSession
-            print("REFRESH TOKEN \(firstTimeSession.encryptedRefreshToken)");
-            print("ACCESS TOKEN \(firstTimeSession.accessToken)");
+            print("REFRESH TOKEN \(firstTimeSession.encryptedRefreshToken!)");
+            print("ACCESS TOKEN \(firstTimeSession.accessToken!)");
             
             if !firstTimeSession.isValid() {
                 self.getRefreshToken(currentSession: firstTimeSession, refreshTokenCompletionHandler: { (isRefreshed) in
@@ -148,6 +148,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
             
         } else {
             self.resetLogin()
+            self.setViewResetLogin()
         }
         
     }
