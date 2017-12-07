@@ -30,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Setup Firebase
         FirebaseApp.configure();
+
         
         setupNavigationBarAppearance()
         setupPopupDialogAppearance()

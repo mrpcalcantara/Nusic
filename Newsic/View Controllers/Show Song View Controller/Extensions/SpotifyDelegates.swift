@@ -45,7 +45,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         self.songListTableView.reloadData()
         let currentTrack = audioStreaming.metadata.currentTrack;
         
-//        print("track started");
+        print("track started");
         if let currentTrack = currentTrack {
             if let imageURL = currentTrack.albumCoverArtURL {
                 let imageURL = URL(string: imageURL)!
@@ -159,7 +159,14 @@ extension ShowSongViewController {
     
     func actionPausePlay() {
         
+        
         self.isPlaying = !self.isPlaying;
+        
+        if self.isPlaying {
+            if currentPlayingTrack == nil {
+                actionPlaySpotifyTrack(spotifyTrackId: cardList[songCardView.currentCardIndex].trackInfo.trackUri)
+            }
+        }
         player?.setIsPlaying(isPlaying, callback: { (error) in
             
             self.togglePausePlayIcon()
@@ -232,11 +239,13 @@ extension ShowSongViewController {
     func actionPlaySpotifyTrack(spotifyTrackId: String) {
         self.isPlaying = false
         self.activateAudioSession()
+        print("Trying to play track \(spotifyTrackId)")
         player?.playSpotifyURI(spotifyTrackId, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             self.isPlaying = true;
             self.togglePausePlayIcon()
             if (error != nil) {
                 print("error playing!, error : \(String(describing: error?.localizedDescription))")
+                self.actionPlaySpotifyTrack(spotifyTrackId: spotifyTrackId)
             }
         })
     }

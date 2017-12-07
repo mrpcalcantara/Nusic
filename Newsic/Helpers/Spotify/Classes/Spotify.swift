@@ -277,7 +277,7 @@ class Spotify {
                 self.auth.session = session;
                 refreshTokenCompletionHandler(true)
             } else {
-                print("error refreshing session: \(error?.localizedDescription ?? "sdsdasasd")");
+                print("error refreshing session: \(error?.localizedDescription)");
                 refreshTokenCompletionHandler(false)
             }
             
@@ -289,7 +289,7 @@ class Spotify {
         session.executeCall(with: request) { (data, response, error, isSuccess) in
             let statusCode = response?.statusCode
             if let error = error {
-                spotifyCallCompletionHandler(data, nil, error, false);
+                spotifyCallCompletionHandler(data, response, error, false);
             } else {
                 if isSuccess {
                     spotifyCallCompletionHandler(data, response, error, true)
@@ -299,9 +299,13 @@ class Spotify {
                         if statusCode == HTTPErrorCodes.unauthorized.rawValue {
                             self.getRefreshToken(currentSession: self.auth.session, refreshTokenCompletionHandler: { (isRefreshSuccessful) in
                                 if isRefreshSuccessful {
-                                    var newRequest = request
-                                    newRequest.setValue("Bearer \(self.auth.session.accessToken)", forHTTPHeaderField: "Authorization")
-                                    self.executeSpotifyCall(with: newRequest, spotifyCallCompletionHandler: spotifyCallCompletionHandler)
+                                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                                    appDelegate.auth = self.auth
+                                    if let url = request.url {
+                                        var newRequest = URLRequest(url: url);
+                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "refreshSuccessful"), object: nil);
+                                        newRequest.addValue("Bearer \(self.auth.session.accessToken!)", forHTTPHeaderField: "Authorization");
+                                    }
                                 } else {
                                     spotifyCallCompletionHandler(data, response, error, isSuccess);
                                 }
@@ -309,14 +313,14 @@ class Spotify {
                         }
                     case 500...599:
                         spotifyCallCompletionHandler(data, response, error, false);
-                    default: return;
+                    default:
+                        spotifyCallCompletionHandler(data, nil, error, false);
                     }
                 }
             }
             
         }
     }
-    
     
     // STATIC FUNCTIONS
     

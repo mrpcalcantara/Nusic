@@ -210,30 +210,11 @@ class SongPickerViewController: NewsicDefaultViewController {
             SwiftSpinner.show("Getting User..", animated: true)
             
         }
-        newsicPlaylist = NewsicPlaylist(userName: SPTAuth.defaultInstance().session.canonicalUsername);
-        newsicPlaylist.getPlaylist { (playlist) in
-            if playlist == nil {
-                self.spotifyHandler.createNewsicPlaylist(playlistName: "Liked in Newsic", playlistCreationHandler: { (isCreated, playlist, error) in
-                    if let error = error {
-                        error.presentPopup(for: self, description: SpotifyErrorCodeDescription.createPlaylist.rawValue)
-                    } else {
-                        if let isCreated = isCreated {
-                            if isCreated {
-                                self.newsicPlaylist = playlist;
-                                playlist?.saveData(saveCompleteHandler: { (reference, error) in
-
-                                })
-                            }
-                        }
-                    }
-                })
-            } 
-        }
-        
         
         self.spotifyHandler.getUser { (user, error) in
             if let error = error {
-                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getUser.rawValue)
+//                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getUser.rawValue)
+                self.showLoginErrorPopup()
                 self.loadingFinished = true
             } else {
                 
@@ -246,6 +227,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                     let territory = "";
                     self.newsicUser = NewsicUser(userName: username, displayName: displayName!, imageURL: profileImage, territory: territory)
                     self.moodObject?.userName = username;
+                    self.spotifyPlaylistCheck();
                     self.newsicUser.getUser(getUserHandler: { (usernameDB) in
                         if usernameDB == "" {
                             self.newsicUser.saveUser();
@@ -272,19 +254,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                 } else {
                     //Go back to the login page
                     //self.loadingFinished = true
-                    SwiftSpinner.hide()
-                    let popupDialog = PopupDialog(title: "Error", message: "Unable to retrieve the user. Please retry the login")
-                    popupDialog.transitionStyle = .zoomIn
                     
-                    
-                    let okButton = DefaultButton(title: "OK", action: {
-                        print("Back to Login menu");
-                        self.dismiss(animated: true, completion: nil);
-                    })
-                    
-                    popupDialog.addButton(okButton);
-                    SPTAuth.defaultInstance().resetCurrentLogin()
-                    self.present(popupDialog, animated: true, completion: nil)
                 }
             }
         }
@@ -306,7 +276,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                 SwiftSpinner.show("Extracting Playlists..", animated: true)
             }
             //Get All Playlists from user
-            self.spotifyHandler.getAllPlaylists(fetchedPlaylistsHander: { (playlistList, error) in
+            self.spotifyHandler.getAllPlaylists(fetchedPlaylistsHandler: { (playlistList, error) in
                 if let error = error {
                     genreExtractionHandler(false)
                 }
@@ -356,10 +326,48 @@ class SongPickerViewController: NewsicDefaultViewController {
         })
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func spotifyPlaylistCheck() {
+        newsicPlaylist = NewsicPlaylist(userName: SPTAuth.defaultInstance().session.canonicalUsername);
+        newsicPlaylist.getPlaylist { (playlist) in
+            if playlist == nil {
+                self.spotifyHandler.createNewsicPlaylist(playlistName: "Liked in Newsic", playlistCreationHandler: { (isCreated, playlist, error) in
+                    if let error = error {
+                        error.presentPopup(for: self, description: SpotifyErrorCodeDescription.createPlaylist.rawValue)
+                    } else {
+                        if let isCreated = isCreated {
+                            if isCreated {
+                                self.newsicPlaylist = playlist;
+                                playlist?.saveData(saveCompleteHandler: { (reference, error) in
+                                    
+                                })
+                            }
+                        }
+                    }
+                })
+            }
+        }
     }
+    
+//    func showLoginErrorPopup() {
+//        SwiftSpinner.hide()
+//        let popupDialog = PopupDialog(title: "Error", message: "Unable to connect. Please, try to login again.")
+//        popupDialog.transitionStyle = .zoomIn
+//
+//
+//        let okButton = DefaultButton(title: "OK", action: {
+//            print("Back to Login menu");
+//            self.dismiss(animated: true, completion: nil);
+//        })
+//
+//        popupDialog.addButton(okButton);
+//        SPTAuth.defaultInstance().resetCurrentLogin()
+//        self.present(popupDialog, animated: true, completion: nil)
+//    }
+//
+//    override func didReceiveMemoryWarning() {
+//        super.didReceiveMemoryWarning()
+//        // Dispose of any resources that can be recreated.
+//    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -424,15 +432,4 @@ extension SongPickerViewController: UIGestureRecognizerDelegate {
     }
 }
 
-extension SongPickerViewController: UIPageViewControllerDelegate {
-    
-    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-        for vc in pendingViewControllers {
-            if vc is ShowSongViewController {
-                print("SHOWING SONG")
-            }
-        }
-    }
-    
-}
 

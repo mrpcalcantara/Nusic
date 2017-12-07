@@ -29,12 +29,13 @@ extension Spotify {
         //Create URL Request to get songs
         let url = URL(string: urlString);
         var request = URLRequest(url: url!)
-        let accessToken = auth.session.accessToken!
+        var accessToken = auth.session.accessToken!
         var spotifyResults:[SpotifyTrack] = [];
+        
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization");
         
         executeSpotifyCall(with: request, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-            let statusCode:Int! = httpResponse?.statusCode
+            let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
             if isSuccess {
                 let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
                 let trackList = jsonObject["tracks"] as! [[String: AnyObject]]
@@ -75,7 +76,7 @@ extension Spotify {
                 case (500...599):
                     completionHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
                 default:
-                    return;
+                    completionHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                 }
             }
             

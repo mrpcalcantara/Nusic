@@ -38,7 +38,7 @@ extension Spotify {
             let request = try SPTTrack.createRequest(forTracks: trackUriList, withAccessToken: self.auth.session.accessToken!, market: self.user.territory);
             
             executeSpotifyCall(with: request, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-                let statusCode:Int! = httpResponse?.statusCode
+                let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
                 if isSuccess {
                     let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
                     let extractedTrackList = jsonObject["tracks"] as! [[String:AnyObject]];
@@ -88,7 +88,7 @@ extension Spotify {
                         trackInfoListHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
                     case 500...599:
                         trackInfoListHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: return;
+                    default: trackInfoListHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                     }
                 }
             })
@@ -103,7 +103,7 @@ extension Spotify {
             trackFeaturesRequest.url =  URL(string: "https://api.spotify.com/v1/audio-features/\(trackId)")
             
             executeSpotifyCall(with: trackFeaturesRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-                let statusCode:Int! = httpResponse?.statusCode
+                let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
                 if isSuccess {
                     do {
                         let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
@@ -119,7 +119,7 @@ extension Spotify {
                         fetchedTrackDetailsHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
                     case 500...599:
                         fetchedTrackDetailsHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: return;
+                    default: fetchedTrackDetailsHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                     }
                 }
             })
@@ -135,7 +135,7 @@ extension Spotify {
             let trackRequest = try SPTTrack.createRequest(forTrack: trackUrl, withAccessToken: auth.session.accessToken!, market: self.user.territory)
             
             executeSpotifyCall(with: trackRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-                let statusCode:Int! = httpResponse?.statusCode
+                let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
                 if isSuccess {
                     do {
                         let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
@@ -151,7 +151,7 @@ extension Spotify {
                         fetchedTrackArtistHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError));
                     case 500...599:
                         fetchedTrackArtistHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError));
-                    default: return;
+                    default: fetchedTrackArtistHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                     }
                 }
             })
@@ -175,7 +175,7 @@ extension Spotify {
         pageRequest?.addValue("Bearer \(self.auth.session.accessToken!)", forHTTPHeaderField: "Authorization")
 
         executeSpotifyCall(with: pageRequest!, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-            let statusCode:Int! = httpResponse?.statusCode
+            let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
             if isSuccess {
                 do {
                     let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
@@ -238,7 +238,7 @@ extension Spotify {
                     fetchedPlaylistTracks(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
                 case 500...599:
                     fetchedPlaylistTracks(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                default: return;
+                default: fetchedPlaylistTracks(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                 }
             }
         })
@@ -261,7 +261,7 @@ extension Spotify {
             createPlaylistRequest.httpMethod = "POST";
 
             executeSpotifyCall(with: createPlaylistRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-                let statusCode:Int! = httpResponse?.statusCode
+                let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
                 if isSuccess {
                     addTrackHandler(true, nil);
                 } else {
@@ -270,7 +270,7 @@ extension Spotify {
                         addTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
                     case 500...599:
                         addTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: return;
+                    default: addTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                     }
                 }
             })
@@ -309,7 +309,7 @@ extension Spotify {
             removeTrackRequest.httpBody = body.data(using: .utf8)
 
             executeSpotifyCall(with: removeTrackRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-                let statusCode:Int! = httpResponse?.statusCode
+                let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
                 if isSuccess {
                     removeTrackHandler(true, nil);
                 } else {
@@ -318,7 +318,7 @@ extension Spotify {
                         removeTrackHandler(true, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError));
                     case 500...599:
                         removeTrackHandler(true, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError));
-                    default: return;
+                    default: removeTrackHandler(true, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                     }
                 }
             })

@@ -136,7 +136,11 @@ extension NewsicUser: FirebaseModel {
                 let key = reference.child("genres").child(userName)
                 let updatedValue = [genre:localGenre.count+1];
                 let childUpdateValues = ["/genres/\(userName)/" : updatedValue]
-                print("childUpdateValues = \(childUpdateValues)")
+                key.updateChildValues(updatedValue, withCompletionBlock: { (error, reference) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                    }
+                })
                 Database.database().reference().child("genres").child(userName).updateChildValues(updatedValue)
             }
             

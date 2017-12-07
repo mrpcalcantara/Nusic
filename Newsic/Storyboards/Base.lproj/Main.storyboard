@@ -446,7 +446,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <slider opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="8qg-KD-JNS">
+                                    <slider opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="8qg-KD-JNS">
                                         <rect key="frame" x="-2" y="34" width="307" height="31"/>
                                         <connections>
                                             <action selector="songSeek:" destination="eJS-am-Jyf" eventType="valueChanged" id="SPl-QY-bUM"/>
