@@ -43,14 +43,15 @@ class NewsicUser {
 
 extension NewsicUser: FirebaseModel {
     
-    
     internal func getData(getCompleteHandler: @escaping (NSDictionary?, Error?) -> ()) {
         reference.child("users").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
-            //let extractedUsername = value?["canonicalUserName"] as? String ?? ""
-            
             getCompleteHandler(value, nil);
-        })
+        }) { (error) in
+            getCompleteHandler(nil, error);
+        }
+        
+        
     }
     
     internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
@@ -58,12 +59,15 @@ extension NewsicUser: FirebaseModel {
                           "displayName": displayName,
                           "territory": territory]
         
-        reference.child("users").child(userName).updateChildValues(dictionary);
+        reference.child("users").child(userName).updateChildValues(dictionary) { (error, reference) in
+            saveCompleteHandler(reference, error)
+        }
+        //        reference.child(userName).child(self.id!).updateChildValues(dict);
     }
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
         reference.child("users").child(userName).removeValue { (error, databaseReference) in
-            
+            deleteCompleteHandler(self.reference, error)
         }
     }
     

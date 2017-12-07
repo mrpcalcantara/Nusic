@@ -8,6 +8,7 @@
 
 import Foundation
 import FirebaseDatabase
+import Firebase
 
 struct NewsicGenre {
     
@@ -26,25 +27,29 @@ struct NewsicGenre {
 }
 
 extension NewsicGenre: FirebaseModel {
+    
     internal func getData(getCompleteHandler: @escaping (NSDictionary?, Error?) -> ()) {
+        
         reference.child(userName).child(mainGenre).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
-            //let extractedUsername = value?["canonicalUserName"] as? String ?? ""
-            
             getCompleteHandler(value, nil);
-        })
+        }) { (error) in
+            getCompleteHandler(nil, error);
+        }
+        
+        
     }
     
     internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
         let dictionary = [self.mainGenre: self.count]
         reference.child(userName).child(mainGenre).updateChildValues(dictionary) { (error, reference) in
-            
+            saveCompleteHandler(reference, error)
         }
     }
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
-        reference.child(userName).removeValue { (error, databaseReference) in
-            
+        reference.child(userName).child(mainGenre).removeValue { (error, databaseReference) in
+            deleteCompleteHandler(self.reference, error)
         }
     }
     
