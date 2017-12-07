@@ -164,10 +164,7 @@ extension ShowSongViewController: KolodaViewDataSource {
         view.layer.borderColor = UIColor.lightGray.cgColor
         view.layer.cornerRadius = 15
         view.clipsToBounds = true;
-        //view.translatesAutoresizingMaskIntoConstraints = true;
         
-        
-        //view.spotifyIcon.image = UIImage(named: "SpotifyHighlighted")
         if index == 0 {
             //view.addShadow(shadowOffset: CGSize(width: 1, height: 3));
         }
@@ -184,7 +181,6 @@ extension ShowSongViewController {
         let likedCardIndex = presentedCardIndex
         DispatchQueue.main.async {
             SwiftSpinner.show(duration: 2, title: "Liked!");
-            //SwiftSpinner.show(delay: 1.9, title: "Updating playlist..", animated: true);
         }
         let track = cardList[likedCardIndex];
         isSongLiked = didUserSwipe == true ? false : true ; toggleLikeButtons()

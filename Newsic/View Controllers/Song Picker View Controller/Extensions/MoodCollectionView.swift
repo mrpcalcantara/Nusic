@@ -265,7 +265,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
             let cell = moodCollectionView.cellForItem(at: indexPath)
             //cell?.animateSelection();
             
-            self.searchButton.isUserInteractionEnabled = true;
+//            self.searchButton.isUserInteractionEnabled = true;
             let dyad = EmotionDyad.allValues[indexPath.row]
             
             SwiftSpinner.show("Loading...", animated: true);

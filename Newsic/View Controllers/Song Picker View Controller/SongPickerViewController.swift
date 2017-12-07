@@ -41,7 +41,7 @@ class SongPickerViewController: NewsicDefaultViewController {
     var newsicUser: NewsicUser! = nil {
         didSet {
             self.usernameLabel.text = newsicUser.displayName;
-            if let imageURL = self.spotifyHandler.user.smallestImage.imageURL {
+            if self.spotifyHandler.user.smallestImage != nil, let imageURL = self.spotifyHandler.user.smallestImage.imageURL {
                 let parent = self.parent as! NewsicPageViewController
                 let sideMenu = parent.sideMenuVC as! SideMenuViewController
                 
@@ -120,29 +120,16 @@ class SongPickerViewController: NewsicDefaultViewController {
     }
     
     @IBAction func getNewSong(_ sender: Any) {
-        
-        UIView.animate(withDuration: 0.2, animations: {
-            self.searchButton.titleLabel?.bounds.origin.x = self.view.frame.width + 8;
-        }, completion: nil)
-        
-        let spinnerLabel = "Loading.."
-        DispatchQueue.main.async {
-            SwiftSpinner.show(spinnerLabel, animated: true);
-        }
-        self.searchButton.isUserInteractionEnabled = false;
         if !isMoodSelected {
             var newsicMood = NewsicMood();
             newsicMood.emotions = [Emotion(basicGroup: .unknown, detailedEmotions: [], rating: 0)]
             self.moodObject = newsicMood;
         }
         
-        self.searchButton.isUserInteractionEnabled = true;
-        
         self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
-        self.moodObject?.saveData(saveCompleteHandler: { (reference, error) in  })
         
         passDataToShowSong();
-        //self.performSegue(withIdentifier: showVideoSegue, sender: self);
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -163,16 +150,13 @@ class SongPickerViewController: NewsicDefaultViewController {
         setupNavigationBar()
         setupCollectionCellViews();
         setupSegmentedControl()
-        setupMenuView();
         setupCollectionViewTapGestureRecognizer();
         moodHacker = MoodHacker()
-        
         extractInformationFromUser { (isFinished) in
             print(isFinished)
         }
         
     }
-    
     
     func setupSegmentedControl() {
         self.newsicControl.selectedIndex = 0
@@ -212,41 +196,9 @@ class SongPickerViewController: NewsicDefaultViewController {
         self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecoginizer)
     }
     
-    func setupMenuView() {
-        self.menuLeadingConstraint.constant = -(5*self.view.frame.width)/6;
-        self.menuTrailingConstraint.constant = self.view.frame.width
-        self.view.layoutIfNeeded()
-        
-        userProfileImageView.contentMode = .scaleAspectFit;
-    }
-    
     @objc func toggleMenu() {
         let parent = self.parent as! NewsicPageViewController
         parent.scrollToViewController(index: 0)
-    }
-    
-    func openMenu() {
-        isMenuOpen = true
-        self.mainControlView.isUserInteractionEnabled = false
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
-            self.menuLeadingConstraint.constant = 0
-            self.menuTrailingConstraint.constant = self.view.frame.width/6;
-            self.mainControlView.alpha = 0.1
-            self.view.layoutIfNeeded()
-        }, completion: nil)
-        
-    }
-    
-    func closeMenu() {
-        isMenuOpen = false
-        self.mainControlView.isUserInteractionEnabled = true
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
-            self.menuLeadingConstraint.constant = -(5*self.view.frame.width)/6;
-            self.menuTrailingConstraint.constant = self.view.frame.width
-            self.mainControlView.alpha = 1;
-            self.view.layoutIfNeeded()
-        }, completion: nil)
-        
     }
     
     func extractInformationFromUser(extractionHandler: @escaping (Bool) -> ()) {
@@ -258,7 +210,6 @@ class SongPickerViewController: NewsicDefaultViewController {
             SwiftSpinner.show("Getting User..", animated: true)
             
         }
-        
         newsicPlaylist = NewsicPlaylist(userName: SPTAuth.defaultInstance().session.canonicalUsername);
         newsicPlaylist.getPlaylist { (playlist) in
             if playlist == nil {
@@ -270,7 +221,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                             if isCreated {
                                 self.newsicPlaylist = playlist;
                                 playlist?.saveData(saveCompleteHandler: { (reference, error) in
-                                    
+
                                 })
                             }
                         }
@@ -285,12 +236,13 @@ class SongPickerViewController: NewsicDefaultViewController {
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getUser.rawValue)
                 self.loadingFinished = true
             } else {
+                
                 if let user = user {
                     self.spotifyHandler.user = user;
                     let username = user.canonicalUserName!
                     
                     let displayName = user.displayName != nil ? user.displayName : ""
-                    let profileImage = user.smallestImage.imageURL.absoluteString
+                    let profileImage = user.smallestImage != nil ? user.smallestImage.imageURL.absoluteString : ""
                     let territory = "";
                     self.newsicUser = NewsicUser(userName: username, displayName: displayName!, imageURL: profileImage, territory: territory)
                     self.moodObject?.userName = username;
@@ -318,7 +270,21 @@ class SongPickerViewController: NewsicDefaultViewController {
                         }
                     })
                 } else {
-                    self.loadingFinished = true
+                    //Go back to the login page
+                    //self.loadingFinished = true
+                    SwiftSpinner.hide()
+                    let popupDialog = PopupDialog(title: "Error", message: "Unable to retrieve the user. Please retry the login")
+                    popupDialog.transitionStyle = .zoomIn
+                    
+                    
+                    let okButton = DefaultButton(title: "OK", action: {
+                        print("Back to Login menu");
+                        self.dismiss(animated: true, completion: nil);
+                    })
+                    
+                    popupDialog.addButton(okButton);
+                    SPTAuth.defaultInstance().resetCurrentLogin()
+                    self.present(popupDialog, animated: true, completion: nil)
                 }
             }
         }
@@ -346,7 +312,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                 }
                 self.fullPlaylistList = playlistList
                 //Get All Artists for each playlist
-                print(self.fullPlaylistList.count)
+//                print(self.fullPlaylistList.count)
                 self.currentPlaylistIndex = 0;
                 DispatchQueue.main.async {
                     SwiftSpinner.show("Extracting Artists from Playlists..", animated: true)
@@ -375,6 +341,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                                 if self.currentPlaylistIndex == self.fullPlaylistList.count {
                                     let dict = self.spotifyHandler.getGenreCount(for: self.fullArtistList);
                                     self.newsicUser.favoriteGenres = NewsicGenre.convertGenreCountToGenres(userName: self.newsicUser.userName, dict: dict);
+                                     self.newsicUser.saveFavoriteGenres()
                                     genreExtractionHandler(true)
                                     self.loadingFinished = true;
                                 }

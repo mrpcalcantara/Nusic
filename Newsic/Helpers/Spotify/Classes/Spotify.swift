@@ -242,7 +242,7 @@ class Spotify {
         var totalCount = numberOfSongs > genreListCount! ? selectedGenreList?.count : numberOfSongs
         
         //NOTE: Spotify recommendations max seed genres is 5. This is a workaround by fixing the max count to 5.
-        if numberOfSongs > 5 {
+        if numberOfSongs > 5 && genreListCount! > 5 {
            totalCount = 5
         }
         
@@ -288,27 +288,32 @@ class Spotify {
         let session = URLSession.shared;
         session.executeCall(with: request) { (data, response, error, isSuccess) in
             let statusCode = response?.statusCode
-            if isSuccess {
-                spotifyCallCompletionHandler(data, response, error, true)
+            if let error = error {
+                spotifyCallCompletionHandler(data, nil, error, false);
             } else {
-                switch statusCode! {
-                case 400...499:
-                    if statusCode == HTTPErrorCodes.unauthorized.rawValue {
-                        self.getRefreshToken(currentSession: self.auth.session, refreshTokenCompletionHandler: { (isRefreshSuccessful) in
-                            if isRefreshSuccessful {
-                                var newRequest = request
-                                newRequest.setValue("Bearer \(self.auth.session.accessToken)", forHTTPHeaderField: "Authorization")
-                                self.executeSpotifyCall(with: newRequest, spotifyCallCompletionHandler: spotifyCallCompletionHandler)
-                            } else {
-                                spotifyCallCompletionHandler(data, response, error, isSuccess);
-                            }
-                        })
+                if isSuccess {
+                    spotifyCallCompletionHandler(data, response, error, true)
+                } else {
+                    switch statusCode! {
+                    case 400...499:
+                        if statusCode == HTTPErrorCodes.unauthorized.rawValue {
+                            self.getRefreshToken(currentSession: self.auth.session, refreshTokenCompletionHandler: { (isRefreshSuccessful) in
+                                if isRefreshSuccessful {
+                                    var newRequest = request
+                                    newRequest.setValue("Bearer \(self.auth.session.accessToken)", forHTTPHeaderField: "Authorization")
+                                    self.executeSpotifyCall(with: newRequest, spotifyCallCompletionHandler: spotifyCallCompletionHandler)
+                                } else {
+                                    spotifyCallCompletionHandler(data, response, error, isSuccess);
+                                }
+                            })
+                        }
+                    case 500...599:
+                        spotifyCallCompletionHandler(data, response, error, false);
+                    default: return;
                     }
-                case 500...599:
-                    spotifyCallCompletionHandler(data, response, error, false);
-                default: return;
                 }
             }
+            
         }
     }
     

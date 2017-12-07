@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="alU-Ei-zcq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="alU-Ei-zcq">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -191,9 +191,6 @@
                                     <segment title="" image="MoodIcon"/>
                                     <segment title="" image="MusicNote"/>
                                 </segments>
-                                <connections>
-                                    <action selector="moodGenreSCClicked:" destination="BYZ-38-t0r" eventType="valueChanged" id="C69-Ek-kOw"/>
-                                </connections>
                             </segmentedControl>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ezb-Mk-cJL" userLabel="Menu View">
                                 <rect key="frame" x="0.0" y="20" width="229" height="647"/>
@@ -279,12 +276,10 @@
                         <outlet property="moodText" destination="TAz-3t-wPY" id="DEN-pS-dby"/>
                         <outlet property="newsicControl" destination="JE2-ew-ku9" id="YUe-zb-Vy8"/>
                         <outlet property="searchButton" destination="na7-Jq-MEC" id="3sd-Te-vHt"/>
-                        <outlet property="songCardView" destination="lxK-RZ-2XL" id="lvk-fD-ScU"/>
                         <outlet property="userProfileImageView" destination="RyK-SL-NJ2" id="bQy-iE-bqD"/>
                         <outlet property="userView" destination="JLn-6R-Eqo" id="N6K-d0-yWj"/>
                         <outlet property="usernameLabel" destination="IIl-jS-1xq" id="ahT-ZM-rmO"/>
                         <segue destination="eJS-am-Jyf" kind="presentation" identifier="showVideoSegue" animates="NO" id="c9F-Gf-aWx"/>
-                        <segue destination="RzT-Hk-gHT" kind="show" identifier="showSideMenuSegue" id="eqn-mp-xJN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -343,7 +338,6 @@
                                                 <state key="normal" title="Logout"/>
                                                 <connections>
                                                     <action selector="logoutClicked:" destination="RzT-Hk-gHT" eventType="touchUpInside" id="IQf-IK-458"/>
-                                                    <action selector="logoutClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="b0M-MJ-EyW"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MWJ-NB-Z9J" customClass="NewsicButton" customModule="Newsic" customModuleProvider="target">
@@ -397,7 +391,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XLR-lZ-FGX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="48.799999999999997" y="42.728635682158924"/>
+            <point key="canvasLocation" x="582" y="43"/>
         </scene>
         <!--Show Song View Controller-->
         <scene sceneID="0N8-Rd-hNt">

@@ -97,7 +97,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         getSession();
         
         if auth.session != nil && auth.session.isValid() {
-            updateAfterFirstLogin()
+//            updateAfterFirstLogin()
         } else {
             loginUrl = auth.spotifyWebAuthenticationURL();
             //loginUrl = auth.spotifyAppAuthenticationURL();
@@ -179,6 +179,9 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     func resetLogin() {
         self.session = nil
         self.auth.session = nil
+        let userDefaults = UserDefaults.standard;
+        userDefaults.set(nil, forKey: "SpotifySession")
+        userDefaults.synchronize()
     }
     
     func setViewResetLogin() {
