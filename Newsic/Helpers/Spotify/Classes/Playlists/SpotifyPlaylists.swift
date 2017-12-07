@@ -8,7 +8,7 @@
 
 extension Spotify {
     
-    func getAllPlaylists(for pageRequest: URLRequest? = nil, currentPlaylistList: [SPTPartialPlaylist]? = nil, fetchedPlaylistsHander: @escaping ([SPTPartialPlaylist], NewsicError?) -> ()) {
+    func getAllPlaylists(for pageRequest: URLRequest? = nil, currentPlaylistList: [SPTPartialPlaylist]? = nil, fetchedPlaylistsHandler: @escaping ([SPTPartialPlaylist], NewsicError?) -> ()) {
         
         var nextPagePlaylistList = currentPlaylistList == nil ? [] : currentPlaylistList;
         
@@ -16,7 +16,7 @@ extension Spotify {
         
 
         executeSpotifyCall(with: playlistRequest!, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-            let statusCode:Int! = httpResponse?.statusCode
+            let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
             if isSuccess {
                 
                 let playlistList = try? SPTPlaylistList.init(from: data, with: httpResponse);
@@ -27,22 +27,22 @@ extension Spotify {
                 if page.hasNextPage {
                     do {
                         let nextPageRequest = try page.createRequestForNextPage(withAccessToken: self.auth.session.accessToken!)
-                        self.getAllPlaylists(for: nextPageRequest, currentPlaylistList: nextPagePlaylistList, fetchedPlaylistsHander: { (currentPlaylistList, error) in
-                            fetchedPlaylistsHander(currentPlaylistList, nil);
+                        self.getAllPlaylists(for: nextPageRequest, currentPlaylistList: nextPagePlaylistList, fetchedPlaylistsHandler: { (currentPlaylistList, error) in
+                            fetchedPlaylistsHandler(currentPlaylistList, nil);
                         })
                     } catch {
                         print("error in recursive get all playlists function")
                     }
                 } else {
-                    fetchedPlaylistsHander(nextPagePlaylistList!, nil);
+                    fetchedPlaylistsHandler(nextPagePlaylistList!, nil);
                 }
             } else {
                 switch statusCode {
                 case 400...499:
-                    fetchedPlaylistsHander([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
+                    fetchedPlaylistsHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
                 case 500...599:
-                    fetchedPlaylistsHander([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                default: return;
+                    fetchedPlaylistsHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
+                default: fetchedPlaylistsHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                 }
             }
         })
@@ -69,7 +69,7 @@ extension Spotify {
             createPlaylistRequest.httpBody = body.data(using: .utf8)
 
             executeSpotifyCall(with: createPlaylistRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-                let statusCode:Int! = httpResponse?.statusCode
+                let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
                 if isSuccess {
                     let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
                     //print(jsonObject);
@@ -82,7 +82,8 @@ extension Spotify {
                         playlistCreationHandler(false, nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
                     case 500...599:
                         playlistCreationHandler(false, nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: return;
+                    default: playlistCreationHandler(false, nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError))
+;
                     }
                 }
             })

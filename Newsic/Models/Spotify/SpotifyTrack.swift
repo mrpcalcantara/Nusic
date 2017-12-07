@@ -27,8 +27,12 @@ class SpotifyTrack {
         if let thumbNail = thumbNail {
             self.thumbNail = thumbNail
         } else {
-            image.downloadImage(from: URL(string: thumbNailUrl!)!) { (image) in
-                self.thumbNail = image;
+            if let thumbNailUrl = thumbNailUrl {
+                if let url = URL(string: thumbNailUrl) {
+                    image.downloadImage(from: url) { (image) in
+                        self.thumbNail = image;
+                    }
+                }
             }
         }
         

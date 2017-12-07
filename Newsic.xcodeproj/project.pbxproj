@@ -31,6 +31,7 @@
 		8C268B581FD0086E00BB4C6F /* NewsicCustomLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B571FD0086E00BB4C6F /* NewsicCustomLayer.swift */; };
 		8C2911AE1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */; };
 		8C291A7B1FD6561800E568EF /* FirebaseErrorCodeDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C291A7A1FD6561800E568EF /* FirebaseErrorCodeDescription.swift */; };
+		8C2B40891FD9488C00F08087 /* NewsicPopupButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2B40881FD9488C00F08087 /* NewsicPopupButton.swift */; };
 		8C3654BC1F5516B7006C12D9 /* Koloda-SongCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */; };
 		8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3654BE1F551ABE006C12D9 /* OverlayView.xib */; };
 		8C3654C11F551B16006C12D9 /* SongOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654C01F551B16006C12D9 /* SongOverlayView.swift */; };
@@ -142,6 +143,7 @@
 		8C268B571FD0086E00BB4C6F /* NewsicCustomLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicCustomLayer.swift; sourceTree = "<group>"; };
 		8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControlDelegate.swift; sourceTree = "<group>"; };
 		8C291A7A1FD6561800E568EF /* FirebaseErrorCodeDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseErrorCodeDescription.swift; sourceTree = "<group>"; };
+		8C2B40881FD9488C00F08087 /* NewsicPopupButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicPopupButton.swift; sourceTree = "<group>"; };
 		8C3654BB1F5516B7006C12D9 /* Koloda-SongCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Koloda-SongCard.swift"; sourceTree = "<group>"; };
 		8C3654BE1F551ABE006C12D9 /* OverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
 		8C3654C01F551B16006C12D9 /* SongOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongOverlayView.swift; sourceTree = "<group>"; };
@@ -423,6 +425,7 @@
 		8C5595691FD4FB3500E70667 /* Popup */ = {
 			isa = PBXGroup;
 			children = (
+				8C2B40881FD9488C00F08087 /* NewsicPopupButton.swift */,
 			);
 			path = Popup;
 			sourceTree = "<group>";
@@ -1095,6 +1098,7 @@
 				8C9DB4F91F6B8FF900F35268 /* SongListTableView.swift in Sources */,
 				8C90E8621F53D838002B135F /* AppDelegate.swift in Sources */,
 				8C268B541FCFB53100BB4C6F /* DismissAnimationController.swift in Sources */,
+				8C2B40891FD9488C00F08087 /* NewsicPopupButton.swift in Sources */,
 				8CFFBF371F9708F100A69E78 /* NewsicCollectionViewLayout.swift in Sources */,
 				8CA40E001F8CAA8100C95B9D /* UserMenuHeader.swift in Sources */,
 				8C7BE32C1F78AE7B004D9F15 /* SideMenuDelegate.swift in Sources */,

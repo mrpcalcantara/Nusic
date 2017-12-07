@@ -14,7 +14,6 @@ import SwiftSpinner
 
 class ShowSongViewController: NewsicDefaultViewController {
     
-    
     var user: NewsicUser! = nil;
     var player: SPTAudioStreamingController?
     var likedTrackList:[SpotifyTrack] = [] {
@@ -28,7 +27,11 @@ class ShowSongViewController: NewsicDefaultViewController {
     var cardList:[NewsicTrack] = [];
     var playlist:NewsicPlaylist! = nil
     var spotifyHandler: Spotify! = nil;
-    var auth: SPTAuth! = nil;
+    var auth: SPTAuth! = nil {
+        didSet {
+            print("Reset auth!!")
+        }
+    };
     var moodObject: NewsicMood? = nil;
     var currentMoodDyad: EmotionDyad? = EmotionDyad.unknown
     var trackFeatures: [SpotifyTrackFeature]? = nil
@@ -90,10 +93,13 @@ class ShowSongViewController: NewsicDefaultViewController {
         setupCommandCenter()
         UIApplication.shared.beginReceivingRemoteControlEvents()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(updateAuthObject), name: NSNotification.Name(rawValue: "refreshSuccessful"), object: nil)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.auth = (UIApplication.shared.delegate as! AppDelegate).auth
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -416,6 +422,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     func fetchNewCard(cardFetchingHandler: ((Bool) -> ())?){
 //        print("fetching new card...")
         let moodObject = self.moodObject
+        
         spotifyHandler.searchMusicInGenres(numberOfSongs: 1, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: selectedGenreList) { (results, error)  in
             if let error = error {
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
@@ -531,6 +538,10 @@ class ShowSongViewController: NewsicDefaultViewController {
                 }
             }
         }
+    }
+    
+    @objc func updateAuthObject() {
+        self.auth = (UIApplication.shared.delegate as! AppDelegate).auth
     }
 }
 

@@ -10,7 +10,7 @@ import Foundation
 
 extension URLSession {
     
-    func executeCall(with request: URLRequest, retryNumber: Int? = 3, retryAfter: Int? = 5, completionHandler: @escaping (Data?, HTTPURLResponse?, Error?, Bool) -> ()) {
+    func executeCall(with request: URLRequest, retryNumber: Int? = 3, retryAfter: Int? = 30, completionHandler: @escaping (Data?, HTTPURLResponse?, Error?, Bool) -> ()) {
         var retryNumberLeft = retryNumber!
         
         let session = URLSession.shared;
@@ -31,6 +31,8 @@ extension URLSession {
                         if statusCode == HTTPErrorCodes.tooManyRequests.rawValue {
                             retryAfter = Int(httpResponse.allHeaderFields["retry-after"] as! String)!;
                             retryNumberLeft += 1;
+                        } else if statusCode == HTTPErrorCodes.unauthorized.rawValue {
+                            completionHandler(data, httpResponse, error, false);
                         }
                         if retryNumberLeft > 0 {
                             let timeToWait = DispatchTime.now()+Double(retryAfter)

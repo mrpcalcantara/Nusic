@@ -72,6 +72,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
 //        self.present(navigationController, animated: true) {
 //
 //        }
+        
         let pageViewController = NewsicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
 //        pageViewController.automaticallyAdjustsScrollViewInsets = false
 //        let navigationController = UINavigationController(rootViewController: pageViewController)

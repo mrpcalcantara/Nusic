@@ -22,7 +22,7 @@ extension Spotify {
             
 
             executeSpotifyCall(with: followedArtistsRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-                let statusCode:Int! = httpResponse?.statusCode
+                let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
                 if isSuccess {
                     do {
                         let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
@@ -60,7 +60,7 @@ extension Spotify {
                         followedArtistsHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
                     case 500...599:
                         followedArtistsHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: return;
+                    default: followedArtistsHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                     }
                 }
             })
@@ -85,7 +85,7 @@ extension Spotify {
         
         if let pageRequest = pageRequest {
             executeSpotifyCall(with: pageRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-                let statusCode:Int! = httpResponse?.statusCode
+                let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
                 if isSuccess {
                     do {
                         let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
@@ -119,7 +119,7 @@ extension Spotify {
                         fetchedPlaylistArtists([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
                     case 500...599:
                         fetchedPlaylistArtists([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: return;
+                    default: fetchedPlaylistArtists([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                     }
                 }
             })
@@ -159,7 +159,7 @@ extension Spotify {
             
 
             executeSpotifyCall(with: request, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-                let statusCode:Int! = httpResponse?.statusCode
+                let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
                 if isSuccess {
                     do {
                         let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
@@ -202,7 +202,7 @@ extension Spotify {
                         artistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
                     case 500...599:
                         artistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: return;
+                    default: artistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                     }
                 }
             })
@@ -221,7 +221,7 @@ extension Spotify {
             let artistGenresRequest = try SPTArtist.createRequest(forArtist: trackUrl, withAccessToken: auth.session.accessToken!);
 
             executeSpotifyCall(with: artistGenresRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-                let statusCode:Int! = httpResponse?.statusCode
+                let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
                 if isSuccess {
                     do {
                         let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
@@ -236,7 +236,7 @@ extension Spotify {
                         fetchedArtistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
                     case 500...599:
                         fetchedArtistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: return;
+                    default: fetchedArtistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
                     }
                 }
             })
