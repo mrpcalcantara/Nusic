@@ -28,20 +28,27 @@ extension NewsicArtist: FirebaseModel {
     internal func getData(getCompleteHandler: @escaping (NSDictionary?, Error?) -> ()) {
         reference.child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
-            //let extractedUsername = value?["canonicalUserName"] as? String ?? ""
-            
             getCompleteHandler(value, nil);
-        })
+        }) { (error) in
+            getCompleteHandler(nil, error);
+        }
+        
+        
     }
     
     internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
-        
+//        let dict = ["name" : self.name]
+//        reference.child(userName).child(self.id!).updateChildValues(dict) { (error, reference) in
+//            saveCompleteHandler(reference, error)
+//        }
+        //        reference.child(userName).child(self.id!).updateChildValues(dict);
     }
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
         reference.child(userName).removeValue { (error, databaseReference) in
-            
+            deleteCompleteHandler(self.reference, error)
         }
     }
+    
     
 }

@@ -45,10 +45,12 @@ struct NewsicMood: FirebaseModel {
     internal func getData(getCompleteHandler: @escaping (NSDictionary?, Error?) -> ()) {
         reference.child("emotions").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
-            //let extractedUsername = value?["canonicalUserName"] as? String ?? ""
-            
             getCompleteHandler(value, nil);
-        })
+        }) { (error) in
+            getCompleteHandler(nil, error);
+        }
+        
+        
     }
     
     internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
@@ -56,15 +58,16 @@ struct NewsicMood: FirebaseModel {
         for emotion in emotions {
             let firstEmotion = emotion.toDictionary()
             emotionArray.append(firstEmotion)
-            reference.child("emotions").child(userName).child(emotion.basicGroup.rawValue.lowercased()).child(date.toString()).updateChildValues(emotion.toDictionary())
+            reference.child("emotions").child(userName).child(emotion.basicGroup.rawValue.lowercased()).child(date.toString()).updateChildValues(emotion.toDictionary()) { (error, reference) in
+                saveCompleteHandler(reference, error)
+            }
         }
-        
-        
+
     }
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
         reference.child("emotions").child(userName).removeValue { (error, databaseReference) in
-            
+            deleteCompleteHandler(self.reference, error)
         }
     }
     

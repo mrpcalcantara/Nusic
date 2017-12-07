@@ -30,46 +30,40 @@ extension NewsicTrack : FirebaseModel {
     internal func getData(getCompleteHandler: @escaping (NSDictionary?, Error?) -> ()) {
         reference.child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
-           
             getCompleteHandler(value, nil);
-        })
+        }) { (error) in
+            getCompleteHandler(nil, error);
+        }
+        
         
     }
     
     internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
-        if let moodInfo = moodInfo {
-            for emotion in moodInfo.emotions {
-                reference.child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(trackInfo.trackId!).setValue(trackInfo.audioFeatures?.toDictionary())
-            }
-        } else {
-            reference.child(userName).child("moods").child(EmotionDyad.unknown.rawValue).child(trackInfo.trackId!).updateChildValues((trackInfo.audioFeatures?.toDictionary())!)
+        
+        if let audioFeatures = trackInfo.audioFeatures {
+            if let moodInfo = moodInfo {
+                for emotion in moodInfo.emotions {
+                    reference.child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(trackInfo.trackId!).updateChildValues(audioFeatures.toDictionary()) { (error, reference) in
+                        if let error = error {
+                            saveCompleteHandler(reference, error)
+                        }
+                    }
+                }
+            } else {
+                reference.child(userName).child("moods").child(EmotionDyad.unknown.rawValue).child(trackInfo.trackId!).updateChildValues(audioFeatures.toDictionary()) { (error, reference) in
+                        if let error = error {
+                            saveCompleteHandler(reference, error)
+                        }
+                    }
+                }
+            saveCompleteHandler(reference, nil)
         }
         
-        saveCompleteHandler(reference, nil);
     }
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
-        
-        if let moodInfo = moodInfo {
-            for emotion in moodInfo.emotions {
-                reference.child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(trackInfo.trackId!).removeValue(completionBlock: { (error, ref) in
-                    if error != nil {
-                        print("error = \(error?.localizedDescription)")
-                        deleteCompleteHandler(self.reference, nil)
-                    }
-                })
-            }
-            deleteCompleteHandler(self.reference, nil)
-        } else {
-            reference.child(userName).child("moods").child(EmotionDyad.unknown.rawValue).child(trackInfo.trackId!).removeValue(completionBlock: { (error, ref) in
-                if error != nil {
-                    print("error = \(error?.localizedDescription)")
-                    deleteCompleteHandler(self.reference, nil)
-                } else {
-                    deleteCompleteHandler(self.reference, nil)
-                }
-            })
-            
+        reference.child(userName).removeValue { (error, databaseReference) in
+            deleteCompleteHandler(self.reference, error)
         }
     }
     
