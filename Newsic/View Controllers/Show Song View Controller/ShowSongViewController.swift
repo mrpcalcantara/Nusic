@@ -151,10 +151,6 @@ class ShowSongViewController: NewsicDefaultViewController {
 //        commandCenter.likeCommand.isEnabled = true
 //        commandCenter.likeCommand.addTarget(self, action: #selector(likeSongClicked(_:)))
         //
-        
-        //commandCenter.seekForwardCommand.isEnabled = true
-        //commandCenter.seekBackwardCommand.isEnabled = true
-        //        commandCenter.seekForwardCommand.addTarget(self, action: #selector(test))
     }
     
     func setupNavigationBar() {

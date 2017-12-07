@@ -15,10 +15,15 @@ extension Spotify {
                 let error = NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError)
                 completion(nil, error)
             }
+            if let results = results {
+                let userResult = results as! SPTUser
+                completion(userResult, nil);
+            } else {
+                completion(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError))
+            }
             
-            let userResult = results as! SPTUser
             
-            completion(userResult, nil);
+            
             
         }
         
