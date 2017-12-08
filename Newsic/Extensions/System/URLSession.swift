@@ -22,7 +22,7 @@ extension URLSession {
                 let statusCode = httpResponse.statusCode
                 if (200...299).contains(statusCode) {
                     if let url = request.url {
-                        print("Call OK for URL: \(url.absoluteString)")
+//                        print("Call OK for URL: \(url.absoluteString)")
                     }
                     completionHandler(data, httpResponse, error, true)
                 }
@@ -37,7 +37,7 @@ extension URLSession {
                         if retryNumberLeft > 0 {
                             let timeToWait = DispatchTime.now()+Double(retryAfter)
                             if let url = request.url {
-                                print("Error: \(statusCode) - Retrying call for URL: \(url.absoluteString)")
+//                                print("Error: \(statusCode) - Retrying call for URL: \(url.absoluteString)")
                             }
                             
                             DispatchQueue.main.asyncAfter(deadline: timeToWait, execute: {

@@ -17,7 +17,7 @@ class NewsicError: NSObject, Error {
     var systemError: Error?
     var popupDialog: PopupDialog?
     
-    init(newsicErrorCode: NewsicErrorCodes?, newsicErrorSubCode: NewsicErrorSubCode?, newsicErrorDescription: String? = "", systemError: Error? = nil) {
+    init(newsicErrorCode: NewsicErrorCodes?, newsicErrorSubCode: NewsicErrorSubCode?, newsicErrorDescription: String? = nil, systemError: Error? = nil) {
         super.init()
         self.newsicErrorCode = newsicErrorCode
         self.newsicErrorSubCode = newsicErrorSubCode
@@ -28,22 +28,18 @@ class NewsicError: NSObject, Error {
     
     func setupDialog(description: String? = nil) -> PopupDialog {
         var popupMessage = ""
-        if newsicErrorCode == NewsicErrorCodes.spotifyError {
-            
-            if newsicErrorSubCode == NewsicErrorSubCode.serverError {
-                popupMessage = "An error occured communicating with Spotify. Please try again."
-            } else if newsicErrorSubCode == NewsicErrorSubCode.clientError {
-                popupMessage = "An internal error occured. Please try again."
-            }
+        popupMessage.append("Error \(codesToString())")
+        if let description = self.newsicErrorDescription {
+            popupMessage.append(" - "); popupMessage.append(description)
         }
-        
-        if let description = description {
-            popupMessage.append(" "); popupMessage.append(description)
+        else if let description = description  {
+            popupMessage.append(" - "); popupMessage.append(description)
+        } else {
+            
         }
         
         let dialog = PopupDialog(title: "Error!", message: popupMessage, gestureDismissal: false)
-//        dialog.transitionStyle = .zoomIn
-        dialog.transitionStyle = .fadeIn
+        dialog.transitionStyle = .zoomIn
         
         let okButton = DefaultButton(title: "Got it!") {
             self.popupDialog?.dismiss(animated: true, completion: nil)
@@ -64,5 +60,11 @@ class NewsicError: NSObject, Error {
         
     }
 
+    func codesToString() -> String {
+        if let newsicErrorCode = newsicErrorCode, let newsicErrorSubCode = newsicErrorSubCode {
+            return "\(newsicErrorCode.rawValue)\(newsicErrorSubCode.rawValue)"
+        }
+        return ""
+    }
     
 }

@@ -15,7 +15,6 @@ class SideMenuViewController: NewsicDefaultViewController {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var logoutButton: UIButton!
-    @IBOutlet weak var aboutButton: UIButton!
     @IBOutlet weak var buttonsView: UIView!
     
     //Local variables
@@ -43,12 +42,6 @@ class SideMenuViewController: NewsicDefaultViewController {
     
     override func viewDidLoad() {
         
-        let root = self.navigationController?.topViewController
-        if root is NewsicPageViewController {
-            
-            print("ROOT IS PAGEVIEW")
-        }
-        
         super.viewDidLoad();
         setupView();
         setupNavigationBar()
@@ -70,9 +63,6 @@ class SideMenuViewController: NewsicDefaultViewController {
         if let username = username {
             usernameLabel.text = username
         }
-        
-        logoutButton.titleLabel?.text = "Logout from Spotify"
-        aboutButton.titleLabel?.text = "About this App"
         
         setupProfileView();
         setupButtonsView();
@@ -110,7 +100,7 @@ class SideMenuViewController: NewsicDefaultViewController {
     func setupButtonsView() {
         buttonsView.backgroundColor = UIColor.clear
         //buttonsView.addBlurEffect(style: .dark, alpha: 0.8)
-        
+        logoutButton.tintColor = UIColor.green
     }
     
     func drawProfileViewPath() {

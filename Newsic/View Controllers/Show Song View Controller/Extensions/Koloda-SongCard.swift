@@ -179,9 +179,10 @@ extension ShowSongViewController {
     @objc func likeTrack(in index: Int) {
         guard cardList.count > 0, containsTrack(trackId: cardList[presentedCardIndex].trackInfo.trackId) == false else { return; }
         let likedCardIndex = presentedCardIndex
-        DispatchQueue.main.async {
-            SwiftSpinner.show(duration: 2, title: "Liked!");
-        }
+        SwiftSpinner.show("Adding track to playlist..").addTapHandler({
+            SwiftSpinner.hide()
+        }, subtitle: "Tap on the screen to go back to the cards. We'll add the song on the background!")
+        
         let track = cardList[likedCardIndex];
         isSongLiked = didUserSwipe == true ? false : true ; toggleLikeButtons()
         spotifyHandler.isTrackInPlaylist(trackId: track.trackInfo.trackId, playlistId: playlist.id!) { (isInPlaylist) in
@@ -189,14 +190,19 @@ extension ShowSongViewController {
                 self.spotifyHandler.addTracksToPlaylist(playlistId: self.playlist.id!, trackId: track.trackInfo.trackUri, addTrackHandler: { (isAdded, error) in
                     
                     if let error = error {
+                        SwiftSpinner.hide()
                         error.presentPopup(for: self, description: SpotifyErrorCodeDescription.addTrack.rawValue)
                     } else {
                         if let genres = track.trackInfo.artist.subGenres {
                             for genre in genres {
                                 self.user.updateGenreCount(for: genre, updateGenreHandler: { (isUpdated, error) in
                                     if let error = error {
+                                        SwiftSpinner.hide()
                                         error.presentPopup(for: self)
+                                    } else {
+                                        SwiftSpinner.show(duration: 2, title: "Liked!");
                                     }
+                                    
                                 })
                             }
                             
@@ -210,7 +216,8 @@ extension ShowSongViewController {
         
         spotifyHandler.getTrackDetails(trackId: track.trackInfo.trackId!, fetchedTrackDetailsHandler: { (trackFeatures, error) in
             if let error = error {
-                error.presentPopup(for: self)
+                SwiftSpinner.hide()
+                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue)
             } else {
                 if let trackFeatures = trackFeatures {
                     self.updateCurrentGenresAndFeatures { (genres, trackFeatures) in
@@ -219,6 +226,10 @@ extension ShowSongViewController {
                     
                     track.trackInfo.audioFeatures = trackFeatures;
                     track.saveData(saveCompleteHandler: { (reference, error) in
+                        if let error = error {
+                            SwiftSpinner.hide()
+                            error.presentPopup(for: self)
+                        }
                         self.likedTrackList.insert(track.trackInfo, at: 0);
                         DispatchQueue.main.async {
                             self.songListTableView.reloadData();

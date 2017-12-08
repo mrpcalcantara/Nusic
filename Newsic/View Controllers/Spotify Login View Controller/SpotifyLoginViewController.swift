@@ -9,6 +9,7 @@
 import UIKit
 import SwiftSpinner
 import SafariServices
+import PopupDialog
 
 class SpotifyLoginViewController: NewsicDefaultViewController {
     
@@ -17,6 +18,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     var loginUrl: URL?
     var loading: SwiftSpinner!;
     var safariViewController: SFSafariViewController!
+    var timer: Timer! = Timer();
     
     //Objects for extracting User and Genres
     
@@ -30,17 +32,22 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         (UIApplication.shared.delegate as! AppDelegate).safariViewController = safariViewController;
         
         self.present(safariViewController, animated: true, completion: nil)
-        //window?.insertSubview(safariViewController.view, atIndex: 0)
-//        UIApplication.shared.open(loginUrl!, options: [:]) { (result) in
-//            if self.auth.canHandle(self.auth.redirectURL) {
-//                // To do - build in error handling
-//            }
-//        }
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        FirebaseHelper.detectFirebaseConnectivity { (isConnected) in
+            if isConnected {
+                self.setupSpotify()
+                if self.timer != nil {
+                    self.timer.invalidate()
+                }
+                
+            } else {
+                self.timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.fireErrorPopup), userInfo: nil, repeats: false)
+            }
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(updateAfterFirstLogin), name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setupSpotify), name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
         
@@ -48,9 +55,18 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
-        setupSpotify()
-        
-        
+        animateLogo()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loginButton.alpha = 0
+    }
+    
+    
+    @objc func fireErrorPopup() {
+        let popup = NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: "Unable to connect. Please try again later.");
+        popup.presentPopup(for: self);
     }
     
     func setupLabel() {
@@ -63,27 +79,8 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     }
     
     @objc func moveToMainScreen() {
-        
-//        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "SongPicker") as! SongPickerViewController;
-        
-        
-//        let navigationController = CustomNavigationController(rootViewController: viewController)
-//        self.modalPresentationStyle = .popover
-//        self.present(navigationController, animated: true) {
-//
-//        }
-        
         let pageViewController = NewsicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-//        pageViewController.automaticallyAdjustsScrollViewInsets = false
-//        let navigationController = UINavigationController(rootViewController: pageViewController)
-        
-//        navigationController.automaticallyAdjustsScrollViewInsets = false
-//        navigationController.setNavigationBarHidden(true, animated: false)
-//        self.present(navigationController, animated: true, completion: nil);
         self.present(pageViewController, animated: false, completion: nil);
-        //self.performSegue(withIdentifier: "showWatsonSegue", sender: self)
-        
-        
     }
     
     
@@ -111,19 +108,21 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         getSession();
     }
     
-    func getSession() {
-        
+    func animateLogo() {
         loginButton.alpha = 0
         newsicLabl.alpha = 0
         
         UIView.animate(withDuration: 1, animations: {
             self.newsicLabl.alpha = 1;
         })
-
+        
         UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: {
             self.newsicLabl.center.y += 20
             self.newsicLabl.center.y -= 20
         }, completion: nil)
+    }
+    
+    func getSession() {
         
         let userDefaults = UserDefaults.standard
         if let sessionObj:AnyObject = userDefaults.object(forKey: "SpotifySession") as AnyObject? {
@@ -165,7 +164,6 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
                 
                 self.auth.session = session;
                 refreshTokenCompletionHandler(true)
-//                _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
             } else {
                 print("error refreshing session: \(error?.localizedDescription ?? "sdsdasasd")");
                 self.loginButton.isHidden = false;

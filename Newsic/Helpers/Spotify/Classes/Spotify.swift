@@ -269,7 +269,7 @@ class Spotify {
         let userDefaults = UserDefaults.standard;
         SPTAuth.defaultInstance().renewSession(currentSession, callback: { (error, session) in
             if error == nil {
-                print("refresh successful");
+//                print("refresh successful");
                 let sessionData = NSKeyedArchiver.archivedData(withRootObject: session!)
                 userDefaults.set(sessionData, forKey: "SpotifySession")
                 userDefaults.synchronize()

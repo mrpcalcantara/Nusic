@@ -188,7 +188,6 @@ extension NewsicPageViewController: UIPageViewControllerDelegate {
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-        print("transitioning to \(pendingViewControllers.first.debugDescription)")
         self.pageViewController(self, viewControllerAfter: pendingViewControllers.first!)
     }
     

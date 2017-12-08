@@ -21,21 +21,9 @@ class SongPickerViewController: NewsicDefaultViewController {
     var sectionGenres: [[SpotifyGenres]] = [[]]
     var sectionHeaderFrame: CGRect = CGRect(x: 16, y: 8, width: 0, height: 0)
     var currentSection: Int = 0
-    let numberOfCards:Int = 1;
-    let numberOfSongs:Int = 5;
-    var dataSource: [UIImage] = {
-        var array: [UIImage] = []
-        for index in 0..<1 {
-            array.append(UIImage(named: "Test")!)
-        }
-        
-        return array
-    }()
     let username = "81d1a191-5d1e-47df-934a-c4bf91b63dd0"
     let password = "Ibls3Rzrbuy0"
     var spotifyHandler = Spotify();
-    var songImage: UIImage! = UIImage(named: "Test");
-    
     var moodObject: NewsicMood? = nil;
     var genres:[NewsicGenre]! = nil
     var newsicUser: NewsicUser! = nil {
@@ -49,7 +37,6 @@ class SongPickerViewController: NewsicDefaultViewController {
                 sideMenu.profileImageURL = imageURL
                 let iconImage = UIImage(); iconImage.downloadImage(from: imageURL, downloadImageHandler: { (image) in
                     DispatchQueue.main.async {
-                        
 //                        self.setupNavigationBar(image: image)
                     }
                     
@@ -64,7 +51,6 @@ class SongPickerViewController: NewsicDefaultViewController {
     var user: SPTUser? = nil;
     var selectedGenres: [String: Int] = [:]
     var isMoodSelected: Bool = true;
-    var isMenuOpen: Bool = false
     var fullArtistList:[SpotifyArtist] = [];
     var fullPlaylistList:[SPTPartialPlaylist] = []
     var currentPlaylistIndex: Int = 0
@@ -74,7 +60,6 @@ class SongPickerViewController: NewsicDefaultViewController {
             SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
         }
     }
-    
     var spinner: SwiftSpinner! = nil
     
     //Segues
@@ -164,11 +149,27 @@ class SongPickerViewController: NewsicDefaultViewController {
         toggleCollectionViews(for: 0);
     }
     
-    func setupNavigationBar(image: UIImage? = UIImage(named: "MenuIcon")) {
-        let navbar  = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: 44));
+    func setupNavigationBar(image: UIImage? = UIImage(named: "SettingsIcon")) {
+        if self.view.subviews.contains(navbar) {
+            navbar.removeFromSuperview()
+        }
+        navbar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: 44));
         navbar.barStyle = .default
         
+//        let button = UIButton(type: .custom)
+//        button.addTarget(self, action: #selector(toggleMenu), for: .touchUpInside);
+//        button.setImage(image!, for: .normal)
+//        button.imageView?.roundImage()
+//        
+//        button.widthAnchor.constraint(equalToConstant: 25).isActive = true
+//        button.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        
         let barButton2 = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
+//        barButton2.setBackgroundImage(image!, for: .normal, barMetrics: .default)
+//        let barButton2 = UIBarButtonItem(customView: button);
+//        barButton2.target = self
+//        barButton2.action = #selector(toggleMenu)
+        
         self.navigationItem.leftBarButtonItem = barButton2
         
         let navItem = self.navigationItem
@@ -228,7 +229,10 @@ class SongPickerViewController: NewsicDefaultViewController {
                     self.newsicUser = NewsicUser(userName: username, displayName: displayName!, imageURL: profileImage, territory: territory)
                     self.moodObject?.userName = username;
                     self.spotifyPlaylistCheck();
-                    self.newsicUser.getUser(getUserHandler: { (usernameDB) in
+                    self.newsicUser.getUser(getUserHandler: { (usernameDB, error) in
+                        if let error = error {
+                            error.presentPopup(for: self)
+                        }
                         if usernameDB == "" {
                             self.newsicUser.saveUser(saveUserHandler: { (userExist, error) in
                                 if let error = error {
