@@ -28,11 +28,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     var cardList:[NewsicTrack] = [];
     var playlist:NewsicPlaylist! = nil
     var spotifyHandler: Spotify! = nil;
-    var auth: SPTAuth! = nil {
-        didSet {
-            print("Reset auth!!")
-        }
-    };
+    var auth: SPTAuth! = nil;
     var moodObject: NewsicMood? = nil;
     var currentMoodDyad: EmotionDyad? = EmotionDyad.unknown
     var trackFeatures: [SpotifyTrackFeature]? = nil
@@ -390,9 +386,9 @@ class ShowSongViewController: NewsicDefaultViewController {
             
             if self.cardList.count == 0 {
                 self.setupSongs();
-                print("SONG LIST IS ZERO")
+//                print("SONG LIST IS ZERO")
             } else {
-                print("Songs added!, count = \(self.cardList.count)")
+//                print("Songs added!, count = \(self.cardList.count)")
                 
             }
             
@@ -466,7 +462,7 @@ class ShowSongViewController: NewsicDefaultViewController {
                     return trackInHistory.trackId == track.trackId
                 })
                 if containsCheck! {
-                    print("REFETCHING NEW CARD.. \(track.trackId) already in list")
+//                    print("REFETCHING NEW CARD.. \(track.trackId) already in list")
                     self.spotifyHandler.searchMusicInGenres(numberOfSongs: 1, moodObject: moodObject, completionHandler: { (results, error) in
                         
                         if let cardFetchingHandler = cardFetchingHandler {

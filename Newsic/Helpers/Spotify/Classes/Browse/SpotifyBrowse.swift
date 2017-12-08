@@ -43,8 +43,12 @@ extension Spotify {
                     let trackName = track["name"] as! String;
                     let uri = track["uri"] as! String;
                     let id = track["id"] as! String;
-                    let album = track["album"] as! [String: AnyObject]; let images = album["images"] as! [[String: AnyObject]]; let hqImage = images[0]["url"] as! String
-                    let artists = track["artists"] as! [[String: AnyObject]]; let artistName = artists[0]["name"] as! String; let artistUri = artists[0]["uri"] as! String
+                    let album = track["album"] as! [String: AnyObject];
+                    let images = album["images"] as! [[String: AnyObject]];
+                    let hqImage = images.count > 0 ? images[0]["url"] as! String : ""
+                    let artists = track["artists"] as! [[String: AnyObject]];
+                    let artistName = artists.count > 0 ? artists[0]["name"] as! String : "Unknown Artist";
+                    let artistUri = artists.count > 0 ? artists[0]["uri"] as! String : "Unknown URI";
                     let title = "\(artistName) - \(trackName)"
                     
                     let spotifyObject = SpotifyTrack(title: title, thumbNailUrl: hqImage, trackUri: uri, trackId: id, songName: trackName, artist: SpotifyArtist(artistName: artistName, uri: artistUri), audioFeatures: nil);

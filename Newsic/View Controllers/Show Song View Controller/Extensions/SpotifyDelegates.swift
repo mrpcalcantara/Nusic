@@ -45,7 +45,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         self.songListTableView.reloadData()
         let currentTrack = audioStreaming.metadata.currentTrack;
         
-        print("track started");
+//        print("track started");
         if let currentTrack = currentTrack {
             if let imageURL = currentTrack.albumCoverArtURL {
                 let imageURL = URL(string: imageURL)!
@@ -92,7 +92,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     func audioStreamingDidLogin(_ audioStreaming: SPTAudioStreamingController!) {
         
         // after a user authenticates a session, the SPTAudioStreamingController is then initialized and this method called
-        print("logged in")
+//        print("logged in")
         //actionPlaySpotifyTrack(spotifyTrackId: "58s6EuEYJdlb0kO7awm3Vp");
         
     }
@@ -239,7 +239,7 @@ extension ShowSongViewController {
     @objc func actionPlaySpotifyTrack(spotifyTrackId: String) {
         self.isPlaying = false
         self.activateAudioSession()
-        print("Trying to play track \(spotifyTrackId)")
+//        print("Trying to play track \(spotifyTrackId)")
         player?.playSpotifyURI(spotifyTrackId, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             self.isPlaying = true;
             self.togglePausePlayIcon()
@@ -314,7 +314,7 @@ extension ShowSongViewController {
                 }
                 nowPlayingInfo.updateValue(seekTime, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime);
                 nowPlayingInfo.updateValue(1, forKey: MPNowPlayingInfoPropertyPlaybackRate);
-                print(nowPlayingInfo)
+//                print(nowPlayingInfo)
             })
         }
         

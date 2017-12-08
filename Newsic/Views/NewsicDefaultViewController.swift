@@ -43,7 +43,7 @@ class NewsicDefaultViewController: UIViewController {
         
         
         let okButton = DefaultButton(title: "OK", action: {
-            print("Back to Login menu");
+//            print("Back to Login menu");
             self.dismiss(animated: true, completion: nil);
         })
         

@@ -38,7 +38,6 @@ class NewsicUser {
         } 
     }
     
-    
 }
 
 extension NewsicUser: FirebaseModel {
@@ -81,10 +80,10 @@ extension NewsicUser: FirebaseModel {
         }
     }
     
-    func getUser(getUserHandler: @escaping (String) -> ()) {
+    func getUser(getUserHandler: @escaping (String, NewsicError?) -> ()) {
         getData { (dictionary, error) in
             let extractedUsername = dictionary?["canonicalUserName"] as? String ?? ""
-            getUserHandler(extractedUsername);
+            getUserHandler(extractedUsername, error);
         }
     }
     
@@ -110,6 +109,7 @@ extension NewsicUser: FirebaseModel {
     
     func getFavoriteGenres(getGenresHandler: @escaping ([String: Int]?, NewsicError?) -> ()) {
         var closureSelf = self;
+//        reference.child("genres").child(userName).observe(.value, with: { (dataSnapshot) in
         reference.child("genres").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
             var convertedDict: [String: Int] = [:]

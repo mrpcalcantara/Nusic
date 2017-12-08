@@ -17,4 +17,11 @@ class FirebaseHelper {
         }
     }
     
+    class func detectFirebaseConnectivity(connectivityHandler: @escaping (Bool) -> ()) {
+        let connectedRef = Database.database().reference(withPath: ".info/connected")
+        connectedRef.observe(.value, with: { snapshot in
+            connectivityHandler(snapshot.value as! Bool)
+        })
+    }
+    
 }
