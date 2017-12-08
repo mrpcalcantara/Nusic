@@ -14,13 +14,15 @@ class NewsicError: NSObject, Error {
     var newsicErrorCode: NewsicErrorCodes?
     var newsicErrorSubCode: NewsicErrorSubCode?
     var newsicErrorDescription: String?
+    var systemError: Error?
     var popupDialog: PopupDialog?
     
-    init(newsicErrorCode: NewsicErrorCodes?, newsicErrorSubCode: NewsicErrorSubCode?, newsicErrorDescription: String? = "") {
+    init(newsicErrorCode: NewsicErrorCodes?, newsicErrorSubCode: NewsicErrorSubCode?, newsicErrorDescription: String? = "", systemError: Error? = nil) {
         super.init()
         self.newsicErrorCode = newsicErrorCode
         self.newsicErrorSubCode = newsicErrorSubCode
         self.newsicErrorDescription = newsicErrorDescription
+        self.systemError = systemError
         //self.popupDialog = setupDialog();
     }
     

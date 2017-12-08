@@ -64,6 +64,7 @@ class SongOverlayView: OverlayView {
     }
     
     func setupView() {
+        
         //self.addSubview(videoPlayer);
         self.addSubview(albumImage);
         self.addSubview(songTitle);
@@ -85,12 +86,10 @@ class SongOverlayView: OverlayView {
         didSet {
             switch overlayState {
             case .left? :
-                //self.backgroundColor = UIColor.red.withAlphaComponent(0.75)
                 albumImage.image = UIImage(named: songOverlaySwipedLeftImage)
                 albumImage.contentMode = .scaleToFill
                 albumImage.alpha = 1
             case .right? :
-                //self.backgroundColor = UIColor.green.withAlphaComponent(0.75)
                 albumImage.image = UIImage(named: songOverlaySwipedRightImage)
                 albumImage.contentMode = .scaleToFill
                 albumImage.alpha = 1
@@ -99,6 +98,11 @@ class SongOverlayView: OverlayView {
             }
             
         }
+    }
+    
+    override func update(progress: CGFloat) {
+        alpha = progress * 1.5
+        backgroundColor = UIColor.clear
     }
 
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum NewsicErrorCodes {
+enum NewsicErrorCodes: Int{
     case generalError
     case technicalError
     case integrationError

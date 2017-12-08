@@ -48,8 +48,18 @@ extension Spotify {
         })
     }
     
-    func checkPlaylistExists(playlistId: String, playlistExistHandler: @escaping(Bool) -> ()) {
-        
+    func checkPlaylistExists(playlistId: String, playlistExistHandler: @escaping(Bool?, NewsicError?) -> ()) {
+        self.getAllPlaylists { (playListList, error) in
+            if let error = error {
+                playlistExistHandler(nil, error);
+            } else {
+                let hasElement = playListList.contains(where: { (existingPlaylist) -> Bool in
+                    return existingPlaylist.uri.absoluteString.contains(playlistId);
+                })
+                
+                playlistExistHandler(hasElement, nil);
+            }
+        }
     }
     
     func createNewsicPlaylist(playlistName: String, playlistCreationHandler: @escaping(Bool?, NewsicPlaylist?, NewsicError?) -> ()) {

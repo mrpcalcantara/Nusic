@@ -57,6 +57,8 @@ extension ShowSongViewController {
 //        songProgressSlider.layer.zPosition = 1;
 //        songProgressSlider.translatesAutoresizingMaskIntoConstraints = true;
         
+        songProgressSlider.isHidden = false
+        
         songProgressView.frame = buttonsInitFrame;
         songProgressView.isHidden = true
         songProgressView.layer.zPosition = 1;

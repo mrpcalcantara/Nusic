@@ -1,21 +1,39 @@
-//
-//  FirebaseErrorCodeDescription.swift
-//  Newsic
-//
-//  Created by Miguel Alcantara on 05/12/2017.
-//  Copyright © 2017 Miguel Alcantara. All rights reserved.
-//
-
-import Foundation
-
 enum FirebaseErrorCodeDescription : String {
+    
+    //User
     case getUser = "An error occurred while getting the user information."
-//    case getPlaylistTracks = "An error occurred when extracting all the tracks for the playlist."
-//    case getTrackInfo = "An error occured while fetching the track information."
-//    case getMusicInGenres = "An error occurred while fetching a new card."
-//    case getTrackIdFeaturesForMood = "An error occured while fetching the tracks information for the chosen mood."
-//    case removeTrack = "An error occured while removing the track from the Spotify playlist."
-//    case createPlaylist = "An error occured while creating the playlist on Spotify."
-//    case getUser = "An error occured while extracting the user information from Spotify."
-//    case getGenresForTrackList = "An error occurred extracting the genres for the track list."
+    case saveUser = "An error occurred while saving the user information."
+    case deleteUser = "An error occurred while deleting the user information."
+    case getFavoriteGenres = "An error occurred while fetching the user's favorite genres."
+    case saveFavoriteGenres = "An error occurred while saving the user's favorite genres."
+    case updateGenreCount = "An error occurred while updating the selected genre count."
+    
+    //Track
+    case getLikedTracks = "An error occurred while fetching your liked tracks."
+    case saveLikedTracks = "An error occurred while saving your liked tracks."
+    case deleteLikedTracks = "An error occurred while deleting your liked tracks."
+    
+    //Mood
+    case getMoodInfo = "An error occurred while fetching your saved mood information."
+    case saveMoodInfo = "An error occurred while saving the current mood information."
+    case deleteMoodInfo = "An error occurred while deleting the current mood information."
+    case getMoodInfoDefaultTrack = "An error occurred while fetching the default mood settings."
+    case getTrackFeatures = "An error occurred while fetching the track list audio features."
+    case getTrackListForEmotion = "An error occurred while fetching the track list for the current mood."
+    
+    //Artist
+    case getArtist = "An error occurred while fetching the artist information."
+    case saveArtist = "An error occurred while saving the artist information."
+    case deleteArtist = "An error occurred while deleting the artist information."
+    
+    //Genre
+    case getGenre = "An error occurred while fetching the genre information."
+    case saveGenre = "An error occurred while saving the genre information."
+    case deleteGenre = "An error occurred while deleting the genre information."
+    
+    //Playlist
+    case getPlaylist = "An error occurred while fetching the playlist information."
+    case savePlaylist = "An error occurred while saving the playlist information."
+    case deletePlaylist = "An error occurred while deleting the playlist information."
+    case addNewPlaylist = "An error occurred while adding the new playlist information."
 }

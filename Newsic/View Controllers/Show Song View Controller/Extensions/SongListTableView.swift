@@ -45,6 +45,7 @@ extension ShowSongViewController {
         closeMenu()
         
         //songListTableView.addShadow(shadowOffset: CGSize(width: -7, height: 1));
+        songListTableView.isHidden = false
         songListTableView.rowHeight = UITableViewAutomaticDimension
         songListTableView.estimatedRowHeight = 90.0
         songListTableView.tableFooterView = UIView();

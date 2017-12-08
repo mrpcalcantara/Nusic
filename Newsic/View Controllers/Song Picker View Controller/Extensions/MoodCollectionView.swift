@@ -268,7 +268,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
 //            self.searchButton.isUserInteractionEnabled = true;
             let dyad = EmotionDyad.allValues[indexPath.row]
             
-            SwiftSpinner.show("Loading...", animated: true);
+//            SwiftSpinner.show("Loading...", animated: true);
             
             let emotion = Emotion(basicGroup: dyad, detailedEmotions: [], rating: 0)
             self.moodObject = NewsicMood(emotions: [emotion], isAmbiguous: false, sentiment: 0.5, date: Date(), userName: spotifyHandler.auth.session.canonicalUsername, associatedGenres: [], associatedTracks: []);

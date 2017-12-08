@@ -28,47 +28,61 @@ struct NewsicGenre {
 
 extension NewsicGenre: FirebaseModel {
     
-    internal func getData(getCompleteHandler: @escaping (NSDictionary?, Error?) -> ()) {
+    internal func getData(getCompleteHandler: @escaping (NSDictionary?, NewsicError?) -> ()) {
         
         reference.child(userName).child(mainGenre).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
             getCompleteHandler(value, nil);
         }) { (error) in
-            getCompleteHandler(nil, error);
+            getCompleteHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getGenre.rawValue, systemError: error));
         }
         
         
     }
     
-    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
+    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
         let dictionary = [self.mainGenre: self.count]
         reference.child(userName).child(mainGenre).updateChildValues(dictionary) { (error, reference) in
-            saveCompleteHandler(reference, error)
+            if let error = error {
+                saveCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.saveGenre.rawValue, systemError: error))
+            } else {
+                saveCompleteHandler(reference, nil)
+            }
+            
         }
     }
     
-    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
+    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
         reference.child(userName).child(mainGenre).removeValue { (error, databaseReference) in
-            deleteCompleteHandler(self.reference, error)
+            if let error = error {
+                deleteCompleteHandler(self.reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteGenre.rawValue, systemError: error))
+            } else {
+                deleteCompleteHandler(self.reference, nil)
+            }
+            
         }
     }
     
-    func updateGenre() {
-        //let genre = reference.child(userName).child(mainGenre)
-    }
-    
-    static func getFavoriteGenres(for userName: String, readingUserGenresHandler: @escaping ([NewsicGenre]?) -> ()) {
+    static func getFavoriteGenres(for userName: String, readingUserGenresHandler: @escaping ([NewsicGenre]?, NewsicError?) -> ()) {
         Database.database().reference().child("genres").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
             let convertedDict = value as! [String: Int]
             var genreList: [NewsicGenre]? = convertGenreCountToGenres(userName: userName, dict: convertedDict)
-            readingUserGenresHandler(genreList)
+            readingUserGenresHandler(genreList, nil)
+        }, withCancel: { (error) in
+            readingUserGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getFavoriteGenres.rawValue, systemError: error));
         })
     }
     
-    static func saveGenres(for userName: String, genreList:[String: Int]) {
+    static func saveGenres(for userName: String, genreList:[String: Int], saveGenresHandler: @escaping (Bool?, NewsicError?) -> ()) {
         //let dictionary = user.dictionaryWithValues(forKeys: ["canonicalUserName","displayName","territory"]);
-        Database.database().reference().child("genres").child(userName).updateChildValues(genreList)
+        Database.database().reference().child("genres").child(userName).updateChildValues(genreList) { (error, reference) in
+            if let error = error {
+                saveGenresHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.saveFavoriteGenres.rawValue, systemError: error))
+            } else {
+                saveGenresHandler(true, nil)
+            }
+        }
     }
     
     static func convertGenreCountToGenres(userName: String, dict: [String: Int]) -> [NewsicGenre] {
