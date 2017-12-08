@@ -10,6 +10,7 @@ import UIKit
 
 class SideMenuViewController: NewsicDefaultViewController {
     
+    @IBOutlet weak var menuScrollView: UIScrollView!
     @IBOutlet weak var profileView: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -102,21 +103,22 @@ class SideMenuViewController: NewsicDefaultViewController {
     func setupProfileView() {
         profileView.backgroundColor = UIColor.clear
         usernameLabel.textColor = UIColor.white
+        drawProfileViewPath()
         //profileView.addBlurEffect(style: .extraLight, alpha: 0.25);
     }
     
     func setupButtonsView() {
         buttonsView.backgroundColor = UIColor.clear
         //buttonsView.addBlurEffect(style: .dark, alpha: 0.8)
-        drawButtonsViewPath();
+        
     }
     
-    func drawButtonsViewPath() {
+    func drawProfileViewPath() {
         let layer = CAShapeLayer();
-        let yOrigin = buttonsView.bounds.origin.y + 8
-        let xOrigin = buttonsView.bounds.origin.x
-        let width = buttonsView.bounds.width
-        let height = buttonsView.bounds.height
+        let yOrigin = profileView.bounds.origin.y + 8
+        let xOrigin = profileView.bounds.origin.x
+        let width = profileView.bounds.width
+        let height = profileView.bounds.height
         layer.strokeColor = UIColor.white.cgColor
         layer.fillColor = UIColor.clear.cgColor
         layer.lineWidth = 5
@@ -124,16 +126,22 @@ class SideMenuViewController: NewsicDefaultViewController {
         
         
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: xOrigin - 8, y: yOrigin))
-        path.addQuadCurve(to: CGPoint(x: width + 8, y: yOrigin), controlPoint: CGPoint(x: width/2, y: -10))
-        path.addLine(to: CGPoint(x: width + 8, y: height + 8))
-        path.addLine(to: CGPoint(x: xOrigin - 8, y: height + 8))
+//        path.move(to: CGPoint(x: xOrigin - 8, y: yOrigin))
+//        path.addQuadCurve(to: CGPoint(x: width + 8, y: yOrigin), controlPoint: CGPoint(x: width/2, y: -10))
+//        path.addLine(to: CGPoint(x: width + 8, y: height + 8))
+//        path.addLine(to: CGPoint(x: xOrigin - 8, y: height + 8))
+//        path.close()
+        
+        path.move(to: CGPoint(x: xOrigin - 8, y: height))
+        path.addQuadCurve(to: CGPoint(x: width + 8, y: height), controlPoint: CGPoint(x: width/2, y: height+10))
+        path.addLine(to: CGPoint(x: width + 8, y: yOrigin + 8))
+        path.addLine(to: CGPoint(x: xOrigin - 8, y: yOrigin + 8))
         path.close()
         layer.path = path.cgPath
         layer.fillColor = UIColor.black.withAlphaComponent(0.5).cgColor
         let filter = CIFilter(name: "CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: 2])
         //layer.backgroundFilters = [filter]
-        buttonsView.layer.insertSublayer(layer, at: 0)
+        profileView.layer.insertSublayer(layer, at: 0)
         
         let animation = CABasicAnimation(keyPath: "strokeEnd");
         

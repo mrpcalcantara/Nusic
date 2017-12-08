@@ -43,31 +43,41 @@ class NewsicUser {
 
 extension NewsicUser: FirebaseModel {
     
-    internal func getData(getCompleteHandler: @escaping (NSDictionary?, Error?) -> ()) {
+    internal func getData(getCompleteHandler: @escaping (NSDictionary?, NewsicError?) -> ()) {
         reference.child("users").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
             getCompleteHandler(value, nil);
         }) { (error) in
-            getCompleteHandler(nil, error);
+            getCompleteHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getUser.rawValue, systemError: error));
         }
         
         
     }
     
-    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
+    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
         let dictionary = ["canonicalUserName": userName,
                           "displayName": displayName,
                           "territory": territory]
         
         reference.child("users").child(userName).updateChildValues(dictionary) { (error, reference) in
-            saveCompleteHandler(reference, error)
+            if let error = error {
+                saveCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.saveUser.rawValue, systemError: error))
+            } else {
+                saveCompleteHandler(reference, nil)
+            }
+            
         }
         //        reference.child(userName).child(self.id!).updateChildValues(dict);
     }
     
-    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
+    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
         reference.child("users").child(userName).removeValue { (error, databaseReference) in
-            deleteCompleteHandler(self.reference, error)
+            if let error = error {
+                deleteCompleteHandler(self.reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteUser.rawValue, systemError: error))
+            } else {
+                deleteCompleteHandler(self.reference, nil)
+            }
+            
         }
     }
     
@@ -78,19 +88,27 @@ extension NewsicUser: FirebaseModel {
         }
     }
     
-    func saveUser() {
+    func saveUser(saveUserHandler: @escaping (Bool?, NewsicError?) -> ()) {
         saveData { (databaseReference, error) in
-            
+            if let error = error {
+                saveUserHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.saveUser.rawValue, systemError: error))
+            } else {
+                saveUserHandler(true, nil)
+            }
         }
     }
     
-    func deleteUser() {
+    func deleteUser(deleteUserHandler: @escaping (Bool?, NewsicError?) -> ()) {
         deleteData { (databaseReference, error) in
-
+            if let error = error {
+                deleteUserHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteUser.rawValue, systemError: error))
+            } else {
+                deleteUserHandler(true, nil)
+            }
         }
     }
     
-    func getFavoriteGenres(getGenresHandler: @escaping ([String: Int]?) -> ()) {
+    func getFavoriteGenres(getGenresHandler: @escaping ([String: Int]?, NewsicError?) -> ()) {
         var closureSelf = self;
         reference.child("genres").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
@@ -112,21 +130,29 @@ extension NewsicUser: FirebaseModel {
                 closureSelf.favoriteGenres = genreList;
             } 
             
-            getGenresHandler(convertedDict);
+            getGenresHandler(convertedDict, nil);
+        }, withCancel: { (error) in
+            getGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getFavoriteGenres.rawValue, systemError: error));
         })
     }
     
-    func saveFavoriteGenres() {
+    func saveFavoriteGenres(saveGenresHandler: @escaping (Bool?, NewsicError?) -> ()) {
         if let favoriteGenres = favoriteGenres {
             var dict:[String: Int] = [:]
             for genre in favoriteGenres {
                 dict[genre.mainGenre] = genre.count
             }
-            Database.database().reference().child("genres").child(userName).updateChildValues(dict)
+            Database.database().reference().child("genres").child(userName).updateChildValues(dict, withCompletionBlock: { (error, reference) in
+                if let error = error {
+                    saveGenresHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.saveFavoriteGenres.rawValue, systemError: error))
+                } else {
+                    saveGenresHandler(true, nil)
+                }
+            })
         }
     }
     
-    func updateGenreCount(for genre: String) {
+    func updateGenreCount(for genre: String, updateGenreHandler: @escaping (Bool?, NewsicError?) -> ()) {
         var closureSelf = self;
         if let favoriteGenres = favoriteGenres {
             if let genreIndex = favoriteGenres.index(where: { (localGenre) -> Bool in
@@ -141,16 +167,18 @@ extension NewsicUser: FirebaseModel {
                         print(error.localizedDescription)
                     }
                 })
-                Database.database().reference().child("genres").child(userName).updateChildValues(updatedValue)
+                Database.database().reference().child("genres").child(userName).updateChildValues(updatedValue, withCompletionBlock: { (error, reference) in
+                    if let error = error {
+                        updateGenreHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.updateGenreCount.rawValue, systemError: error))
+                    } else {
+                        updateGenreHandler(true, nil)
+                    }
+                })
             }
             
             
         }
         
     }
-    
-}
-
-extension NewsicUser {
     
 }

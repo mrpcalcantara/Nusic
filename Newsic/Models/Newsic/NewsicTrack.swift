@@ -27,32 +27,32 @@ struct NewsicTrack {
 
 extension NewsicTrack : FirebaseModel {
     
-    internal func getData(getCompleteHandler: @escaping (NSDictionary?, Error?) -> ()) {
+    internal func getData(getCompleteHandler: @escaping (NSDictionary?, NewsicError?) -> ()) {
         reference.child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
             getCompleteHandler(value, nil);
         }) { (error) in
-            getCompleteHandler(nil, error);
+            getCompleteHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getLikedTracks.rawValue, systemError: error));
         }
         
         
     }
     
-    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
+    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
         
         if let audioFeatures = trackInfo.audioFeatures {
             if let moodInfo = moodInfo {
                 for emotion in moodInfo.emotions {
                     reference.child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(trackInfo.trackId!).updateChildValues(audioFeatures.toDictionary()) { (error, reference) in
                         if let error = error {
-                            saveCompleteHandler(reference, error)
+                            saveCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.saveLikedTracks.rawValue, systemError: error))
                         }
                     }
                 }
             } else {
                 reference.child(userName).child("moods").child(EmotionDyad.unknown.rawValue).child(trackInfo.trackId!).updateChildValues(audioFeatures.toDictionary()) { (error, reference) in
                         if let error = error {
-                            saveCompleteHandler(reference, error)
+                            saveCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
                         }
                     }
                 }
@@ -61,10 +61,10 @@ extension NewsicTrack : FirebaseModel {
         
     }
     
-    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
-        reference.child(userName).removeValue { (error, databaseReference) in
-            deleteCompleteHandler(self.reference, error)
-        }
+    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
+        
     }
+    
+    
     
 }

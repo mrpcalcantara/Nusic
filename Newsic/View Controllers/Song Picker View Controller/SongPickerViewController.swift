@@ -230,7 +230,11 @@ class SongPickerViewController: NewsicDefaultViewController {
                     self.spotifyPlaylistCheck();
                     self.newsicUser.getUser(getUserHandler: { (usernameDB) in
                         if usernameDB == "" {
-                            self.newsicUser.saveUser();
+                            self.newsicUser.saveUser(saveUserHandler: { (userExist, error) in
+                                if let error = error {
+                                    error.presentPopup(for: self)
+                                }
+                            });
                             self.extractGenresFromSpotify(genreExtractionHandler: { (isSuccessful) in
                                 if !isSuccessful {
                                     if let error = error {
@@ -242,10 +246,17 @@ class SongPickerViewController: NewsicDefaultViewController {
                             DispatchQueue.main.async {
                                 SwiftSpinner.show("Getting Favorite Genres..", animated: true);
                             }
-                            self.newsicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount) in
+                            self.newsicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount, error) in
+                                if let error = error {
+                                    error.presentPopup(for: self)
+                                }
                                 if let dbGenreCount = dbGenreCount {
                                     self.spotifyHandler.genreCount = dbGenreCount;
-                                    self.newsicUser.saveFavoriteGenres();
+                                    self.newsicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
+                                        if let error = error {
+                                            error.presentPopup(for: self)
+                                        }
+                                    });
                                     self.loadingFinished = true;
                                 }
                             })
@@ -311,7 +322,11 @@ class SongPickerViewController: NewsicDefaultViewController {
                                 if self.currentPlaylistIndex == self.fullPlaylistList.count {
                                     let dict = self.spotifyHandler.getGenreCount(for: self.fullArtistList);
                                     self.newsicUser.favoriteGenres = NewsicGenre.convertGenreCountToGenres(userName: self.newsicUser.userName, dict: dict);
-                                     self.newsicUser.saveFavoriteGenres()
+                                    self.newsicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
+                                        if let error = error {
+                                            error.presentPopup(for: self)
+                                        }
+                                    })
                                     genreExtractionHandler(true)
                                     self.loadingFinished = true;
                                 }
@@ -328,24 +343,49 @@ class SongPickerViewController: NewsicDefaultViewController {
     
     func spotifyPlaylistCheck() {
         newsicPlaylist = NewsicPlaylist(userName: SPTAuth.defaultInstance().session.canonicalUsername);
-        newsicPlaylist.getPlaylist { (playlist) in
+        newsicPlaylist.getPlaylist { (playlist, error) in
+            if let error = error {
+                error.presentPopup(for: self)
+            }
             if playlist == nil {
-                self.spotifyHandler.createNewsicPlaylist(playlistName: "Liked in Newsic", playlistCreationHandler: { (isCreated, playlist, error) in
-                    if let error = error {
-                        error.presentPopup(for: self, description: SpotifyErrorCodeDescription.createPlaylist.rawValue)
-                    } else {
-                        if let isCreated = isCreated {
-                            if isCreated {
-                                self.newsicPlaylist = playlist;
-                                playlist?.saveData(saveCompleteHandler: { (reference, error) in
+                self.createPlaylistSpotify()
+            } else {
+                if let playlistId = playlist?.id {
+                    self.spotifyHandler.checkPlaylistExists(playlistId: playlistId, playlistExistHandler: { (isExisting, error) in
+                        if let error = error {
+                            error.presentPopup(for: self, description: SpotifyErrorCodeDescription.checkPlaylist.rawValue)
+                        } else {
+                            if let isExisting = isExisting, !isExisting {
+                                self.createPlaylistSpotify()
+                                FirebaseHelper.deleteAllTracks(user: self.newsicUser.userName, deleteTracksCompleteHandler: { (reference, error) in
                                     
                                 })
                             }
                         }
-                    }
-                })
+                    })
+                }
+                
             }
         }
+    }
+    
+    func createPlaylistSpotify() {
+        self.spotifyHandler.createNewsicPlaylist(playlistName: "Liked in Newsic", playlistCreationHandler: { (isCreated, playlist, error) in
+            if let error = error {
+                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.createPlaylist.rawValue)
+            } else {
+                if let isCreated = isCreated {
+                    if isCreated {
+                        self.newsicPlaylist = playlist;
+                        playlist?.addNewPlaylist(addNewPlaylistHandler: { (isAdded, error) in
+                            if let error = error {
+                                error.presentPopup(for: self)
+                            }
+                        })
+                    }
+                }
+            }
+        })
     }
     
 //    func showLoginErrorPopup() {

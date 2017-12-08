@@ -25,35 +25,43 @@ class NewsicPlaylist {
 }
 
 extension NewsicPlaylist : FirebaseModel {
-    internal func getData(getCompleteHandler: @escaping (NSDictionary?, Error?) -> ()) {
+    internal func getData(getCompleteHandler: @escaping (NSDictionary?, NewsicError?) -> ()) {
         reference.child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
             getCompleteHandler(value, nil);
         }) { (error) in
-            getCompleteHandler(nil, error);
+            getCompleteHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getPlaylist.rawValue, systemError: error));
         }
         
         
     }
     
-    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
-        let dict = ["name" : self.name]
-        reference.child(userName).child(self.id!).updateChildValues(dict) { (error, reference) in
-            saveCompleteHandler(reference, error)
-        }
+    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
+        let dict = ["name" : self.name!]
+        
+//        reference.child(userName).child(self.id!).setValue(dict) { (error, reference) in
+//            saveCompleteHandler(reference, error)
+//        }
+        reference.child(userName).child(self.id!).setValue(dict);
+        saveCompleteHandler(reference, nil)
 //        reference.child(userName).child(self.id!).updateChildValues(dict);
     }
     
-    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()) {
+    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
         reference.child(userName).removeValue { (error, databaseReference) in
-            deleteCompleteHandler(self.reference, error)
+            if let error = error {
+                deleteCompleteHandler(self.reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deletePlaylist.rawValue, systemError: error))
+            } else {
+                deleteCompleteHandler(self.reference, nil)
+            }
+            
         }
     }
     
-    func getPlaylist(getPlaylistHandler: @escaping(NewsicPlaylist?) -> ()) {
+    func getPlaylist(getPlaylistHandler: @escaping(NewsicPlaylist?, NewsicError?) -> ()) {
         getData { (dict, error) in
             if error != nil || dict == nil {
-                getPlaylistHandler(nil)
+                getPlaylistHandler(nil, error)
             } else {
                 let convertedDict = dict as! [String: AnyObject]
                 for (key, value) in convertedDict {
@@ -61,13 +69,25 @@ extension NewsicPlaylist : FirebaseModel {
                     let nameDict = value as! [String: String]
                     self.name = nameDict["name"]
                 }
-                getPlaylistHandler(self);
+                getPlaylistHandler(self, nil);
                 /*
                 let id = convertedDict["id"] as! String;
                 let name = converted
                 let playlist = NewsicPlaylist(name: <#T##String#>, id: id, userName: userName)
                 */
             }
+        }
+    }
+    
+    func addNewPlaylist(addNewPlaylistHandler: @escaping (Bool?, NewsicError?) -> ()) {
+        deleteData { (reference, error) in
+            self.saveData(saveCompleteHandler: { (reference, error) in
+                if let error = error {
+                    addNewPlaylistHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.addNewPlaylist.rawValue, systemError: error))
+                } else {
+                    addNewPlaylistHandler(true, nil)
+                }
+            })
         }
     }
 }

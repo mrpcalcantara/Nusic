@@ -10,6 +10,7 @@ import UIKit
 import Koloda
 import MediaPlayer
 import SwiftSpinner
+import PopupDialog
 
 
 class ShowSongViewController: NewsicDefaultViewController {
@@ -82,18 +83,21 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        setupMainView()
-        setupTableView()
-        setupNavigationBar()
-        setupSpotify()
-        setupSongs()
-        setupMenu()
-        setupCards()
-        setupPlayerMenu()
-        setupCommandCenter()
-        UIApplication.shared.beginReceivingRemoteControlEvents()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateAuthObject), name: NSNotification.Name(rawValue: "refreshSuccessful"), object: nil)
+        if checkConnectivity() {
+            setupMainView()
+            setupTableView()
+            setupNavigationBar()
+            setupSpotify()
+            setupSongs()
+            setupMenu()
+            setupCards()
+            setupPlayerMenu()
+            setupCommandCenter()
+            UIApplication.shared.beginReceivingRemoteControlEvents()
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(updateAuthObject), name: NSNotification.Name(rawValue: "refreshSuccessful"), object: nil)
+        }
         
     }
     
@@ -105,6 +109,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         showSwiftSpinner()
+        checkConnectivity()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -119,6 +124,25 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews();
+    }
+    
+    func checkConnectivity() -> Bool {
+        let title = "Error!"
+        var message = ""
+        if Connectivity.isConnectedToNetwork() == .notConnected {
+            message = "No connectivity to the network. Please try again when you're connected to a network."
+            let popup = PopupDialog(title: title, message: message, transitionStyle: .zoomIn, gestureDismissal: false, completion: nil);
+
+            let backButton = DefaultButton(title: "OK", action: {
+                self.dismiss(animated: true, completion: nil)
+            })
+
+            popup.addButton(backButton)
+            self.present(popup, animated: true, completion: nil);
+            return false
+        }
+
+        return true;
     }
     
     func setupMainView() {
@@ -218,7 +242,10 @@ class ShowSongViewController: NewsicDefaultViewController {
                 }
             }
         } else {
-            moodObject?.getTrackIdListForEmotionGenre(getAssociatedTrackHandler: { (trackList) in
+            moodObject?.getTrackIdListForEmotionGenre(getAssociatedTrackHandler: { (trackList, error) in
+                if let error = error {
+                    error.presentPopup(for: self)
+                }
                 if let trackList = trackList {
                     self.spotifyHandler.getTrackInfo(for: trackList, offset: 0, currentExtractedTrackList: [], trackInfoListHandler: { (spotifyTracks, error) in
                         if let error = error {
@@ -389,7 +416,10 @@ class ShowSongViewController: NewsicDefaultViewController {
     }
     
     func getGenresAndFeaturesForMoods(genresFeaturesHandler: @escaping([String]?, [SpotifyTrackFeature]?) -> ()) {
-        moodObject?.getTrackIdAndFeaturesForEmotion(trackIdAndFeaturesHandler: { (trackIdList, trackFeatures) in
+        moodObject?.getTrackIdAndFeaturesForEmotion(trackIdAndFeaturesHandler: { (trackIdList, trackFeatures, error) in
+            if let error = error {
+                error.presentPopup(for: self)
+            }
             if let trackIdList = trackIdList {
                 self.spotifyHandler.getGenresForTrackList(trackIdList: trackIdList, trackGenreHandler: { (genres, error) in
                     if let error = error {
@@ -406,7 +436,10 @@ class ShowSongViewController: NewsicDefaultViewController {
                     }
                 })
             } else {
-                self.moodObject?.getDefaultTrackFeatures(getDefaultTrackFeaturesHandler: { (defaultTrackFeatures) in
+                self.moodObject?.getDefaultTrackFeatures(getDefaultTrackFeaturesHandler: { (defaultTrackFeatures, error) in
+                    if let error = error {
+                        error.presentPopup(for: self)
+                    }
                     if let defaultTrackFeatures = defaultTrackFeatures {
                         genresFeaturesHandler(nil, defaultTrackFeatures)
                     } else {

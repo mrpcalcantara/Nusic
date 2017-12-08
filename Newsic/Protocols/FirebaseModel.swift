@@ -12,8 +12,8 @@ protocol FirebaseModel {
     
     var reference: DatabaseReference! { get }
     
-    func getData(getCompleteHandler: @escaping (NSDictionary?, Error?) -> ())
-    func saveData(saveCompleteHandler: @escaping (DatabaseReference?, Error?) -> ())
-    func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, Error?) -> ())
+    func getData(getCompleteHandler: @escaping (NSDictionary?, NewsicError?) -> ())
+    func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ())
+    func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ())
     
 }

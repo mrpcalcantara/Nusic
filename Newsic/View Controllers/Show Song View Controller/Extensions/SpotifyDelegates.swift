@@ -180,7 +180,7 @@ extension ShowSongViewController {
         
     }
     
-    func actionPreviousSong() {
+    @objc func actionPreviousSong() {
         songCardView.revertAction()
 //        player?.skipPrevious({ (error) in
 //            if error != nil {
@@ -189,7 +189,7 @@ extension ShowSongViewController {
 //        })
     }
     
-    func actionNextSong() {
+    @objc func actionNextSong() {
         songCardView.swipe(.left)
 //        player?.skipNext({ (error) in
 //            if error != nil {
@@ -201,19 +201,19 @@ extension ShowSongViewController {
     @objc func seekSong(interval: Float) {
         player?.seek(to: TimeInterval(interval), callback: { (error) in
             if let error = error {
-                print("Error seeking track!")
+                print("Error seeking track! error: \(error.localizedDescription)")
             }
         })
     }
     
-    func remoteControlSeekSong(event: MPRemoteCommandEvent) {
+    @objc func remoteControlSeekSong(event: MPRemoteCommandEvent) {
         if event is MPChangePlaybackPositionCommandEvent {
             let command = event as! MPChangePlaybackPositionCommandEvent
             seekSong(interval: Float(command.positionTime))
         }
     }
     
-    func remoteControlPlaySong(event: MPRemoteCommandEvent) {
+    @objc func remoteControlPlaySong(event: MPRemoteCommandEvent) {
         let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
         
         if var nowPlayingInfo = nowPlayingInfo {
@@ -224,7 +224,7 @@ extension ShowSongViewController {
         }
     }
     
-    func remoteControlPauseSong(event: MPRemoteCommandEvent) {
+    @objc func remoteControlPauseSong(event: MPRemoteCommandEvent) {
         let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
         
         if var nowPlayingInfo = nowPlayingInfo {
@@ -236,7 +236,7 @@ extension ShowSongViewController {
         }
     }
     
-    func actionPlaySpotifyTrack(spotifyTrackId: String) {
+    @objc func actionPlaySpotifyTrack(spotifyTrackId: String) {
         self.isPlaying = false
         self.activateAudioSession()
         print("Trying to play track \(spotifyTrackId)")
@@ -250,7 +250,7 @@ extension ShowSongViewController {
         })
     }
     
-    func actionStopPlayer() {
+    @objc func actionStopPlayer() {
         DispatchQueue.main.async {
             self.isPlaying = false
             do {
@@ -285,7 +285,7 @@ extension ShowSongViewController {
     }
     */
     
-    func actionSeekForward() {
+    @objc func actionSeekForward() {
         let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
         if var nowPlayingInfo = nowPlayingInfo {
             nowPlayingInfo.updateValue(3, forKey: MPNowPlayingInfoPropertyPlaybackRate);
@@ -294,7 +294,7 @@ extension ShowSongViewController {
         
     }
     
-    func seekToTime() {
+    @objc func seekToTime() {
         let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
         if var nowPlayingInfo = nowPlayingInfo {
             /*
@@ -321,7 +321,7 @@ extension ShowSongViewController {
     }
     
     
-    func actionSeekBackward() {
+    @objc func actionSeekBackward() {
         let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
         if let nowPlayingInfo = nowPlayingInfo {
             let duration = nowPlayingInfo[MPMediaItemPropertyPlaybackDuration]! as! Double
@@ -358,7 +358,7 @@ extension ShowSongViewController {
             })
         }
        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             MPNowPlayingInfoCenter.default().nowPlayingInfo = trackInfo as [String : AnyObject]
         }
         

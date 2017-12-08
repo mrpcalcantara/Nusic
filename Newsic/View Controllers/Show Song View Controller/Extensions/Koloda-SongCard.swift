@@ -193,7 +193,11 @@ extension ShowSongViewController {
                     } else {
                         if let genres = track.trackInfo.artist.subGenres {
                             for genre in genres {
-                                self.user.updateGenreCount(for: genre)
+                                self.user.updateGenreCount(for: genre, updateGenreHandler: { (isUpdated, error) in
+                                    if let error = error {
+                                        error.presentPopup(for: self)
+                                    }
+                                })
                             }
                             
                         }
