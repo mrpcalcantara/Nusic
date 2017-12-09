@@ -81,7 +81,6 @@ extension Spotify {
         }
         
         pageRequest?.addValue("Bearer \(self.auth.session.accessToken!)", forHTTPHeaderField: "Authorization")
-        let session = URLSession.shared;
         
         if let pageRequest = pageRequest {
             executeSpotifyCall(with: pageRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in

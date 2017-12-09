@@ -29,7 +29,7 @@ extension Spotify {
         //Create URL Request to get songs
         let url = URL(string: urlString);
         var request = URLRequest(url: url!)
-        var accessToken = auth.session.accessToken!
+        let accessToken = auth.session.accessToken!
         var spotifyResults:[SpotifyTrack] = [];
         
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization");

@@ -192,8 +192,6 @@ extension ShowSongViewController {
                 
                 
             }, completion: { (isCompleted) in
-                let buttonsInitFrame = self.showMore.frame
-                
                 self.previousSong.isHidden = true
                 self.pausePlay.isHidden = true
                 self.nextSong.isHidden = true

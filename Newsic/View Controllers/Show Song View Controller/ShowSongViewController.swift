@@ -105,7 +105,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         showSwiftSpinner()
-        checkConnectivity()
+        _ = checkConnectivity()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -594,7 +594,7 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
             
         } else if recognizer.state == .changed {
             
-            var translationX: CGFloat = translation.x
+            let translationX: CGFloat = translation.x
             if translation.x > 0 {
                 self.tableViewLeadingConstraint.constant = self.view.frame.width/6 + translationX
                 self.tableViewTrailingConstraint.constant = translationX * -1

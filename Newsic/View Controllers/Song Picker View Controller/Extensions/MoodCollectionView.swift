@@ -19,10 +19,10 @@ extension SongPickerViewController {
         //genreCollectionView.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    func detectTap(_ tapRecognizer: UITapGestureRecognizer? = nil) {
+    @objc func detectTap(_ tapRecognizer: UITapGestureRecognizer? = nil) {
         let view = self.view
         let location = tapRecognizer?.location(in: self.view)
-        print("location in screen = \(location)")
+//        print("location in screen = \(location)")
         
         let moodView = genreCollectionView
         if let moodView = moodView {
@@ -67,17 +67,9 @@ extension SongPickerViewController {
         if view == genreCollectionView {
             let moodView = genreCollectionView
             if let moodView = moodView {
-//                let location = touch?.location(in: moodView)
-//                if let location = location {
-//
-//                }
-                
                 let indexPath = moodView.indexPathForItem(at: location!)
                 if let indexPath = indexPath {
-                    let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
-                    
                     moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
-                    print(location)
                 }
             }
         }
@@ -248,11 +240,8 @@ extension SongPickerViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let newsicCell = cell as! MoodViewCell
         if let genre = newsicCell.moodLabel.text {
-            let test = selectedGenres[genre.lowercased()]
-            //            let sectionId =
             if selectedGenres[genre.lowercased()] != nil {
                 DispatchQueue.main.async {
-//                    print("pathLayer = \(cell.borderPathLayer?.path)")
                     newsicCell.selectCell()
                 }
             }
@@ -262,10 +251,6 @@ extension SongPickerViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.moodCollectionView {
-            let cell = moodCollectionView.cellForItem(at: indexPath)
-            //cell?.animateSelection();
-            
-//            self.searchButton.isUserInteractionEnabled = true;
             let dyad = EmotionDyad.allValues[indexPath.row]
             
 //            SwiftSpinner.show("Loading...", animated: true);
@@ -378,7 +363,7 @@ extension SongPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         var isLastRow: Bool = false
-        var cell: MoodViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "moodCell", for: indexPath) as! MoodViewCell;
+        let cell: MoodViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "moodCell", for: indexPath) as! MoodViewCell;
 //        print("indexPath.row = \(indexPath.row)")
         if collectionView == self.moodCollectionView {
             let mood = EmotionDyad.allValues[indexPath.row].rawValue

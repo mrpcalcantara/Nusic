@@ -67,7 +67,7 @@ extension NewsicGenre: FirebaseModel {
         Database.database().reference().child("genres").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
             let convertedDict = value as! [String: Int]
-            var genreList: [NewsicGenre]? = convertGenreCountToGenres(userName: userName, dict: convertedDict)
+            let genreList: [NewsicGenre]? = convertGenreCountToGenres(userName: userName, dict: convertedDict)
             readingUserGenresHandler(genreList, nil)
         }, withCancel: { (error) in
             readingUserGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getFavoriteGenres.rawValue, systemError: error));

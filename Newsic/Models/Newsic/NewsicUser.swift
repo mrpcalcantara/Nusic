@@ -108,7 +108,7 @@ extension NewsicUser: FirebaseModel {
     }
     
     func getFavoriteGenres(getGenresHandler: @escaping ([String: Int]?, NewsicError?) -> ()) {
-        var closureSelf = self;
+        let closureSelf = self;
 //        reference.child("genres").child(userName).observe(.value, with: { (dataSnapshot) in
         reference.child("genres").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
@@ -153,7 +153,6 @@ extension NewsicUser: FirebaseModel {
     }
     
     func updateGenreCount(for genre: String, updateGenreHandler: @escaping (Bool?, NewsicError?) -> ()) {
-        var closureSelf = self;
         if let favoriteGenres = favoriteGenres {
             if let genreIndex = favoriteGenres.index(where: { (localGenre) -> Bool in
                 return localGenre.mainGenre == genre
@@ -161,7 +160,7 @@ extension NewsicUser: FirebaseModel {
                 let localGenre = favoriteGenres[genreIndex]
                 let key = reference.child("genres").child(userName)
                 let updatedValue = [genre:localGenre.count+1];
-                let childUpdateValues = ["/genres/\(userName)/" : updatedValue]
+//                let childUpdateValues = ["/genres/\(userName)/" : updatedValue]
                 key.updateChildValues(updatedValue, withCompletionBlock: { (error, reference) in
                     if let error = error {
                         print(error.localizedDescription)

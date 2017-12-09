@@ -15,14 +15,12 @@ extension Spotify {
         }
         var spotifyTrackList: [SpotifyTrack] = currentExtractedTrackList != nil ? currentExtractedTrackList : []
         var currentTrackList:[String] = []
-        var hasNext:Bool = true
         let checkLimit = currentExtractedTrackList.count-offset
         
         
         if checkLimit > 50 {
             currentTrackList = Array(trackList[offset...offset+49]);
         } else {
-            hasNext = false;
             currentTrackList = Array(trackList[offset...trackList.count-1])
         }
         
@@ -70,8 +68,8 @@ extension Spotify {
                     
                     let nextPage = jsonObject["next"] as? String
                     if let nextPage = nextPage {
-                        let nextPageUrl = URL(string: nextPage)
-                        let nextPageUrlRequest = URLRequest(url: nextPageUrl!)
+//                        let nextPageUrl = URL(string: nextPage)
+//                        let nextPageUrlRequest = URLRequest(url: nextPageUrl!)
                         self.getTrackInfo(for: trackList, offset: nextOffset, currentExtractedTrackList: currentExtractedTrackList, trackInfoListHandler: { (trackList, error) in
                             trackInfoListHandler(trackList, nil);
                         })
@@ -247,85 +245,87 @@ extension Spotify {
     
     
     func addTracksToPlaylist(playlistId: String, trackId: String, addTrackHandler: @escaping(Bool, NewsicError?) -> ()) {
-        do {
-            let username: String! = auth.session.canonicalUsername!
-            let accessToken: String! = auth.session.accessToken!
-            let urlString = "https://api.spotify.com/v1/users/\(username!)/playlists/\(playlistId)/tracks?uris=\(trackId)"
-            guard let url = URL(string: urlString) else {
-                return;
-            }
-            var createPlaylistRequest = URLRequest(url: url);
-            createPlaylistRequest.addValue("Bearer \(accessToken!)", forHTTPHeaderField: "Authorization")
-            createPlaylistRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            
-            createPlaylistRequest.httpMethod = "POST";
-
-            executeSpotifyCall(with: createPlaylistRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-                let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-                if isSuccess {
-                    addTrackHandler(true, nil);
-                } else {
-                    switch statusCode {
-                    case 400...499:
-                        addTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
-                    case 500...599:
-                        addTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: addTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
-                    }
-                }
-            })
-        } catch {
-            addTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
-            print("error creating request adding track \(trackId) to playlist \(playlistId)");
+        let username: String! = auth.session.canonicalUsername!
+        let accessToken: String! = auth.session.accessToken!
+        let urlString = "https://api.spotify.com/v1/users/\(username!)/playlists/\(playlistId)/tracks?uris=\(trackId)"
+        guard let url = URL(string: urlString) else {
+            return;
         }
+        var createPlaylistRequest = URLRequest(url: url);
+        createPlaylistRequest.addValue("Bearer \(accessToken!)", forHTTPHeaderField: "Authorization")
+        createPlaylistRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        createPlaylistRequest.httpMethod = "POST";
+        
+        executeSpotifyCall(with: createPlaylistRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+            let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
+            if isSuccess {
+                addTrackHandler(true, nil);
+            } else {
+                switch statusCode {
+                case 400...499:
+                    addTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
+                case 500...599:
+                    addTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
+                default: addTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
+                }
+            }
+        })
+//        do {
+//            
+//        } catch {
+//            addTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
+//            print("error creating request adding track \(trackId) to playlist \(playlistId)");
+//        }
     }
     
     func removeTrackFromPlaylist(playlistId: String, tracks: [String: String], removeTrackHandler: @escaping(Bool, NewsicError?) -> ()) {
-        do {
-            let username: String! = auth.session.canonicalUsername!
-            let accessToken: String! = auth.session.accessToken!
-            let url = "https://api.spotify.com/v1/users/\(username!)/playlists/\(playlistId)/tracks"
-            var removeTrackRequest = URLRequest(url: URL(string: url)!);
-            removeTrackRequest.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-            removeTrackRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            
-            removeTrackRequest.httpMethod = "DELETE";
-            
-            
-            var iterator = tracks.makeIterator();
-            var element = iterator.next()
-            var tracksToRemove = ""
-            
-            while element != nil {
-                if let element = element {
-                    tracksToRemove += "{\"positions\":[\(element.key)],\"uri\":\"\(element.value)\"},"
-                    
-                }
-                element = iterator.next();
+        let username: String! = auth.session.canonicalUsername!
+        let accessToken: String! = auth.session.accessToken!
+        let url = "https://api.spotify.com/v1/users/\(username!)/playlists/\(playlistId)/tracks"
+        var removeTrackRequest = URLRequest(url: URL(string: url)!);
+        removeTrackRequest.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        removeTrackRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        removeTrackRequest.httpMethod = "DELETE";
+        
+        
+        var iterator = tracks.makeIterator();
+        var element = iterator.next()
+        var tracksToRemove = ""
+        
+        while element != nil {
+            if let element = element {
+                tracksToRemove += "{\"positions\":[\(element.key)],\"uri\":\"\(element.value)\"},"
+                
             }
-            tracksToRemove.removeLast()
-            
-            let body = "{\"tracks\":[\(tracksToRemove)]}";
-            removeTrackRequest.httpBody = body.data(using: .utf8)
-
-            executeSpotifyCall(with: removeTrackRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
-                let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-                if isSuccess {
-                    removeTrackHandler(true, nil);
-                } else {
-                    switch statusCode {
-                    case 400...499:
-                        removeTrackHandler(true, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError));
-                    case 500...599:
-                        removeTrackHandler(true, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError));
-                    default: removeTrackHandler(true, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
-                    }
-                }
-            })
-        } catch {
-            removeTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
-            print("error creating request deleting track from playlist \(playlistId)");
+            element = iterator.next();
         }
+        tracksToRemove.removeLast()
+        
+        let body = "{\"tracks\":[\(tracksToRemove)]}";
+        removeTrackRequest.httpBody = body.data(using: .utf8)
+        
+        executeSpotifyCall(with: removeTrackRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+            let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
+            if isSuccess {
+                removeTrackHandler(true, nil);
+            } else {
+                switch statusCode {
+                case 400...499:
+                    removeTrackHandler(true, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError));
+                case 500...599:
+                    removeTrackHandler(true, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError));
+                default: removeTrackHandler(true, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
+                }
+            }
+        })
+//        do {
+//            
+//        } catch {
+//            removeTrackHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
+//            print("error creating request deleting track from playlist \(playlistId)");
+//        }
     }
     
     func isTrackInPlaylist(trackId: String, playlistId: String, checkTrackHandler: @escaping (Bool) -> ()) {
