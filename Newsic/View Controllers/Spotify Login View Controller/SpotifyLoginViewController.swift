@@ -37,17 +37,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        FirebaseHelper.detectFirebaseConnectivity { (isConnected) in
-            if isConnected {
-                self.setupSpotify()
-                if self.timer != nil {
-                    self.timer.invalidate()
-                }
-                
-            } else {
-                self.timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.fireErrorPopup), userInfo: nil, repeats: false)
-            }
-        }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(updateAfterFirstLogin), name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setupSpotify), name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
         
@@ -55,12 +45,14 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
-        animateLogo()
+//        animateLogo()
+        checkFirebaseConnectivity()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loginButton.alpha = 0
+//        animateLogo()
     }
     
     
@@ -78,6 +70,20 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         setupLabel()
     }
     
+    func checkFirebaseConnectivity() {
+        FirebaseHelper.detectFirebaseConnectivity { (isConnected) in
+            if isConnected {
+                self.setupSpotify()
+                if self.timer != nil {
+                    self.timer.invalidate()
+                }
+                
+            } else {
+                self.timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.fireErrorPopup), userInfo: nil, repeats: false)
+            }
+        }
+    }
+    
     @objc func moveToMainScreen() {
         let pageViewController = NewsicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.present(pageViewController, animated: false, completion: nil);
@@ -92,6 +98,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         
         auth.tokenSwapURL = URL(string: Spotify.swapURL)!
         auth.tokenRefreshURL = URL(string: Spotify.refreshURL)!
+        
         getSession();
         
         if auth.session != nil && auth.session.isValid() {
@@ -131,7 +138,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
             let firstTimeSession = NSKeyedUnarchiver.unarchiveObject(with: sessionDataObj) as! SPTSession
             print("REFRESH TOKEN \(firstTimeSession.encryptedRefreshToken!)");
             print("ACCESS TOKEN \(firstTimeSession.accessToken!)");
-            
+            animateLogo()
             if !firstTimeSession.isValid() {
                 self.getRefreshToken(currentSession: firstTimeSession, refreshTokenCompletionHandler: { (isRefreshed) in
                     _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)

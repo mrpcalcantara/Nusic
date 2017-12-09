@@ -10,48 +10,6 @@ import UIKit
 import Koloda
 import SwiftSpinner
 
-/*
-extension SongPickerViewController: KolodaViewDelegate {
-    
-    
-    func kolodaDidRunOutOfCards(_ koloda: KolodaView) {
-        let position = songCardView.currentCardIndex
-        for i in 1...4 {
-            dataSource.append(UIImage(named: "Test")!)
-        }
-        songCardView.insertCardAtIndexRange(position..<position + 4, animated: true)
-    }
-    
-    func koloda(_ koloda: KolodaView, didSelectCardAt index: Int) {
-        UIApplication.shared.open(URL(string: "https://yalantis.com/")!, options: [:]) { (bool) in
-            
-        }
-    }
-    
-}
-
-
-extension SongPickerViewController: KolodaViewDataSource {
-    
-    func kolodaNumberOfCards(_ koloda: KolodaView) -> Int {
-        return dataSource.count
-    }
-    
-    func kolodaSpeedThatCardShouldDrag(_ koloda: KolodaView) -> DragSpeed {
-        return .default
-    }
-    
-    func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
-        return UIImageView(image: dataSource[Int(index)])
-    }
-    
-    func koloda(_ koloda: KolodaView, viewForCardOverlayAt index: Int) -> OverlayView? {
-        return Bundle.main.loadNibNamed("SongOverlayView", owner: self, options: nil)?[0] as? OverlayView
-    }
-    
-}
- */
-
 extension ShowSongViewController: KolodaViewDelegate {
     
     override func viewWillLayoutSubviews() {

@@ -132,7 +132,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //        overlayAppearance.liveBlur    = false
         //        overlayAppearance.opacity     = 0.7
         
-        var buttonAppearance = DefaultButton.appearance()
+        let buttonAppearance = DefaultButton.appearance()
         
         // Default button
         buttonAppearance.titleFont      = UIFont(name: "Futura", size: 16)!

@@ -81,7 +81,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         }
         let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
         if let nowPlayingInfo = nowPlayingInfo, let currentTrack = audioStreaming.metadata.currentTrack {
-            let elapsedTime = nowPlayingInfo["playbackDuration"] as! Double
+            let elapsedTime = nowPlayingInfo["playbackDuration"] as? Double
             let duration = Double(currentTrack.duration)
             if elapsedTime != nil && elapsedTime == duration {
                 songCardView.swipe(.left);
@@ -253,12 +253,11 @@ extension ShowSongViewController {
     @objc func actionStopPlayer() {
         DispatchQueue.main.async {
             self.isPlaying = false
-            do {
-//                try self.player?.stop()
-                self.player?.logout()
-                self.deactivateAudioSession()
-                
-            } catch { }
+            self.player?.logout()
+            self.deactivateAudioSession()
+//            do {
+////                try self.player?.stop()
+//            } catch { }
             
             UIApplication.shared.endReceivingRemoteControlEvents();
         }

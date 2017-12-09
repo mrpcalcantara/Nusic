@@ -63,25 +63,24 @@ extension Spotify {
     }
     
     func createNewsicPlaylist(playlistName: String, playlistCreationHandler: @escaping(Bool?, NewsicPlaylist?, NewsicError?) -> ()) {
-        do {
-            let username: String! = auth.session.canonicalUsername
-            let accessToken: String! = auth.session.accessToken!
-            let url = "https://api.spotify.com/v1/users/\(username!)/playlists"
-            var createPlaylistRequest = URLRequest(url: URL(string: url)!);
-            createPlaylistRequest.addValue("Bearer \(accessToken!)", forHTTPHeaderField: "Authorization")
-            createPlaylistRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            
-            createPlaylistRequest.httpMethod = "POST";
-           
-            
-            
-            let body = "{\"name\":\"\(playlistName)\"}";
-            createPlaylistRequest.httpBody = body.data(using: .utf8)
-
-            executeSpotifyCall(with: createPlaylistRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+        let username: String! = auth.session.canonicalUsername
+        let accessToken: String! = auth.session.accessToken!
+        let url = "https://api.spotify.com/v1/users/\(username!)/playlists"
+        var createPlaylistRequest = URLRequest(url: URL(string: url)!);
+        createPlaylistRequest.addValue("Bearer \(accessToken!)", forHTTPHeaderField: "Authorization")
+        createPlaylistRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        createPlaylistRequest.httpMethod = "POST";
+        
+        
+        
+        let body = "{\"name\":\"\(playlistName)\"}";
+        createPlaylistRequest.httpBody = body.data(using: .utf8)
+        executeSpotifyCall(with: createPlaylistRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
+            do {
                 let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
                 if isSuccess {
-                    let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
+                    let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
                     //print(jsonObject);
                     let playlistId: String = jsonObject["id"] as! String
                     let newsicPlaylist = NewsicPlaylist(name : playlistName, id: playlistId, userName: username)
@@ -93,14 +92,14 @@ extension Spotify {
                     case 500...599:
                         playlistCreationHandler(false, nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
                     default: playlistCreationHandler(false, nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError))
-;
+                        ;
                     }
                 }
-            })
-        } catch {
-            playlistCreationHandler(false, nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError))
-            print("error creating request creating playlist list with name \(playlistName)");
-        }
+            } catch {
+                playlistCreationHandler(false, nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError))
+                print("error creating request creating playlist list with name \(playlistName)");
+            }
+        })
     }
     
 }
