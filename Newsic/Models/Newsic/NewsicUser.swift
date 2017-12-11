@@ -9,22 +9,32 @@
 import Foundation
 import FirebaseDatabase
 
-class NewsicUser {
+class NewsicUser: Iterable {
     
-    let userName: String
-    let displayName: String
-    let territory: String
+    var userName: String
+    var displayName: String
+    var emailAddress: String
+    var territory: String
     var profileImage: UIImage?
     var favoriteGenres: [NewsicGenre]?
+    var isPremium: Bool?
+    var preferredPlayer: NewsicPreferredPlayer? = .youtube
     var reference: DatabaseReference!
     
-    init(userName: String, displayName: String, imageURL: String? = "", territory: String, favoriteGenres: [NewsicGenre]? = nil) {
+    init(userName: String, displayName: String, emailAddress: String, imageURL: String? = "", territory: String, favoriteGenres: [NewsicGenre]? = nil, isPremium: Bool? = false, preferredPlayer: NewsicPreferredPlayer? = nil) {
         self.userName = userName;
         self.displayName = displayName;
+        self.emailAddress = emailAddress
         self.territory = territory;
-        //self.profileImage = profileImage;
-        self.getImage(imageURL: imageURL!);
         self.favoriteGenres = favoriteGenres;
+        self.isPremium = isPremium
+        if preferredPlayer != nil {
+            self.preferredPlayer = preferredPlayer
+        } else {
+            self.preferredPlayer = isPremium! ? .spotify : .youtube
+        }
+        
+        self.getImage(imageURL: imageURL!);
         self.reference = Database.database().reference();
     }
     
@@ -56,7 +66,11 @@ extension NewsicUser: FirebaseModel {
     internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
         let dictionary = ["canonicalUserName": userName,
                           "displayName": displayName,
-                          "territory": territory]
+                          "territory": territory,
+                          "emailAddress": emailAddress,
+                          "isPremium": isPremium! ? 1 : 0,
+                          "preferredPlayer": preferredPlayer?.rawValue] as [String : Any]
+        
         
         reference.child("users").child(userName).updateChildValues(dictionary) { (error, reference) in
             if let error = error {
@@ -80,10 +94,26 @@ extension NewsicUser: FirebaseModel {
         }
     }
     
-    func getUser(getUserHandler: @escaping (String, NewsicError?) -> ()) {
+    func getUser(getUserHandler: @escaping (NewsicUser?, NewsicError?) -> ()) {
         getData { (dictionary, error) in
-            let extractedUsername = dictionary?["canonicalUserName"] as? String ?? ""
-            getUserHandler(extractedUsername, error);
+            if let dictionary = dictionary {
+                self.userName = dictionary["canonicalUserName"] as? String ?? ""
+                
+                self.displayName = dictionary["displayName"] as? String ?? ""
+                self.emailAddress = dictionary["emailAddress"] as? String ?? ""
+                if let isPremiumValue = dictionary["isPremium"] as? NSNumber {
+                    self.isPremium = Bool(isPremiumValue) ?? false
+                }
+                
+                self.preferredPlayer = NewsicPreferredPlayer(rawValue: (dictionary["preferredPlayer"] as? Int)!) ?? NewsicPreferredPlayer.youtube
+                self.territory = dictionary["territory"] as? String ?? ""
+                getUserHandler(self, error);
+            } else {
+                getUserHandler(nil, error);
+            }
+            
+            
+            
         }
     }
     

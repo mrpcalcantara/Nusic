@@ -52,6 +52,7 @@ struct Emotion {
     }
     
     func toDictionary() -> [String: AnyObject] {
+        
         var dictionary: [String: AnyObject] = [:];
         //dictionary["basicGroup"] = self.basicGroup as AnyObject;
         

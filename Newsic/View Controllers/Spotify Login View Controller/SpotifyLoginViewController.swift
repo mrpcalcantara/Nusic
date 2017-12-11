@@ -93,7 +93,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     @objc fileprivate func setupSpotify() {
         auth.clientID = Spotify.clientId;
         auth.redirectURL = URL(string: Spotify.redirectURI!);
-        auth.requestedScopes = [SPTAuthStreamingScope, SPTAuthPlaylistReadPrivateScope, SPTAuthPlaylistModifyPrivateScope, SPTAuthPlaylistModifyPublicScope, SPTAuthUserFollowReadScope];
+        auth.requestedScopes = [SPTAuthStreamingScope, SPTAuthPlaylistReadPrivateScope, SPTAuthPlaylistModifyPrivateScope, SPTAuthPlaylistModifyPublicScope, SPTAuthUserFollowReadScope, SPTAuthUserReadPrivateScope];
         //
         
         auth.tokenSwapURL = URL(string: Spotify.swapURL)!

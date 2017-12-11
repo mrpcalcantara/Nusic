@@ -22,6 +22,13 @@ class SongOverlayView: OverlayView {
         return imageView
         }()
     
+    @IBOutlet lazy var youtubePlayer: YTPlayerView! = {
+        [unowned self] in
+        var playerView = YTPlayerView()
+        
+        return playerView
+    }()
+    
     @IBOutlet lazy var albumImage: UIImageView! = {
         [unowned self] in
         var imageView = UIImageView();
@@ -65,15 +72,15 @@ class SongOverlayView: OverlayView {
     
     func setupView() {
         
-        //self.addSubview(videoPlayer);
-        self.addSubview(albumImage);
         self.addSubview(songTitle);
         songTitle.layer.zPosition = 1;
         self.addSubview(songArtist);
         songArtist.layer.zPosition = 1;
+        self.addSubview(albumImage);
         self.addSubview(genreLabel);
         genreLabel.layer.zPosition = 1;
         genreLabel.alpha = 0.5
+        self.addSubview(youtubePlayer);
         self.layer.cornerRadius = 15
     }
     
@@ -96,7 +103,7 @@ class SongOverlayView: OverlayView {
             default:
                 albumImage.image = nil
             }
-            
+
         }
     }
     

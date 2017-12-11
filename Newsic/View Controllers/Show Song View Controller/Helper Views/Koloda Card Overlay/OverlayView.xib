@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,6 +22,10 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VG9-HF-Av8" customClass="YTPlayerView">
+                    <rect key="frame" x="16" y="20" width="343" height="355"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="249" verticalCompressionResistancePriority="753" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LHE-Ez-3cc">
                     <rect key="frame" x="16" y="383" width="343" height="260"/>
                     <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="35"/>
@@ -55,20 +59,25 @@
                 <constraint firstItem="9Ap-LZ-SPa" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="Dxp-dp-49F"/>
                 <constraint firstItem="Bpb-0L-FI5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Nae-Ub-yV0"/>
                 <constraint firstItem="9Ap-LZ-SPa" firstAttribute="top" secondItem="LHE-Ez-3cc" secondAttribute="bottom" constant="8" id="Prn-tx-fzT"/>
+                <constraint firstItem="LHE-Ez-3cc" firstAttribute="top" secondItem="VG9-HF-Av8" secondAttribute="bottom" constant="8" id="QVh-5n-DdD"/>
+                <constraint firstItem="VG9-HF-Av8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="WO0-vc-Il0"/>
                 <constraint firstItem="UU5-ZG-ypO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="Yf4-jA-QFQ"/>
                 <constraint firstItem="Bpb-0L-FI5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="bzx-E3-kVI"/>
                 <constraint firstItem="LHE-Ez-3cc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="cLY-lB-fDb"/>
                 <constraint firstItem="LHE-Ez-3cc" firstAttribute="top" secondItem="Bpb-0L-FI5" secondAttribute="bottom" constant="8" id="ddL-Vm-17P"/>
                 <constraint firstItem="9Ap-LZ-SPa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="dkw-Az-bCO"/>
                 <constraint firstItem="LHE-Ez-3cc" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="hSk-bd-g9m"/>
+                <constraint firstAttribute="trailingMargin" secondItem="VG9-HF-Av8" secondAttribute="trailing" id="iRq-rq-Ocv"/>
                 <constraint firstAttribute="trailing" secondItem="Bpb-0L-FI5" secondAttribute="trailing" id="lwb-3z-Fxu"/>
                 <constraint firstItem="9Ap-LZ-SPa" firstAttribute="top" secondItem="LHE-Ez-3cc" secondAttribute="bottom" constant="8" id="mw3-gj-rJM"/>
+                <constraint firstItem="VG9-HF-Av8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="z88-qL-eDg"/>
             </constraints>
             <connections>
                 <outlet property="albumImage" destination="Bpb-0L-FI5" id="3NO-NE-WjY"/>
                 <outlet property="genreLabel" destination="UU5-ZG-ypO" id="Nqj-Nf-D2B"/>
                 <outlet property="songArtist" destination="9Ap-LZ-SPa" id="3oZ-cN-J3f"/>
                 <outlet property="songTitle" destination="LHE-Ez-3cc" id="wlS-he-uQh"/>
+                <outlet property="youtubePlayer" destination="VG9-HF-Av8" id="x2o-Rk-PQF"/>
             </connections>
             <point key="canvasLocation" x="28.5" y="29.5"/>
         </view>
