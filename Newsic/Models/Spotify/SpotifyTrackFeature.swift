@@ -29,8 +29,9 @@ struct SpotifyTrackFeature {
     var durationMs: Int? = 0;
     var timeSignature: Int? = 0;
     var genre: String? = ""
+    var youtubeId: String? = ""
     
-    init(acousticness: Double? = nil, analysisUrl: String? = nil, danceability: Double? = nil, durationMs: Int? = nil, energy: Double? = nil, id: String? = nil, instrumentalness: Double? = nil, key: Int? = nil, liveness: Double? = nil, loudness: Double? = nil, mode: Int? = nil, speechiness: Double? = nil, tempo: Double? = nil, timeSignature: Int? = nil, trackHref: String? = nil, type: String? = nil, uri: String? = nil, valence: Double? = nil, genre: String? = nil) {
+    init(acousticness: Double? = nil, analysisUrl: String? = nil, danceability: Double? = nil, durationMs: Int? = nil, energy: Double? = nil, id: String? = nil, instrumentalness: Double? = nil, key: Int? = nil, liveness: Double? = nil, loudness: Double? = nil, mode: Int? = nil, speechiness: Double? = nil, tempo: Double? = nil, timeSignature: Int? = nil, trackHref: String? = nil, type: String? = nil, uri: String? = nil, valence: Double? = nil, genre: String? = nil, youtubeId: String? = nil) {
         
         self.acousticness      = acousticness
         self.analysisUrl       = analysisUrl
@@ -51,6 +52,7 @@ struct SpotifyTrackFeature {
         self.uri               = uri
         self.valence           = valence
         self.genre             = genre
+        self.youtubeId         = youtubeId
     }
     
     func toDictionary() -> [String: AnyObject] {
@@ -75,6 +77,7 @@ struct SpotifyTrackFeature {
         featureDictionary["uri"] = self.uri as AnyObject
         featureDictionary["valence"] = self.valence as AnyObject
         featureDictionary["genre"] = self.genre as AnyObject
+        featureDictionary["youtubeId"] = self.youtubeId as AnyObject
         
         return featureDictionary;
     }
@@ -100,6 +103,7 @@ struct SpotifyTrackFeature {
         self.uri               = featureDictionary["uri"] as? String
         self.valence           = featureDictionary["valence"] as? Double
         self.genre             = featureDictionary["genre"] as? String
+        self.youtubeId         = featureDictionary["youtubeId"] as? String
     }
     
     

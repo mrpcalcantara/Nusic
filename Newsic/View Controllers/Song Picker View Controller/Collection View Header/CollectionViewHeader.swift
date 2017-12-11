@@ -16,6 +16,10 @@ class CollectionViewHeader: UICollectionReusableView {
         get { return NewsicCustomLayer.self }
     }
     
+    override func prepareForReuse() {
+        self.removeBlurEffect()
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

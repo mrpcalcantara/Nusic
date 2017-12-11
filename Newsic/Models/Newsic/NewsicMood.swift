@@ -9,7 +9,7 @@
 import Foundation
 import FirebaseDatabase
 
-struct NewsicMood: FirebaseModel {
+struct NewsicMood: FirebaseModel, Iterable {
     
     var emotions: [Emotion];
     var sentiment: Double;

@@ -35,6 +35,9 @@ class SongPickerViewController: NewsicDefaultViewController {
                 
                 sideMenu.username = self.newsicUser.displayName
                 sideMenu.profileImageURL = imageURL
+                sideMenu.preferredPlayer = self.newsicUser.preferredPlayer
+                sideMenu.enablePlayerSwitch = self.newsicUser.isPremium! ? true : false
+                
                 let iconImage = UIImage(); iconImage.downloadImage(from: imageURL, downloadImageHandler: { (image) in
                     DispatchQueue.main.async {
 //                        self.setupNavigationBar(image: image)
@@ -49,7 +52,24 @@ class SongPickerViewController: NewsicDefaultViewController {
     var newsicPlaylist: NewsicPlaylist! = nil;
     var moodHacker: MoodHacker? = nil;
     var user: SPTUser? = nil;
-    var selectedGenres: [String: Int] = [:]
+    var selectedGenres: [String: Int] = [:] {
+        didSet {
+            if selectedGenres.count == 0 {
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.searchButton.setTitle("Random it up!", for: .normal)
+                    }, completion: nil)
+                }
+                
+            } else {
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.searchButton.setTitle("Get Songs!", for: .normal)
+                    }, completion: nil)
+                }
+            }
+        }
+    }
     var isMoodSelected: Bool = true;
     var fullArtistList:[SpotifyArtist] = [];
     var fullPlaylistList:[SPTPartialPlaylist] = []
@@ -187,6 +207,7 @@ class SongPickerViewController: NewsicDefaultViewController {
         self.newsicControl.backgroundColor = UIColor.clear
         self.newsicControl.layer.zPosition = 1
         self.searchButton.backgroundColor = UIColor.clear
+        self.searchButton.setTitle("Random it up!", for: .normal)
         
         moodCollectionView.layer.zPosition = -1
         genreCollectionView.layer.zPosition = -1
@@ -224,16 +245,18 @@ class SongPickerViewController: NewsicDefaultViewController {
                     let username = user.canonicalUserName!
                     
                     let displayName = user.displayName != nil ? user.displayName : ""
+                    let emailAddress = user.emailAddress != nil ? user.emailAddress : ""
                     let profileImage = user.smallestImage != nil ? user.smallestImage.imageURL.absoluteString : ""
-                    let territory = "";
-                    self.newsicUser = NewsicUser(userName: username, displayName: displayName!, imageURL: profileImage, territory: territory)
+                    let territory = user.territory != nil ? user.territory! : "";
+                    let isPremium = user.product == SPTProduct.premium ? true : false
+                    self.newsicUser = NewsicUser(userName: username, displayName: displayName!, emailAddress: emailAddress!, imageURL: profileImage, territory: territory, isPremium: isPremium)
                     self.moodObject?.userName = username;
                     self.spotifyPlaylistCheck();
-                    self.newsicUser.getUser(getUserHandler: { (usernameDB, error) in
+                    self.newsicUser.getUser(getUserHandler: { (fbUser, error) in
                         if let error = error {
                             error.presentPopup(for: self)
                         }
-                        if usernameDB == "" {
+                        if fbUser == nil || fbUser?.displayName == "" {
                             self.newsicUser.saveUser(saveUserHandler: { (userExist, error) in
                                 if let error = error {
                                     error.presentPopup(for: self)

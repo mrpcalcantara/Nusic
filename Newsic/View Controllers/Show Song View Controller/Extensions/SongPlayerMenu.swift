@@ -17,7 +17,7 @@ extension ShowSongViewController {
         showMore.setImage(UIImage(named: "ShowMore"), for: .normal)
         showMore.frame = buttonsInitFrame;
         showMore.alpha = 1
-        showMore.layer.zPosition = -1
+        showMore.layer.zPosition = 1
         showMore.translatesAutoresizingMaskIntoConstraints = true;
         
         previousSong.setImage(UIImage(named: "ThumbsDown"), for: .normal)
@@ -56,30 +56,34 @@ extension ShowSongViewController {
 //        songProgressSlider.isHidden = true
 //        songProgressSlider.layer.zPosition = 1;
 //        songProgressSlider.translatesAutoresizingMaskIntoConstraints = true;
+        if user.preferredPlayer == NewsicPreferredPlayer.spotify {
+            songProgressSlider.isHidden = false
+            
+            songProgressView.frame = buttonsInitFrame;
+            songProgressView.isHidden = true
+            songProgressView.layer.zPosition = 1;
+            songProgressView.translatesAutoresizingMaskIntoConstraints = true;
+            songProgressView.backgroundColor = UIColor.clear
+            
+            songProgressSlider.setThumbImage(UIImage(named: "SongProgressThumb"), for: .normal)
+            //songProgressSlider.thumbTintColor = UIColor.white
+            songProgressSlider.layer.zPosition = 1;
+            songProgressSlider.tintColor = UIColor.green
+            songProgressSlider.translatesAutoresizingMaskIntoConstraints = true;
+            
+            songDurationLabel.layer.zPosition = 1;
+            songDurationLabel.textColor = UIColor.lightText
+            songDurationLabel.text = convertElapsedSecondsToTime(interval: 0)
+            songDurationLabel.translatesAutoresizingMaskIntoConstraints = true;
+            
+            songElapsedTime.layer.zPosition = 1;
+            songElapsedTime.textColor = UIColor.lightText
+            songElapsedTime.text = convertElapsedSecondsToTime(interval: 0)
+            songElapsedTime.translatesAutoresizingMaskIntoConstraints = true;
+        } else {
+            
+        }
         
-        songProgressSlider.isHidden = false
-        
-        songProgressView.frame = buttonsInitFrame;
-        songProgressView.isHidden = true
-        songProgressView.layer.zPosition = 1;
-        songProgressView.translatesAutoresizingMaskIntoConstraints = true;
-        songProgressView.backgroundColor = UIColor.clear
-        
-        songProgressSlider.setThumbImage(UIImage(named: "SongProgressThumb"), for: .normal)
-        //songProgressSlider.thumbTintColor = UIColor.white
-        songProgressSlider.layer.zPosition = 1;
-        songProgressSlider.tintColor = UIColor.green
-        songProgressSlider.translatesAutoresizingMaskIntoConstraints = true;
-        
-        songDurationLabel.layer.zPosition = 1;
-        songDurationLabel.textColor = UIColor.lightText
-        songDurationLabel.text = convertElapsedSecondsToTime(interval: 0)
-        songDurationLabel.translatesAutoresizingMaskIntoConstraints = true;
-        
-        songElapsedTime.layer.zPosition = 1;
-        songElapsedTime.textColor = UIColor.lightText
-        songElapsedTime.text = convertElapsedSecondsToTime(interval: 0)
-        songElapsedTime.translatesAutoresizingMaskIntoConstraints = true;
         
         self.view.layoutIfNeeded()
         
@@ -135,13 +139,13 @@ extension ShowSongViewController {
             self.nextSong.frame.origin.x = self.view.frame.width - buttonWidth
             self.nextSong.alpha = 1
             self.nextSong.isHidden = false
-
-            self.songProgressView.frame.origin.x = self.trackStackView.frame.origin.x - 8
-            self.songProgressView.frame.origin.y = self.view.frame.height * 0.9 - buttonWidth
-            self.songProgressView.isHidden = false
-            self.songProgressView.alpha = 1
-            self.songProgressView.frame.size = CGSize(width: self.trackStackView.frame.width-self.trackStackView.frame.origin.x, height: self.songProgressView.frame.height)
-            
+            if self.user.preferredPlayer == NewsicPreferredPlayer.spotify {
+                self.songProgressView.frame.origin.x = self.trackStackView.frame.origin.x - 8
+                self.songProgressView.frame.origin.y = self.view.frame.height * 0.9 - buttonWidth
+                self.songProgressView.isHidden = false
+                self.songProgressView.alpha = 1
+                self.songProgressView.frame.size = CGSize(width: self.trackStackView.frame.width-self.trackStackView.frame.origin.x, height: self.songProgressView.frame.height)
+            }
             self.showMore.frame.origin.y = self.view.frame.height * 0.84 - buttonWidth
 
             self.toggleLikeButtons();
@@ -178,8 +182,11 @@ extension ShowSongViewController {
                     self.previousTrack.alpha = 0
                     self.nextTrack.frame = buttonsInitFrame;
                     self.nextTrack.alpha = 0
-                    self.songProgressView.frame = buttonsInitFrame
-                    self.songProgressView.alpha = 0
+                    if self.user.preferredPlayer == NewsicPreferredPlayer.spotify {
+                        self.songProgressView.frame = buttonsInitFrame
+                        self.songProgressView.alpha = 0
+                    }
+                    
                     
                     self.showMore.frame = buttonsInitFrame
                     
@@ -215,7 +222,9 @@ extension ShowSongViewController {
                 //self.previousTrack.isHidden = true
                 self.nextTrack.frame = buttonsInitFrame;
                 //self.nextTrack.isHidden = true
-                self.songProgressView.frame = buttonsInitFrame
+                if self.user.preferredPlayer == NewsicPreferredPlayer.spotify {
+                    self.songProgressView.frame = buttonsInitFrame
+                }
                 
                 self.view.layoutIfNeeded();
                 //self.trackStackView.alpha = 1

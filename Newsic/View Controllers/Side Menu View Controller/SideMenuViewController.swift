@@ -16,12 +16,17 @@ class SideMenuViewController: NewsicDefaultViewController {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var buttonsView: UIView!
+    @IBOutlet weak var preferredPlayerLabel: UILabel!
+    @IBOutlet weak var preferredPlayerSwitch: UISwitch!
     
     //Local variables
+    var navbar: UINavigationBar?
     var profileImage: UIImage?
     var username: String?
     var profileImageURL: URL?
-    var navbar: UINavigationBar?
+    var preferredPlayer: NewsicPreferredPlayer?
+    var enablePlayerSwitch: Bool?
+    
     
     @IBAction func logoutClicked(_ sender: Any) {
         UserDefaults.standard.removeObject(forKey: "SpotifySession");
@@ -31,13 +36,31 @@ class SideMenuViewController: NewsicDefaultViewController {
         //self.navigationController?.popViewController(animated: true);
     }
     
+    @IBAction func preferredPlayerAction(_ sender: UISwitch) {
+        let parent = self.parent as! NewsicPageViewController
+        let songPicker = parent.songPickerVC as! SongPickerViewController
+        
+        if sender.isOn {
+            preferredPlayerLabel.text = "Preferred Player: YouTube"
+            preferredPlayer = NewsicPreferredPlayer.youtube
+        } else {
+            preferredPlayerLabel.text = "Preferred Player: Spotify"
+            preferredPlayer = NewsicPreferredPlayer.spotify
+        }
+        
+        songPicker.newsicUser.preferredPlayer = preferredPlayer
+        songPicker.newsicUser.saveUser { (isSaved, error) in
+            
+        }
+    }
     @IBAction func aboutClicked(_ sender: Any) {
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        preferredPlayerSwitch.isUserInteractionEnabled = enablePlayerSwitch!
+        preferredPlayerLabel.text = preferredPlayer == NewsicPreferredPlayer.spotify ? "Preferred Player: Spotify" : "Preferred Player: YouTube"
     }
     
     override func viewDidLoad() {

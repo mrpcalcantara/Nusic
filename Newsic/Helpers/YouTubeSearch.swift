@@ -7,12 +7,13 @@
 //
 
 import Foundation
+import youtube_ios_player_helper
 
 final class YouTubeSearch {
     
     static let apiKey = "AIzaSyCH4d-0xxEQG_z7lOww59fKZYMKVQ_yZR4"
-    /*
-    static func getSongInfo(for artist: String, and songName: String, completionHandler: @escaping (YouTubeResult?) -> ()) {
+    
+    static func getSongInfo(artist: String, songName: String, completionHandler: @escaping (YouTubeResult?) -> ()) {
         let query = "\(artist) \(songName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
         let urlString = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=\(query)&type=video&maxResults=1&key=\(apiKey)"
@@ -51,7 +52,7 @@ final class YouTubeSearch {
                     
                     
                     if let videoId = idObj["videoId"] as? String, let title = snippetObj["title"] as? String, let thumbNail = hqThumbnailObj["url"] as? String {
-                        youtubeItem = YouTubeResult(title: title, thumbNailUrl: videoId, trackId: "", songName: songName, artist: artist);
+                        youtubeItem = YouTubeResult(title: title, thumbNailUrl: thumbNail, trackId: videoId, songName: songName, artist: artist);
                     }
                 }
                 
@@ -64,6 +65,6 @@ final class YouTubeSearch {
         task.resume();
 
     }
-    */
+    
     
 }

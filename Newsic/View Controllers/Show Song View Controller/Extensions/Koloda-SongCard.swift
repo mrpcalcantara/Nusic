@@ -69,14 +69,22 @@ extension ShowSongViewController: KolodaViewDelegate {
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
         //isPlaying = false
         presentedCardIndex = index
+        let cardView = koloda.viewForCard(at: index) as! SongOverlayView
         if isPlayerMenuOpen {
-            let cardView = koloda.viewForCard(at: index) as! SongOverlayView
+//            let cardView = koloda.viewForCard(at: index) as! SongOverlayView
             cardView.genreLabel.alpha = 0
             cardView.songArtist.alpha = 0
         }
         isSongLiked = containsTrack(trackId: cardList[index].trackInfo.trackId);
         toggleLikeButtons();
-        actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.trackUri);
+        
+        
+        if user.preferredPlayer == NewsicPreferredPlayer.spotify {
+            actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.trackUri);
+        } else {
+            cardView.youtubePlayer.playVideo()
+        }
+        
     }
     
     func kolodaShouldApplyAppearAnimation(_ koloda: KolodaView) -> Bool {
@@ -117,7 +125,29 @@ extension ShowSongViewController: KolodaViewDataSource {
         view.songArtist.text = self.cardList[index].trackInfo.artist.artistName
         view.songTitle.text = self.cardList[index].trackInfo.songName;
         view.genreLabel.text = self.cardList[index].trackInfo.artist.listGenres()
-        view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
+        if user.preferredPlayer == NewsicPreferredPlayer.spotify {
+            view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
+        } else {
+            view.albumImage.alpha = 0
+            if let youtubeTrackId = self.cardList[index].youtubeInfo?.trackId {
+                setupYTPlayer(for: view, with: youtubeTrackId)
+            }
+            
+        }
+        
+//        view.albumImage.alpha = 0
+//        if let youtubeTrackId = self.cardList[index].youtubeInfo?.trackId {
+//            let playerVars: [String : Any] = [
+//                "playsinline" : 1,
+//                "showinfo" : 0,
+//                "rel" : 0,
+//                "modestbranding" : 1,
+//                "controls" : 1,
+//                "origin" : "https://www.example.com"
+//                ] as [String : Any]
+//            view.youtubePlayer.load(withVideoId: youtubeTrackId, playerVars: playerVars)
+//        }
+        
         view.layer.borderWidth = 0.5;
         view.layer.borderColor = UIColor.lightGray.cgColor
         view.layer.cornerRadius = 15
@@ -177,7 +207,8 @@ extension ShowSongViewController {
                 SwiftSpinner.hide()
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue)
             } else {
-                if let trackFeatures = trackFeatures {
+                if var trackFeatures = trackFeatures {
+                    trackFeatures.youtubeId = track.youtubeInfo?.trackId;
                     self.updateCurrentGenresAndFeatures { (genres, trackFeatures) in
                         self.trackFeatures = trackFeatures;
                     }

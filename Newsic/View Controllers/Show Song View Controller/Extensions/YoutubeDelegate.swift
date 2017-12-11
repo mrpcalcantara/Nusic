@@ -9,17 +9,28 @@
 import youtube_ios_player_helper
 
 extension ShowSongViewController: YTPlayerViewDelegate {
-    /*
-    func setupYTPlayer(videoId: String, view: inout UIView) {
-        if view is SongOverlayView {
-            let overlayView = view as! SongOverlayView
-            // Do any additional setup after loading the view.
-            var playerVars: [String: AnyObject]?;
-            playerVars?["playsinline"] = 1 as AnyObject
-            playerVars?["modestbranding"] = 1 as AnyObject
-            //overlayView.videoPlayer.load(withVideoId: videoId, playerVars: playerVars);
-        }
-        
+    
+    func setupYTPlayer(for view: SongOverlayView, with videoId: String) {
+//        var card = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as! SongOverlayView
+        view.youtubePlayer.delegate = self;
+        loadVideo(for: view, with: videoId)
     }
-    */
+    
+    func loadVideo(for view: SongOverlayView, with videoId: String) {
+//        var card = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as! SongOverlayView
+        let playerVars: [String : Any] = [
+            "playsinline" : 1,
+            "showinfo" : 0,
+            "rel" : 0,
+            "modestbranding" : 1,
+            "controls" : 1,
+            "origin" : "https://www.youtube.com"
+            ]
+        view.youtubePlayer.load(withVideoId: videoId, playerVars: playerVars)
+    }
+    
+    
+    func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
+//        playerView.playVideo();
+    }
 }

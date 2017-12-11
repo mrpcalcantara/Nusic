@@ -11,15 +11,17 @@ import FirebaseDatabase
 
 struct NewsicTrack {
     
+    var youtubeInfo: YouTubeResult?
     var trackInfo: SpotifyTrack
     var userName: String
     var moodInfo: NewsicMood?;
     var reference: DatabaseReference! = Database.database().reference()
     
-    init(trackInfo: SpotifyTrack, moodInfo: NewsicMood?, userName: String) {
+    init(trackInfo: SpotifyTrack, moodInfo: NewsicMood?, userName: String, youtubeInfo: YouTubeResult? = nil) {
         self.trackInfo = trackInfo;
         self.moodInfo = moodInfo;
         self.userName = userName;
+        self.youtubeInfo = youtubeInfo;
         self.reference = Database.database().reference().child("likedTracks");
     }
     
