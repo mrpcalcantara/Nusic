@@ -73,11 +73,15 @@ extension NewsicTrack : FirebaseModel {
                 })
             }
         } else {
-            reference.child(userName).child("moods").child(EmotionDyad.unknown.rawValue).child(trackInfo.trackId!).removeValue(completionBlock: { (error, reference) in
-                if let error = error {
-                    deleteCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
-                }
-            })
+            //CYCLE BETWEEN ALL MOODS
+            for dyad in EmotionDyad.allValues {
+                
+                reference.child(userName).child("moods").child(dyad.rawValue.lowercased()).child(trackInfo.trackId!).removeValue(completionBlock: { (error, reference) in
+                    if let error = error {
+                        deleteCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
+                    }
+                })
+            }
         }
         deleteCompleteHandler(reference, nil)
     }

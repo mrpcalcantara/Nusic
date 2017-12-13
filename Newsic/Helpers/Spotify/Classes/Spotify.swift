@@ -238,18 +238,36 @@ class Spotify {
     func getGenreListString(numberOfSongs:Int, hasList: Bool, selectedGenreList:[String: Int]? = nil) -> String {
         var index = 0
         var genres = ""
-        let genreListCount = selectedGenreList != nil ? selectedGenreList?.count : numberOfSongs;
-        var totalCount = numberOfSongs > genreListCount! ? selectedGenreList?.count : numberOfSongs
+        var genreListCount = 0
+        var totalCount = genreListCount
+//        selectedGenreList != nil ? selectedGenreList?.count : numberOfSongs;
+        
+        if selectedGenreList != nil {
+            genreListCount = (selectedGenreList?.count)!
+        } else {
+            if genreCount.count < numberOfSongs {
+                genreListCount = genreCount.count
+                
+            } else {
+                genreListCount = numberOfSongs
+            }
+        }
+        
+        totalCount = genreListCount
+        
+//        totalCount = numberOfSongs > genreListCount ? selectedGenreList?.count : numberOfSongs
+        
+        
         
         //NOTE: Spotify recommendations max seed genres is 5. This is a workaround by fixing the max count to 5.
-        if numberOfSongs > 5 && genreListCount! > 5 {
+        if numberOfSongs > 5 && genreListCount > 5 {
            totalCount = 5
         }
         
         
-        while index < totalCount! {
+        while index < totalCount {
             var separator = ","
-            if index == totalCount!-1 {
+            if index == totalCount-1 {
                 separator = ""
             }
             var genre = getRandomGenreBasedOnPercentage(hasGenreListForEmotion: hasList, selectedGenreList: selectedGenreList);

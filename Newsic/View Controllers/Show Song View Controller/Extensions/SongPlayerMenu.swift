@@ -152,9 +152,11 @@ extension ShowSongViewController {
             self.toggleLikeButtons();
             self.trackStackView.alpha = 0.9;
             
-            let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as! SongOverlayView
-            cardView.genreLabel.alpha = 0
-            cardView.songArtist.alpha = 0
+            if let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as? SongOverlayView {
+                cardView.genreLabel.alpha = 0
+                cardView.songArtist.alpha = 0
+            }
+            
             
             self.view.layoutIfNeeded();
         }
