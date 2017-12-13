@@ -261,6 +261,8 @@ extension SongPickerViewController: UICollectionViewDelegate {
             self.moodObject?.saveData(saveCompleteHandler: { (reference, error) in  })
             self.selectedGenres.removeAll()
             passDataToShowSong()
+            
+            
             //self.performSegue(withIdentifier: "showVideoSegue", sender: self);
         } else {
             let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell

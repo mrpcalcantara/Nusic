@@ -230,5 +230,9 @@ extension ShowSongViewController {
             
         })
     }
+    
+    func getCurrentCardView() -> SongOverlayView {
+        return songCardView.viewForCard(at: songCardView.currentCardIndex) as! SongOverlayView
+    }
 }
 

@@ -60,7 +60,14 @@ class SideMenuViewController: NewsicDefaultViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         preferredPlayerSwitch.isUserInteractionEnabled = enablePlayerSwitch!
-        preferredPlayerLabel.text = preferredPlayer == NewsicPreferredPlayer.spotify ? "Preferred Player: Spotify" : "Preferred Player: YouTube"
+        if preferredPlayer == NewsicPreferredPlayer.spotify {
+            preferredPlayerLabel.text = "Preferred Player: Spotify"
+            preferredPlayerSwitch.isOn = false
+        } else {
+            preferredPlayerLabel.text = "Preferred Player: YouTube"
+            preferredPlayerSwitch.isOn = true
+        }
+        
     }
     
     override func viewDidLoad() {

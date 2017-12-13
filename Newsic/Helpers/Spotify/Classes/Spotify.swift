@@ -305,6 +305,7 @@ class Spotify {
                                         var newRequest = URLRequest(url: url);
                                         NotificationCenter.default.post(name: Notification.Name(rawValue: "refreshSuccessful"), object: nil);
                                         newRequest.addValue("Bearer \(self.auth.session.accessToken!)", forHTTPHeaderField: "Authorization");
+                                        self.executeSpotifyCall(with: newRequest, spotifyCallCompletionHandler: spotifyCallCompletionHandler)
                                     }
                                 } else {
                                     spotifyCallCompletionHandler(data, response, error, isSuccess);

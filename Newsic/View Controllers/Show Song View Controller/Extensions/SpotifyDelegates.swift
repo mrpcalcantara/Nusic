@@ -126,6 +126,7 @@ extension ShowSongViewController {
     func setupSpotify() {
         auth = SPTAuth.defaultInstance();
         player = SPTAudioStreamingController.sharedInstance();
+        
         setupStreamingDelegate();
         setupPlaybackDelegate();
         
@@ -157,7 +158,7 @@ extension ShowSongViewController {
         }
     }
     
-    func actionPausePlay() {
+    func spotifyPausePlay() {
         
         
         self.isPlaying = !self.isPlaying;
@@ -220,7 +221,7 @@ extension ShowSongViewController {
             nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
             nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.playbackState.position
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-            actionPausePlay()
+            spotifyPausePlay()
         }
     }
     
@@ -232,7 +233,7 @@ extension ShowSongViewController {
             //nowPlayingInfo.updateValue(0, forKey: MPNowPlayingInfoPropertyPlaybackRate);
             nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.playbackState.position
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-            actionPausePlay()
+            spotifyPausePlay()
         }
     }
     

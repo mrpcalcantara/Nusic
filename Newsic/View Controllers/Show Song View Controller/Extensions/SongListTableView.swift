@@ -95,6 +95,52 @@ extension ShowSongViewController {
         return false;
     }
     
+    func openMenu() {
+        isMenuOpen = true
+        self.songListTableView.layoutIfNeeded()
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
+            self.trackStackView.layer.zPosition = -1
+            self.songListTableView.isUserInteractionEnabled = true
+            self.songCardView.isUserInteractionEnabled = false
+            self.previousSong.isUserInteractionEnabled = false
+            self.pausePlay.isUserInteractionEnabled = false
+            self.nextSong.isUserInteractionEnabled = false
+            self.previousTrack.isUserInteractionEnabled = false
+            self.nextTrack.isUserInteractionEnabled = false
+            self.showMore.isUserInteractionEnabled = false
+            self.songProgressSlider.isUserInteractionEnabled = false
+            self.tableViewLeadingConstraint.constant = self.view.frame.width/6;
+            self.tableViewTrailingConstraint.constant = 0
+            self.trackStackView.alpha = 0.1
+            
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    func closeMenu() {
+        //self.view.sendSubview(toBack: self.songListTableView);
+        isMenuOpen = false
+        
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
+            self.trackStackView.layer.zPosition = 1
+            self.songListTableView.isUserInteractionEnabled = false
+            self.songCardView.isUserInteractionEnabled = true
+            self.previousSong.isUserInteractionEnabled = true
+            self.pausePlay.isUserInteractionEnabled = true
+            self.nextSong.isUserInteractionEnabled = true
+            self.previousTrack.isUserInteractionEnabled = true
+            self.nextTrack.isUserInteractionEnabled = true
+            self.showMore.isUserInteractionEnabled = true
+            self.songProgressSlider.isUserInteractionEnabled = true
+            self.tableViewLeadingConstraint.constant = self.view.frame.width
+            self.tableViewTrailingConstraint.constant -= (5*self.view.frame.width)/6
+            self.trackStackView.alpha = 1
+            //self.trackStackView.removeBlurEffect()
+            //            print(self.songListTableView.center)
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+        
+    }
     
 }
 
@@ -186,6 +232,7 @@ extension ShowSongViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "\u{267A}") { (action, indexPath) in
             // delete item at indexPath
+            print("removing track from indexpath = \(indexPath.row)")
             self.removeTrackFromList(indexPath: indexPath, removeTrackHandler: { (didRemove) in
                 self.isSongLiked = false; self.toggleLikeButtons();
                 self.updateTableView();

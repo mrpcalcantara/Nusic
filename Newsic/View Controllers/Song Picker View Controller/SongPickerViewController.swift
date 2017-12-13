@@ -12,6 +12,10 @@ import PopupDialog
 import UIKit
 import SwiftSpinner
 
+
+//TEST FIREBASE
+import FirebaseDatabase
+
 class SongPickerViewController: NewsicDefaultViewController {
     
     var genreList:[SpotifyGenres] = SpotifyGenres.allShownValues;
@@ -143,13 +147,27 @@ class SongPickerViewController: NewsicDefaultViewController {
         moodCollectionView.layoutIfNeeded()
     }
     
+    func manageViewControllerShowSong() {
+        let pageVC = (self.parent as! NewsicPageViewController)
+        if SPTAudioStreamingController.sharedInstance().initialized {
+            pageVC.addViewControllerToPageVC(viewController: pageVC.showSongVC!)
+        } else {
+            pageVC.removeViewControllerFromPageVC(viewController: pageVC.showSongVC!)
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //SwiftSpinner.show("Loading...", animated: true);
+        
     }
  
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad()        
+//        NotificationCenter.default.addObserver(self, selector: #selector(manageViewControllerShowSong), name: NSNotification.Name(rawValue: "songDismissed"), object: nil)
+        
+        
+        
         
         setupView()
         setupNavigationBar()
@@ -249,10 +267,10 @@ class SongPickerViewController: NewsicDefaultViewController {
                     let profileImage = user.smallestImage != nil ? user.smallestImage.imageURL.absoluteString : ""
                     let territory = user.territory != nil ? user.territory! : "";
                     let isPremium = user.product == SPTProduct.premium ? true : false
-                    self.newsicUser = NewsicUser(userName: username, displayName: displayName!, emailAddress: emailAddress!, imageURL: profileImage, territory: territory, isPremium: isPremium)
+                    let user = NewsicUser(userName: username, displayName: displayName!, emailAddress: emailAddress!, imageURL: profileImage, territory: territory, isPremium: isPremium)
                     self.moodObject?.userName = username;
                     self.spotifyPlaylistCheck();
-                    self.newsicUser.getUser(getUserHandler: { (fbUser, error) in
+                    user.getUser(getUserHandler: { (fbUser, error) in
                         if let error = error {
                             error.presentPopup(for: self)
                         }
@@ -270,6 +288,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                                 }
                             })
                         } else {
+                            self.newsicUser = fbUser!
                             DispatchQueue.main.async {
                                 SwiftSpinner.show("Getting Favorite Genres..", animated: true);
                             }

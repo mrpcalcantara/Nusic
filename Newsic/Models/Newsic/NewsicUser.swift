@@ -21,11 +21,11 @@ class NewsicUser: Iterable {
     var preferredPlayer: NewsicPreferredPlayer? = .youtube
     var reference: DatabaseReference!
     
-    init(userName: String, displayName: String, emailAddress: String, imageURL: String? = "", territory: String, favoriteGenres: [NewsicGenre]? = nil, isPremium: Bool? = false, preferredPlayer: NewsicPreferredPlayer? = nil) {
+    init(userName: String, displayName: String? = "", emailAddress: String? = "", imageURL: String? = "", territory: String? = "", favoriteGenres: [NewsicGenre]? = nil, isPremium: Bool? = false, preferredPlayer: NewsicPreferredPlayer? = nil) {
         self.userName = userName;
-        self.displayName = displayName;
-        self.emailAddress = emailAddress
-        self.territory = territory;
+        self.displayName = displayName!;
+        self.emailAddress = emailAddress!
+        self.territory = territory!;
         self.favoriteGenres = favoriteGenres;
         self.isPremium = isPremium
         if preferredPlayer != nil {
@@ -107,6 +107,7 @@ extension NewsicUser: FirebaseModel {
                 
                 self.preferredPlayer = NewsicPreferredPlayer(rawValue: (dictionary["preferredPlayer"] as? Int)!) ?? NewsicPreferredPlayer.youtube
                 self.territory = dictionary["territory"] as? String ?? ""
+                
                 getUserHandler(self, error);
             } else {
                 getUserHandler(nil, error);
@@ -179,6 +180,16 @@ extension NewsicUser: FirebaseModel {
                     saveGenresHandler(true, nil)
                 }
             })
+        }
+    }
+    
+    func deleteFavoriteGenres(deleteGenresHandler: @escaping (Bool?, NewsicError?) -> ()) {
+        Database.database().reference().child("genres").child(userName).removeValue { (error, reference) in
+            if let error = error {
+                deleteGenresHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteFavoriteGenres.rawValue, systemError: error))
+            } else {
+                deleteGenresHandler(true, nil)
+            }
         }
     }
     

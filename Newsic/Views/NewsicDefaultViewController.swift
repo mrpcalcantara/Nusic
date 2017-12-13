@@ -52,4 +52,15 @@ class NewsicDefaultViewController: UIViewController {
         self.present(popupDialog, animated: true, completion: nil)
     }
     
+    func goToPreviousViewController() {
+        if let parent = self.parent as? NewsicPageViewController {
+            parent.scrollToPreviousViewController()
+        }
+    }
+    
+    func goToNextViewController() {
+        if let parent = self.parent as? NewsicPageViewController {
+            parent.scrollToNextViewController()
+        }
+    }
 }

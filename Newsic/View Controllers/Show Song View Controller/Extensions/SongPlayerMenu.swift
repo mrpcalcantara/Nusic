@@ -5,7 +5,6 @@
 //  Created by Miguel Alcantara on 09/10/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
 //
-
 import Foundation
 import UIKit
 
@@ -17,7 +16,7 @@ extension ShowSongViewController {
         showMore.setImage(UIImage(named: "ShowMore"), for: .normal)
         showMore.frame = buttonsInitFrame;
         showMore.alpha = 1
-        showMore.layer.zPosition = 1
+        showMore.layer.zPosition = -1
         showMore.translatesAutoresizingMaskIntoConstraints = true;
         
         previousSong.setImage(UIImage(named: "ThumbsDown"), for: .normal)
@@ -51,11 +50,14 @@ extension ShowSongViewController {
         nextTrack.translatesAutoresizingMaskIntoConstraints = true;
         nextTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         
-//        songProgressSlider.frame = buttonsInitFrame;
-//        songProgressSlider.setThumbImage(UIImage(named: "SongProgressThumb"), for: .normal)
-//        songProgressSlider.isHidden = true
-//        songProgressSlider.layer.zPosition = 1;
-//        songProgressSlider.translatesAutoresizingMaskIntoConstraints = true;
+        //        songProgressSlider.frame = buttonsInitFrame;
+        //        songProgressSlider.setThumbImage(UIImage(named: "SongProgressThumb"), for: .normal)
+        //        songProgressSlider.isHidden = true
+        //        songProgressSlider.layer.zPosition = 1;
+        //        songProgressSlider.translatesAutoresizingMaskIntoConstraints = true;
+        
+        
+        
         if user.preferredPlayer == NewsicPreferredPlayer.spotify {
             songProgressSlider.isHidden = false
             
@@ -65,25 +67,22 @@ extension ShowSongViewController {
             songProgressView.translatesAutoresizingMaskIntoConstraints = true;
             songProgressView.backgroundColor = UIColor.clear
             
-            songProgressSlider.setThumbImage(UIImage(named: "SongProgressThumb"), for: .normal)
+//            songProgressSlider.setThumbImage(UIImage(named: "SongProgressThumb"), for: .normal)
             //songProgressSlider.thumbTintColor = UIColor.white
             songProgressSlider.layer.zPosition = 1;
             songProgressSlider.tintColor = UIColor.green
-            songProgressSlider.translatesAutoresizingMaskIntoConstraints = true;
+//            songProgressSlider.translatesAutoresizingMaskIntoConstraints = true;
             
             songDurationLabel.layer.zPosition = 1;
             songDurationLabel.textColor = UIColor.lightText
             songDurationLabel.text = convertElapsedSecondsToTime(interval: 0)
-            songDurationLabel.translatesAutoresizingMaskIntoConstraints = true;
+//            songDurationLabel.translatesAutoresizingMaskIntoConstraints = true;
             
             songElapsedTime.layer.zPosition = 1;
             songElapsedTime.textColor = UIColor.lightText
             songElapsedTime.text = convertElapsedSecondsToTime(interval: 0)
-            songElapsedTime.translatesAutoresizingMaskIntoConstraints = true;
-        } else {
-            
+//            songElapsedTime.translatesAutoresizingMaskIntoConstraints = true;
         }
-        
         
         self.view.layoutIfNeeded()
         
@@ -139,15 +138,17 @@ extension ShowSongViewController {
             self.nextSong.frame.origin.x = self.view.frame.width - buttonWidth
             self.nextSong.alpha = 1
             self.nextSong.isHidden = false
+            
             if self.user.preferredPlayer == NewsicPreferredPlayer.spotify {
-                self.songProgressView.frame.origin.x = self.trackStackView.frame.origin.x - 8
+                self.songProgressView.frame.origin.x = self.trackStackView.frame.origin.x
                 self.songProgressView.frame.origin.y = self.view.frame.height * 0.9 - buttonWidth
                 self.songProgressView.isHidden = false
                 self.songProgressView.alpha = 1
-                self.songProgressView.frame.size = CGSize(width: self.trackStackView.frame.width-self.trackStackView.frame.origin.x, height: self.songProgressView.frame.height)
+                self.songProgressView.frame.size = CGSize(width: self.trackStackView.frame.width, height: self.songProgressView.frame.height)
             }
-            self.showMore.frame.origin.y = self.view.frame.height * 0.84 - buttonWidth
-
+            
+            self.showMore.frame.origin.y = self.user.preferredPlayer == NewsicPreferredPlayer.spotify ? self.view.frame.height * 0.84 - buttonWidth : self.view.frame.height * 0.9 - buttonWidth
+            
             self.toggleLikeButtons();
             self.trackStackView.alpha = 0.9;
             
@@ -163,9 +164,8 @@ extension ShowSongViewController {
             self.showMore.transform = rotateTransform
         }, completion: nil)
         isPlayerMenuOpen = true
-
+        
         //songCardView.layoutIfNeeded()
-
     }
     
     func closePlayerMenu(animated: Bool) {
@@ -182,6 +182,7 @@ extension ShowSongViewController {
                     self.previousTrack.alpha = 0
                     self.nextTrack.frame = buttonsInitFrame;
                     self.nextTrack.alpha = 0
+                    
                     if self.user.preferredPlayer == NewsicPreferredPlayer.spotify {
                         self.songProgressView.frame = buttonsInitFrame
                         self.songProgressView.alpha = 0
@@ -190,9 +191,11 @@ extension ShowSongViewController {
                     
                     self.showMore.frame = buttonsInitFrame
                     
-                    let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as! SongOverlayView
-                    cardView.genreLabel.alpha = 1
-                    cardView.songArtist.alpha = 1
+                    if let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as? SongOverlayView {
+                        cardView.genreLabel.alpha = 1
+                        cardView.songArtist.alpha = 1
+                    }
+                    
                 }
                 
                 
@@ -204,7 +207,9 @@ extension ShowSongViewController {
                 self.nextSong.isHidden = true
                 self.previousTrack.isHidden = true
                 self.nextTrack.isHidden = true
-                self.songProgressView.isHidden = true
+                if self.user.preferredPlayer == NewsicPreferredPlayer.spotify {
+                    self.songProgressView.isHidden = true
+                }
                 
             })
             
@@ -264,8 +269,10 @@ extension ShowSongViewController {
         self.previousTrack.isHidden = true
         self.nextTrack.frame = buttonsInitFrame;
         self.nextTrack.isHidden = true
-        self.songProgressView.frame = buttonsInitFrame;
-        self.songProgressView.isHidden = true
+        if user.preferredPlayer == NewsicPreferredPlayer.spotify {
+            self.songProgressView.frame = buttonsInitFrame;
+            self.songProgressView.isHidden = true
+        }
         //self.trackStackView.alpha = 1
         //self.trackStackView.isUserInteractionEnabled = true
     }
@@ -279,17 +286,25 @@ extension ShowSongViewController {
     }
     
     func showLikeButtons() {
-        self.previousSong.alpha = 1
-        self.previousSong.isUserInteractionEnabled = true
-        self.nextSong.alpha = 1
-        self.nextSong.isUserInteractionEnabled = true
+        DispatchQueue.main.async {
+            self.previousSong.alpha = 1
+            self.previousSong.isUserInteractionEnabled = true
+            self.nextSong.alpha = 1
+            self.nextSong.isUserInteractionEnabled = true
+        }
+        
     }
     
     func hideLikeButtons() {
-        self.previousSong.alpha = 0.25
-        self.previousSong.isUserInteractionEnabled = false
-        self.nextSong.alpha = 0.25
-        self.nextSong.isUserInteractionEnabled = false
+        DispatchQueue.main.async {
+            self.previousSong.alpha = 0.25
+            self.previousSong.isUserInteractionEnabled = false
+            self.nextSong.alpha = 0.25
+            self.nextSong.isUserInteractionEnabled = false
+        }
     }
     
 }
+
+
+

@@ -14,7 +14,7 @@ extension SongPickerViewController: UIViewControllerTransitioningDelegate {
                              presenting: UIViewController,
                              source: UIViewController)
         -> UIViewControllerAnimatedTransitioning? {
-            return PresentAnimationController(originFrame: self.view.frame)
+            return PresentAnimationController(originFrame: self.view.frame, interactionController: nil)
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
