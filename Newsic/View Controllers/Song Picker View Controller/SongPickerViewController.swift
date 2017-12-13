@@ -32,23 +32,23 @@ class SongPickerViewController: NewsicDefaultViewController {
     var genres:[NewsicGenre]! = nil
     var newsicUser: NewsicUser! = nil {
         didSet {
-            self.usernameLabel.text = newsicUser.displayName;
+//            self.usernameLabel.text = newsicUser.displayName;
+            let parent = self.parent as! NewsicPageViewController
+            let sideMenu = parent.sideMenuVC as! SideMenuViewController
+            
+            sideMenu.username = self.newsicUser.displayName
+            
+            sideMenu.preferredPlayer = self.newsicUser.preferredPlayer
+            sideMenu.enablePlayerSwitch = self.newsicUser.isPremium! ? true : false
+            
             if self.spotifyHandler.user.smallestImage != nil, let imageURL = self.spotifyHandler.user.smallestImage.imageURL {
-                let parent = self.parent as! NewsicPageViewController
-                let sideMenu = parent.sideMenuVC as! SideMenuViewController
-                
-                sideMenu.username = self.newsicUser.displayName
                 sideMenu.profileImageURL = imageURL
-                sideMenu.preferredPlayer = self.newsicUser.preferredPlayer
-                sideMenu.enablePlayerSwitch = self.newsicUser.isPremium! ? true : false
-                
                 let iconImage = UIImage(); iconImage.downloadImage(from: imageURL, downloadImageHandler: { (image) in
                     DispatchQueue.main.async {
 //                        self.setupNavigationBar(image: image)
                     }
                     
                 })
-                
             }
             
         }
@@ -274,8 +274,10 @@ class SongPickerViewController: NewsicDefaultViewController {
                         if let error = error {
                             error.presentPopup(for: self)
                         }
-                        if fbUser == nil || fbUser?.displayName == "" {
-                            self.newsicUser.saveUser(saveUserHandler: { (userExist, error) in
+                        if fbUser == nil || fbUser?.userName == "" {
+                            
+                            user.saveUser(saveUserHandler: { (userExist, error) in
+                                self.newsicUser = user
                                 if let error = error {
                                     error.presentPopup(for: self)
                                 }
