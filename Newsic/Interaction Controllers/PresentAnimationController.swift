@@ -11,9 +11,11 @@ import UIKit
 class PresentAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
     
     private let originFrame: CGRect
+    let interactionController: SwipeInteractionController?
     
-    init(originFrame: CGRect) {
+    init(originFrame: CGRect, interactionController: SwipeInteractionController?) {
         self.originFrame = originFrame
+        self.interactionController = interactionController
     }
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {

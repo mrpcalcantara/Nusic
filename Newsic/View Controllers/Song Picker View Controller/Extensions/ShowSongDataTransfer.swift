@@ -22,8 +22,20 @@ extension SongPickerViewController {
 //        playerViewController.isMoodSelected = isMoodSelected
 //        
 //        parent.scrollToViewController(index: 2)
-        
-        self.performSegue(withIdentifier: showVideoSegue, sender: self);
+        let parent = self.parent as! NewsicPageViewController
+        let playerViewController = parent.showSongVC as! ShowSongViewController
+        parent.removeViewControllerFromPageVC(viewController: playerViewController)
+        parent.addViewControllerToPageVC(viewController: playerViewController)
+        //            playerViewController.transitioningDelegate = self
+        playerViewController.user = newsicUser;
+        playerViewController.playlist = newsicPlaylist;
+        playerViewController.spotifyHandler = spotifyHandler;
+        playerViewController.moodObject = moodObject
+        playerViewController.selectedGenreList = !selectedGenres.isEmpty ? selectedGenres : nil;
+        playerViewController.isMoodSelected = isMoodSelected
+        playerViewController.newMoodOrGenre = true;
+        parent.scrollToNextViewController()
+//        self.performSegue(withIdentifier: showVideoSegue, sender: self);
     }
 
     

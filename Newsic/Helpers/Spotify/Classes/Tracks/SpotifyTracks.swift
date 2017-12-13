@@ -284,7 +284,7 @@ extension Spotify {
         let accessToken: String! = auth.session.accessToken!
         let url = "https://api.spotify.com/v1/users/\(username!)/playlists/\(playlistId)/tracks"
         var removeTrackRequest = URLRequest(url: URL(string: url)!);
-        removeTrackRequest.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        removeTrackRequest.addValue("Bearer \(accessToken!)", forHTTPHeaderField: "Authorization")
         removeTrackRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         removeTrackRequest.httpMethod = "DELETE";
@@ -296,8 +296,8 @@ extension Spotify {
         
         while element != nil {
             if let element = element {
-                tracksToRemove += "{\"positions\":[\(element.key)],\"uri\":\"\(element.value)\"},"
-                
+//                tracksToRemove += "{\"positions\":[\(element.key)],\"uri\":\"\(element.value)\"},"
+                tracksToRemove += "{\"uri\":\"\(element.value)\"},"
             }
             element = iterator.next();
         }

@@ -30,6 +30,11 @@ class NewsicPageViewController: UIPageViewController {
         dataSource = self
         delegate = self
         
+        for subview in self.view.subviews {
+            if let view = subview as? UIScrollView {
+//                view.bounces = false
+            }
+        }
         
         
         songPickerVC = UIStoryboard(name: "Main", bundle: nil) .
@@ -45,6 +50,10 @@ class NewsicPageViewController: UIPageViewController {
         
         if let songPickerVC = songPickerVC {
             orderedViewControllers.insert(songPickerVC, at: 1)
+        }
+        
+        if let myView = view?.subviews.first as? UIScrollView {
+            myView.canCancelContentTouches = false
         }
         
 //        if let showSongVC = showSongVC {
@@ -63,12 +72,38 @@ class NewsicPageViewController: UIPageViewController {
         
     }
     
+    @objc func addViewControllerToPageVC(viewController: UIViewController) {
+        if !orderedViewControllers.contains(viewController) {
+            orderedViewControllers.insert(viewController, at: orderedViewControllers.count)
+            newsicDelegate?.newsicPageViewController(newsicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
+        }
+        
+    }
+    
+    @objc func removeViewControllerFromPageVC(viewController: UIViewController) {
+        if orderedViewControllers.contains(viewController) {
+            if let index = orderedViewControllers.index(of: viewController) {
+                orderedViewControllers.remove(at: index)
+                newsicDelegate?.newsicPageViewController(newsicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
+            }
+        }
+    }
+    
     /**
      Scrolls to the next view controller.
      */
     func scrollToNextViewController() {
         if let visibleViewController = viewControllers?.first, let nextViewController = pageViewController(self, viewControllerAfter: visibleViewController) {
             scrollToViewController(viewController: nextViewController)
+        }
+    }
+    
+    /**
+     Scrolls to the previous view controller.
+     */
+    func scrollToPreviousViewController() {
+        if let visibleViewController = viewControllers?.first, let previousViewController = pageViewController(self, viewControllerBefore: visibleViewController) {
+            scrollToViewController(viewController: previousViewController, direction: .reverse)
         }
     }
     
@@ -162,9 +197,9 @@ extension NewsicPageViewController: UIPageViewControllerDataSource {
         
         // User is on the last view controller and swiped right to loop to
         // the first view controller.
-        guard orderedViewControllersCount != nextIndex else {
-            return nil
-        }
+//        guard orderedViewControllersCount < nextIndex else {
+//            return nil
+//        }
         
         guard orderedViewControllersCount > nextIndex else {
             return nil
@@ -185,6 +220,7 @@ extension NewsicPageViewController: UIPageViewControllerDelegate {
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
         notifyNewsicDelegateOfNewIndex()
+        
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
@@ -212,5 +248,16 @@ protocol NewsicPageViewControllerDelegate: class {
      */
     func newsicPageViewController(newsicPageViewController: NewsicPageViewController,
                                     didUpdatePageIndex index: Int)
+    
+//
+//    /**
+//     Called when the new view controller is to be presented
+//
+//     - parameter newsicPageViewController: the NewsicPageViewController instance
+//     - parameter enableNext: the next view controller on the stack
+//    */
+//
+//    func newsicPageViewController(newsicPageViewController: NewsicPageViewController,
+//                                  enableNext: Bool)
     
 }

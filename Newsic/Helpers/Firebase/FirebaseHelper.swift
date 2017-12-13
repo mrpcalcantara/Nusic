@@ -24,4 +24,30 @@ class FirebaseHelper {
         })
     }
     
+    class func deleteUserData(user: String, deleteDataHandler: @escaping (DatabaseReference, Error?) -> ()) {
+        let reference = Database.database().reference().child("emotions").child(user)
+
+        
+        reference.observe(.value) { (snapshot) in
+            reference.runTransactionBlock({ (data) -> TransactionResult in
+                
+                if var currentData = data.value as? [String: AnyObject] {
+                    
+                    data.value = currentData
+                    return TransactionResult.success(withValue: data)
+                } else {
+                    return TransactionResult.abort()
+                }
+                
+            }) { (error, isCommited, snapshot) in
+                print("completed")
+            }
+        }
+    }
+    
+    private class func fetchAllDataForDelete(user: String, fetchAllDataHandler: @escaping ([[String: AnyObject]]) -> ()) {
+        let user = NewsicUser(userName: user)
+    
+    }
+    
 }

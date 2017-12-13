@@ -6,6 +6,7 @@ enum FirebaseErrorCodeDescription : String {
     case deleteUser = "An error occurred while deleting the user information."
     case getFavoriteGenres = "An error occurred while fetching the user's favorite genres."
     case saveFavoriteGenres = "An error occurred while saving the user's favorite genres."
+    case deleteFavoriteGenres = "An error occurred while deleting the user's favorite genres."
     case updateGenreCount = "An error occurred while updating the selected genre count."
     
     //Track

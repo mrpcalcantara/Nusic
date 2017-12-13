@@ -64,7 +64,22 @@ extension NewsicTrack : FirebaseModel {
     }
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
-        
+        if let moodInfo = moodInfo {
+            for emotion in moodInfo.emotions {
+                reference.child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(trackInfo.trackId!).removeValue(completionBlock: { (error, reference) in
+                    if let error = error {
+                        deleteCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
+                    }
+                })
+            }
+        } else {
+            reference.child(userName).child("moods").child(EmotionDyad.unknown.rawValue).child(trackInfo.trackId!).removeValue(completionBlock: { (error, reference) in
+                if let error = error {
+                    deleteCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
+                }
+            })
+        }
+        deleteCompleteHandler(reference, nil)
     }
     
     
