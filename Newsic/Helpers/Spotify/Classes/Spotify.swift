@@ -246,7 +246,12 @@ class Spotify {
             genreListCount = (selectedGenreList?.count)!
         } else {
             if genreCount.count < numberOfSongs {
-                genreListCount = genreCount.count
+                var list: String = ""
+                for keyValue in genreCount {
+                    list.append("\(keyValue.key),")
+                }
+                list.removeLast()
+                return list
                 
             } else {
                 genreListCount = numberOfSongs
@@ -257,13 +262,12 @@ class Spotify {
         
 //        totalCount = numberOfSongs > genreListCount ? selectedGenreList?.count : numberOfSongs
         
-        
+        var tempGenreList = selectedGenreList
         
         //NOTE: Spotify recommendations max seed genres is 5. This is a workaround by fixing the max count to 5.
         if numberOfSongs > 5 && genreListCount > 5 {
            totalCount = 5
         }
-        
         
         while index < totalCount {
             var separator = ","

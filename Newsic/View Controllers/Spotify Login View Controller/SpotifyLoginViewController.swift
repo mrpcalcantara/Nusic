@@ -55,6 +55,11 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
 //        animateLogo()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated);
+        self.removeFromParentViewController()
+    }
+    
     
     @objc func fireErrorPopup() {
         let popup = NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: "Unable to connect. Please try again later.");
@@ -85,8 +90,12 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     }
     
     @objc func moveToMainScreen() {
+        
         let pageViewController = NewsicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        self.present(pageViewController, animated: false, completion: nil);
+//        self.present(pageViewController, animated: false, completion: nil);
+        self.present(pageViewController, animated: false) {
+            
+        }
     }
     
     

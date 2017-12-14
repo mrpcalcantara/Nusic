@@ -21,7 +21,8 @@ extension SongPickerViewController: UIViewControllerTransitioningDelegate {
         guard let showSongVC = dismissed as? ShowSongViewController else {
             return nil
         }
-        return DismissAnimationController(destinationFrame: self.view.frame, interactionController: showSongVC.swipeInteractionController)
+//        return DismissAnimationController(destinationFrame: self.view.frame, interactionController: showSongVC.swipeInteractionController)
+        return DismissAnimationController(destinationFrame: self.view.frame, interactionController: nil)
     }
     
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning)

@@ -16,6 +16,10 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         player?.delegate = self;
     }
     
+    func resetStreamingDelegate() {
+        player?.delegate = nil
+    }
+    
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePosition position: TimeInterval) {
         //print("position changed");
         let currentTrack = audioStreaming.metadata.currentTrack;
@@ -45,7 +49,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         self.songListTableView.reloadData()
         let currentTrack = audioStreaming.metadata.currentTrack;
         
-//        print("track started");
+        print("track started");
         if let currentTrack = currentTrack {
             if let imageURL = currentTrack.albumCoverArtURL {
                 let imageURL = URL(string: imageURL)!
@@ -68,7 +72,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             }
             setupSongProgress(duration: Float(currentTrack.duration))
         } else {
-            
+            print("problem starting track");
         }
         
     }
@@ -117,6 +121,10 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
 extension ShowSongViewController: SPTAudioStreamingPlaybackDelegate {
     func setupPlaybackDelegate() {
         player?.playbackDelegate = self
+    }
+    
+    func resetPlaybackDelegate() {
+        player?.playbackDelegate = nil
     }
 }
 

@@ -258,7 +258,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
             let emotion = Emotion(basicGroup: dyad, detailedEmotions: [], rating: 0)
             self.moodObject = NewsicMood(emotions: [emotion], isAmbiguous: false, sentiment: 0.5, date: Date(), userName: spotifyHandler.auth.session.canonicalUsername, associatedGenres: [], associatedTracks: []);
             self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
-            self.moodObject?.saveData(saveCompleteHandler: { (reference, error) in  })
+//            self.moodObject?.saveData(saveCompleteHandler: { (reference, error) in  })
             self.selectedGenres.removeAll()
             passDataToShowSong()
             

@@ -36,7 +36,7 @@ class SongPickerViewController: NewsicDefaultViewController {
             let parent = self.parent as! NewsicPageViewController
             let sideMenu = parent.sideMenuVC as! SideMenuViewController
             
-            sideMenu.username = self.newsicUser.displayName
+            sideMenu.username = self.newsicUser.displayName != "" ? self.newsicUser.displayName : self.newsicUser.userName;
             
             sideMenu.preferredPlayer = self.newsicUser.preferredPlayer
             sideMenu.enablePlayerSwitch = self.newsicUser.isPremium! ? true : false
@@ -44,11 +44,17 @@ class SongPickerViewController: NewsicDefaultViewController {
             if self.spotifyHandler.user.smallestImage != nil, let imageURL = self.spotifyHandler.user.smallestImage.imageURL {
                 sideMenu.profileImageURL = imageURL
                 let iconImage = UIImage(); iconImage.downloadImage(from: imageURL, downloadImageHandler: { (image) in
-                    DispatchQueue.main.async {
+//                    DispatchQueue.main.async {
 //                        self.setupNavigationBar(image: image)
-                    }
+//                    }
                     
                 })
+            }
+            newsicUser.saveUser { (isSaved, error) in
+                if let error = error {
+                    error.presentPopup(for: self)
+                }
+                
             }
             
         }
@@ -213,6 +219,7 @@ class SongPickerViewController: NewsicDefaultViewController {
         let navItem = self.navigationItem
         navbar.items = [navItem]
         
+        
         self.view.addSubview(navbar)
     }
     
@@ -275,13 +282,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                             error.presentPopup(for: self)
                         }
                         if fbUser == nil || fbUser?.userName == "" {
-                            
-                            user.saveUser(saveUserHandler: { (userExist, error) in
-                                self.newsicUser = user
-                                if let error = error {
-                                    error.presentPopup(for: self)
-                                }
-                            });
+                            self.newsicUser = user
                             self.extractGenresFromSpotify(genreExtractionHandler: { (isSuccessful) in
                                 if !isSuccessful {
                                     if let error = error {
