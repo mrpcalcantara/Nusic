@@ -20,7 +20,7 @@ extension ShowSongViewController: YTPlayerViewDelegate {
             "playsinline" : 1,
             "showinfo" : 0,
             "rel" : 0,
-            "modestbranding" : 1,
+            "modestbranding" : 0,
             "controls" : 1,
             "origin" : "https://www.youtube.com"
             ]

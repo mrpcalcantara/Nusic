@@ -88,7 +88,7 @@ extension ShowSongViewController {
     
     func containsTrack(trackId: String) -> Bool {
         for track in likedTrackList {
-            if track.trackId == trackId {
+            if track.trackInfo.trackId == trackId {
                 return true;
             }
         }
@@ -218,7 +218,12 @@ extension ShowSongViewController: UITableViewDelegate {
         addSongToPosition(at: indexPath.row, position: frontPosition);
         closeMenu();
         print("trackInfo = \(cardList[frontPosition].trackInfo.artist)");
-        actionPlaySpotifyTrack(spotifyTrackId: cardList[frontPosition].trackInfo.trackUri);
+        if user.preferredPlayer == NewsicPreferredPlayer.spotify {
+            actionPlaySpotifyTrack(spotifyTrackId: cardList[frontPosition].trackInfo.trackUri);
+        } else {
+            ytPlayTrack()
+        }
+        
         tableView.deselectRow(at: indexPath, animated: true);
     }
     /*
@@ -270,9 +275,9 @@ extension ShowSongViewController: UITableViewDataSource {
         let element = likedTrackList[indexPath.row];
         //cell.albumImage.bounds = CGRect(x: 0, y: 0, width: cell.bounds.height, height: cell.bounds.height);
         cell.albumImage.contentMode = .scaleAspectFit
-        cell.albumImage.image = element.thumbNail;
-        cell.artistLabel.text = element.artist.artistName;
-        cell.trackLabel.text = element.songName;
+        cell.albumImage.image = element.trackInfo.thumbNail;
+        cell.artistLabel.text = element.trackInfo.artist.artistName;
+        cell.trackLabel.text = element.trackInfo.songName;
         cell.backgroundColor = .clear
         //cell.addShadow(shadowOffset: CGSize(width: -5, height: 0))
 //        cell.setNeedsLayout();

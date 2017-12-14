@@ -17,7 +17,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     var user: NewsicUser! = nil;
     var player: SPTAudioStreamingController?
-    var likedTrackList:[SpotifyTrack] = [] {
+    var likedTrackList:[NewsicTrack] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.songListTableView.reloadData()
@@ -51,7 +51,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     var initialSwipeLocation: CGPoint! = CGPoint.zero
     var dismissProgress: CGFloat! = 0
     var seguePerformed: Bool = false;
-    var swipeInteractionController: SwipeInteractionController?
+//    var swipeInteractionController: SwipeInteractionController?
     var currentPlayingTrack: SpotifyTrack?
     var playedSongsHistory: [SpotifyTrack]? = []
     var newMoodOrGenre: Bool = true
@@ -129,6 +129,8 @@ class ShowSongViewController: NewsicDefaultViewController {
         
         if user.preferredPlayer == NewsicPreferredPlayer.youtube {
             if let player = player, player.initialized {
+                resetPlaybackDelegate()
+                resetStreamingDelegate()
                 actionStopPlayer()
             }
         }
@@ -182,7 +184,7 @@ class ShowSongViewController: NewsicDefaultViewController {
         
         currentMoodDyad = moodObject?.emotions.first?.basicGroup
         
-        swipeInteractionController = SwipeInteractionController(viewController: self)
+//        swipeInteractionController = SwipeInteractionController(viewController: self)
         menuEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
         menuEdgePanGestureRecognizer.edges = .right
         //        screenEdgeRecognizer.cancelsTouchesInView = false
@@ -279,13 +281,14 @@ class ShowSongViewController: NewsicDefaultViewController {
         if moodObject?.emotions.first?.basicGroup == EmotionDyad.unknown {
             spotifyHandler.getAllTracksForPlaylist(playlistId: playlist.id!) { (spotifyTracks, error) in
                 if let error = error {
-//                    self.present(error.popupDialog!, animated: true, completion: nil)
-//                    SwiftSpinner.hide()
                     error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue)
                     
                 } else {
                     if let spotifyTracks = spotifyTracks {
-                        self.likedTrackList = spotifyTracks;
+                        
+                        self.getYouTubeResults(tracks: spotifyTracks, youtubeSearchHandler: { (newsicTracks) in
+                            self.likedTrackList = newsicTracks;
+                        })
                     }
                 }
             }
@@ -297,16 +300,12 @@ class ShowSongViewController: NewsicDefaultViewController {
                 if let trackList = trackList {
                     self.spotifyHandler.getTrackInfo(for: trackList, offset: 0, currentExtractedTrackList: [], trackInfoListHandler: { (spotifyTracks, error) in
                         if let error = error {
-//                            self.present(error.popupDialog!, animated: true, completion: nil)
                             error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue)
                         } else {
                             if let spotifyTracks = spotifyTracks {
-                                self.likedTrackList = spotifyTracks;
-                                //                            DispatchQueue.main.async {
-                                //                                self.songListTableView.reloadData()
-                                //                                self.songListTableView.layoutIfNeeded()
-                                //                            }
-                                
+                                self.getYouTubeResults(tracks: spotifyTracks, youtubeSearchHandler: { (newsicTracks) in
+                                    self.likedTrackList = newsicTracks
+                                })
                             }
                         }
                     })
@@ -315,6 +314,7 @@ class ShowSongViewController: NewsicDefaultViewController {
         }
         
     }
+    
     @IBAction func showMoreClicked(_ sender: UIButton) {
         togglePlayerMenu();
     }
@@ -388,14 +388,9 @@ class ShowSongViewController: NewsicDefaultViewController {
             }
             var newsicTracks:[SpotifyTrack] = [];
             for track in results {
-                
-//                let newsicTrack = NewsicTrack(trackInfo: track, moodInfo: self.moodObject, userName: self.auth.session.canonicalUsername);
                 newsicTracks.append(track);
-                
                 self.playedSongsHistory?.append(track)
             }
-//            let tracks = newsicTracks;
-            
             if newsicTracks.count == 0 {
                 self.setupSongs();
             } else {
@@ -409,10 +404,6 @@ class ShowSongViewController: NewsicDefaultViewController {
                     
                 })
             }
-            
-            
-            
-            //self.updateTableView();
         }
     }
     
@@ -430,7 +421,7 @@ class ShowSongViewController: NewsicDefaultViewController {
                     
                     ytTracks.append(newsicTrack);
                 }
-                print("index: \(index) ==== \(track.title) -> trackId = \(youtubeInfo?.trackId)")
+//                print("index: \(index) ==== \(track.title) -> trackId = \(youtubeInfo?.trackId)")
                 
                 if index == tracks.count {
                     youtubeSearchHandler(ytTracks)
@@ -458,7 +449,6 @@ class ShowSongViewController: NewsicDefaultViewController {
             if let trackIdList = trackIdList {
                 self.spotifyHandler.getGenresForTrackList(trackIdList: trackIdList, trackGenreHandler: { (genres, error) in
                     if let error = error {
-//                        self.present(error.popupDialog!, animated: true, completion: nil)
                         error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getGenresForTrackList.rawValue)
                     } else {
                         if let genres = genres {
@@ -541,7 +531,8 @@ class ShowSongViewController: NewsicDefaultViewController {
         
         let index = likedTrackList.count - indexPath.row-1
         let strIndex = String(index)
-        let track = NewsicTrack(trackInfo: likedTrackList[indexPath.row], moodInfo: moodObject, userName: SPTAuth.defaultInstance().session.canonicalUsername)
+//        let track = NewsicTrack(trackInfo: likedTrackList[indexPath.row], moodInfo: moodObject, userName: SPTAuth.defaultInstance().session.canonicalUsername)
+        let track = likedTrackList[indexPath.row]
         
         let trackDict: [String: String] = [ strIndex : track.trackInfo.trackUri ]
         spotifyHandler.removeTrackFromPlaylist(playlistId: playlist.id!, tracks: trackDict) { (didRemove, error) in

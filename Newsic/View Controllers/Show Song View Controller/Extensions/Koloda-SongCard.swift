@@ -30,7 +30,12 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func addSongToPosition(at index: Int, position: Int) {
-        let newsicTrack = NewsicTrack(trackInfo: likedTrackList[index], moodInfo: moodObject, userName: auth.session.canonicalUsername!);
+//        let newsicTrack = NewsicTrack(trackInfo: likedTrackList[index].trackInfo, moodInfo: moodObject, userName: auth.session.canonicalUsername!, youtubeInfo: likedTrackList[index].youtubeInfo);
+        let newsicTrack = likedTrackList[index]
+        
+        
+        
+//        let newsicTrack = NewsicTrack(trackInfo: likedTrackList[index], moodInfo: moodObject, userName: auth.session.canonicalUsername!, youtubeInfo: likedTrackList[index])
         cardList.insert(newsicTrack, at: position);
         songCardView.insertCardAtIndexRange(position..<position+1, animated: true);
     }
@@ -68,6 +73,7 @@ extension ShowSongViewController: KolodaViewDelegate {
     
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
         //isPlaying = false
+        self.songListTableView.reloadData()
         presentedCardIndex = index
         let cardView = koloda.viewForCard(at: index) as! SongOverlayView
         if isPlayerMenuOpen {
@@ -80,6 +86,7 @@ extension ShowSongViewController: KolodaViewDelegate {
         
         
         if user.preferredPlayer == NewsicPreferredPlayer.spotify {
+            print("attempting to start track = \(cardList[index].trackInfo.trackUri)")
             actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.trackUri);
         } else {
             cardView.youtubePlayer.playVideo()
@@ -127,6 +134,8 @@ extension ShowSongViewController: KolodaViewDataSource {
         view.genreLabel.text = self.cardList[index].trackInfo.artist.listGenres()
         if user.preferredPlayer == NewsicPreferredPlayer.spotify {
             view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
+//            view.youtubePlayer.backgroundColor = UIColor.clear
+            view.youtubePlayer.isHidden = true
         } else {
             view.albumImage.alpha = 0
             if let youtubeTrackId = self.cardList[index].youtubeInfo?.trackId {
@@ -219,7 +228,7 @@ extension ShowSongViewController {
                             SwiftSpinner.hide()
                             error.presentPopup(for: self)
                         }
-                        self.likedTrackList.insert(track.trackInfo, at: 0);
+                        self.likedTrackList.insert(track, at: 0);
                         DispatchQueue.main.async {
                             self.songListTableView.reloadData();
                         }

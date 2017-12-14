@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PopupDialog
 
 class SideMenuViewController: NewsicDefaultViewController {
     
@@ -29,14 +30,25 @@ class SideMenuViewController: NewsicDefaultViewController {
     
     
     @IBAction func logoutClicked(_ sender: Any) {
-        UserDefaults.standard.removeObject(forKey: "SpotifySession");
-        UserDefaults.standard.synchronize();
+        logoutUser()
+        
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: "SpotifyLogin") as! SpotifyLoginViewController
+        
         self.present(viewController, animated: true, completion: nil);
         //self.navigationController?.popViewController(animated: true);
     }
     
+    func logoutUser() {
+        UserDefaults.standard.removeObject(forKey: "SpotifySession");
+        UserDefaults.standard.synchronize();
+        
+        if SPTAudioStreamingController.sharedInstance().initialized {
+           SPTAudioStreamingController.sharedInstance().logout()
+        }
+    }
+    
     @IBAction func preferredPlayerAction(_ sender: UISwitch) {
+        
         let parent = self.parent as! NewsicPageViewController
         let songPicker = parent.songPickerVC as! SongPickerViewController
         
@@ -48,10 +60,18 @@ class SideMenuViewController: NewsicDefaultViewController {
             preferredPlayer = NewsicPreferredPlayer.spotify
         }
         
-        songPicker.newsicUser.preferredPlayer = preferredPlayer
-        songPicker.newsicUser.saveUser { (isSaved, error) in
-            
+        if !enablePlayerSwitch! {
+            let popup = PopupDialog(title: "Sorry!", message: "It appears you're not a Spotify Premium user. As such, you can only use the YouTube player.")
+            popup.addButton(DefaultButton(title: "Got It!", action: nil))
+            self.present(popup, animated: true, completion: nil)
+            sender.isOn = true
+        } else {
+            songPicker.newsicUser.preferredPlayer = preferredPlayer
+            songPicker.newsicUser.saveUser { (isSaved, error) in
+                
+            }
         }
+        
     }
     @IBAction func aboutClicked(_ sender: Any) {
         
@@ -59,7 +79,7 @@ class SideMenuViewController: NewsicDefaultViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        preferredPlayerSwitch.isUserInteractionEnabled = enablePlayerSwitch!
+//        preferredPlayerSwitch.isUserInteractionEnabled = enablePlayerSwitch!
         if preferredPlayer == NewsicPreferredPlayer.spotify {
             preferredPlayerLabel.text = "Preferred Player: Spotify"
             preferredPlayerSwitch.isOn = false
