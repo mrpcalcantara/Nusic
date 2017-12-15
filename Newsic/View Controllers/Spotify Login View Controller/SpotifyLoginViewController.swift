@@ -45,13 +45,13 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
-//        animateLogo()
+        animateLogo()
         checkFirebaseConnectivity()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loginButton.alpha = 0
+//        loginButton.alpha = 0
 //        animateLogo()
     }
     
@@ -93,8 +93,8 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         
         let pageViewController = NewsicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
 //        self.present(pageViewController, animated: false, completion: nil);
-        self.present(pageViewController, animated: false) {
-            
+        self.present(pageViewController, animated: true) {
+//            self.dismiss(animated: false, completion: nil)
         }
     }
     

@@ -242,16 +242,19 @@ class Spotify {
         var genreListCount = 0
         var totalCount = genreListCount
         var selectedGenreList = selectedGenreList
-//        selectedGenreList != nil ? selectedGenreList?.count : numberOfSongs;
         
         if let selectedGenreList = selectedGenreList, selectedGenreList.count > 0 {
             genreListCount = selectedGenreList.count
         } else {
             hasList = false
             selectedGenreList = nil
-            if genreCount.count < numberOfSongs {
+            if genreCount.count < numberOfSongs && genreCount.count > 0 {
                 var list: String = ""
                 for keyValue in genreCount {
+                    if index > 4 {
+                        break;
+                    }
+                    index += 1
                     list.append("\(keyValue.key),")
                 }
                 list.removeLast()
@@ -263,8 +266,6 @@ class Spotify {
         }
         
         totalCount = genreListCount
-        
-//        totalCount = numberOfSongs > genreListCount ? selectedGenreList?.count : numberOfSongs
         
         var tempGenreList = selectedGenreList
         
@@ -359,5 +360,13 @@ class Spotify {
         var uri = trackUri
         uri.removeSubrange(trackUri.range(of: "spotify:track:")!)
         return uri
+    }
+    
+    static func getAllValuesDict() -> [String: Int] {
+        var dict: [String: Int] = [:]
+        for value in SpotifyGenres.allShownValues {
+            dict[value.rawValue.lowercased()] = 1
+        }
+        return dict
     }
 }

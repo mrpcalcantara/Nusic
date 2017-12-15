@@ -194,31 +194,33 @@ extension NewsicUser: FirebaseModel {
     }
     
     func updateGenreCount(for genre: String, updateGenreHandler: @escaping (Bool?, NewsicError?) -> ()) {
+        if favoriteGenres == nil {
+            self.favoriteGenres = []
+        }
         if let favoriteGenres = favoriteGenres {
+            let key = reference.child("genres").child(userName)
+            var localGenre: NewsicGenre
+            var updatedValue: [String: Int]
             if let genreIndex = favoriteGenres.index(where: { (localGenre) -> Bool in
                 return localGenre.mainGenre == genre
             }) {
-                let localGenre = favoriteGenres[genreIndex]
-                let key = reference.child("genres").child(userName)
-                let updatedValue = [genre:localGenre.count+1];
-//                let childUpdateValues = ["/genres/\(userName)/" : updatedValue]
-                key.updateChildValues(updatedValue, withCompletionBlock: { (error, reference) in
-                    if let error = error {
-                        print(error.localizedDescription)
-                    }
-                })
-                Database.database().reference().child("genres").child(userName).updateChildValues(updatedValue, withCompletionBlock: { (error, reference) in
-                    if let error = error {
-                        updateGenreHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.updateGenreCount.rawValue, systemError: error))
-                    } else {
-                        updateGenreHandler(true, nil)
-                    }
-                })
+                localGenre = favoriteGenres[genreIndex]
+                localGenre.count += 1
+            } else {
+                localGenre = NewsicGenre(mainGenre: genre, count: 1, userName: userName)
+                self.favoriteGenres?.append(localGenre)
             }
             
+            updatedValue = [localGenre.mainGenre:localGenre.count];
             
+            key.updateChildValues(updatedValue, withCompletionBlock: { (error, reference) in
+                if let error = error {
+                    updateGenreHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.updateGenreCount.rawValue, systemError: error))
+                } else {
+                    updateGenreHandler(true, nil)
+                }
+            })
         }
-        
     }
     
 }

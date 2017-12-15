@@ -49,6 +49,8 @@ class SongPickerViewController: NewsicDefaultViewController {
 //                    }
                     
                 })
+            } else {
+                let iconImage = UIImage(named: "AppIcon")
             }
             newsicUser.saveUser { (isSaved, error) in
                 if let error = error {
@@ -274,7 +276,6 @@ class SongPickerViewController: NewsicDefaultViewController {
         
         self.spotifyHandler.getUser { (user, error) in
             if let error = error {
-//                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getUser.rawValue)
                 self.showLoginErrorPopup()
                 self.loadingFinished = true
             } else {
@@ -314,21 +315,22 @@ class SongPickerViewController: NewsicDefaultViewController {
                                     error.presentPopup(for: self)
                                 }
                                 if let dbGenreCount = dbGenreCount {
-                                    self.spotifyHandler.genreCount = dbGenreCount;
-                                    self.newsicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
-                                        if let error = error {
-                                            error.presentPopup(for: self)
-                                        }
-                                    });
+                                    if dbGenreCount.count > 0 {
+                                        self.spotifyHandler.genreCount = dbGenreCount;
+                                        self.newsicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
+                                            if let error = error {
+                                                error.presentPopup(for: self)
+                                            }
+                                        });
+                                    } else {
+                                        self.spotifyHandler.genreCount = Spotify.getAllValuesDict()
+                                    }
+                                    
                                     self.loadingFinished = true;
                                 }
                             })
                         }
                     })
-                } else {
-                    //Go back to the login page
-                    //self.loadingFinished = true
-                    
                 }
             }
         }
