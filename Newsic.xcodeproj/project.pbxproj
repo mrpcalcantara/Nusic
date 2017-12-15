@@ -87,8 +87,6 @@
 		8CA40DF91F8B7C8C00C95B9D /* SpotifyTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA40DF81F8B7C8C00C95B9D /* SpotifyTracks.swift */; };
 		8CA40DFC1F8B85C200C95B9D /* SongPlayerMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA40DFB1F8B85C200C95B9D /* SongPlayerMenu.swift */; };
 		8CA40DFE1F8C99B500C95B9D /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA40DFD1F8C99B400C95B9D /* UIButton.swift */; };
-		8CA40E001F8CAA8100C95B9D /* UserMenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA40DFF1F8CAA8100C95B9D /* UserMenuHeader.swift */; };
-		8CA40E041F8CAACB00C95B9D /* UserMenuHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CA40E031F8CAACB00C95B9D /* UserMenuHeader.xib */; };
 		8CB47FA01F581DC5008D8847 /* SpotifyFollowedArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB47F9F1F581DC5008D8847 /* SpotifyFollowedArtist.swift */; };
 		8CB47FA41F582977008D8847 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB47FA31F582977008D8847 /* UIImageView.swift */; };
 		8CB529D91F83575C00C8050F /* EmotionDyad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB529D81F83575C00C8050F /* EmotionDyad.swift */; };
@@ -210,8 +208,6 @@
 		8CA40DF81F8B7C8C00C95B9D /* SpotifyTracks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyTracks.swift; sourceTree = "<group>"; };
 		8CA40DFB1F8B85C200C95B9D /* SongPlayerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongPlayerMenu.swift; sourceTree = "<group>"; };
 		8CA40DFD1F8C99B400C95B9D /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
-		8CA40DFF1F8CAA8100C95B9D /* UserMenuHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserMenuHeader.swift; sourceTree = "<group>"; };
-		8CA40E031F8CAACB00C95B9D /* UserMenuHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserMenuHeader.xib; sourceTree = "<group>"; };
 		8CB47F9F1F581DC5008D8847 /* SpotifyFollowedArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyFollowedArtist.swift; sourceTree = "<group>"; };
 		8CB47FA31F582977008D8847 /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		8CB529D81F83575C00C8050F /* EmotionDyad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionDyad.swift; sourceTree = "<group>"; };
@@ -338,6 +334,15 @@
 				8C0F428B1FE3A2F000EDD9FA /* ShowSongViewController-Logic.swift */,
 			);
 			path = "Controller Logic";
+			sourceTree = "<group>";
+		};
+		8C0F428D1FE3BAB800EDD9FA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8C5B18EF1FCBBEC900EBFAE1 /* Collection View Header */,
+				8CB529DA1F8373FB00C8050F /* Mood Cell */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		8C2011541F988470003DE2AD /* Enums */ = {
@@ -765,23 +770,6 @@
 			path = Newsic;
 			sourceTree = "<group>";
 		};
-		8CA40E011F8CAA9E00C95B9D /* User Menu */ = {
-			isa = PBXGroup;
-			children = (
-				8CA40E021F8CAAA800C95B9D /* Menu Header */,
-			);
-			path = "User Menu";
-			sourceTree = "<group>";
-		};
-		8CA40E021F8CAAA800C95B9D /* Menu Header */ = {
-			isa = PBXGroup;
-			children = (
-				8CA40E031F8CAACB00C95B9D /* UserMenuHeader.xib */,
-				8CA40DFF1F8CAA8100C95B9D /* UserMenuHeader.swift */,
-			);
-			path = "Menu Header";
-			sourceTree = "<group>";
-		};
 		8CB529DA1F8373FB00C8050F /* Mood Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -814,10 +802,8 @@
 		8CC6E71D1F55101C00846080 /* Song Picker View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				8C5B18EF1FCBBEC900EBFAE1 /* Collection View Header */,
-				8CA40E011F8CAA9E00C95B9D /* User Menu */,
+				8C0F428D1FE3BAB800EDD9FA /* Views */,
 				8CB529DF1F8375C700C8050F /* Extensions */,
-				8CB529DA1F8373FB00C8050F /* Mood Cell */,
 				8C90E8881F53D92D002B135F /* View Model */,
 				8C90E8631F53D838002B135F /* SongPickerViewController.swift */,
 			);
@@ -953,7 +939,6 @@
 				8CD11B561F5FB6E3000004EA /* GoogleService-Info.plist in Resources */,
 				8C9DB5021F6FD9C600F35268 /* SongTableViewCellBackup.xib in Resources */,
 				8C90E8691F53D838002B135F /* Assets.xcassets in Resources */,
-				8CA40E041F8CAACB00C95B9D /* UserMenuHeader.xib in Resources */,
 				8C5B18F31FCBBEF400EBFAE1 /* CollectionViewHeader.xib in Resources */,
 				8C90E8671F53D838002B135F /* Main.storyboard in Resources */,
 			);
@@ -1169,7 +1154,6 @@
 				8C268B541FCFB53100BB4C6F /* DismissAnimationController.swift in Sources */,
 				8C2B40891FD9488C00F08087 /* NewsicPopupButton.swift in Sources */,
 				8CFFBF371F9708F100A69E78 /* NewsicCollectionViewLayout.swift in Sources */,
-				8CA40E001F8CAA8100C95B9D /* UserMenuHeader.swift in Sources */,
 				8C1434701FDE63EC0061E2CB /* NewsicPreferredPlayer.swift in Sources */,
 				8C7BE32C1F78AE7B004D9F15 /* SideMenuDelegate.swift in Sources */,
 				8C0F428C1FE3A2F000EDD9FA /* ShowSongViewController-Logic.swift in Sources */,
