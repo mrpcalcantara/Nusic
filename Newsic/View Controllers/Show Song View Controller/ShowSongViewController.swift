@@ -57,6 +57,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     var newMoodOrGenre: Bool = true
     var navbar: UINavigationBar = UINavigationBar()
     var menuEdgePanGestureRecognizer: UIScreenEdgePanGestureRecognizer!
+    var preferredPlayer: NewsicPreferredPlayer?
     //var songPosition: Double! = 0
     
     //Constraints
@@ -127,7 +128,7 @@ class ShowSongViewController: NewsicDefaultViewController {
         self.songCardView.resetCurrentCardIndex()
         self.songCardView.reloadData();
         
-        if user.preferredPlayer == NewsicPreferredPlayer.youtube {
+        if preferredPlayer == NewsicPreferredPlayer.youtube {
             if let player = player, player.initialized {
                 resetPlaybackDelegate()
                 resetStreamingDelegate()
@@ -138,6 +139,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     func setupShowSongVC() {
         if checkConnectivity() {
+            preferredPlayer = user.preferredPlayer
             showSwiftSpinner()
             setupMainView()
             setupNavigationBar()
@@ -146,7 +148,7 @@ class ShowSongViewController: NewsicDefaultViewController {
             setupTableView()
             setupSongs()
             setupPlayerMenu()
-            if user.preferredPlayer == NewsicPreferredPlayer.spotify {
+            if preferredPlayer == NewsicPreferredPlayer.spotify {
                 setupSpotify()
                 setupCommandCenter()
                 UIApplication.shared.beginReceivingRemoteControlEvents()
@@ -324,7 +326,7 @@ class ShowSongViewController: NewsicDefaultViewController {
             //            print("CHANGED SLIDER VALUE")
             updateElapsedTime(elapsedTime: sender.value)
         } else {
-            if user.preferredPlayer == NewsicPreferredPlayer.spotify {
+            if preferredPlayer == NewsicPreferredPlayer.spotify {
                 seekSong(interval: sender.value)
             } else {
                 ytSeekTo(seconds: sender.value)
@@ -591,7 +593,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     @IBAction func pausePlayClicked(_ sender: UIButton) {
         
         sender.animateClick();
-        if user.preferredPlayer == NewsicPreferredPlayer.spotify {
+        if preferredPlayer == NewsicPreferredPlayer.spotify {
             spotifyPausePlay();
         } else {
             ytPausePlay()

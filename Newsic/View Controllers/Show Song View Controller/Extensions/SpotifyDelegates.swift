@@ -60,7 +60,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
                     self.activateAudioSession()
                     self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
                     DispatchQueue.main.async {
-                        self.showLikeButtons()
+                        self.toggleLikeButtons()
                     }
                     
 //                    self.updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: image, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
