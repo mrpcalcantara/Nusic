@@ -33,20 +33,9 @@ extension ShowSongViewController: YTPlayerViewDelegate {
     
     func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
         playerView.playVideo();
-        //WORKAROUND: For playing the first card.
-//        if songCardView.currentCardIndex == 0 {
-//            playerView.playVideo();
-//        }
-        
-//
-//        if self.presentedCardIndex == songCardView.currentCardIndex {
-//            print("videoDidBecomeReady for presented card index = \(self.presentedCardIndex)")
-//            playerView.playVideo()
-//        }
     }
     
     func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
-//        ytPausePlay()
         if state == .playing {
             self.isPlaying = true
             self.togglePausePlayIcon()
@@ -69,15 +58,11 @@ extension ShowSongViewController: YTPlayerViewDelegate {
     
     func ytPauseTrack() {
         let card = getCurrentCardView()
-        print("pausing track = \(card.songTitle.text)")
         card.youtubePlayer.pauseVideo()
     }
     
     func ytPlayTrack() {
-        
-        
         let card = getCurrentCardView()
-        print("playing track = \(card.songTitle.text)")
         card.youtubePlayer.playVideo()
     }
     

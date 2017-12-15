@@ -12,12 +12,6 @@ import SwiftSpinner
 
 extension ShowSongViewController: KolodaViewDelegate {
     
-    override func viewWillLayoutSubviews() {
-        if isPlayerMenuOpen {
-            
-        }
-    }
-    
     func setupCards() {
         songCardView.delegate = self;
         songCardView.dataSource = self;
@@ -131,37 +125,12 @@ extension ShowSongViewController: KolodaViewDataSource {
         view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
         if preferredPlayer == NewsicPreferredPlayer.spotify {
             view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
-//            view.youtubePlayer.backgroundColor = UIColor.clear
             view.youtubePlayer.isHidden = true
-        } else {
-//            view.albumImage.alpha = 0
-            if let youtubeTrackId = self.cardList[index].youtubeInfo?.trackId {
-//                setupYTPlayer(for: view, with: youtubeTrackId)
-            }
-            
         }
-        
-//        view.albumImage.alpha = 0
-//        if let youtubeTrackId = self.cardList[index].youtubeInfo?.trackId {
-//            let playerVars: [String : Any] = [
-//                "playsinline" : 1,
-//                "showinfo" : 0,
-//                "rel" : 0,
-//                "modestbranding" : 1,
-//                "controls" : 1,
-//                "origin" : "https://www.example.com"
-//                ] as [String : Any]
-//            view.youtubePlayer.load(withVideoId: youtubeTrackId, playerVars: playerVars)
-//        }
-        
         view.layer.borderWidth = 0.5;
         view.layer.borderColor = UIColor.lightGray.cgColor
         view.layer.cornerRadius = 15
         view.clipsToBounds = true;
-        
-        if index == 0 {
-            //view.addShadow(shadowOffset: CGSize(width: 1, height: 3));
-        }
         
         return view;
     }

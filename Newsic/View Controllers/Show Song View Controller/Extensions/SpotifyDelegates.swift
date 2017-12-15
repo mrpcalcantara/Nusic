@@ -63,8 +63,6 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
                         self.toggleLikeButtons()
                     }
                     
-//                    self.updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: image, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
-                    
                 }
             } else {
                 activateAudioSession()
@@ -78,8 +76,6 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     }
 
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
-//        deactivateAudioSession();
-        
         DispatchQueue.main.async {
             self.hideLikeButtons()
         }
@@ -93,20 +89,6 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         }
     }
     
-    func audioStreamingDidLogin(_ audioStreaming: SPTAudioStreamingController!) {
-        
-        // after a user authenticates a session, the SPTAudioStreamingController is then initialized and this method called
-//        print("logged in")
-        //actionPlaySpotifyTrack(spotifyTrackId: "58s6EuEYJdlb0kO7awm3Vp");
-        
-    }
-    
-    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didReceive event: SpPlaybackEvent) {
-        //print("RECEIVED EVENT")
-        
-    }
-    
-    
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
         if isPlaying {
             self.activateAudioSession()
@@ -114,8 +96,6 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             self.deactivateAudioSession()
         }
     }
-    
-    
 }
 
 extension ShowSongViewController: SPTAudioStreamingPlaybackDelegate {
@@ -177,10 +157,7 @@ extension ShowSongViewController {
             }
         }
         player?.setIsPlaying(isPlaying, callback: { (error) in
-            
             self.togglePausePlayIcon()
-//            var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-//            nowPlayingInfo?.updateValue(self.player?.playbackState.position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime)
             if error != nil {
                 print("ERROR PAUSING TRACK");
             }
@@ -191,20 +168,10 @@ extension ShowSongViewController {
     
     @objc func actionPreviousSong() {
         songCardView.revertAction()
-//        player?.skipPrevious({ (error) in
-//            if error != nil {
-//                print("ERROR SET PREVIOUS TRACK");
-//            }
-//        })
     }
     
     @objc func actionNextSong() {
         songCardView.swipe(.left)
-//        player?.skipNext({ (error) in
-//            if error != nil {
-//                print("ERROR SET NEXT TRACK");
-//            }
-//        })
     }
     
     @objc func seekSong(interval: Float) {
@@ -238,7 +205,6 @@ extension ShowSongViewController {
         
         if var nowPlayingInfo = nowPlayingInfo {
             nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 0
-            //nowPlayingInfo.updateValue(0, forKey: MPNowPlayingInfoPropertyPlaybackRate);
             nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.playbackState.position
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
             spotifyPausePlay()
@@ -248,7 +214,6 @@ extension ShowSongViewController {
     @objc func actionPlaySpotifyTrack(spotifyTrackId: String) {
         self.isPlaying = false
         self.activateAudioSession()
-//        print("Trying to play track \(spotifyTrackId)")
         player?.playSpotifyURI(spotifyTrackId, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             self.isPlaying = true;
             self.togglePausePlayIcon()
@@ -260,38 +225,11 @@ extension ShowSongViewController {
     }
     
     @objc func actionStopPlayer() {
-        DispatchQueue.main.async {
-            self.isPlaying = false
-            self.player?.logout()
-            self.deactivateAudioSession()
-//            do {
-////                try self.player?.stop()
-//            } catch { }
-            
-            UIApplication.shared.endReceivingRemoteControlEvents();
-        }
+        self.isPlaying = false
+        self.player?.logout()
+        self.deactivateAudioSession()
+        UIApplication.shared.endReceivingRemoteControlEvents();
     }
-    
-    /*
-    func actionSeekForward() {
-        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-        
-        if var nowPlayingInfo = nowPlayingInfo {
-            let duration = nowPlayingInfo[MPMediaItemPropertyPlaybackDuration]! as! Double
-            let elapsedTime = nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] as! Double
-            let seekTime = elapsedTime + (duration / 20)
-            if seekTime <= duration {
-                player?.seek(to: seekTime, callback: { (error) in
-                    if error != nil {
-                        print("error seeking forward. Error: \(error?.localizedDescription)")
-                    }
-                    nowPlayingInfo.updateValue(seekTime, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime);
-                    print(nowPlayingInfo)
-                })
-            }
-        }
-    }
-    */
     
     @objc func actionSeekForward() {
         let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
@@ -305,15 +243,6 @@ extension ShowSongViewController {
     @objc func seekToTime() {
         let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
         if var nowPlayingInfo = nowPlayingInfo {
-            /*
-             let duration = nowPlayingInfo[MPMediaItemPropertyPlaybackDuration]! as! Double
-             let elapsedTime = nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] as! Double
-             let seekTime = elapsedTime + (duration / 20)
-             if seekTime <= duration {
-             
-             }
-             
-             */
             let seekTime = nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] as! Double
             
             player?.seek(to: seekTime, callback: { (error) in
@@ -322,7 +251,6 @@ extension ShowSongViewController {
                 }
                 nowPlayingInfo.updateValue(seekTime, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime);
                 nowPlayingInfo.updateValue(1, forKey: MPNowPlayingInfoPropertyPlaybackRate);
-//                print(nowPlayingInfo)
             })
         }
         

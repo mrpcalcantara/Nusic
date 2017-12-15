@@ -123,19 +123,7 @@ class ShowSongViewController: NewsicDefaultViewController {
         super.viewDidLayoutSubviews();
     }
     
-    func resetView() {
-        self.cardList.removeAll();
-        self.songCardView.resetCurrentCardIndex()
-        self.songCardView.reloadData();
-        
-        if preferredPlayer == NewsicPreferredPlayer.youtube {
-            if let player = player, player.initialized {
-                resetPlaybackDelegate()
-                resetStreamingDelegate()
-                actionStopPlayer()
-            }
-        }
-    }
+    
     
     func setupShowSongVC() {
         if checkConnectivity() {
@@ -161,53 +149,22 @@ class ShowSongViewController: NewsicDefaultViewController {
         newMoodOrGenre = false
     }
     
-    func checkConnectivity() -> Bool {
-        let title = "Error!"
-        var message = ""
-        if Connectivity.isConnectedToNetwork() == .notConnected {
-            message = "No connectivity to the network. Please try again when you're connected to a network."
-            let popup = PopupDialog(title: title, message: message, transitionStyle: .zoomIn, gestureDismissal: false, completion: nil);
-
-            let backButton = DefaultButton(title: "OK", action: {
-                self.dismiss(animated: true, completion: nil)
-            })
-
-            popup.addButton(backButton)
-            self.present(popup, animated: true, completion: nil);
-            return false
-        }
-
-        return true;
-    }
+    
     
     func setupMainView() {
         
-        
-        
         currentMoodDyad = moodObject?.emotions.first?.basicGroup
-        
-//        swipeInteractionController = SwipeInteractionController(viewController: self)
         menuEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
         menuEdgePanGestureRecognizer.edges = .right
-        //        screenEdgeRecognizer.cancelsTouchesInView = false
         
         self.view.addGestureRecognizer(menuEdgePanGestureRecognizer);
        
-//        let exitEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(backToSongPicker))
-//        exitEdgePanGestureRecognizer.edges = .left
-//        //        screenEdgeRecognizer.cancelsTouchesInView = false
-//
-//        self.view.addGestureRecognizer(exitEdgePanGestureRecognizer);
-        
     }
     
     func setupCommandCenter() {
         let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.changePlaybackPositionCommand.isEnabled = true
         commandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(remoteControlSeekSong))
-        
-        //        commandCenter.togglePlayPauseCommand.isEnabled = true
-        //        commandCenter.togglePlayPauseCommand.addTarget(self, action: #selector(actionPausePlay))
         
         commandCenter.playCommand.isEnabled = true
         commandCenter.playCommand.addTarget(self, action: #selector(remoteControlPlaySong))
@@ -276,44 +233,9 @@ class ShowSongViewController: NewsicDefaultViewController {
         self.view.sendSubview(toBack: trackStackView)
         self.view.sendSubview(toBack: songCardView)
         songListTableView.layer.zPosition = 1
-        //self.view.sendSubview(toBack: buttonsStackView)
         self.songListTableView.tableHeaderView?.frame = CGRect(x: (self.songListTableView.tableHeaderView?.frame.origin.x)!, y: -8, width: (self.songListTableView.tableHeaderView?.frame.width)!, height: (self.songListTableView.tableHeaderView?.frame.height)!)
         
-        //closeMenu()
-        if moodObject?.emotions.first?.basicGroup == EmotionDyad.unknown {
-            spotifyHandler.getAllTracksForPlaylist(playlistId: playlist.id!) { (spotifyTracks, error) in
-                if let error = error {
-                    error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue)
-                    
-                } else {
-                    if let spotifyTracks = spotifyTracks {
-                        
-                        self.getYouTubeResults(tracks: spotifyTracks, youtubeSearchHandler: { (newsicTracks) in
-                            self.likedTrackList = newsicTracks;
-                        })
-                    }
-                }
-            }
-        } else {
-            moodObject?.getTrackIdListForEmotionGenre(getAssociatedTrackHandler: { (trackList, error) in
-                if let error = error {
-                    error.presentPopup(for: self)
-                }
-                if let trackList = trackList {
-                    self.spotifyHandler.getTrackInfo(for: trackList, offset: 0, currentExtractedTrackList: [], trackInfoListHandler: { (spotifyTracks, error) in
-                        if let error = error {
-                            error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue)
-                        } else {
-                            if let spotifyTracks = spotifyTracks {
-                                self.getYouTubeResults(tracks: spotifyTracks, youtubeSearchHandler: { (newsicTracks) in
-                                    self.likedTrackList = newsicTracks
-                                })
-                            }
-                        }
-                    })
-                }
-            })
-        }
+        fetchLikedTracks()
         
     }
     
@@ -323,7 +245,6 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     @IBAction func songSeek(_ sender: UISlider) {
         if sender.isTracking {
-            //            print("CHANGED SLIDER VALUE")
             updateElapsedTime(elapsedTime: sender.value)
         } else {
             if preferredPlayer == NewsicPreferredPlayer.spotify {
@@ -336,29 +257,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     }
     
     
-    @objc func toggleSongMenu() {
-//        let view = self.navigationItem.rightBarButtonItem?.customView as! UIButton;
-//        view.animateClick();
-        if !isMenuOpen {
-            openMenu();
-            closePlayerMenu(animated: true)
-        } else {
-            closeMenu();
-        }
-        songListMenuProgress = 0
-        //isMenuOpen = !isMenuOpen;
-    }
     
-    @objc func backToSongPicker() {
-        
-        goToPreviousViewController()
-//        self.dismiss(animated: true, completion: nil);
-//        self.dismiss(animated: true) {
-//            NotificationCenter.default.post(name: Notification.Name(rawValue: "songDismissed"), object: nil);
-//            NotificationCenter.default.post(name: Notification.Name(rawValue: "songDismissed"), object: nil, userInfo: self)
-//            NotificationCenter.default.post(name: Notification.Name(rawValue: "songDismissed"), object: nil);
-//        }
-    }
     
     func setupSongs() {
         if selectedGenreList == nil {
@@ -368,200 +267,7 @@ class ShowSongViewController: NewsicDefaultViewController {
         }
     }
     
-    func getSongsForSelectedMood() {
-        updateCurrentGenresAndFeatures { (genres, trackFeatures) in
-            self.fetchSongsAndSetup(moodObject: self.moodObject)
-        }
-    }
     
-    func getSongsForSelectedGenres() {
-        fetchSongsAndSetup(moodObject: self.moodObject)
-    }
-    
-    func fetchSongsAndSetup(numberOfSongs: Int? = nil, moodObject: NewsicMood?) {
-        let songCountToSearch = numberOfSongs == nil ? self.cardCount : numberOfSongs
-        self.spotifyHandler.searchMusicInGenres(numberOfSongs: songCountToSearch!, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: self.selectedGenreList) { (results, error) in
-            if let error = error {
-//                self.present(error.popupDialog!, animated: true, completion: nil);
-                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
-            }
-            DispatchQueue.main.async {
-                SwiftSpinner.show("Fetching tracks..", animated: true);
-            }
-            var newsicTracks:[SpotifyTrack] = [];
-            for track in results {
-                newsicTracks.append(track);
-                self.playedSongsHistory?.append(track)
-            }
-            if newsicTracks.count == 0 {
-                self.setupSongs();
-            } else {
-                self.getYouTubeResults(tracks: newsicTracks, youtubeSearchHandler: { (tracks) in
-                    self.cardList = tracks
-                    DispatchQueue.main.async {
-                        self.songCardView.reloadData()
-                        SwiftSpinner.show(duration: 2, title: "Done!")
-                    }
-                    
-                    
-                })
-            }
-        }
-    }
-    
-    func getYouTubeResults(tracks: [SpotifyTrack], youtubeSearchHandler: @escaping ([NewsicTrack]) -> ()) {
-        var index = 0
-        var ytTracks: [NewsicTrack] = []
-        for track in tracks {
-            YouTubeSearch.getSongInfo(artist: track.artist.artistName, songName: track.songName, completionHandler: { (youtubeInfo) in
-                index += 1
-                if let currentIndex = tracks.index(where: { (currentTrack) -> Bool in
-                    return currentTrack.trackId == track.trackId
-                }) {
-                    
-                    let newsicTrack = NewsicTrack(trackInfo: tracks[currentIndex], moodInfo: self.moodObject, userName: self.auth.session.canonicalUsername, youtubeInfo: youtubeInfo);
-                    
-                    ytTracks.append(newsicTrack);
-                }
-//                print("index: \(index) ==== \(track.title) -> trackId = \(youtubeInfo?.trackId)")
-                
-                if index == tracks.count {
-                    youtubeSearchHandler(ytTracks)
-                }
-            })
-        }
-        
-    }
-    
-    func updateCurrentGenresAndFeatures(updateGenresFeaturesHandler: @escaping ([String]?, [SpotifyTrackFeature]?) -> ()) {
-        getGenresAndFeaturesForMoods(genresFeaturesHandler: { (genres, trackFeatures) in
-            if let genres = genres {
-                self.moodObject?.associatedGenres = genres
-            }
-            self.trackFeatures = trackFeatures;
-            updateGenresFeaturesHandler(genres, trackFeatures);
-        });
-    }
-    
-    func getGenresAndFeaturesForMoods(genresFeaturesHandler: @escaping([String]?, [SpotifyTrackFeature]?) -> ()) {
-        moodObject?.getTrackIdAndFeaturesForEmotion(trackIdAndFeaturesHandler: { (trackIdList, trackFeatures, error) in
-            if let error = error {
-                error.presentPopup(for: self)
-            }
-            if let trackIdList = trackIdList {
-                self.spotifyHandler.getGenresForTrackList(trackIdList: trackIdList, trackGenreHandler: { (genres, error) in
-                    if let error = error {
-                        error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getGenresForTrackList.rawValue)
-                    } else {
-                        if let genres = genres {
-                            //print("GENRES EXTRACTED = \(genres)");
-                            genresFeaturesHandler(genres, trackFeatures)
-                            
-                        } else {
-                            genresFeaturesHandler(nil, trackFeatures);
-                        }
-                    }
-                })
-            } else {
-                self.moodObject?.getDefaultTrackFeatures(getDefaultTrackFeaturesHandler: { (defaultTrackFeatures, error) in
-                    if let error = error {
-                        error.presentPopup(for: self)
-                    }
-                    if let defaultTrackFeatures = defaultTrackFeatures {
-                        genresFeaturesHandler(nil, defaultTrackFeatures)
-                    } else {
-                        genresFeaturesHandler(nil, nil)
-                    }
-                })
-                
-            }
-            
-        })
-    }
-    
-    func fetchNewCard(cardFetchingHandler: ((Bool) -> ())?){
-//        print("fetching new card...")
-        let moodObject = self.moodObject
-        
-        spotifyHandler.searchMusicInGenres(numberOfSongs: 1, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: selectedGenreList) { (results, error)  in
-            if let error = error {
-                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
-            }
-            
-            if let track = results.first {
-                let containsCheck = self.playedSongsHistory?.contains(where: { (trackInHistory) -> Bool in
-                    return trackInHistory.trackId == track.trackId
-                })
-                if containsCheck! {
-//                    print("REFETCHING NEW CARD.. \(track.trackId) already in list")
-                    self.spotifyHandler.searchMusicInGenres(numberOfSongs: 1, moodObject: moodObject, completionHandler: { (results, error) in
-                        
-                        if let cardFetchingHandler = cardFetchingHandler {
-                            cardFetchingHandler(false)
-                        }
-                        
-                    })
-                } else {
-                    if let track = results.first {
-                        self.getYouTubeResults(tracks: [track], youtubeSearchHandler: { (tracks) in
-                            for track in tracks {
-                                self.addSongToCardPlaylist(track: track)
-                            }
-                            DispatchQueue.main.async {
-                                self.songCardView.reloadData();
-                            }
-                        })
-                        
-                    }
-//
-//
-//                    DispatchQueue.main.async {
-//                        self.songCardView.reloadData();
-//                    }
-                    
-                    if let cardFetchingHandler = cardFetchingHandler {
-                        cardFetchingHandler(true);
-                    }
-                    
-                }
-            }
-            
-        }
-    }
-    
-    func removeTrackFromList(indexPath: IndexPath, removeTrackHandler: @escaping (Bool) -> ()) {
-        
-        let index = likedTrackList.count - indexPath.row-1
-        let strIndex = String(index)
-//        let track = NewsicTrack(trackInfo: likedTrackList[indexPath.row], moodInfo: moodObject, userName: SPTAuth.defaultInstance().session.canonicalUsername)
-        let track = likedTrackList[indexPath.row]
-        
-        let trackDict: [String: String] = [ strIndex : track.trackInfo.trackUri ]
-        spotifyHandler.removeTrackFromPlaylist(playlistId: playlist.id!, tracks: trackDict) { (didRemove, error) in
-            if let error = error {
-//                self.present(error.popupDialog!, animated: true, completion: nil);
-                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.removeTrack.rawValue)
-            } else {
-                track.deleteData(deleteCompleteHandler: { (ref, error) in
-                    if error != nil {
-                        removeTrackHandler(false)
-                        print("ERROR DELETING TRACK");
-                    } else {
-                        self.likedTrackList.remove(at: indexPath.row)
-                        removeTrackHandler(true);
-                    }
-                })
-            }
-        }
-    }
-    
-    func addSongToCardPlaylist(track: NewsicTrack) {
-//        let newsicTrack = NewsicTrack(trackInfo: track, moodInfo: self.moodObject, userName: self.auth.session.canonicalUsername, youtubeInfo: youtubeInfo);
-        self.cardList.append(track)
-        self.playedSongsHistory?.append(track.trackInfo)
-        
-        
-    }
     
     @IBAction func previousTrackClicked(_ sender: UIButton) {
         
@@ -602,41 +308,48 @@ class ShowSongViewController: NewsicDefaultViewController {
         
     }
     
-    func showSwiftSpinner() {
-        if let currentMoodDyad = moodObject?.emotions.first?.basicGroup {
-            var spinnerText = ""
-            if EmotionDyad.allValues.contains(currentMoodDyad) {
-                spinnerText = "Mood: \(currentMoodDyad.rawValue)"
+    func showSwiftSpinner(text: String? = nil, duration: Double? = nil) {
+        
+        var spinnerText = ""
+        if let text = text {
+            spinnerText = text
+            if let duration = duration {
+                SwiftSpinner.show(duration: duration, title: spinnerText)
             } else {
-                spinnerText = "Loading..."
+                SwiftSpinner.show(spinnerText, animated: true);
             }
             
-            SwiftSpinner.show(spinnerText, animated: true).addTapHandler({
-                self.goToPreviousViewController()
-                SwiftSpinner.hide()
-            }, subtitle: "Tap to go the previous screen!")
+        } else {
+            if let currentMoodDyad = moodObject?.emotions.first?.basicGroup {
+                
+                if EmotionDyad.allValues.contains(currentMoodDyad) {
+                    spinnerText = "Mood: \(currentMoodDyad.rawValue)"
+                } else {
+                    spinnerText = "Loading..."
+                }
+                
+                SwiftSpinner.show(spinnerText, animated: true).addTapHandler({
+                    self.goToPreviousViewController()
+                    SwiftSpinner.hide()
+                }, subtitle: "Tap to go the previous screen!")
+            }
         }
-//        if let swipeInteractionController = swipeInteractionController {
-//            if !swipeInteractionController.interactionWasCancelled {
-//                if let currentMoodDyad = currentMoodDyad {
-//                    var spinnerText = ""
-//                    if EmotionDyad.allValues.contains(currentMoodDyad) {
-//                        spinnerText = "Mood: \(currentMoodDyad.rawValue)"
-//                    } else {
-//                        spinnerText = "Loading..."
-//                    }
-//
-//                    SwiftSpinner.show(spinnerText, animated: true).addTapHandler({
-//                        self.dismiss(animated: true, completion: nil)
-//                        SwiftSpinner.hide()
-//                    }, subtitle: "Tap to go the previous screen!")
-//                }
-//            }
-//        }
     }
     
-    @objc func updateAuthObject() {
-        self.auth = (UIApplication.shared.delegate as! AppDelegate).auth
+    
+    
+    func resetView() {
+        self.cardList.removeAll();
+        self.songCardView.resetCurrentCardIndex()
+        self.songCardView.reloadData();
+        
+        if preferredPlayer == NewsicPreferredPlayer.youtube {
+            if let player = player, player.initialized {
+                resetPlaybackDelegate()
+                resetStreamingDelegate()
+                actionStopPlayer()
+            }
+        }
     }
 }
 

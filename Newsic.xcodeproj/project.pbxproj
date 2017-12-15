@@ -16,6 +16,7 @@
 		8C0C1E9B1F6100CC00CF8516 /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E9A1F6100CC00CF8516 /* FirebaseModel.swift */; };
 		8C0C1E9D1F6114C200CF8516 /* NewsicTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E9C1F6114C100CF8516 /* NewsicTrack.swift */; };
 		8C0C1E9F1F61343900CF8516 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E9E1F61343900CF8516 /* Date.swift */; };
+		8C0F428C1FE3A2F000EDD9FA /* ShowSongViewController-Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0F428B1FE3A2F000EDD9FA /* ShowSongViewController-Logic.swift */; };
 		8C1434701FDE63EC0061E2CB /* NewsicPreferredPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C14346F1FDE63EC0061E2CB /* NewsicPreferredPlayer.swift */; };
 		8C1434721FDE80CA0061E2CB /* Iterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1434711FDE80CA0061E2CB /* Iterable.swift */; };
 		8C18E0BC1F55306B002C4A07 /* YouTubeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C18E0BB1F55306B002C4A07 /* YouTubeSearch.swift */; };
@@ -135,6 +136,7 @@
 		8C0C1E9A1F6100CC00CF8516 /* FirebaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
 		8C0C1E9C1F6114C100CF8516 /* NewsicTrack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicTrack.swift; sourceTree = "<group>"; };
 		8C0C1E9E1F61343900CF8516 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		8C0F428B1FE3A2F000EDD9FA /* ShowSongViewController-Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowSongViewController-Logic.swift"; sourceTree = "<group>"; };
 		8C14346F1FDE63EC0061E2CB /* NewsicPreferredPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicPreferredPlayer.swift; sourceTree = "<group>"; };
 		8C1434711FDE80CA0061E2CB /* Iterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Iterable.swift; sourceTree = "<group>"; };
 		8C18E0BB1F55306B002C4A07 /* YouTubeSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouTubeSearch.swift; sourceTree = "<group>"; };
@@ -320,6 +322,22 @@
 				8C0C1E9A1F6100CC00CF8516 /* FirebaseModel.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		8C0F42891FE3A27C00EDD9FA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8C3654BD1F551A71006C12D9 /* Helper Views */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		8C0F428A1FE3A2A100EDD9FA /* Controller Logic */ = {
+			isa = PBXGroup;
+			children = (
+				8C0F428B1FE3A2F000EDD9FA /* ShowSongViewController-Logic.swift */,
+			);
+			path = "Controller Logic";
 			sourceTree = "<group>";
 		};
 		8C2011541F988470003DE2AD /* Enums */ = {
@@ -525,7 +543,8 @@
 		8C8C65951F55A600000711AC /* Show Song View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				8C3654BD1F551A71006C12D9 /* Helper Views */,
+				8C0F428A1FE3A2A100EDD9FA /* Controller Logic */,
+				8C0F42891FE3A27C00EDD9FA /* Views */,
 				8C3654BA1F551694006C12D9 /* Extensions */,
 				8C8C65961F55A6B4000711AC /* ShowSongViewController.swift */,
 			);
@@ -681,8 +700,7 @@
 				8C9DB4FC1F6BB38800F35268 /* SongTableViewCell.xib */,
 				8C9DB5011F6FD9C600F35268 /* SongTableViewCellBackup.xib */,
 			);
-			name = "Song Table View Cell";
-			path = ../Extensions;
+			path = "Song Table View Cell";
 			sourceTree = "<group>";
 		};
 		8CA40DEA1F8B7C0900C95B9D /* Spotify */ = {
@@ -1154,6 +1172,7 @@
 				8CA40E001F8CAA8100C95B9D /* UserMenuHeader.swift in Sources */,
 				8C1434701FDE63EC0061E2CB /* NewsicPreferredPlayer.swift in Sources */,
 				8C7BE32C1F78AE7B004D9F15 /* SideMenuDelegate.swift in Sources */,
+				8C0F428C1FE3A2F000EDD9FA /* ShowSongViewController-Logic.swift in Sources */,
 				8C21E7101FC6AF950033B477 /* NewsicPageViewController.swift in Sources */,
 				8CCC55361F67975F005090A4 /* Double.swift in Sources */,
 				8CB47FA01F581DC5008D8847 /* SpotifyFollowedArtist.swift in Sources */,
