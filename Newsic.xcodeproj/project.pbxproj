@@ -34,7 +34,6 @@
 		8C2701171FDA45150044D10F /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2701161FDA45150044D10F /* Connectivity.swift */; };
 		8C27011B1FDA46090044D10F /* ConnectivityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27011A1FDA46090044D10F /* ConnectivityStatus.swift */; };
 		8C27011D1FDA55E10044D10F /* FirebaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27011C1FDA55E10044D10F /* FirebaseHelper.swift */; };
-		8C2877421FDE446F00772269 /* MoodCollectionViewBKP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2877411FDE446F00772269 /* MoodCollectionViewBKP.swift */; };
 		8C2877451FDE4CC200772269 /* YoutubeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2877441FDE4CC200772269 /* YoutubeResult.swift */; };
 		8C2911AE1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */; };
 		8C291A7B1FD6561800E568EF /* FirebaseErrorCodeDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C291A7A1FD6561800E568EF /* FirebaseErrorCodeDescription.swift */; };
@@ -154,7 +153,6 @@
 		8C2701161FDA45150044D10F /* Connectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
 		8C27011A1FDA46090044D10F /* ConnectivityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityStatus.swift; sourceTree = "<group>"; };
 		8C27011C1FDA55E10044D10F /* FirebaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseHelper.swift; sourceTree = "<group>"; };
-		8C2877411FDE446F00772269 /* MoodCollectionViewBKP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodCollectionViewBKP.swift; sourceTree = "<group>"; };
 		8C2877441FDE4CC200772269 /* YoutubeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeResult.swift; sourceTree = "<group>"; };
 		8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControlDelegate.swift; sourceTree = "<group>"; };
 		8C291A7A1FD6561800E568EF /* FirebaseErrorCodeDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseErrorCodeDescription.swift; sourceTree = "<group>"; };
@@ -779,7 +777,6 @@
 			isa = PBXGroup;
 			children = (
 				8CB529E01F8375D900C8050F /* MoodCollectionView.swift */,
-				8C2877411FDE446F00772269 /* MoodCollectionViewBKP.swift */,
 				8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */,
 				8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */,
 				8C3A6F1A1FCD769C00BA7981 /* ShowSongDataTransfer.swift */,
@@ -1092,7 +1089,6 @@
 				8CF8D4021FBAC7D200E130BC /* CustomInteractionController.swift in Sources */,
 				8C268B501FCFAE9A00BB4C6F /* PresentAnimationController.swift in Sources */,
 				8C250AB51FBBF616002A108C /* NewsicDefaultViewController.swift in Sources */,
-				8C2877421FDE446F00772269 /* MoodCollectionViewBKP.swift in Sources */,
 				8C2011571F98849A003DE2AD /* SpotifyGenres.swift in Sources */,
 				8C3654C31F552201006C12D9 /* SongKolodaView.swift in Sources */,
 				8C18E0BE1F5530E9002C4A07 /* SpotifyTrack.swift in Sources */,
