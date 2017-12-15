@@ -143,5 +143,4 @@ enum SpotifyGenres: String {
     
     static let allShownValues = [acoustic, afrobeat, altRock, alternative, ambient, blackMetal, bluegrass, blues, bossanova, brazil, breakbeat, chicagoHouse, chill, classical, country, dance, dancehall, deathMetal, deepHouse, detroitTechno, disco, drumAndBass, dub, dubstep, edm, electro, electronic, emo, folk, forro, funk, gospel, goth, grindcore, groove, grunge, guitar, hardRock, hardcore, hardstyle, heavyMetal, hipHop, honkyTonk, house, idm, indie, indiePop, industrial, jDance, jIdol, jPop, jRock, jazz, kPop, latin, latino, mandopop, metal, metalMisc, metalcore, minimalTechno, newAge, opera, pagode, piano, pop, postDubstep, powerPop, progressiveHouse, psychRock, punk, punkRock, rnb, reggae, reggaeton, rock, rockNRoll, rockabilly, salsa, samba, sertanejo, ska, songwriter, soul, synthPop, tango, techno, trance, tripHop, worldMusic]
     
-    
 }

@@ -21,21 +21,26 @@ extension Spotify {
                 
                 let playlistList = try? SPTPlaylistList.init(from: data, with: httpResponse);
                 let page = playlistList as! SPTListPage
-                let playlists = page.items as! [SPTPartialPlaylist]
-                nextPagePlaylistList?.append(contentsOf: playlists);
-                
-                if page.hasNextPage {
-                    do {
-                        let nextPageRequest = try page.createRequestForNextPage(withAccessToken: self.auth.session.accessToken!)
-                        self.getAllPlaylists(for: nextPageRequest, currentPlaylistList: nextPagePlaylistList, fetchedPlaylistsHandler: { (currentPlaylistList, error) in
-                            fetchedPlaylistsHandler(currentPlaylistList, nil);
-                        })
-                    } catch {
-                        print("error in recursive get all playlists function")
+                if let playlists = page.items as? [SPTPartialPlaylist] {
+                    nextPagePlaylistList?.append(contentsOf: playlists);
+                    
+                    if page.hasNextPage {
+                        do {
+                            let nextPageRequest = try page.createRequestForNextPage(withAccessToken: self.auth.session.accessToken!)
+                            self.getAllPlaylists(for: nextPageRequest, currentPlaylistList: nextPagePlaylistList, fetchedPlaylistsHandler: { (currentPlaylistList, error) in
+                                fetchedPlaylistsHandler(currentPlaylistList, nil);
+                            })
+                        } catch {
+                            print("error in recursive get all playlists function")
+                        }
+                    } else {
+                        fetchedPlaylistsHandler(nextPagePlaylistList!, nil);
                     }
                 } else {
-                    fetchedPlaylistsHandler(nextPagePlaylistList!, nil);
+                    fetchedPlaylistsHandler([], nil)
                 }
+                
+                
             } else {
                 switch statusCode {
                 case 400...499:

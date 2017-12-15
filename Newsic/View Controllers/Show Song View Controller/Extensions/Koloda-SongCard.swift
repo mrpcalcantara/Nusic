@@ -78,8 +78,11 @@ extension ShowSongViewController: KolodaViewDelegate {
             print("attempting to start track = \(cardList[index].trackInfo.trackUri)")
             actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.trackUri);
         } else {
-            setupYTPlayer(for: cardView, with: (cardList[index].youtubeInfo?.trackId)!)
-            ytPlayTrack()
+            if let youtubeTrackId = cardList[index].youtubeInfo?.trackId {
+                setupYTPlayer(for: cardView, with: youtubeTrackId)
+                ytPlayTrack()
+            }
+            
         }
         
     }
