@@ -13,6 +13,7 @@ extension ShowSongViewController {
     func setupPlayerMenu() {
         let buttonsInitFrame = self.showMore.frame
         initialPlayerMenuIconCenter = self.showMore.frame
+        
         showMore.setImage(UIImage(named: "ShowMore"), for: .normal)
         showMore.frame = buttonsInitFrame;
         showMore.alpha = 1
@@ -25,38 +26,34 @@ extension ShowSongViewController {
         previousSong.layer.zPosition = 1;
         previousSong.translatesAutoresizingMaskIntoConstraints = true;
         previousSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
+        
         pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
         pausePlay.frame = buttonsInitFrame;
         pausePlay.isHidden = true
         pausePlay.layer.zPosition = -1;
         pausePlay.translatesAutoresizingMaskIntoConstraints = true;
         pausePlay.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
+        
         nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
         nextSong.frame = buttonsInitFrame;
         nextSong.isHidden = true
         nextSong.layer.zPosition = 1;
         nextSong.translatesAutoresizingMaskIntoConstraints = true;
         nextSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
+        
         previousTrack.setImage(UIImage(named: "Rewind"), for: .normal)
         previousTrack.frame = buttonsInitFrame;
         previousTrack.isHidden = true
         previousTrack.layer.zPosition = -1;
         previousTrack.translatesAutoresizingMaskIntoConstraints = true;
         previousTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
+        
         nextTrack.setImage(UIImage(named: "FastForward"), for: .normal)
         nextTrack.frame = buttonsInitFrame;
         nextTrack.isHidden = true
         nextTrack.layer.zPosition = -1;
         nextTrack.translatesAutoresizingMaskIntoConstraints = true;
         nextTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
-        
-        //        songProgressSlider.frame = buttonsInitFrame;
-        //        songProgressSlider.setThumbImage(UIImage(named: "SongProgressThumb"), for: .normal)
-        //        songProgressSlider.isHidden = true
-        //        songProgressSlider.layer.zPosition = 1;
-        //        songProgressSlider.translatesAutoresizingMaskIntoConstraints = true;
-        
-        
         
         if preferredPlayer == NewsicPreferredPlayer.spotify {
             songProgressSlider.isHidden = false
@@ -67,21 +64,16 @@ extension ShowSongViewController {
             songProgressView.translatesAutoresizingMaskIntoConstraints = true;
             songProgressView.backgroundColor = UIColor.clear
             
-//            songProgressSlider.setThumbImage(UIImage(named: "SongProgressThumb"), for: .normal)
-            //songProgressSlider.thumbTintColor = UIColor.white
             songProgressSlider.layer.zPosition = 1;
             songProgressSlider.tintColor = UIColor.green
-//            songProgressSlider.translatesAutoresizingMaskIntoConstraints = true;
             
             songDurationLabel.layer.zPosition = 1;
             songDurationLabel.textColor = UIColor.lightText
             songDurationLabel.text = convertElapsedSecondsToTime(interval: 0)
-//            songDurationLabel.translatesAutoresizingMaskIntoConstraints = true;
             
             songElapsedTime.layer.zPosition = 1;
             songElapsedTime.textColor = UIColor.lightText
             songElapsedTime.text = convertElapsedSecondsToTime(interval: 0)
-//            songElapsedTime.translatesAutoresizingMaskIntoConstraints = true;
         }
         
         self.view.layoutIfNeeded()
@@ -103,7 +95,6 @@ extension ShowSongViewController {
         songProgressSlider.maximumValue = duration
         songProgressSlider.minimumValue = 0
         songProgressSlider.setValue(0, animated: true)
-        //songProgressSlider.value = 0
     }
     
     
@@ -167,7 +158,6 @@ extension ShowSongViewController {
         }, completion: nil)
         isPlayerMenuOpen = true
         
-        //songCardView.layoutIfNeeded()
     }
     
     func closePlayerMenu(animated: Bool) {
@@ -220,22 +210,15 @@ extension ShowSongViewController {
                 //self.hideButtons()
                 let buttonsInitFrame = self.showMore.frame
                 self.previousSong.frame = buttonsInitFrame;
-                //self.previousSong.isHidden = true
                 self.pausePlay.frame = buttonsInitFrame;
-                //self.pausePlay.isHidden = true
                 self.nextSong.frame = buttonsInitFrame;
-                //self.nextSong.isHidden = true
                 self.previousTrack.frame = buttonsInitFrame;
-                //self.previousTrack.isHidden = true
                 self.nextTrack.frame = buttonsInitFrame;
-                //self.nextTrack.isHidden = true
                 if self.preferredPlayer == NewsicPreferredPlayer.spotify {
                     self.songProgressView.frame = buttonsInitFrame
                 }
                 
                 self.view.layoutIfNeeded();
-                //self.trackStackView.alpha = 1
-                //self.trackStackView.isUserInteractionEnabled = true
                 
             }
             self.showMore.transform = CGAffineTransform.identity;
@@ -247,7 +230,6 @@ extension ShowSongViewController {
             hideButtons();
         }
         isPlayerMenuOpen = false
-        //songCardView.layoutIfNeeded()
     }
     
     func togglePlayerMenu() {

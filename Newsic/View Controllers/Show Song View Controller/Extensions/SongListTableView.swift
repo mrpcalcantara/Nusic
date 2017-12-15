@@ -30,32 +30,16 @@ extension ShowSongViewController {
     }
     
     func setupView() {
-        /*
-        songListTableView.layer.borderColor = UIColor.gray.cgColor
-        songListTableView.layer.borderWidth = 3;
-        songListTableView.layer.shadowColor = UIColor.black.cgColor
-        songListTableView.layer.shadowOffset = CGSize(width: -5, height: -5);
-        songListTableView.layer.shadowOpacity = 2;
-        songListTableView.layer.shadowRadius = 3
-        songListTableView.layer.cornerRadius = 10
-        */
-        
-        //setBackButton(image: UIImage(named: "MoodIcon")!)
-        //songCardView.addShadow();
         closeMenu()
         
-        //songListTableView.addShadow(shadowOffset: CGSize(width: -7, height: 1));
         songListTableView.isHidden = false
         songListTableView.rowHeight = UITableViewAutomaticDimension
         songListTableView.estimatedRowHeight = 90.0
         songListTableView.tableFooterView = UIView();
-//        songListTableView.translatesAutoresizingMaskIntoConstraints = true
-        
         let image = UIImage(named: "SongMenuBackgroundPattern")
         if let image = image {
             songListTableView.backgroundColor = UIColor(patternImage: image);
         }
-        
         
         pausePlay.contentMode = .center
         pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
@@ -64,26 +48,7 @@ extension ShowSongViewController {
         nextSong.contentMode = .center
         nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
         
-        
-        //songListTableView.translatesAutoresizingMaskIntoConstraints = true;
-        
-//        let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
-//        //screenEdgeRecognizer.edges = .left
-//        screenEdgeRecognizer.cancelsTouchesInView = false
-//        screenEdgeRecognizer.delegate = self
-//        songListTableView.addGestureRecognizer(screenEdgeRecognizer);
-        
-        /*
-        let songListPanRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
-        songListPanRecognizer.delegate = self
-        songListTableView.addGestureRecognizer(songListPanRecognizer);
-        //songListTableView.addGestureRecognizer(screenEdgeRecognizer);
-        */
-        //self.view.sendSubview(toBack: songListTableView);
-        //songListTableView.layer.zPosition = -1
         initialSongListCenter = songListTableView.center;
-//        lastSongMenuCenter = songListTableView.center;
-//        currentSongListCenter = songListTableView.center;
     }
     
     func containsTrack(trackId: String) -> Bool {
@@ -157,89 +122,31 @@ extension ShowSongViewController: UITableViewDelegate {
     }
  
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         let headerCell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SongTableViewHeader") as! SongTableViewHeader
-        
-//        print("headerCell frame = \(headerCell.frame)");
-        if isMoodSelected {
-            let emotion = moodObject?.emotions.first?.basicGroup.rawValue
-            headerCell.displayName.text = "Mood: \(emotion!)"
-        } else {
-            headerCell.displayName.text = "Liked in Newsic"
-        }
-        
-        /*
-        if let profileImage = user.profileImage {
-            headerCell.profileImage.image = profileImage
-        } else {
-            headerCell.profileImage.image = UIImage();
-            headerCell.profileImage.backgroundColor = UIColor.black;
-        }
-        */
-        //headerCell.profileImage.roundImage();
-        
-        headerCell.layer.shadowColor = UIColor.black.cgColor;
-        headerCell.layer.shadowOffset = CGSize(width: 1, height: -1);
-        headerCell.layer.shadowRadius = 3.0;
-        headerCell.layer.shadowOpacity = 1;
-        
-        let gradient = CAGradientLayer()
-        gradient.frame.size = CGSize(width: headerCell.bounds.width, height: 10)
-        let stopColor = UIColor.white.cgColor
-        let startColor = UIColor.white.cgColor
-        
-        gradient.colors = [stopColor,startColor]
-        gradient.locations = [0.0,0.4]
-        headerCell.layer.addSublayer(gradient)
-        
-        let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
-        //screenEdgeRecognizer.edges = .left
-        screenEdgeRecognizer.cancelsTouchesInView = false
-        screenEdgeRecognizer.delegate = self
-        headerCell.addGestureRecognizer(screenEdgeRecognizer);
-        
+        configure(headerCell: headerCell, at: section);
         return headerCell;
-        /*
-        guard let regCell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongTableViewCell else {
-            fatalError("Unexpected Index Path")
-        }
-        */
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        cell.backgroundColor = .clear
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //let track = cardList[index]
         let frontPosition = songCardView.currentCardIndex;
         
         isSongLiked = true; toggleLikeButtons();
         addSongToPosition(at: indexPath.row, position: frontPosition);
         closeMenu();
-//        print("trackInfo = \(cardList[frontPosition].trackInfo.artist)");
         if preferredPlayer == NewsicPreferredPlayer.spotify {
             actionPlaySpotifyTrack(spotifyTrackId: cardList[frontPosition].trackInfo.trackUri);
-        } else {
-//            ytPlayTrack()
         }
         
         tableView.deselectRow(at: indexPath, animated: true);
     }
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "\u{267A}") { (action, indexPath) in
             // delete item at indexPath
             print("removing track from indexpath = \(indexPath.row)")
-            self.removeTrackFromList(indexPath: indexPath, removeTrackHandler: { (didRemove) in
-                self.isSongLiked = false; self.toggleLikeButtons();
+            self.removeTrackFromLikedTracks(indexPath: indexPath, removeTrackHandler: { (didRemove) in
+                self.isSongLiked = false;
+                self.toggleLikeButtons();
                 self.updateTableView();
             })
             
@@ -279,9 +186,35 @@ extension ShowSongViewController: UITableViewDataSource {
         cell.artistLabel.text = element.trackInfo.artist.artistName;
         cell.trackLabel.text = element.trackInfo.songName;
         cell.backgroundColor = .clear
-        //cell.addShadow(shadowOffset: CGSize(width: -5, height: 0))
-//        cell.setNeedsLayout();
         cell.layoutIfNeeded()
+    }
+    
+    func configure(headerCell: SongTableViewHeader, at section: Int) {
+        if isMoodSelected {
+            let emotion = moodObject?.emotions.first?.basicGroup.rawValue
+            headerCell.displayName.text = "Mood: \(emotion!)"
+        } else {
+            headerCell.displayName.text = "Liked in Newsic"
+        }
+        
+        headerCell.layer.shadowColor = UIColor.black.cgColor;
+        headerCell.layer.shadowOffset = CGSize(width: 1, height: -1);
+        headerCell.layer.shadowRadius = 3.0;
+        headerCell.layer.shadowOpacity = 1;
+        
+        let gradient = CAGradientLayer()
+        gradient.frame.size = CGSize(width: headerCell.bounds.width, height: 10)
+        let stopColor = UIColor.white.cgColor
+        let startColor = UIColor.white.cgColor
+        
+        gradient.colors = [stopColor,startColor]
+        gradient.locations = [0.0,0.4]
+        headerCell.layer.addSublayer(gradient)
+        
+        let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
+        screenEdgeRecognizer.cancelsTouchesInView = false
+        screenEdgeRecognizer.delegate = self
+        headerCell.addGestureRecognizer(screenEdgeRecognizer);
     }
     
 }
