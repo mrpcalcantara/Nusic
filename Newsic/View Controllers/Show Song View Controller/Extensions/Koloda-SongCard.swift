@@ -30,14 +30,11 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func addSongToPosition(at index: Int, position: Int) {
-//        let newsicTrack = NewsicTrack(trackInfo: likedTrackList[index].trackInfo, moodInfo: moodObject, userName: auth.session.canonicalUsername!, youtubeInfo: likedTrackList[index].youtubeInfo);
         let newsicTrack = likedTrackList[index]
-        
-        
-        
-//        let newsicTrack = NewsicTrack(trackInfo: likedTrackList[index], moodInfo: moodObject, userName: auth.session.canonicalUsername!, youtubeInfo: likedTrackList[index])
         cardList.insert(newsicTrack, at: position);
-        songCardView.insertCardAtIndexRange(position..<position+1, animated: true);
+        
+        songCardView.insertCardAtIndexRange(position..<position+1, animated: false);
+        songCardView.delegate?.koloda(songCardView, didShowCardAt: position)
     }
     
     func kolodaShouldMoveBackgroundCard(_ koloda: Koloda.KolodaView) -> Bool {
@@ -53,10 +50,7 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
-//        print("Swiped \(direction)")
-        DispatchQueue.main.async {
-            self.hideLikeButtons()
-        }
+        self.hideLikeButtons()
         didUserSwipe = true;
         pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
         if direction == .right {
@@ -73,6 +67,7 @@ extension ShowSongViewController: KolodaViewDelegate {
     
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
         //isPlaying = false
+        print("showing card at: \(index)")
         self.songListTableView.reloadData()
         presentedCardIndex = index
         let cardView = koloda.viewForCard(at: index) as! SongOverlayView
@@ -85,11 +80,12 @@ extension ShowSongViewController: KolodaViewDelegate {
         toggleLikeButtons();
         
         
-        if user.preferredPlayer == NewsicPreferredPlayer.spotify {
+        if preferredPlayer == NewsicPreferredPlayer.spotify {
             print("attempting to start track = \(cardList[index].trackInfo.trackUri)")
             actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.trackUri);
         } else {
-            cardView.youtubePlayer.playVideo()
+            setupYTPlayer(for: cardView, with: (cardList[index].youtubeInfo?.trackId)!)
+            ytPlayTrack()
         }
         
     }
@@ -132,14 +128,15 @@ extension ShowSongViewController: KolodaViewDataSource {
         view.songArtist.text = self.cardList[index].trackInfo.artist.artistName
         view.songTitle.text = self.cardList[index].trackInfo.songName;
         view.genreLabel.text = self.cardList[index].trackInfo.artist.listGenres()
-        if user.preferredPlayer == NewsicPreferredPlayer.spotify {
+        view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
+        if preferredPlayer == NewsicPreferredPlayer.spotify {
             view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
 //            view.youtubePlayer.backgroundColor = UIColor.clear
             view.youtubePlayer.isHidden = true
         } else {
-            view.albumImage.alpha = 0
+//            view.albumImage.alpha = 0
             if let youtubeTrackId = self.cardList[index].youtubeInfo?.trackId {
-                setupYTPlayer(for: view, with: youtubeTrackId)
+//                setupYTPlayer(for: view, with: youtubeTrackId)
             }
             
         }

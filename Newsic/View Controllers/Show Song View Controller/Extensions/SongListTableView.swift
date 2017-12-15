@@ -217,11 +217,11 @@ extension ShowSongViewController: UITableViewDelegate {
         isSongLiked = true; toggleLikeButtons();
         addSongToPosition(at: indexPath.row, position: frontPosition);
         closeMenu();
-        print("trackInfo = \(cardList[frontPosition].trackInfo.artist)");
-        if user.preferredPlayer == NewsicPreferredPlayer.spotify {
+//        print("trackInfo = \(cardList[frontPosition].trackInfo.artist)");
+        if preferredPlayer == NewsicPreferredPlayer.spotify {
             actionPlaySpotifyTrack(spotifyTrackId: cardList[frontPosition].trackInfo.trackUri);
         } else {
-            ytPlayTrack()
+//            ytPlayTrack()
         }
         
         tableView.deselectRow(at: indexPath, animated: true);
