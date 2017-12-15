@@ -236,15 +236,19 @@ class Spotify {
     }
     
     func getGenreListString(numberOfSongs:Int, hasList: Bool, selectedGenreList:[String: Int]? = nil) -> String {
+        var hasList = hasList
         var index = 0
         var genres = ""
         var genreListCount = 0
         var totalCount = genreListCount
+        var selectedGenreList = selectedGenreList
 //        selectedGenreList != nil ? selectedGenreList?.count : numberOfSongs;
         
-        if selectedGenreList != nil {
-            genreListCount = (selectedGenreList?.count)!
+        if let selectedGenreList = selectedGenreList, selectedGenreList.count > 0 {
+            genreListCount = selectedGenreList.count
         } else {
+            hasList = false
+            selectedGenreList = nil
             if genreCount.count < numberOfSongs {
                 var list: String = ""
                 for keyValue in genreCount {

@@ -67,7 +67,7 @@ class SongPickerViewController: NewsicDefaultViewController {
             if selectedGenres.count == 0 {
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.3, animations: {
-                        self.searchButton.setTitle("Random it up!", for: .normal)
+                        self.searchButton.setTitle(self.isMoodCellSelected ? "Get Songs!" : "Random it up!", for: .normal)
                     }, completion: nil)
                 }
                 
@@ -80,7 +80,24 @@ class SongPickerViewController: NewsicDefaultViewController {
             }
         }
     }
-    var isMoodSelected: Bool = true;
+    var isMoodSelected: Bool = true
+    var isMoodCellSelected: Bool = false {
+        didSet {
+            if isMoodCellSelected {
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.searchButton.alpha = 1
+                    }, completion: nil)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.searchButton.alpha = self.newsicControl.selectedIndex == 0 ? 0 : 1
+                    }, completion: nil)
+                }
+            }
+        }
+    }
     var fullArtistList:[SpotifyArtist] = [];
     var fullPlaylistList:[SPTPartialPlaylist] = []
     var currentPlaylistIndex: Int = 0
@@ -153,33 +170,21 @@ class SongPickerViewController: NewsicDefaultViewController {
         moodCollectionView.layoutIfNeeded()
     }
     
-    func manageViewControllerShowSong() {
-        let pageVC = (self.parent as! NewsicPageViewController)
-        if SPTAudioStreamingController.sharedInstance().initialized {
-            pageVC.addViewControllerToPageVC(viewController: pageVC.showSongVC!)
-        } else {
-            pageVC.removeViewControllerFromPageVC(viewController: pageVC.showSongVC!)
-        }
-    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //SwiftSpinner.show("Loading...", animated: true);
-        
+        genreCollectionView.reloadData()
+        moodCollectionView.reloadData()
     }
  
     override func viewDidLoad() {
         super.viewDidLoad()        
-//        NotificationCenter.default.addObserver(self, selector: #selector(manageViewControllerShowSong), name: NSNotification.Name(rawValue: "songDismissed"), object: nil)
-        
-        
-        
-        
+
         setupView()
         setupNavigationBar()
         setupCollectionCellViews();
         setupSegmentedControl()
-        setupCollectionViewTapGestureRecognizer();
         moodHacker = MoodHacker()
         extractInformationFromUser { (isFinished) in
             print(isFinished)
@@ -246,6 +251,15 @@ class SongPickerViewController: NewsicDefaultViewController {
     @objc func toggleMenu() {
         let parent = self.parent as! NewsicPageViewController
         parent.scrollToViewController(index: 0)
+    }
+    
+    func manageViewControllerShowSong() {
+        let pageVC = (self.parent as! NewsicPageViewController)
+        if SPTAudioStreamingController.sharedInstance().initialized {
+            pageVC.addViewControllerToPageVC(viewController: pageVC.showSongVC!)
+        } else {
+            pageVC.removeViewControllerFromPageVC(viewController: pageVC.showSongVC!)
+        }
     }
     
     func extractInformationFromUser(extractionHandler: @escaping (Bool) -> ()) {
@@ -436,27 +450,6 @@ class SongPickerViewController: NewsicDefaultViewController {
             }
         })
     }
-    
-//    func showLoginErrorPopup() {
-//        SwiftSpinner.hide()
-//        let popupDialog = PopupDialog(title: "Error", message: "Unable to connect. Please, try to login again.")
-//        popupDialog.transitionStyle = .zoomIn
-//
-//
-//        let okButton = DefaultButton(title: "OK", action: {
-//            print("Back to Login menu");
-//            self.dismiss(animated: true, completion: nil);
-//        })
-//
-//        popupDialog.addButton(okButton);
-//        SPTAuth.defaultInstance().resetCurrentLogin()
-//        self.present(popupDialog, animated: true, completion: nil)
-//    }
-//
-//    override func didReceiveMemoryWarning() {
-//        super.didReceiveMemoryWarning()
-//        // Dispose of any resources that can be recreated.
-//    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         

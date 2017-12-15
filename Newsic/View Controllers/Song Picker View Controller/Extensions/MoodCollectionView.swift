@@ -11,69 +11,7 @@ import SwiftSpinner
 
 extension SongPickerViewController {
     
-    func setupCollectionViewTapGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(detectTap(_:)))
-        //tapGestureRecognizer.delegate = self as! UIGestureRecognizervaregate
-        
-        //moodCollectionView.addGestureRecognizer(tapGestureRecognizer)
-        //genreCollectionView.addGestureRecognizer(tapGestureRecognizer)
-    }
     
-    @objc func detectTap(_ tapRecognizer: UITapGestureRecognizer? = nil) {
-        let view = self.view
-        let location = tapRecognizer?.location(in: self.view)
-        //        print("location in screen = \(location)")
-        
-        let moodView = genreCollectionView
-        if let moodView = moodView {
-            //                let location = touch?.location(in: moodView)
-            //                if let location = location {
-            //
-            //                }
-            let indexPath = moodView.indexPathForItem(at: location!)
-            
-            
-            
-            if let indexPath = indexPath {
-                //moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
-                //print(location)
-                let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
-                
-                if (cell.borderPathLayer?.path?.contains(location!))! {
-                    print("Touched in indexPath \(indexPath.row)")
-                } else {
-                    print("Touched in indexPath \((indexPath.row)-1)")
-                }
-            }
-        }
-        //
-        //        if view == moodCollectionView {
-        //            let moodView = moodCollectionView
-        //            if let moodView = moodView {
-        //                //                let location = touch?.location(in: moodView)
-        //                //                if let location = location {
-        //                //
-        //                //                }
-        //
-        //                let indexPath = moodView.indexPathForItem(at: location!)
-        //                if let indexPath = indexPath {
-        //                    moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
-        //                    print(location)
-        //                }
-        //            }
-        //
-        //        }
-        
-        if view == genreCollectionView {
-            let moodView = genreCollectionView
-            if let moodView = moodView {
-                let indexPath = moodView.indexPathForItem(at: location!)
-                if let indexPath = indexPath {
-                    moodView.delegate?.collectionView!(moodView, didSelectItemAt: indexPath)
-                }
-            }
-        }
-    }
     
     func setupCollectionCellViews() {
         
@@ -168,7 +106,8 @@ extension SongPickerViewController {
             
             UIView.animate(withDuration: 0.3, animations: {
                 self.genreCollectionView.alpha = 0
-                self.searchButton.alpha = 0
+//                self.searchButton.alpha = self.isMoodCellSelected ? 1 : 0
+                self.manageButton(for: self.moodCollectionView)
                 self.moodCollectionView.alpha = 1
                 self.mainControlView.layoutIfNeeded()
             }, completion: { (completed) in
@@ -185,7 +124,7 @@ extension SongPickerViewController {
             UIView.animate(withDuration: 0.3, animations: {
                 self.moodCollectionView.alpha = 0
                 self.genreCollectionView.alpha = 1
-                self.searchButton.alpha = 1
+                self.manageButton(for: self.genreCollectionView)
                 self.mainControlView.layoutIfNeeded()
             }, completion: { (completed) in
                 
@@ -232,45 +171,117 @@ extension SongPickerViewController {
         return sectionGenres
     }
     
+    func manageButton(for collectionView: UICollectionView) {
+        if collectionView == moodCollectionView {
+            UIView.animate(withDuration: 0.3, animations: {
+                DispatchQueue.main.async {
+                    self.searchButton.alpha = 0
+                    if self.isMoodCellSelected {
+                        self.searchButton.alpha = 1
+                    }
+                }
+                
+            }) { (isCompleted) in
+                DispatchQueue.main.async {
+                    self.searchButton.setTitle("Get Songs!", for: .normal)
+                }
+                
+            }
+        } else if collectionView == genreCollectionView {
+            UIView.animate(withDuration: 0.3, animations: {
+                DispatchQueue.main.async {
+                    self.searchButton.alpha = 1
+                    if self.selectedGenres.count == 0 {
+                        self.searchButton.setTitle("Random it up!", for: .normal)
+                    } else {
+                        self.searchButton.setTitle("Get Songs!", for: .normal)
+                    }
+                }
+                
+            })
+        }
+    }
 }
 
 extension SongPickerViewController: UICollectionViewDelegate {
     
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let newsicCell = cell as! MoodViewCell
-        if let genre = newsicCell.moodLabel.text {
-            if selectedGenres[genre.lowercased()] != nil {
-                DispatchQueue.main.async {
-                    newsicCell.selectCell()
+        if collectionView == moodCollectionView {
+            let newsicCell = cell as! MoodViewCell
+            if let mood = newsicCell.moodLabel.text {
+                if let selectedMood = moodObject?.emotions.first?.basicGroup.rawValue {
+                    if mood == selectedMood {
+                        DispatchQueue.main.async {
+                            newsicCell.isSelected = true
+                            newsicCell.selectCell()
+                        }
+                    }
+                }
+            }
+        } else if collectionView == genreCollectionView {
+            let newsicCell = cell as! MoodViewCell
+            if let genre = newsicCell.moodLabel.text {
+                if selectedGenres[genre.lowercased()] != nil {
+                    DispatchQueue.main.async {
+                        newsicCell.selectCell()
+                    }
                 }
             }
         }
         
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if collectionView == self.moodCollectionView {
+            
+            let cell = moodCollectionView.cellForItem(at: indexPath) as! MoodViewCell
+            if let moodValue = moodObject?.emotions.first?.basicGroup.rawValue {
+                if moodValue == cell.moodLabel.text {
+                    collectionView.delegate?.collectionView!(collectionView, didDeselectItemAt: indexPath)
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        } else if collectionView == self.genreCollectionView {
+            let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
+            if let genre = cell.moodLabel.text {
+                if selectedGenres[genre.lowercased()] != nil {
+                    collectionView.delegate?.collectionView!(collectionView, didDeselectItemAt: indexPath)
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+        return true;
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         if collectionView == self.moodCollectionView {
-            let dyad = EmotionDyad.allValues[indexPath.row]
             
-            //            SwiftSpinner.show("Loading...", animated: true);
+            let cell = moodCollectionView.cellForItem(at: indexPath) as! MoodViewCell
+            let dyad = EmotionDyad.allValues[indexPath.row]
             
             let emotion = Emotion(basicGroup: dyad, detailedEmotions: [], rating: 0)
             self.moodObject = NewsicMood(emotions: [emotion], isAmbiguous: false, sentiment: 0.5, date: Date(), userName: spotifyHandler.auth.session.canonicalUsername, associatedGenres: [], associatedTracks: []);
             self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
-//            self.moodObject?.saveData(saveCompleteHandler: { (reference, error) in  })
             self.selectedGenres.removeAll()
-            passDataToShowSong()
+            isMoodCellSelected = true
+            manageButton(for: moodCollectionView)
+            cell.selectCell()
+//            passDataToShowSong()
             
-            
-            //self.performSegue(withIdentifier: "showVideoSegue", sender: self);
         } else {
             let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
             //Get genre from section genre for section and row.
             let selectedGenre = sectionGenres[indexPath.section-1][indexPath.row].rawValue.lowercased()
             selectedGenres.updateValue(1, forKey: selectedGenre);
+            manageButton(for: genreCollectionView);
             cell.selectCell()
-            //            print("current Path = \(cell.borderPathLayer?.path)")
         }
     }
     
@@ -281,36 +292,19 @@ extension SongPickerViewController: UICollectionViewDelegate {
                 selectedGenres.removeValue(forKey: genre.lowercased());
                 cell.deselectCell()
             }
+            manageButton(for: genreCollectionView);
+        } else if collectionView == self.moodCollectionView {
+            let cell = moodCollectionView.cellForItem(at: indexPath) as! MoodViewCell
+            isMoodCellSelected = false
+            moodObject = nil
+            cell.deselectCell()
+            manageButton(for: moodCollectionView);
         }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        let cell = genreCollectionView.cellForItem(at: indexPath)
-        //cell?.selectAnimation()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
-        let cell = genreCollectionView.cellForItem(at: indexPath)
-        //cell?.deselectAnimation()
     }
     
 }
 
 extension SongPickerViewController: UICollectionViewDataSource {
-    //
-    //    func indexTitles(for collectionView: UICollectionView) -> [String]? {
-    //        if collectionView == genreCollectionView {
-    //            return sectionTitles;
-    //        } else {
-    //            return nil
-    //        }
-    //    }
-    //
-    //    func collectionView(_ collectionView: UICollectionView, indexPathForIndexTitle title: String, at index: Int) -> IndexPath {
-    //        print(index);
-    //        return IndexPath(row: 1, section: 1)
-    //    }
-    
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         if collectionView == moodCollectionView {
@@ -331,7 +325,6 @@ extension SongPickerViewController: UICollectionViewDataSource {
                 return 0
             }
             
-            //            return genreList.count;
         }
         
     }
@@ -352,8 +345,6 @@ extension SongPickerViewController: UICollectionViewDataSource {
                 headerCell.configure(label: "Moods")
             }
             
-            //            sectionHeaderFrame = headerCell.sectionHeaderLabel.frame
-            //            sectionHeaderFrame = CGRect(x: 16, y: 8, width: 0, height: 0)
             return headerCell
         } else {
             fatalError("Unknown reusable kind element");
@@ -366,7 +357,6 @@ extension SongPickerViewController: UICollectionViewDataSource {
         
         var isLastRow: Bool = false
         let cell: MoodViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "moodCell", for: indexPath) as! MoodViewCell;
-        //        print("indexPath.row = \(indexPath.row)")
         if collectionView == self.moodCollectionView {
             let mood = EmotionDyad.allValues[indexPath.row].rawValue
             cell.moodLabel.text = "\(mood)"
@@ -396,10 +386,6 @@ extension SongPickerViewController: UICollectionViewDelegateFlowLayout {
         //- sectionInsets.left;
         return CGSize(width: sizeWidth, height: collectionView.frame.height/10);
     }
-    
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-    //        return sectionInsets;
-    //    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
