@@ -24,8 +24,14 @@ extension SongPickerViewController {
         playerViewController.playlist = newsicPlaylist;
         playerViewController.spotifyHandler = spotifyHandler;
         playerViewController.moodObject = moodObject
-        playerViewController.selectedGenreList = !selectedGenres.isEmpty ? selectedGenres : nil;
         playerViewController.isMoodSelected = isMoodSelected
+        if isMoodSelected {
+            selectedGenres.removeAll()
+            playerViewController.selectedGenreList = nil
+        } else {
+            playerViewController.selectedGenreList = selectedGenres;
+        }
+        
         playerViewController.newMoodOrGenre = true;
         parent.scrollToNextViewController()
 

@@ -280,23 +280,9 @@ class MoodViewCell: UICollectionViewCell {
             borderPathLayer.add(animationGroup, forKey: "myAnimation")
             
             let width = self.moodLabel.text?.width(withConstraintedHeight: self.moodLabel.frame.height, font: defaultFont!)
-            print("\(self.moodLabel.text).width = \(width!)")
-            print("\(self.moodLabel.text).origin.x = \(self.moodLabel.frame.origin.x)")
-            print("cell width = \(self.moodLabel.frame.width)")
-            print("cell leading const = \(self.labelLeadingConstraint.constant)")
-            print("cell trailing const = \(self.labelTrailingConstraint.constant)")
-            
             
             self.layer.insertSublayer(borderPathLayer, at: 0)
-           
-//            UIView.animate(withDuration: 0.3, animations: {
-//                if self.associatedIndex % 2 == 0 {
-//                    self.labelLeadingConstraint.constant = self.leftOffset
-//                } else {
-//                    self.labelTrailingConstraint.constant = self.rightOffset
-//                }
-//                self.layoutIfNeeded()
-//            }, completion: nil);
+            
         }
     }
     
@@ -319,14 +305,7 @@ class MoodViewCell: UICollectionViewCell {
             animationGroup.animations = [animation, flashAnimation]
             animationGroup.duration = 0.5
             borderPathLayer.add(animationGroup, forKey: "myAnimation")
-//
-//            UIView.animate(withDuration: 0.3, animations: {
-//                let transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-//                self.moodLabel.transform = transform
-//            }, completion: { (isCompleted) in
-//                let transform = CGAffineTransform.identity
-//                self.moodLabel.transform = transform
-//            })
+
         }
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {

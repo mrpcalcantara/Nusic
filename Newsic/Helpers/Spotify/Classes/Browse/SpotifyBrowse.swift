@@ -16,7 +16,6 @@ extension Spotify {
         
         //Get Emotions
         var urlString = "https://api.spotify.com/v1/recommendations?seed_genres=\(genres)&limit=\(numberOfSongs)"
-        //&min_popularity=\(popularity)
         
         if let preferredTrackFeatures = preferredTrackFeatures {
             if preferredTrackFeatures.count > 0 {
