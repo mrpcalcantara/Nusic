@@ -18,7 +18,7 @@ final class YouTubeSearch {
         
         let urlString = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=\(query)&type=video&maxResults=1&key=\(apiKey)"
         
-        print("URL called: \(urlString)");
+//        print("URL called: \(urlString)");
         let url = URL(string: urlString);
         //let url = URL(string: urlString);
         

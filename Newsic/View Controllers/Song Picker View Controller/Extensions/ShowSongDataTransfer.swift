@@ -32,6 +32,8 @@ extension SongPickerViewController {
             playerViewController.selectedGenreList = selectedGenres;
         }
         
+        playerViewController.playOnCellularData = newsicUser.settingValues.useMobileData
+        
         playerViewController.newMoodOrGenre = true;
         parent.scrollToNextViewController()
 

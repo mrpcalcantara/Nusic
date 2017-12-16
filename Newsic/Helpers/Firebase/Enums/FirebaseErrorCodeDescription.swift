@@ -8,6 +8,8 @@ enum FirebaseErrorCodeDescription : String {
     case saveFavoriteGenres = "An error occurred while saving the user's favorite genres."
     case deleteFavoriteGenres = "An error occurred while deleting the user's favorite genres."
     case updateGenreCount = "An error occurred while updating the selected genre count."
+    case getSettings = "An error occurred while getting the user settings information."
+    case saveSettings = "An error occurred while saving the user settings information."
     
     //Track
     case getLikedTracks = "An error occurred while fetching your liked tracks."

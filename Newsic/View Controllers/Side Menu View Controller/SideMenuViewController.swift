@@ -19,12 +19,14 @@ class SideMenuViewController: NewsicDefaultViewController {
     @IBOutlet weak var buttonsView: UIView!
     @IBOutlet weak var preferredPlayerLabel: UILabel!
     @IBOutlet weak var preferredPlayerSwitch: UISwitch!
-    
+    @IBOutlet weak var connectionLabel: UILabel!
+    @IBOutlet weak var connectionSwitch: UISwitch!
     //Local variables
     var navbar: UINavigationBar?
     var profileImage: UIImage?
     var username: String?
     var profileImageURL: URL?
+    var useMobileData: Bool?
     var preferredPlayer: NewsicPreferredPlayer?
     var enablePlayerSwitch: Bool?
     
@@ -41,7 +43,7 @@ class SideMenuViewController: NewsicDefaultViewController {
     func logoutUser() {
         UserDefaults.standard.removeObject(forKey: "SpotifySession");
         UserDefaults.standard.synchronize();
-        
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: "resetLogin"), object: nil)
         if SPTAudioStreamingController.sharedInstance().initialized {
            SPTAudioStreamingController.sharedInstance().logout()
         }
@@ -66,13 +68,36 @@ class SideMenuViewController: NewsicDefaultViewController {
             self.present(popup, animated: true, completion: nil)
             sender.isOn = true
         } else {
-            songPicker.newsicUser.preferredPlayer = preferredPlayer
-            songPicker.newsicUser.saveUser { (isSaved, error) in
-                
-            }
+            songPicker.newsicUser.settingValues.preferredPlayer = preferredPlayer
+            songPicker.newsicUser.saveSettings(saveSettingsHandler: { (isSaved, error) in
+                if let error = error {
+                    error.presentPopup(for: self)
+                }
+            })
         }
         
     }
+    
+    @IBAction func connectionSwitchChanged(_ sender: UISwitch) {
+        let parent = self.parent as! NewsicPageViewController
+        let songPicker = parent.songPickerVC as! SongPickerViewController
+        
+        if sender.isOn {
+            connectionLabel.text = "Use Mobile Data: Yes"
+        } else {
+            connectionLabel.text = "Use Mobile Data: No"
+        }
+        
+        useMobileData = sender.isOn
+        
+        songPicker.newsicUser.settingValues.useMobileData = useMobileData
+        songPicker.newsicUser.saveSettings(saveSettingsHandler: { (isSaved, error) in
+            if let error = error {
+                error.presentPopup(for: self)
+            }
+        })
+    }
+    
     @IBAction func aboutClicked(_ sender: Any) {
         
     }
@@ -80,14 +105,8 @@ class SideMenuViewController: NewsicDefaultViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 //        preferredPlayerSwitch.isUserInteractionEnabled = enablePlayerSwitch!
-        if preferredPlayer == NewsicPreferredPlayer.spotify {
-            preferredPlayerLabel.text = "Preferred Player: Spotify"
-            preferredPlayerSwitch.isOn = false
-        } else {
-            preferredPlayerLabel.text = "Preferred Player: YouTube"
-            preferredPlayerSwitch.isOn = true
-        }
         
+        setupSettingsView()
     }
     
     override func viewDidLoad() {
@@ -153,6 +172,27 @@ class SideMenuViewController: NewsicDefaultViewController {
         logoutButton.tintColor = UIColor.green
     }
     
+    func setupSettingsView() {
+        if preferredPlayer == NewsicPreferredPlayer.spotify {
+            preferredPlayerLabel.text = "Preferred Player: Spotify"
+            preferredPlayerSwitch.isOn = false
+        } else {
+            preferredPlayerLabel.text = "Preferred Player: YouTube"
+            preferredPlayerSwitch.isOn = true
+        }
+        
+        if let useMobileData = useMobileData {
+            if useMobileData {
+                connectionLabel.text = "Use Mobile Data: Yes"
+            } else {
+                connectionLabel.text = "Use Mobile Data: No"
+            }
+            
+            connectionSwitch.isOn = useMobileData;
+        }
+        
+    }
+    
     func drawProfileViewPath() {
         let layer = CAShapeLayer();
         let yOrigin = profileView.bounds.origin.y + 8
@@ -196,6 +236,7 @@ class SideMenuViewController: NewsicDefaultViewController {
 //        self.dismiss(animated: true, completion: nil)
 //        self.navigationController?.popViewController(animated: true);
         //let root = self.navigationController?.topViewController
+        let navcontr = self.navigationController
         let vc = self.parent as! NewsicPageViewController
         vc.scrollToViewController(index: 1)
         

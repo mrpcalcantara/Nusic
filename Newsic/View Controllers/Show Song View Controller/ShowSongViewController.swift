@@ -58,6 +58,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     var navbar: UINavigationBar = UINavigationBar()
     var menuEdgePanGestureRecognizer: UIScreenEdgePanGestureRecognizer!
     var preferredPlayer: NewsicPreferredPlayer?
+    var playOnCellularData: Bool?
     //var songPosition: Double! = 0
     
     //Constraints
@@ -127,7 +128,8 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     func setupShowSongVC() {
         if checkConnectivity() {
-            preferredPlayer = user.preferredPlayer
+            preferredPlayer = user.settingValues.preferredPlayer
+//            playOnCellularData = false
             showSwiftSpinner()
             setupMainView()
             setupNavigationBar()

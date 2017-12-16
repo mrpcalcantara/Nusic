@@ -8,6 +8,7 @@
 
 import Foundation
 import MediaPlayer
+import PopupDialog
 
 
 extension ShowSongViewController: SPTAudioStreamingDelegate {
@@ -21,20 +22,13 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePosition position: TimeInterval) {
-        //print("position changed");
+        
         let currentTrack = audioStreaming.metadata.currentTrack;
         if let currentTrack = currentTrack, let currentPlayingTrack = currentPlayingTrack {
             let currentPosition = Float(position)
-            //MPNowPlayingInfoCenter.default().nowPlayingInfo?.updateValue(position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime);
             songProgressSlider.value = currentPosition
             updateElapsedTime(elapsedTime: currentPosition)
-//            self.updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
             self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: currentPlayingTrack.thumbNail as AnyObject, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
-//            var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo;
-            //nowPlayingInfo?.updateValue(position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime)
-            //nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = position
-            //nowPlayingInfo.updateValue(position, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime);
-            //songElapsedTime.text = "\(position.rounded())"
         }
         
     }
@@ -45,48 +39,68 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: String!) {
         
-        // WORKAROUND : Reload data to correctly show Album Images in Table View. Otherwise, they're downloaded but not correctly loaded in the image view.
-        self.songListTableView.reloadData()
-        let currentTrack = audioStreaming.metadata.currentTrack;
-        
-        print("track started");
-        if let currentTrack = currentTrack {
-            if let imageURL = currentTrack.albumCoverArtURL {
-                let imageURL = URL(string: imageURL)!
-                let image = UIImage(); image.downloadImage(from: imageURL) { (image) in
-                    let songTitle = "\(currentTrack.artistName) - \(currentTrack.name)"
-                    let currentPlayingTrack = SpotifyTrack(title: songTitle, thumbNail: image, trackUri: currentTrack.uri, trackId: Spotify.transformToID(trackUri: currentTrack.uri), songName: currentTrack.name ,artist: SpotifyArtist(artistName: currentTrack.artistName, subGenres: nil, popularity: nil, uri: currentTrack.artistUri), audioFeatures: nil)
-                    self.currentPlayingTrack = currentPlayingTrack;
-                    self.activateAudioSession()
-                    self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
-                    DispatchQueue.main.async {
-                        self.toggleLikeButtons()
-                    }
-                    
-                }
-            } else {
-                activateAudioSession()
-                updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: nil, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
-            }
-            setupSongProgress(duration: Float(currentTrack.duration))
+        if Connectivity.isConnectedToNetwork() == .connectedCellular && !playOnCellularData! {
+            let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
+            
+            dialog.addButton(DefaultButton(title: "Yes, keep playing!", action: {
+                self.playOnCellularData = true
+                self.audioStreaming(audioStreaming, didStartPlayingTrack: trackUri)
+            }))
+            dialog.addButton(CancelButton(title: "No", action: {
+                let parent = self.parent as! NewsicPageViewController
+                parent.scrollToPreviousViewController();
+                parent.removeViewControllerFromPageVC(viewController: self)
+                self.actionStopPlayer()
+            }))
+            
+            self.present(dialog, animated: true, completion: nil)
         } else {
-            print("problem starting track");
+            // WORKAROUND : Reload data to correctly show Album Images in Table View. Otherwise, they're downloaded but not correctly loaded in the image view.
+            self.songListTableView.reloadData()
+            let currentTrack = audioStreaming.metadata.currentTrack;
+            
+            print("track started");
+            if let currentTrack = currentTrack {
+                if let imageURL = currentTrack.albumCoverArtURL {
+                    let imageURL = URL(string: imageURL)!
+                    let image = UIImage(); image.downloadImage(from: imageURL) { (image) in
+                        let songTitle = "\(currentTrack.artistName) - \(currentTrack.name)"
+                        let currentPlayingTrack = SpotifyTrack(title: songTitle, thumbNail: image, trackUri: currentTrack.uri, trackId: Spotify.transformToID(trackUri: currentTrack.uri), songName: currentTrack.name ,artist: SpotifyArtist(artistName: currentTrack.artistName, subGenres: nil, popularity: nil, uri: currentTrack.artistUri), audioFeatures: nil)
+                        self.currentPlayingTrack = currentPlayingTrack;
+                        self.activateAudioSession()
+                        self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+                        DispatchQueue.main.async {
+                            self.toggleLikeButtons()
+                        }
+                        
+                    }
+                } else {
+                    activateAudioSession()
+                    updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: nil, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+                }
+                setupSongProgress(duration: Float(currentTrack.duration))
+            } else {
+                print("problem starting track");
+            }
         }
-        
     }
 
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
         DispatchQueue.main.async {
             self.hideLikeButtons()
         }
-        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-        if let nowPlayingInfo = nowPlayingInfo, let currentTrack = audioStreaming.metadata.currentTrack {
-            let elapsedTime = nowPlayingInfo["playbackDuration"] as? Double
-            let duration = Double(currentTrack.duration)
-            if elapsedTime != nil && elapsedTime == duration {
-                songCardView.swipe(.left);
+        
+        
+            let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+            if let nowPlayingInfo = nowPlayingInfo, let currentTrack = audioStreaming.metadata.currentTrack {
+                let elapsedTime = nowPlayingInfo["playbackDuration"] as? Double
+                let duration = Double(currentTrack.duration)
+                if elapsedTime != nil && elapsedTime == duration {
+                    songCardView.swipe(.left);
+                }
             }
-        }
+        
+        
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
@@ -114,6 +128,7 @@ extension ShowSongViewController {
     func setupSpotify() {
         auth = SPTAuth.defaultInstance();
         player = SPTAudioStreamingController.sharedInstance();
+        
         
         setupStreamingDelegate();
         setupPlaybackDelegate();

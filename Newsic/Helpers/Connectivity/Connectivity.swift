@@ -53,5 +53,9 @@ public class Connectivity {
         
     }
     
+    class func isConnectedToNetworkTEST() -> ConnectivityStatus {
+        return .connectedCellular
+    }
+    
 }
 

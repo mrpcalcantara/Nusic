@@ -32,6 +32,7 @@
 		8C268B541FCFB53100BB4C6F /* DismissAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B531FCFB53100BB4C6F /* DismissAnimationController.swift */; };
 		8C268B561FCFD62F00BB4C6F /* SwipeInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B551FCFD62F00BB4C6F /* SwipeInteractionController.swift */; };
 		8C268B581FD0086E00BB4C6F /* NewsicCustomLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B571FD0086E00BB4C6F /* NewsicCustomLayer.swift */; };
+		8C26C35A1FE517F600365142 /* NewsicUserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C26C3591FE517F600365142 /* NewsicUserSettings.swift */; };
 		8C2701171FDA45150044D10F /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2701161FDA45150044D10F /* Connectivity.swift */; };
 		8C27011B1FDA46090044D10F /* ConnectivityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27011A1FDA46090044D10F /* ConnectivityStatus.swift */; };
 		8C27011D1FDA55E10044D10F /* FirebaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27011C1FDA55E10044D10F /* FirebaseHelper.swift */; };
@@ -150,6 +151,7 @@
 		8C268B531FCFB53100BB4C6F /* DismissAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissAnimationController.swift; sourceTree = "<group>"; };
 		8C268B551FCFD62F00BB4C6F /* SwipeInteractionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeInteractionController.swift; sourceTree = "<group>"; };
 		8C268B571FD0086E00BB4C6F /* NewsicCustomLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicCustomLayer.swift; sourceTree = "<group>"; };
+		8C26C3591FE517F600365142 /* NewsicUserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicUserSettings.swift; sourceTree = "<group>"; };
 		8C2701161FDA45150044D10F /* Connectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
 		8C27011A1FDA46090044D10F /* ConnectivityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityStatus.swift; sourceTree = "<group>"; };
 		8C27011C1FDA55E10044D10F /* FirebaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseHelper.swift; sourceTree = "<group>"; };
@@ -393,6 +395,55 @@
 				8C55956C1FD4FE6600E70667 /* NewsicError.swift */,
 			);
 			path = "Error Handling";
+			sourceTree = "<group>";
+		};
+		8C26C3531FE510B700365142 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				8C0C1E971F61005100CF8516 /* NewsicUser.swift */,
+				8C26C3591FE517F600365142 /* NewsicUserSettings.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		8C26C3541FE510C200365142 /* Mood */ = {
+			isa = PBXGroup;
+			children = (
+				8C4FBD7B1F5945CE00712873 /* NewsicMood.swift */,
+			);
+			path = Mood;
+			sourceTree = "<group>";
+		};
+		8C26C3551FE510C700365142 /* Track */ = {
+			isa = PBXGroup;
+			children = (
+				8C0C1E9C1F6114C100CF8516 /* NewsicTrack.swift */,
+			);
+			path = Track;
+			sourceTree = "<group>";
+		};
+		8C26C3561FE510CB00365142 /* Artist */ = {
+			isa = PBXGroup;
+			children = (
+				8C09622D1F614FA60025A65E /* NewsicArtist.swift */,
+			);
+			path = Artist;
+			sourceTree = "<group>";
+		};
+		8C26C3571FE510CF00365142 /* Genre */ = {
+			isa = PBXGroup;
+			children = (
+				8C09622F1F61550D0025A65E /* NewsicGenre.swift */,
+			);
+			path = Genre;
+			sourceTree = "<group>";
+		};
+		8C26C3581FE510D300365142 /* Playlist */ = {
+			isa = PBXGroup;
+			children = (
+				8CFD735B1F68F57E004E7D08 /* NewsicPlaylist.swift */,
+			);
+			path = Playlist;
 			sourceTree = "<group>";
 		};
 		8C2701181FDA45840044D10F /* Connectivity */ = {
@@ -760,12 +811,12 @@
 		8CA40DFA1F8B7DC400C95B9D /* Newsic */ = {
 			isa = PBXGroup;
 			children = (
-				8C4FBD7B1F5945CE00712873 /* NewsicMood.swift */,
-				8C0C1E971F61005100CF8516 /* NewsicUser.swift */,
-				8C0C1E9C1F6114C100CF8516 /* NewsicTrack.swift */,
-				8C09622D1F614FA60025A65E /* NewsicArtist.swift */,
-				8C09622F1F61550D0025A65E /* NewsicGenre.swift */,
-				8CFD735B1F68F57E004E7D08 /* NewsicPlaylist.swift */,
+				8C26C3581FE510D300365142 /* Playlist */,
+				8C26C3571FE510CF00365142 /* Genre */,
+				8C26C3561FE510CB00365142 /* Artist */,
+				8C26C3551FE510C700365142 /* Track */,
+				8C26C3541FE510C200365142 /* Mood */,
+				8C26C3531FE510B700365142 /* User */,
 			);
 			path = Newsic;
 			sourceTree = "<group>";
@@ -1086,6 +1137,7 @@
 				8C4FBD7A1F59456200712873 /* Emotion.swift in Sources */,
 				8C5B18F21FCBBEF400EBFAE1 /* CollectionViewHeader.swift in Sources */,
 				8C3A6F1B1FCD769C00BA7981 /* ShowSongDataTransfer.swift in Sources */,
+				8C26C35A1FE517F600365142 /* NewsicUserSettings.swift in Sources */,
 				8CD0C7271FD541D90095A309 /* URLSession.swift in Sources */,
 				8C2911AE1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift in Sources */,
 				8C2701171FDA45150044D10F /* Connectivity.swift in Sources */,

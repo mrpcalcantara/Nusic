@@ -316,7 +316,7 @@
                                                 </connections>
                                             </switch>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y0t-gD-h5t" customClass="NewsicButton" customModule="Newsic" customModuleProvider="target">
-                                                <rect key="frame" x="16" y="55" width="343" height="35"/>
+                                                <rect key="frame" x="16" y="111" width="343" height="35"/>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                                 <color key="tintColor" red="0.1146525223" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <state key="normal" title="Logout">
@@ -331,15 +331,35 @@
                                                     <action selector="logoutClicked:" destination="RzT-Hk-gHT" eventType="touchUpInside" id="tfx-qO-U2t"/>
                                                 </connections>
                                             </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6s4-6X-ITK">
+                                                <rect key="frame" x="16" y="60" width="343" height="31"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YKx-eA-6WM">
+                                                        <rect key="frame" x="0.0" y="0.0" width="294" height="31"/>
+                                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="18"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PcN-rZ-cWv">
+                                                        <rect key="frame" x="294" y="0.0" width="51" height="31"/>
+                                                        <connections>
+                                                            <action selector="connectionSwitchChanged:" destination="RzT-Hk-gHT" eventType="valueChanged" id="IWk-gD-e2N"/>
+                                                        </connections>
+                                                    </switch>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" red="0.78418474740932642" green="0.78418474740932642" blue="0.78418474740932642" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailingMargin" secondItem="6s4-6X-ITK" secondAttribute="trailing" constant="8" id="1u6-k3-FwX"/>
                                             <constraint firstAttribute="height" constant="402" id="7X5-lw-MZd"/>
+                                            <constraint firstItem="6s4-6X-ITK" firstAttribute="leading" secondItem="mXZ-K8-znK" secondAttribute="leadingMargin" constant="8" id="A7x-eP-fz5"/>
+                                            <constraint firstItem="y0t-gD-h5t" firstAttribute="top" secondItem="6s4-6X-ITK" secondAttribute="bottom" constant="20" id="CSm-Vb-Aws"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="iUI-jF-ina" secondAttribute="trailing" constant="8" id="T1d-Hh-UT7"/>
                                             <constraint firstItem="ZAk-9u-Htj" firstAttribute="leading" secondItem="mXZ-K8-znK" secondAttribute="leadingMargin" constant="8" id="Z9C-cs-Mro"/>
+                                            <constraint firstItem="6s4-6X-ITK" firstAttribute="top" secondItem="ZAk-9u-Htj" secondAttribute="bottom" constant="20.5" id="bGK-EJ-u1f"/>
                                             <constraint firstItem="y0t-gD-h5t" firstAttribute="leading" secondItem="mXZ-K8-znK" secondAttribute="leadingMargin" constant="8" id="eFu-1y-dyD"/>
                                             <constraint firstItem="iUI-jF-ina" firstAttribute="top" secondItem="mXZ-K8-znK" secondAttribute="topMargin" constant="8" id="gEu-jS-vOj"/>
-                                            <constraint firstItem="y0t-gD-h5t" firstAttribute="top" secondItem="iUI-jF-ina" secondAttribute="bottom" constant="8" id="gna-xD-HiH"/>
                                             <constraint firstItem="iUI-jF-ina" firstAttribute="leading" secondItem="ZAk-9u-Htj" secondAttribute="trailing" constant="8" id="lM8-l1-54R"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="y0t-gD-h5t" secondAttribute="trailing" constant="8" id="vaA-ne-yIu"/>
                                             <constraint firstItem="ZAk-9u-Htj" firstAttribute="top" secondItem="mXZ-K8-znK" secondAttribute="topMargin" constant="8" id="vfT-EV-GbR"/>
@@ -396,6 +416,8 @@
                     </view>
                     <connections>
                         <outlet property="buttonsView" destination="mXZ-K8-znK" id="xPc-Bo-EAc"/>
+                        <outlet property="connectionLabel" destination="YKx-eA-6WM" id="Lu0-1g-cx0"/>
+                        <outlet property="connectionSwitch" destination="PcN-rZ-cWv" id="Ewv-Xz-Vhi"/>
                         <outlet property="logoutButton" destination="y0t-gD-h5t" id="njr-gp-ip5"/>
                         <outlet property="menuScrollView" destination="PA8-bl-Mo5" id="NGE-SA-3k5"/>
                         <outlet property="preferredPlayerLabel" destination="ZAk-9u-Htj" id="8dO-Ly-NCa"/>
