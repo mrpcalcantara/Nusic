@@ -263,9 +263,9 @@ class MoodViewCell: UICollectionViewCell {
         if let borderPathLayer = borderPathLayer {
             borderPathLayer.removeAllAnimations()
             borderPathLayer.strokeColor = UIColor.green.cgColor
-            let animation = CABasicAnimation(keyPath: "strokeEnd")
-            animation.fromValue = 0
-            animation.duration = 0.2
+            let strokePathAnimation = CABasicAnimation(keyPath: "strokeEnd")
+            strokePathAnimation.fromValue = 0
+            strokePathAnimation.duration = 0.2
             
             let flashAnimation = CABasicAnimation(keyPath: "fillColor")
             flashAnimation.fromValue = self.deselectedColor.cgColor
@@ -274,8 +274,15 @@ class MoodViewCell: UICollectionViewCell {
             flashAnimation.autoreverses = true
             flashAnimation.repeatCount = .infinity
             
+            let strokeColorAnimation = CABasicAnimation(keyPath: "strokeColor")
+            strokeColorAnimation.fromValue = self.selectedColor.cgColor
+            strokeColorAnimation.toValue = UIColor.green.cgColor
+            strokeColorAnimation.duration = 0.5
+            strokeColorAnimation.autoreverses = true
+            strokeColorAnimation.repeatCount = .infinity
+            
             let animationGroup = CAAnimationGroup()
-            animationGroup.animations = [animation, flashAnimation]
+            animationGroup.animations = [strokePathAnimation, strokeColorAnimation, flashAnimation]
             animationGroup.duration = .greatestFiniteMagnitude
             borderPathLayer.add(animationGroup, forKey: "myAnimation")
             

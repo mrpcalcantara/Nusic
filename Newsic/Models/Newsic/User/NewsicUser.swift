@@ -105,10 +105,17 @@ extension NewsicUser: FirebaseModel {
                 }
                 
                 self.getSettings(fetchSettingsHandler: { (settings, error) in
-                    self.settingValues = settings!
-                    if self.isPremium! {
-                        self.settingValues.preferredPlayer = .spotify
+                    if let settings = settings {
+                        self.settingValues = settings
+                    } else {
+                        var preferredPlayer: NewsicPreferredPlayer = .youtube
+                        if self.isPremium! {
+                            preferredPlayer = .spotify
+                        }
+                        self.settingValues = NewsicUserSettings(useMobileData: false, preferredPlayer: preferredPlayer)
                     }
+                    
+                    
                     getUserHandler(self, error);
                 })
                 
@@ -222,7 +229,7 @@ extension NewsicUser: FirebaseModel {
                 
                 fetchSettingsHandler(settings, nil);
             } else {
-                fetchSettingsHandler(NewsicUserSettings(useMobileData: false, preferredPlayer: .youtube), nil);
+                fetchSettingsHandler(nil, nil);
             }
         }) { (error) in
             fetchSettingsHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: "", systemError: error));
