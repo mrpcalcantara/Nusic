@@ -126,10 +126,14 @@ extension ShowSongViewController: KolodaViewDataSource {
         view.songTitle.text = self.cardList[index].trackInfo.songName;
         view.genreLabel.text = self.cardList[index].trackInfo.artist.listGenres()
         view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
+        
+        //TODO: Swiping for Spotify shows YT view regardless, and as such, the album image is hidden.
         if preferredPlayer == NewsicPreferredPlayer.spotify {
-            view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
-            view.youtubePlayer.isHidden = true
+            view.setupViewForSpotify()
+        } else {
+            
         }
+        
         view.layer.borderWidth = 0.5;
         view.layer.borderColor = UIColor.lightGray.cgColor
         view.layer.cornerRadius = 15

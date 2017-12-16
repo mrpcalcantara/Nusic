@@ -84,6 +84,15 @@ class SongOverlayView: OverlayView {
         self.layer.cornerRadius = 15
     }
     
+    func setupViewForSpotify() {
+        self.youtubePlayer.removeFromSuperview()
+//        self.layoutIfNeeded()
+    }
+    
+    func setupViewForYoutube() {
+        
+    }
+    
     func loadViewFromNib() -> UIView {
         let view: UIView = UINib(nibName: "OverlayView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! UIView
         return view
