@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Setup Spotify Values
+        
         auth.redirectURL     = URL(string: Spotify.redirectURI!)
         auth.sessionUserDefaultsKey = "current session"
         auth.tokenSwapURL = URL(string: Spotify.swapURL!);
@@ -50,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // 3 - handle callback in closure
             auth.handleAuthCallback(withTriggeredAuthURL: url, callback: { (error, session) in
                 // 4- handle error
+                
                 if error != nil || session == nil {
                     print("error!: \(String(describing: error?.localizedDescription))")
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "loginUnsuccessful"), object: nil)

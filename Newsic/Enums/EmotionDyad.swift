@@ -36,6 +36,5 @@ enum EmotionDyad: String {
     case unknown = "unknown_emotion"
     case none = ""
     
-    //static let allValues = [optimism, hope, anxiety, love, guilt, delight, submission, curiosity, sentimentality, awe, despair, shame, disapproval, unbelief, outrage, remorse, envy, pessimism, contempt, cynicism, morbidness, aggressiveness, pride, dominance];
-    static let allValues = [optimism, hope, anxiety, love, guilt, delight, submission, curiosity, sentimentality, awe, despair, shame, disapproval, unbelief, outrage, remorse, envy, pessimism, contempt, cynicism,  aggressiveness, pride, dominance];
+    static let allValues = [love, delight, pride, optimism, hope, curiosity, awe, sentimentality, anxiety, guilt, submission, disapproval, unbelief, shame, contempt, cynicism, remorse, envy, pessimism, despair, outrage, aggressiveness, dominance];
 }

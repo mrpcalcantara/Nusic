@@ -264,7 +264,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
         if collectionView == self.moodCollectionView {
             
             let cell = moodCollectionView.cellForItem(at: indexPath) as! MoodViewCell
-            let dyad = EmotionDyad.allValues[indexPath.row]
+            let dyad = moods[indexPath.row]
             
             let emotion = Emotion(basicGroup: dyad, detailedEmotions: [], rating: 0)
             self.moodObject = NewsicMood(emotions: [emotion], isAmbiguous: false, sentiment: 0.5, date: Date(), userName: spotifyHandler.auth.session.canonicalUsername, associatedGenres: [], associatedTracks: []);
@@ -317,7 +317,7 @@ extension SongPickerViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == self.moodCollectionView {
-            return EmotionDyad.allValues.count
+            return moods.count
         } else {
             if section > 0 {
                 return getGenresForSection(section: section-1).count
@@ -358,9 +358,9 @@ extension SongPickerViewController: UICollectionViewDataSource {
         var isLastRow: Bool = false
         let cell: MoodViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "moodCell", for: indexPath) as! MoodViewCell;
         if collectionView == self.moodCollectionView {
-            let mood = EmotionDyad.allValues[indexPath.row].rawValue
+            let mood = moods[indexPath.row].rawValue
             cell.moodLabel.text = "\(mood)"
-            isLastRow = indexPath.row > EmotionDyad.allValues.count - 3
+            isLastRow = indexPath.row > moods.count - 3
         } else {
             let genres = sectionGenres[indexPath.section-1]
             let genre = genres[indexPath.row].rawValue

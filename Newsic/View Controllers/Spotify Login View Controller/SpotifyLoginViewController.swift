@@ -19,6 +19,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     var loading: SwiftSpinner!;
     var safariViewController: SFSafariViewController!
     var timer: Timer! = Timer();
+    var gotToken: Bool = false;
     
     //Objects for extracting User and Genres
     
@@ -38,14 +39,18 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     override func viewDidLoad() {
         super.viewDidLoad();
         
+        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateAfterFirstLogin), name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setupSpotify), name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(notificationResetLogin), name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
+    
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
-        animateLogo()
         checkFirebaseConnectivity()
     }
     
@@ -53,6 +58,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         super.viewWillAppear(animated)
 //        loginButton.alpha = 0
 //        animateLogo()
+        animateLogo()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -90,7 +96,9 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     }
     
     @objc func moveToMainScreen() {
-        
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
         let pageViewController = NewsicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
 //        self.present(pageViewController, animated: false, completion: nil);
         self.present(pageViewController, animated: true) {
@@ -121,6 +129,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     }
     
     @objc func updateAfterFirstLogin () {
+        gotToken = true
         getSession();
     }
     
@@ -163,10 +172,10 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
             }
             
         } else {
-            self.resetLogin()
-            self.setViewResetLogin()
+            if !gotToken {
+                self.resetLogin()
+            }
         }
-        
     }
     
     func getRefreshToken(currentSession: SPTSession, refreshTokenCompletionHandler: @escaping (Bool) -> ()) {
@@ -185,13 +194,23 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
                 self.loginButton.isHidden = false;
                 self.loginUrl = self.auth.spotifyWebAuthenticationURL();
                 self.resetLogin()
-                self.setViewResetLogin()
+//                self.setViewResetLogin()
                 refreshTokenCompletionHandler(false)
             }
         })
     }
     
+    @objc func notificationResetLogin() {
+        resetSpotifyLogin()
+//        viewDidLoad()
+    }
+    
     func resetLogin() {
+        resetSpotifyLogin()
+        resetViewLogin()
+    }
+    
+    func resetSpotifyLogin() {
         self.session = nil
         self.auth.session = nil
         let userDefaults = UserDefaults.standard;
@@ -199,7 +218,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         userDefaults.synchronize()
     }
     
-    func setViewResetLogin() {
+    func resetViewLogin() {
         UIView.animate(withDuration: 1, animations: {
             self.newsicLabl.center.y = self.view.bounds.height / 4
         })

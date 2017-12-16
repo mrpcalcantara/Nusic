@@ -7,6 +7,7 @@
 //
 
 import youtube_ios_player_helper
+import PopupDialog
 
 extension ShowSongViewController: YTPlayerViewDelegate {
     
@@ -32,6 +33,24 @@ extension ShowSongViewController: YTPlayerViewDelegate {
     
     
     func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
+        if Connectivity.isConnectedToNetwork() == .connectedCellular && !playOnCellularData! {
+            let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
+            
+            dialog.addButton(DefaultButton(title: "Yes, keep playing!", action: {
+                self.playOnCellularData = true
+                self.playerViewDidBecomeReady(playerView)
+            }))
+            dialog.addButton(CancelButton(title: "No", action: {
+                let parent = self.parent as! NewsicPageViewController
+                parent.scrollToPreviousViewController();
+                parent.removeViewControllerFromPageVC(viewController: self)
+                playerView.stopVideo()
+            }))
+            
+            self.present(dialog, animated: true, completion: nil)
+        } else {
+        
+        }
         playerView.playVideo();
     }
     

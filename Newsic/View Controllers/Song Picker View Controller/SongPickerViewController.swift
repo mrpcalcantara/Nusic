@@ -30,15 +30,20 @@ class SongPickerViewController: NewsicDefaultViewController {
     var spotifyHandler = Spotify();
     var moodObject: NewsicMood? = nil;
     var genres:[NewsicGenre]! = nil
+    var moods:[EmotionDyad]! = [] {
+        didSet {
+            moodCollectionView.reloadData();
+        }
+    }
     var newsicUser: NewsicUser! = nil {
         didSet {
-//            self.usernameLabel.text = newsicUser.displayName;
             let parent = self.parent as! NewsicPageViewController
             let sideMenu = parent.sideMenuVC as! SideMenuViewController
             
             sideMenu.username = self.newsicUser.displayName != "" ? self.newsicUser.displayName : self.newsicUser.userName;
             
-            sideMenu.preferredPlayer = self.newsicUser.preferredPlayer
+            sideMenu.preferredPlayer = self.newsicUser.settingValues.preferredPlayer
+            sideMenu.useMobileData = self.newsicUser.settingValues.useMobileData
             sideMenu.enablePlayerSwitch = self.newsicUser.isPremium! ? true : false
             
             if self.spotifyHandler.user.smallestImage != nil, let imageURL = self.spotifyHandler.user.smallestImage.imageURL {
@@ -162,8 +167,12 @@ class SongPickerViewController: NewsicDefaultViewController {
         
         self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
         
-        passDataToShowSong();
-
+        if Connectivity.isConnectedToNetwork() == .connectedCellular && newsicUser.settingValues.useMobileData! == false {
+            showMobileDataPopup()
+        } else {
+            passDataToShowSong();
+        }
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -183,6 +192,8 @@ class SongPickerViewController: NewsicDefaultViewController {
     override func viewDidLoad() {
         super.viewDidLoad()        
 
+        
+        
         setupView()
         setupNavigationBar()
         setupCollectionCellViews();
@@ -264,6 +275,14 @@ class SongPickerViewController: NewsicDefaultViewController {
         }
     }
     
+    func showMobileDataPopup(){
+        let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using mobile data and have set the app to not use this data. Please connect to a WiFi network or enable Mobile Data usage in the Settings.", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
+        
+        dialog.addButton(DefaultButton(title: "Got it!", action: nil))
+        
+        self.present(dialog, animated: true, completion: nil)
+    }
+    
     func extractInformationFromUser(extractionHandler: @escaping (Bool) -> ()) {
         
         fullArtistList = [];
@@ -282,6 +301,9 @@ class SongPickerViewController: NewsicDefaultViewController {
                 
                 if let user = user {
                     self.spotifyHandler.user = user;
+                    FirebaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
+                        self.moods = dyadList
+                    }
                     let username = user.canonicalUserName!
                     
                     let displayName = user.displayName != nil ? user.displayName : ""
@@ -307,6 +329,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                             })
                         } else {
                             self.newsicUser = fbUser!
+                            
                             DispatchQueue.main.async {
                                 SwiftSpinner.show("Getting Favorite Genres..", animated: true);
                             }
@@ -453,25 +476,25 @@ class SongPickerViewController: NewsicDefaultViewController {
         })
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == showVideoSegue {
-            let playerViewController = segue.destination as! ShowSongViewController
-            playerViewController.transitioningDelegate = self
-            playerViewController.user = newsicUser;
-            playerViewController.playlist = newsicPlaylist;
-            playerViewController.spotifyHandler = spotifyHandler;
-            playerViewController.moodObject = moodObject
-            playerViewController.selectedGenreList = !selectedGenres.isEmpty ? selectedGenres : nil;
-            playerViewController.isMoodSelected = isMoodSelected
-            
-            
-        } else if segue.identifier == sideMenuSegue {
-            let sideMenuViewController = segue.destination as! SideMenuViewController
-            sideMenuViewController.profileImage = newsicUser.profileImage
-            sideMenuViewController.username = newsicUser.displayName
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//
+//        if segue.identifier == showVideoSegue {
+//            let playerViewController = segue.destination as! ShowSongViewController
+//            playerViewController.transitioningDelegate = self
+//            playerViewController.user = newsicUser;
+//            playerViewController.playlist = newsicPlaylist;
+//            playerViewController.spotifyHandler = spotifyHandler;
+//            playerViewController.moodObject = moodObject
+//            playerViewController.selectedGenreList = !selectedGenres.isEmpty ? selectedGenres : nil;
+//            playerViewController.isMoodSelected = isMoodSelected
+//
+//
+//        } else if segue.identifier == sideMenuSegue {
+//            let sideMenuViewController = segue.destination as! SideMenuViewController
+//            sideMenuViewController.profileImage = newsicUser.profileImage
+//            sideMenuViewController.username = newsicUser.displayName
+//        }
+//    }
 
 }
 

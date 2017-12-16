@@ -18,21 +18,17 @@ class NewsicUser: Iterable {
     var profileImage: UIImage?
     var favoriteGenres: [NewsicGenre]?
     var isPremium: Bool?
-    var preferredPlayer: NewsicPreferredPlayer? = .youtube
+    var settingValues: NewsicUserSettings
     var reference: DatabaseReference!
     
-    init(userName: String, displayName: String? = "", emailAddress: String? = "", imageURL: String? = "", territory: String? = "", favoriteGenres: [NewsicGenre]? = nil, isPremium: Bool? = false, preferredPlayer: NewsicPreferredPlayer? = nil) {
+    init(userName: String, displayName: String? = "", emailAddress: String? = "", imageURL: String? = "", territory: String? = "", favoriteGenres: [NewsicGenre]? = nil, isPremium: Bool? = false, settingValues: NewsicUserSettings? = NewsicUserSettings()) {
         self.userName = userName;
         self.displayName = displayName!;
         self.emailAddress = emailAddress!
         self.territory = territory!;
         self.favoriteGenres = favoriteGenres;
         self.isPremium = isPremium
-        if preferredPlayer != nil {
-            self.preferredPlayer = preferredPlayer
-        } else {
-            self.preferredPlayer = isPremium! ? .spotify : .youtube
-        }
+        self.settingValues = settingValues!;
         
         self.getImage(imageURL: imageURL!);
         self.reference = Database.database().reference();
@@ -68,8 +64,7 @@ extension NewsicUser: FirebaseModel {
                           "displayName": displayName,
                           "territory": territory,
                           "emailAddress": emailAddress,
-                          "isPremium": isPremium! ? 1 : 0,
-                          "preferredPlayer": preferredPlayer?.rawValue] as [String : Any]
+                          "isPremium": isPremium! ? 1 : 0] as [String : Any]
         
         
         reference.child("users").child(userName).updateChildValues(dictionary) { (error, reference) in
@@ -97,18 +92,27 @@ extension NewsicUser: FirebaseModel {
     func getUser(getUserHandler: @escaping (NewsicUser?, NewsicError?) -> ()) {
         getData { (dictionary, error) in
             if let dictionary = dictionary {
-                self.userName = dictionary["canonicalUserName"] as? String ?? ""
+                self.userName = dictionary["canonicalUserName"] as? String ?? self.userName
                 
-                self.displayName = dictionary["displayName"] as? String ?? ""
-                self.emailAddress = dictionary["emailAddress"] as? String ?? ""
+                self.displayName = dictionary["displayName"] as? String ?? self.displayName
+                self.emailAddress = dictionary["emailAddress"] as? String ?? self.emailAddress
                 if let isPremiumValue = dictionary["isPremium"] as? NSNumber {
-                    self.isPremium = Bool(isPremiumValue) ?? false
+                    self.isPremium = Bool(isPremiumValue) ?? self.isPremium
                 }
                 
-                self.preferredPlayer = NewsicPreferredPlayer(rawValue: (dictionary["preferredPlayer"] as? Int)!) ?? NewsicPreferredPlayer.youtube
-                self.territory = dictionary["territory"] as? String ?? ""
+                if let territory = dictionary["territory"] as? String {
+                    self.territory = territory != "" ? territory : self.territory 
+                }
                 
-                getUserHandler(self, error);
+                self.getSettings(fetchSettingsHandler: { (settings, error) in
+                    self.settingValues = settings!
+                    if self.isPremium! {
+                        self.settingValues.preferredPlayer = .spotify
+                    }
+                    getUserHandler(self, error);
+                })
+                
+                
             } else {
                 getUserHandler(nil, error);
             }
@@ -123,7 +127,9 @@ extension NewsicUser: FirebaseModel {
             if let error = error {
                 saveUserHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.saveUser.rawValue, systemError: error))
             } else {
-                saveUserHandler(true, nil)
+                self.saveSettings(saveSettingsHandler: { (isSaved, error) in
+                    saveUserHandler(isSaved, error)
+                })
             }
         }
     }
@@ -192,6 +198,52 @@ extension NewsicUser: FirebaseModel {
             }
         }
     }
+    
+    //Settings
+    //----------------
+    
+    func getSettings(fetchSettingsHandler: @escaping (NewsicUserSettings?, NewsicError?) -> ()) {
+        reference.child("settings").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
+            let dictionary = dataSnapshot.value as? NSDictionary
+            if let dictionary = dictionary {
+                
+                var preferredPlayer: NewsicPreferredPlayer?
+                var useMobileData: Bool? = true
+                
+                if let preferredPlayerValue = dictionary["preferredPlayer"] as? NSNumber {
+                    preferredPlayer = NewsicPreferredPlayer(rawValue: Int(preferredPlayerValue))
+                }
+                
+                if let useMobileDataValue = dictionary["useMobileData"] as? NSNumber {
+                    useMobileData = Bool(useMobileDataValue)
+                }
+                
+                let settings = NewsicUserSettings(useMobileData: useMobileData!, preferredPlayer: preferredPlayer!)
+                
+                fetchSettingsHandler(settings, nil);
+            } else {
+                fetchSettingsHandler(NewsicUserSettings(useMobileData: false, preferredPlayer: .youtube), nil);
+            }
+        }) { (error) in
+            fetchSettingsHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: "", systemError: error));
+        }
+    }
+    
+    func saveSettings(saveSettingsHandler: @escaping(Bool, NewsicError?) -> ()) {
+        let dictionary = ["preferredPlayer": settingValues.preferredPlayer?.rawValue,
+                          "useMobileData": settingValues.useMobileData! ? 1 : 0] as [String : Any]
+        
+        
+        reference.child("settings").child(userName).updateChildValues(dictionary) { (error, reference) in
+            if let error = error {
+                saveSettingsHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.saveSettings.rawValue, systemError: error))
+            } else {
+                saveSettingsHandler(true, nil);
+            }
+            
+        }
+    }
+    
     
     func updateGenreCount(for genre: String, updateGenreHandler: @escaping (Bool?, NewsicError?) -> ()) {
         if favoriteGenres == nil {
