@@ -27,6 +27,7 @@ class NewsicPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         dataSource = self
         delegate = self
         
@@ -35,6 +36,8 @@ class NewsicPageViewController: UIPageViewController {
 //                view.bounces = false
             }
         }
+        
+        
         
         
         songPickerVC = UIStoryboard(name: "Main", bundle: nil) .
@@ -52,8 +55,23 @@ class NewsicPageViewController: UIPageViewController {
             orderedViewControllers.insert(songPickerVC, at: 1)
         }
         
+        for view in view.subviews {
+            if let myView = view as? UIScrollView {
+                myView.canCancelContentTouches = true
+                myView.delegate = self
+                
+                //            myView.delaysContentTouches = true
+            }
+        }
+        
         if let myView = view?.subviews.first as? UIScrollView {
-            myView.canCancelContentTouches = false
+//            var scrollView = NewsicScrollView(frame: myView.frame)
+//            scrollView = myView
+//            
+//            myView.removeFromSuperview()
+//            view.addSubview(scrollView)
+            myView.canCancelContentTouches = true
+//            myView.delaysContentTouches = true
         }
         
 //        if let showSongVC = showSongVC {
@@ -212,6 +230,14 @@ extension NewsicPageViewController: UIPageViewControllerDataSource {
     
 }
 
+extension NewsicPageViewController : UIScrollViewDelegate {
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        print("started dragging")
+    }
+    
+    
+}
 
 extension NewsicPageViewController: UIPageViewControllerDelegate {
     
