@@ -16,6 +16,7 @@
 		8C0C1E9B1F6100CC00CF8516 /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E9A1F6100CC00CF8516 /* FirebaseModel.swift */; };
 		8C0C1E9D1F6114C200CF8516 /* NewsicTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E9C1F6114C100CF8516 /* NewsicTrack.swift */; };
 		8C0C1E9F1F61343900CF8516 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E9E1F61343900CF8516 /* Date.swift */; };
+		8C0ED6BD1FE7C79700394909 /* ChoiceListViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0ED6BC1FE7C79700394909 /* ChoiceListViewDelegate.swift */; };
 		8C0F428C1FE3A2F000EDD9FA /* ShowSongViewController-Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0F428B1FE3A2F000EDD9FA /* ShowSongViewController-Logic.swift */; };
 		8C1434701FDE63EC0061E2CB /* NewsicPreferredPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C14346F1FDE63EC0061E2CB /* NewsicPreferredPlayer.swift */; };
 		8C1434721FDE80CA0061E2CB /* Iterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1434711FDE80CA0061E2CB /* Iterable.swift */; };
@@ -25,6 +26,7 @@
 		8C20E3231FC4263D0051BAB5 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C20E3221FC4263D0051BAB5 /* String.swift */; };
 		8C21E7101FC6AF950033B477 /* NewsicPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21E70F1FC6AF950033B477 /* NewsicPageViewController.swift */; };
 		8C21E7121FC6B2730033B477 /* NewsicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21E7111FC6B2730033B477 /* NewsicViewController.swift */; };
+		8C21F9571FE7B7E400B5F94E /* NewsicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21F9561FE7B7E400B5F94E /* NewsicView.swift */; };
 		8C250AB51FBBF616002A108C /* NewsicDefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C250AB41FBBF616002A108C /* NewsicDefaultViewController.swift */; };
 		8C250AB71FBC02F8002A108C /* NewsicNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C250AB61FBC02F8002A108C /* NewsicNavigationController.swift */; };
 		8C268B501FCFAE9A00BB4C6F /* PresentAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B4F1FCFAE9A00BB4C6F /* PresentAnimationController.swift */; };
@@ -59,6 +61,9 @@
 		8C5E892D1FBD930600FF75AC /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5E892C1FBD930600FF75AC /* UILabel.swift */; };
 		8C6052481F863DBC00892205 /* NewsicSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */; };
 		8C60524B1F864FB300892205 /* UserSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C60524A1F864FB300892205 /* UserSettingsViewController.swift */; };
+		8C626E981FE77F7F00BF0E08 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C626E971FE77F7F00BF0E08 /* UIScrollView.swift */; };
+		8C626E9A1FE77F9900BF0E08 /* NewsicScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C626E991FE77F9900BF0E08 /* NewsicScrollView.swift */; };
+		8C626EA01FE7A27000BF0E08 /* ChoiceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C626E9F1FE7A27000BF0E08 /* ChoiceList.swift */; };
 		8C64F45D1F56C9540006B644 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C64F45C1F56C9540006B644 /* Spotify.swift */; };
 		8C7A58411FD7A0D3006A2E43 /* SPTAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7A58401FD7A0D3006A2E43 /* SPTAuth.swift */; };
 		8C7BE3291F78AD70004D9F15 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7BE3281F78AD70004D9F15 /* SideMenuViewController.swift */; };
@@ -135,6 +140,7 @@
 		8C0C1E9A1F6100CC00CF8516 /* FirebaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
 		8C0C1E9C1F6114C100CF8516 /* NewsicTrack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicTrack.swift; sourceTree = "<group>"; };
 		8C0C1E9E1F61343900CF8516 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		8C0ED6BC1FE7C79700394909 /* ChoiceListViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceListViewDelegate.swift; sourceTree = "<group>"; };
 		8C0F428B1FE3A2F000EDD9FA /* ShowSongViewController-Logic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowSongViewController-Logic.swift"; sourceTree = "<group>"; };
 		8C14346F1FDE63EC0061E2CB /* NewsicPreferredPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicPreferredPlayer.swift; sourceTree = "<group>"; };
 		8C1434711FDE80CA0061E2CB /* Iterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Iterable.swift; sourceTree = "<group>"; };
@@ -144,6 +150,7 @@
 		8C20E3221FC4263D0051BAB5 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		8C21E70F1FC6AF950033B477 /* NewsicPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicPageViewController.swift; sourceTree = "<group>"; };
 		8C21E7111FC6B2730033B477 /* NewsicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicViewController.swift; sourceTree = "<group>"; };
+		8C21F9561FE7B7E400B5F94E /* NewsicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicView.swift; sourceTree = "<group>"; };
 		8C250AB41FBBF616002A108C /* NewsicDefaultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicDefaultViewController.swift; sourceTree = "<group>"; };
 		8C250AB61FBC02F8002A108C /* NewsicNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicNavigationController.swift; sourceTree = "<group>"; };
 		8C268B4F1FCFAE9A00BB4C6F /* PresentAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentAnimationController.swift; sourceTree = "<group>"; };
@@ -178,6 +185,9 @@
 		8C5E892C1FBD930600FF75AC /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControl.swift; sourceTree = "<group>"; };
 		8C60524A1F864FB300892205 /* UserSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsViewController.swift; sourceTree = "<group>"; };
+		8C626E971FE77F7F00BF0E08 /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
+		8C626E991FE77F9900BF0E08 /* NewsicScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicScrollView.swift; sourceTree = "<group>"; };
+		8C626E9F1FE7A27000BF0E08 /* ChoiceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceList.swift; sourceTree = "<group>"; };
 		8C64F45C1F56C9540006B644 /* Spotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
 		8C7A58401FD7A0D3006A2E43 /* SPTAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTAuth.swift; sourceTree = "<group>"; };
 		8C7BE3281F78AD70004D9F15 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
@@ -341,6 +351,7 @@
 		8C0F428D1FE3BAB800EDD9FA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8C626E9E1FE7A21500BF0E08 /* Mood Genre List */,
 				8C5B18EF1FCBBEC900EBFAE1 /* Collection View Header */,
 				8CB529DA1F8373FB00C8050F /* Mood Cell */,
 			);
@@ -503,6 +514,7 @@
 				8C20E3221FC4263D0051BAB5 /* String.swift */,
 				8CD0C7261FD541D90095A309 /* URLSession.swift */,
 				8C1434711FDE80CA0061E2CB /* Iterable.swift */,
+				8C626E971FE77F7F00BF0E08 /* UIScrollView.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -569,6 +581,14 @@
 			children = (
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		8C626E9E1FE7A21500BF0E08 /* Mood Genre List */ = {
+			isa = PBXGroup;
+			children = (
+				8C626E9F1FE7A27000BF0E08 /* ChoiceList.swift */,
+			);
+			path = "Mood Genre List";
 			sourceTree = "<group>";
 		};
 		8C7BE3271F78AD50004D9F15 /* Side Menu View Controller */ = {
@@ -745,6 +765,8 @@
 				8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */,
 				8C250AB41FBBF616002A108C /* NewsicDefaultViewController.swift */,
 				8C268B571FD0086E00BB4C6F /* NewsicCustomLayer.swift */,
+				8C626E991FE77F9900BF0E08 /* NewsicScrollView.swift */,
+				8C21F9561FE7B7E400B5F94E /* NewsicView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -838,6 +860,7 @@
 				8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */,
 				8C3A6F1A1FCD769C00BA7981 /* ShowSongDataTransfer.swift */,
 				8C268B511FCFAF3200BB4C6F /* TransitionAnimation.swift */,
+				8C0ED6BC1FE7C79700394909 /* ChoiceListViewDelegate.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1140,6 +1163,7 @@
 				8C26C35A1FE517F600365142 /* NewsicUserSettings.swift in Sources */,
 				8CD0C7271FD541D90095A309 /* URLSession.swift in Sources */,
 				8C2911AE1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift in Sources */,
+				8C21F9571FE7B7E400B5F94E /* NewsicView.swift in Sources */,
 				8C2701171FDA45150044D10F /* Connectivity.swift in Sources */,
 				8CF8D4021FBAC7D200E130BC /* CustomInteractionController.swift in Sources */,
 				8C268B501FCFAE9A00BB4C6F /* PresentAnimationController.swift in Sources */,
@@ -1149,6 +1173,7 @@
 				8C18E0BE1F5530E9002C4A07 /* SpotifyTrack.swift in Sources */,
 				8CA40DFC1F8B85C200C95B9D /* SongPlayerMenu.swift in Sources */,
 				8CF78D251F82020600249C2F /* SongTableViewHeader.swift in Sources */,
+				8C626E981FE77F7F00BF0E08 /* UIScrollView.swift in Sources */,
 				8CA40DF31F8B7C7B00C95B9D /* SpotifyUsers.swift in Sources */,
 				8CFD735C1F68F57E004E7D08 /* NewsicPlaylist.swift in Sources */,
 				8C9DB4F71F6B840400F35268 /* NewsicButton.swift in Sources */,
@@ -1165,6 +1190,7 @@
 				8C9C9E911F67C7E10093C14A /* NewsicActivityIndicator.swift in Sources */,
 				8C7A58411FD7A0D3006A2E43 /* SPTAuth.swift in Sources */,
 				8C291A7B1FD6561800E568EF /* FirebaseErrorCodeDescription.swift in Sources */,
+				8C626EA01FE7A27000BF0E08 /* ChoiceList.swift in Sources */,
 				8C7BE3291F78AD70004D9F15 /* SideMenuViewController.swift in Sources */,
 				8C0C1E911F5FF3B700CF8516 /* SpotifyTrackFeature.swift in Sources */,
 				8C90E88B1F53EE87002B135F /* MusicGraph.swift in Sources */,
@@ -1188,6 +1214,7 @@
 				8C60524B1F864FB300892205 /* UserSettingsViewController.swift in Sources */,
 				8CC6E71F1F5510C300846080 /* UIViewController.swift in Sources */,
 				8C3654C11F551B16006C12D9 /* SongOverlayView.swift in Sources */,
+				8C626E9A1FE77F9900BF0E08 /* NewsicScrollView.swift in Sources */,
 				8CC6E7161F54044800846080 /* Int.swift in Sources */,
 				8C55956D1FD4FE6600E70667 /* NewsicError.swift in Sources */,
 				8C09622E1F614FA60025A65E /* NewsicArtist.swift in Sources */,
@@ -1205,6 +1232,7 @@
 				8C90E8621F53D838002B135F /* AppDelegate.swift in Sources */,
 				8C268B541FCFB53100BB4C6F /* DismissAnimationController.swift in Sources */,
 				8C2B40891FD9488C00F08087 /* NewsicPopupButton.swift in Sources */,
+				8C0ED6BD1FE7C79700394909 /* ChoiceListViewDelegate.swift in Sources */,
 				8CFFBF371F9708F100A69E78 /* NewsicCollectionViewLayout.swift in Sources */,
 				8C1434701FDE63EC0061E2CB /* NewsicPreferredPlayer.swift in Sources */,
 				8C7BE32C1F78AE7B004D9F15 /* SideMenuDelegate.swift in Sources */,

@@ -29,7 +29,12 @@ class SongPickerViewController: NewsicDefaultViewController {
     let password = "Ibls3Rzrbuy0"
     var spotifyHandler = Spotify();
     var moodObject: NewsicMood? = nil;
-    var genres:[NewsicGenre]! = nil
+    var genres:[NewsicGenre]! = nil {
+        //TEST
+        didSet {
+            
+        }
+    }
     var moods:[EmotionDyad]! = [] {
         didSet {
             moodCollectionView.reloadData();
@@ -48,15 +53,7 @@ class SongPickerViewController: NewsicDefaultViewController {
             
             if self.spotifyHandler.user.smallestImage != nil, let imageURL = self.spotifyHandler.user.smallestImage.imageURL {
                 sideMenu.profileImageURL = imageURL
-                let iconImage = UIImage(); iconImage.downloadImage(from: imageURL, downloadImageHandler: { (image) in
-//                    DispatchQueue.main.async {
-//                        self.setupNavigationBar(image: image)
-//                    }
-                    
-                })
-            } else {
-                let iconImage = UIImage(named: "AppIcon")
-            }
+            } 
             newsicUser.saveUser { (isSaved, error) in
                 if let error = error {
                     error.presentPopup(for: self)
@@ -77,14 +74,50 @@ class SongPickerViewController: NewsicDefaultViewController {
                         self.searchButton.setTitle(self.isMoodCellSelected ? "Get Songs!" : "Random it up!", for: .normal)
                     }, completion: nil)
                 }
-                
+                listMenuView.removeFromSuperview()
+//                self.view.frame = (UIApplication.shared.keyWindow?.frame)!
+                self.listViewBottomConstraint.constant = 0
             } else {
+//                self.view.frame = CGRect(x: self.view.frame.origin.x, y: 0, width: self.view.frame.width, height: listMenuView.frame.origin.y)
+                self.listViewBottomConstraint.constant = listMenuView.toggleViewHeight
+                listMenuView.frame.origin.y = self.view.frame.height - listMenuView.toggleViewHeight
+                if !self.view.subviews.contains(listMenuView) {
+                    self.view.addSubview(listMenuView)
+                }
+                
+                listMenuView.chosenGenres.removeAll()
+                for key in selectedGenres.keys {
+                    listMenuView.chosenGenres.append(key)
+                }
+//                listMenuView.choiceCollectionView.contentSize = CGSize(width: self.view.frame.width, height: 1000)
+                listMenuView.choiceCollectionView.reloadData()
+                
+                
+//                self.view.insertSubview(listMenuView, at: 0)
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.3, animations: {
                         self.searchButton.setTitle("Get Songs!", for: .normal)
                     }, completion: nil)
                 }
             }
+            self.view.layoutIfNeeded()
+//
+//            if selectedGenres.count > 0 {
+//                let vc = self.storyboard?.instantiateViewController(withIdentifier: "SideMenu") as! SideMenuViewController
+//
+//
+//                vc.view.tag = 123
+//                self.addChildViewController(vc);
+//                self.view.addSubview(vc.view);
+//
+//                vc.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.height/2, width: self.view.frame.width, height: self.view.frame.height/2)
+//                vc.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+//                
+//                vc.didMove(toParentViewController: self)
+//
+//                self.view.frame = CGRect(x: self.view.frame.origin.x, y: 0, width: self.view.frame.width, height: self.view.frame.height/2)
+//
+//            }
         }
     }
     var isMoodSelected: Bool = true
@@ -115,6 +148,7 @@ class SongPickerViewController: NewsicDefaultViewController {
         }
     }
     var spinner: SwiftSpinner! = nil
+    var listMenuView: ChoiceListView! = nil
     
     //Segues
     let sideMenuSegue = "showSideMenuSegue"
@@ -133,6 +167,7 @@ class SongPickerViewController: NewsicDefaultViewController {
     @IBOutlet weak var genreCollectionBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var genreCollectionTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var genreCollectionTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var listViewBottomConstraint: NSLayoutConstraint!
     
     //Outlets
     @IBOutlet weak var mainControlView: UIView!
@@ -192,7 +227,7 @@ class SongPickerViewController: NewsicDefaultViewController {
     override func viewDidLoad() {
         super.viewDidLoad()        
 
-        
+        setupListMenu()
         
         setupView()
         setupNavigationBar()
@@ -218,32 +253,18 @@ class SongPickerViewController: NewsicDefaultViewController {
         navbar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: 44));
         navbar.barStyle = .default
         
-//        let button = UIButton(type: .custom)
-//        button.addTarget(self, action: #selector(toggleMenu), for: .touchUpInside);
-//        button.setImage(image!, for: .normal)
-//        button.imageView?.roundImage()
-//        
-//        button.widthAnchor.constraint(equalToConstant: 25).isActive = true
-//        button.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        
-        let barButton2 = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
-//        barButton2.setBackgroundImage(image!, for: .normal, barMetrics: .default)
-//        let barButton2 = UIBarButtonItem(customView: button);
-//        barButton2.target = self
-//        barButton2.action = #selector(toggleMenu)
-        
-        self.navigationItem.leftBarButtonItem = barButton2
+        let barButton = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
+
+        self.navigationItem.leftBarButtonItem = barButton
         
         let navItem = self.navigationItem
         navbar.items = [navItem]
-        
         
         self.view.addSubview(navbar)
     }
     
     func setupView() {
         
-        //self.mainControlView.layer.zPosition = -1
         self.mainControlView.backgroundColor = UIColor.clear
         self.genreCollectionView.backgroundColor = UIColor.clear
         self.moodCollectionView.backgroundColor = UIColor.clear
@@ -259,6 +280,13 @@ class SongPickerViewController: NewsicDefaultViewController {
         
         let collectionViewsPanGestureRecoginizer = UIPanGestureRecognizer(target: self, action: #selector(panCollectionViews(_:)))
         self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecoginizer)
+    }
+    
+    func setupListMenu() {
+        listMenuView = ChoiceListView(frame: CGRect(x: self.view.frame.origin.x, y: self.view.frame.height, width: self.view.frame.width, height: self.view.frame.height))
+        
+        self.listMenuView.delegate = self
+//        self.view.addSubview(listMenuView)
     }
     
     @objc func toggleMenu() {

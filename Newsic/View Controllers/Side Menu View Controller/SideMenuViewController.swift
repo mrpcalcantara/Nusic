@@ -121,7 +121,8 @@ class SideMenuViewController: NewsicDefaultViewController {
         if let profileImageURL = profileImageURL {
             profileImageView.downloadedFrom(url: profileImageURL, contentMode: .scaleAspectFit, roundImage: true);
         } else {
-            profileImageView.backgroundColor = UIColor.black
+            let iconImage = UIImage(named: "AppIcon")
+            profileImageView.image = iconImage
         }
         
 //        profileImageView.roundImage();
@@ -236,7 +237,7 @@ class SideMenuViewController: NewsicDefaultViewController {
 //        self.dismiss(animated: true, completion: nil)
 //        self.navigationController?.popViewController(animated: true);
         //let root = self.navigationController?.topViewController
-        let navcontr = self.navigationController
+//        let navcontr = self.navigationController
         let vc = self.parent as! NewsicPageViewController
         vc.scrollToViewController(index: 1)
         

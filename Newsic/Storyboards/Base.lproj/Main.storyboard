@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -78,6 +77,98 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sau-Kp-Sny" userLabel="Control View">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TJk-WK-DBD" userLabel="List View">
+                                        <rect key="frame" x="0.0" y="36" width="375" height="567"/>
+                                        <subviews>
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bqf-Kb-x3U" userLabel="Genre Collection View">
+                                                <rect key="frame" x="8" y="0.0" width="359" height="532"/>
+                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="z9q-vZ-mww">
+                                                    <size key="itemSize" width="50" height="50"/>
+                                                    <size key="headerReferenceSize" width="50" height="50"/>
+                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                </collectionViewFlowLayout>
+                                                <cells>
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="1qo-Zt-f7j" customClass="MoodViewCell" customModule="Newsic" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="50" width="50" height="50"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                        </view>
+                                                    </collectionViewCell>
+                                                </cells>
+                                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="zdn-W7-dib">
+                                                    <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </collectionReusableView>
+                                            </collectionView>
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8t3-hW-Upx">
+                                                <rect key="frame" x="8" y="0.0" width="359" height="567"/>
+                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cp9-Te-6Sc">
+                                                    <size key="itemSize" width="50" height="50"/>
+                                                    <size key="headerReferenceSize" width="50" height="50"/>
+                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                </collectionViewFlowLayout>
+                                                <cells>
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="moodCell" id="gVj-gB-4We" customClass="MoodViewCell" customModule="Newsic" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="50" width="50" height="50"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                        </view>
+                                                    </collectionViewCell>
+                                                </cells>
+                                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="cg7-Jf-YtF">
+                                                    <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </collectionReusableView>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="an4-Rg-UjP"/>
+                                                    <outlet property="delegate" destination="BYZ-38-t0r" id="nds-7t-3X8"/>
+                                                </connections>
+                                            </collectionView>
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="na7-Jq-MEC" customClass="NewsicButton" customModule="Newsic" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="532" width="375" height="35"/>
+                                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                                <state key="normal" title="Get Songs"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderAlpha">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderSize">
+                                                        <real key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerSize">
+                                                        <real key="value" value="15"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="allowBlur" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="getNewSong:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OK4-7h-oy3"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="na7-Jq-MEC" secondAttribute="bottom" id="4yj-HG-k0R"/>
+                                            <constraint firstItem="8t3-hW-Upx" firstAttribute="top" secondItem="TJk-WK-DBD" secondAttribute="top" id="5yh-dv-De2"/>
+                                            <constraint firstAttribute="bottom" secondItem="8t3-hW-Upx" secondAttribute="bottom" id="AAn-8r-AFY"/>
+                                            <constraint firstItem="na7-Jq-MEC" firstAttribute="top" secondItem="bqf-Kb-x3U" secondAttribute="bottom" id="POC-Qr-hu5"/>
+                                            <constraint firstAttribute="trailing" secondItem="bqf-Kb-x3U" secondAttribute="trailing" constant="8" id="Sly-RS-Nga"/>
+                                            <constraint firstAttribute="trailing" secondItem="na7-Jq-MEC" secondAttribute="trailing" id="aH4-07-xcN"/>
+                                            <constraint firstItem="bqf-Kb-x3U" firstAttribute="top" secondItem="TJk-WK-DBD" secondAttribute="top" id="b8x-VJ-s8f"/>
+                                            <constraint firstItem="na7-Jq-MEC" firstAttribute="leading" secondItem="TJk-WK-DBD" secondAttribute="leading" id="hA1-w2-QMg"/>
+                                            <constraint firstAttribute="trailing" secondItem="8t3-hW-Upx" secondAttribute="trailing" constant="8" id="jXN-8W-5xa"/>
+                                            <constraint firstItem="bqf-Kb-x3U" firstAttribute="leading" secondItem="TJk-WK-DBD" secondAttribute="leading" constant="8" id="kS7-Ac-QMR"/>
+                                            <constraint firstItem="8t3-hW-Upx" firstAttribute="leading" secondItem="TJk-WK-DBD" secondAttribute="leading" constant="8" id="z1z-cv-BeE"/>
+                                        </constraints>
+                                    </view>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JE2-ew-ku9" customClass="NewsicSegmentedControl" customModule="Newsic" customModuleProvider="target">
                                         <rect key="frame" x="8" y="0.0" width="359" height="28"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -93,191 +184,41 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bqf-Kb-x3U" userLabel="Genre Collection View">
-                                        <rect key="frame" x="8" y="36" width="359" height="559"/>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="z9q-vZ-mww">
-                                            <size key="itemSize" width="50" height="50"/>
-                                            <size key="headerReferenceSize" width="50" height="50"/>
-                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        </collectionViewFlowLayout>
-                                        <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="1qo-Zt-f7j" customClass="MoodViewCell" customModule="Newsic" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="50" width="50" height="50"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </view>
-                                            </collectionViewCell>
-                                        </cells>
-                                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="zdn-W7-dib">
-                                            <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionReusableView>
-                                    </collectionView>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8t3-hW-Upx">
-                                        <rect key="frame" x="8" y="36" width="359" height="559"/>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cp9-Te-6Sc">
-                                            <size key="itemSize" width="50" height="50"/>
-                                            <size key="headerReferenceSize" width="50" height="50"/>
-                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        </collectionViewFlowLayout>
-                                        <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="moodCell" id="gVj-gB-4We" customClass="MoodViewCell" customModule="Newsic" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="50" width="50" height="50"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </view>
-                                            </collectionViewCell>
-                                        </cells>
-                                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="cg7-Jf-YtF">
-                                            <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionReusableView>
-                                        <connections>
-                                            <outlet property="dataSource" destination="BYZ-38-t0r" id="an4-Rg-UjP"/>
-                                            <outlet property="delegate" destination="BYZ-38-t0r" id="nds-7t-3X8"/>
-                                        </connections>
-                                    </collectionView>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="na7-Jq-MEC" customClass="NewsicButton" customModule="Newsic" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="568" width="375" height="35"/>
-                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
-                                        <state key="normal" title="Get Songs"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="borderAlpha">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="borderSize">
-                                                <real key="value" value="2"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerSize">
-                                                <real key="value" value="15"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="allowBlur" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="getNewSong:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OK4-7h-oy3"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="bqf-Kb-x3U" firstAttribute="leading" secondItem="Sau-Kp-Sny" secondAttribute="leading" constant="8" id="5va-tl-3sv"/>
-                                    <constraint firstAttribute="bottom" secondItem="na7-Jq-MEC" secondAttribute="bottom" id="7lD-a7-czg"/>
+                                    <constraint firstItem="TJk-WK-DBD" firstAttribute="leading" secondItem="Sau-Kp-Sny" secondAttribute="leading" id="36z-dP-x5w"/>
+                                    <constraint firstAttribute="trailing" secondItem="TJk-WK-DBD" secondAttribute="trailing" id="6Hq-G1-cDP"/>
                                     <constraint firstAttribute="trailing" secondItem="JE2-ew-ku9" secondAttribute="trailing" constant="8" id="8C0-of-Dwq"/>
-                                    <constraint firstAttribute="bottomMargin" secondItem="bqf-Kb-x3U" secondAttribute="bottom" id="Ces-kB-F38"/>
-                                    <constraint firstAttribute="trailing" secondItem="bqf-Kb-x3U" secondAttribute="trailing" constant="8" id="M8o-Gf-jPJ"/>
+                                    <constraint firstItem="TJk-WK-DBD" firstAttribute="top" secondItem="JE2-ew-ku9" secondAttribute="bottom" constant="8" id="M9r-yh-agY"/>
                                     <constraint firstItem="JE2-ew-ku9" firstAttribute="leading" secondItem="Sau-Kp-Sny" secondAttribute="leading" constant="8" id="OAg-Eb-2TE"/>
-                                    <constraint firstItem="bqf-Kb-x3U" firstAttribute="top" secondItem="JE2-ew-ku9" secondAttribute="bottom" constant="8" id="Ua2-yh-9BK"/>
                                     <constraint firstItem="JE2-ew-ku9" firstAttribute="top" secondItem="Sau-Kp-Sny" secondAttribute="top" id="alM-9f-n4o"/>
-                                    <constraint firstItem="8t3-hW-Upx" firstAttribute="top" secondItem="JE2-ew-ku9" secondAttribute="bottom" constant="8" id="e1E-Wi-HHp"/>
-                                    <constraint firstAttribute="trailing" secondItem="na7-Jq-MEC" secondAttribute="trailing" id="goM-rB-f2x"/>
-                                    <constraint firstItem="8t3-hW-Upx" firstAttribute="leading" secondItem="Sau-Kp-Sny" secondAttribute="leading" constant="8" id="ovA-Q4-o9q"/>
-                                    <constraint firstItem="na7-Jq-MEC" firstAttribute="leading" secondItem="Sau-Kp-Sny" secondAttribute="leading" id="u51-qx-NQm"/>
-                                    <constraint firstAttribute="bottomMargin" secondItem="8t3-hW-Upx" secondAttribute="bottom" id="urm-x2-i9Q"/>
-                                    <constraint firstAttribute="trailing" secondItem="8t3-hW-Upx" secondAttribute="trailing" constant="8" id="x2t-3J-uM9"/>
+                                    <constraint firstAttribute="bottom" secondItem="TJk-WK-DBD" secondAttribute="bottom" id="zQi-zr-YYv"/>
                                 </constraints>
                             </view>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" momentary="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U97-fq-ODQ">
-                                <rect key="frame" x="24" y="72" width="327" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <segments>
-                                    <segment title="" image="MoodIcon"/>
-                                    <segment title="" image="MusicNote"/>
-                                </segments>
-                            </segmentedControl>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ezb-Mk-cJL" userLabel="Menu View">
-                                <rect key="frame" x="0.0" y="20" width="229" height="647"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JLn-6R-Eqo" userLabel="User View">
-                                        <rect key="frame" x="8" y="8" width="213" height="161"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IIl-jS-1xq" userLabel="Username Label">
-                                                <rect key="frame" x="16" y="124.5" width="181" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RyK-SL-NJ2" userLabel="User Profile Image">
-                                                <rect key="frame" x="52.5" y="8" width="108.5" height="108.5"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" secondItem="RyK-SL-NJ2" secondAttribute="height" multiplier="1:1" id="Emw-b5-q9t"/>
-                                                </constraints>
-                                            </imageView>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="trailingMargin" secondItem="IIl-jS-1xq" secondAttribute="trailing" constant="8" id="28C-3w-hvl"/>
-                                            <constraint firstItem="IIl-jS-1xq" firstAttribute="leading" secondItem="JLn-6R-Eqo" secondAttribute="leadingMargin" constant="8" id="3Ms-Og-Y0m"/>
-                                            <constraint firstItem="RyK-SL-NJ2" firstAttribute="top" secondItem="JLn-6R-Eqo" secondAttribute="top" constant="8" id="JaS-oc-dxX"/>
-                                            <constraint firstItem="IIl-jS-1xq" firstAttribute="top" secondItem="RyK-SL-NJ2" secondAttribute="bottom" constant="8" id="Nda-Ts-kHd"/>
-                                            <constraint firstAttribute="height" constant="161" id="Wxr-bO-fGn"/>
-                                            <constraint firstAttribute="bottomMargin" secondItem="IIl-jS-1xq" secondAttribute="bottom" constant="8" id="fVT-cZ-KvV"/>
-                                            <constraint firstItem="RyK-SL-NJ2" firstAttribute="centerX" secondItem="JLn-6R-Eqo" secondAttribute="centerX" id="lxS-4Y-bm5"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="JLn-6R-Eqo" firstAttribute="leading" secondItem="ezb-Mk-cJL" secondAttribute="leadingMargin" id="Wfj-pC-BdI"/>
-                                    <constraint firstItem="JLn-6R-Eqo" firstAttribute="top" secondItem="ezb-Mk-cJL" secondAttribute="topMargin" id="Z3V-3f-L0L"/>
-                                    <constraint firstItem="JLn-6R-Eqo" firstAttribute="trailing" secondItem="ezb-Mk-cJL" secondAttribute="trailingMargin" id="obw-62-gZD"/>
-                                </constraints>
-                            </view>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="TAz-3t-wPY">
-                                <rect key="frame" x="24" y="70" width="327" height="479"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Sau-Kp-Sny" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="2Sc-5t-NYT"/>
                             <constraint firstItem="Sau-Kp-Sny" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="44" id="B8n-w9-qAO"/>
                             <constraint firstAttribute="trailing" secondItem="Sau-Kp-Sny" secondAttribute="trailing" id="LMl-sm-W11"/>
-                            <constraint firstItem="ezb-Mk-cJL" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="TOo-Bu-RSf"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="ezb-Mk-cJL" secondAttribute="trailing" constant="130" id="f8t-EZ-ele"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Sau-Kp-Sny" secondAttribute="bottom" id="lPZ-Xg-JMM"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ezb-Mk-cJL" secondAttribute="bottom" id="ru3-ZE-52M"/>
-                            <constraint firstItem="ezb-Mk-cJL" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="w1j-Nq-S0E"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="U97-fq-ODQ"/>
-                                <exclude reference="ezb-Mk-cJL"/>
-                                <exclude reference="TAz-3t-wPY"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="sG0-bm-crL"/>
                     <connections>
-                        <outlet property="genreCollectionBottomConstraint" destination="Ces-kB-F38" id="30L-qf-08R"/>
-                        <outlet property="genreCollectionLeadingConstraint" destination="5va-tl-3sv" id="J5g-e4-05M"/>
-                        <outlet property="genreCollectionTopConstraint" destination="Ua2-yh-9BK" id="lIq-5K-T3x"/>
-                        <outlet property="genreCollectionTrailingConstraint" destination="M8o-Gf-jPJ" id="Tlk-NU-x3d"/>
+                        <outlet property="genreCollectionBottomConstraint" destination="POC-Qr-hu5" id="cNK-SH-xFX"/>
+                        <outlet property="genreCollectionLeadingConstraint" destination="kS7-Ac-QMR" id="KYc-os-XaO"/>
+                        <outlet property="genreCollectionTopConstraint" destination="b8x-VJ-s8f" id="Rvm-Ef-aXR"/>
+                        <outlet property="genreCollectionTrailingConstraint" destination="Sly-RS-Nga" id="14D-c7-QWa"/>
                         <outlet property="genreCollectionView" destination="bqf-Kb-x3U" id="HnR-77-MHD"/>
+                        <outlet property="listViewBottomConstraint" destination="zQi-zr-YYv" id="orv-jL-pRN"/>
                         <outlet property="mainControlView" destination="Sau-Kp-Sny" id="ecR-4A-EXA"/>
-                        <outlet property="menuLeadingConstraint" destination="TOo-Bu-RSf" id="tdz-aT-bfD"/>
-                        <outlet property="menuTrailingConstraint" destination="f8t-EZ-ele" id="Khw-jA-WrZ"/>
-                        <outlet property="menuView" destination="ezb-Mk-cJL" id="435-La-Atp"/>
-                        <outlet property="moodCollectionBottomConstraint" destination="urm-x2-i9Q" id="tLR-av-o3N"/>
-                        <outlet property="moodCollectionLeadingConstraint" destination="ovA-Q4-o9q" id="ly1-ne-dKh"/>
-                        <outlet property="moodCollectionTopConstraint" destination="e1E-Wi-HHp" id="rGx-JL-gLB"/>
-                        <outlet property="moodCollectionTrailingConstraint" destination="x2t-3J-uM9" id="qZV-qu-vpu"/>
+                        <outlet property="moodCollectionBottomConstraint" destination="AAn-8r-AFY" id="GGj-6B-CbK"/>
+                        <outlet property="moodCollectionLeadingConstraint" destination="z1z-cv-BeE" id="ZRH-YF-5sB"/>
+                        <outlet property="moodCollectionTopConstraint" destination="5yh-dv-De2" id="c9i-Ir-VwM"/>
+                        <outlet property="moodCollectionTrailingConstraint" destination="jXN-8W-5xa" id="3Zh-oG-6dC"/>
                         <outlet property="moodCollectionView" destination="8t3-hW-Upx" id="z5u-GH-yc4"/>
-                        <outlet property="moodGenreSegmentedControl" destination="U97-fq-ODQ" id="Bai-mJ-M2o"/>
-                        <outlet property="moodText" destination="TAz-3t-wPY" id="DEN-pS-dby"/>
                         <outlet property="newsicControl" destination="JE2-ew-ku9" id="YUe-zb-Vy8"/>
                         <outlet property="searchButton" destination="na7-Jq-MEC" id="3sd-Te-vHt"/>
-                        <outlet property="userProfileImageView" destination="RyK-SL-NJ2" id="bQy-iE-bqD"/>
-                        <outlet property="userView" destination="JLn-6R-Eqo" id="N6K-d0-yWj"/>
-                        <outlet property="usernameLabel" destination="IIl-jS-1xq" id="ahT-ZM-rmO"/>
                         <segue destination="eJS-am-Jyf" kind="presentation" identifier="showVideoSegue" animates="NO" id="c9F-Gf-aWx"/>
                     </connections>
                 </viewController>
@@ -668,8 +609,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="MoodIcon" width="25" height="25"/>
-        <image name="MusicNote" width="25" height="25"/>
         <image name="SpotifyLogin" width="244" height="44"/>
     </resources>
 </document>
