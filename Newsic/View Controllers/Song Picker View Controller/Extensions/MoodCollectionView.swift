@@ -41,7 +41,8 @@ extension SongPickerViewController {
         let moodHeaderSize = CGSize(width: moodCollectionView.bounds.width, height: 45)
         moodLayout.headerReferenceSize = moodHeaderSize
         
-        
+        //Populate every section
+        setupGenresPerSection()
         
     }
     
@@ -157,6 +158,29 @@ extension SongPickerViewController {
         }
     }
     
+    func manageSectionTitle(for value: String) {
+        if !containsSectionTitle(for: value) {
+            insertSectionTitle(for: value)
+        }
+    }
+    
+    func containsSectionTitle(for value: String) -> Bool{
+        if !sectionTitles.contains(value) {
+            return false
+        }
+        return true;
+    }
+    
+    func insertSectionTitle(for value: String) {
+        var index = 0;
+        for title in sectionTitles {
+            if value < title {
+                sectionTitles.insert(value, at: index)
+            }
+            index += 1
+        }
+    }
+    
     func getGenresForSection(section: Int) -> [SpotifyGenres] {
         let sectionTitle = sectionTitles[section]
         var sectionGenres: [SpotifyGenres] = []
@@ -169,6 +193,25 @@ extension SongPickerViewController {
         }
         //        print("SECTION GENRES IN METHOD = \(sectionGenres.description)")
         return sectionGenres
+    }
+    
+    func getIndexPathForGenre(_ value: String) -> IndexPath? {
+        var section = 1
+        for title in sectionTitles {
+            if let firstCharacter = value.first?.description {
+                if title.elementsEqual(firstCharacter) {
+                    let genres = getGenresForSection(section: section-1)
+                    if let row = genres.index(where: { (genre) -> Bool in
+                        print(genre.rawValue)
+                        return genre.rawValue == value
+                    }) {
+                        return IndexPath(row: row, section: section)
+                    }
+                }
+            }
+            section += 1
+        }
+        return nil;
     }
     
     func manageButton(for collectionView: UICollectionView) {
@@ -273,16 +316,26 @@ extension SongPickerViewController: UICollectionViewDelegate {
             isMoodCellSelected = true
             manageButton(for: moodCollectionView)
             cell.selectCell()
+            moods.remove(at: indexPath.row)
 //            passDataToShowSong()
             
         } else {
             let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
             //Get genre from section genre for section and row.
-            let selectedGenre = sectionGenres[indexPath.section-1][indexPath.row].rawValue.lowercased()
-            selectedGenres.updateValue(1, forKey: selectedGenre);
+            let selectedGenre = sectionGenres[indexPath.section-1][indexPath.row].rawValue
+            listMenuView.insertChosenGenre(value: selectedGenre)
+            sectionGenres[indexPath.section-1].remove(at: indexPath.row)
+//            if sectionGenres[indexPath.section-1].count == 0 {
+//                var indexSet = IndexSet(); indexSet.insert(indexPath.section)
+//                sectionGenres.remove(at: indexPath.section-1)
+//                sectionTitles.remove(at: indexPath.section-1)
+//            }
+            selectedGenres.updateValue(1, forKey: selectedGenre.lowercased());
             manageButton(for: genreCollectionView);
-            cell.selectCell()
+//            cell.selectCell()
         }
+        
+        collectionView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -320,7 +373,8 @@ extension SongPickerViewController: UICollectionViewDataSource {
             return moods.count
         } else {
             if section > 0 {
-                return getGenresForSection(section: section-1).count
+                return sectionGenres[section-1].count
+//                return getGenresForSection(section: section-1).count
             } else {
                 return 0
             }
@@ -382,9 +436,16 @@ extension SongPickerViewController: UICollectionViewDataSource {
 extension SongPickerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         let sizeWidth = collectionView.frame.width/2
+        if let window = UIApplication.shared.keyWindow {
+            return CGSize(width: sizeWidth, height: window.frame.height/10);
+        } else {
+            return CGSize(width: sizeWidth, height: collectionView.frame.height/10);
+        }
+        
         //- sectionInsets.left;
-        return CGSize(width: sizeWidth, height: collectionView.frame.height/10);
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

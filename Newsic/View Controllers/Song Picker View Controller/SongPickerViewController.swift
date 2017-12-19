@@ -74,26 +74,10 @@ class SongPickerViewController: NewsicDefaultViewController {
                         self.searchButton.setTitle(self.isMoodCellSelected ? "Get Songs!" : "Random it up!", for: .normal)
                     }, completion: nil)
                 }
-                listMenuView.removeFromSuperview()
-//                self.view.frame = (UIApplication.shared.keyWindow?.frame)!
-                self.listViewBottomConstraint.constant = 0
+//                listMenuView.removeFromSuperview()
+                
             } else {
-//                self.view.frame = CGRect(x: self.view.frame.origin.x, y: 0, width: self.view.frame.width, height: listMenuView.frame.origin.y)
-                self.listViewBottomConstraint.constant = listMenuView.toggleViewHeight
-                listMenuView.frame.origin.y = self.view.frame.height - listMenuView.toggleViewHeight
-                if !self.view.subviews.contains(listMenuView) {
-                    self.view.addSubview(listMenuView)
-                }
                 
-                listMenuView.chosenGenres.removeAll()
-                for key in selectedGenres.keys {
-                    listMenuView.chosenGenres.append(key)
-                }
-//                listMenuView.choiceCollectionView.contentSize = CGSize(width: self.view.frame.width, height: 1000)
-                listMenuView.choiceCollectionView.reloadData()
-                
-                
-//                self.view.insertSubview(listMenuView, at: 0)
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.3, animations: {
                         self.searchButton.setTitle("Get Songs!", for: .normal)
@@ -101,23 +85,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                 }
             }
             self.view.layoutIfNeeded()
-//
-//            if selectedGenres.count > 0 {
-//                let vc = self.storyboard?.instantiateViewController(withIdentifier: "SideMenu") as! SideMenuViewController
-//
-//
-//                vc.view.tag = 123
-//                self.addChildViewController(vc);
-//                self.view.addSubview(vc.view);
-//
-//                vc.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.height/2, width: self.view.frame.width, height: self.view.frame.height/2)
-//                vc.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-//                
-//                vc.didMove(toParentViewController: self)
-//
-//                self.view.frame = CGRect(x: self.view.frame.origin.x, y: 0, width: self.view.frame.width, height: self.view.frame.height/2)
-//
-//            }
+
         }
     }
     var isMoodSelected: Bool = true
@@ -207,7 +175,6 @@ class SongPickerViewController: NewsicDefaultViewController {
         } else {
             passDataToShowSong();
         }
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -282,12 +249,7 @@ class SongPickerViewController: NewsicDefaultViewController {
         self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecoginizer)
     }
     
-    func setupListMenu() {
-        listMenuView = ChoiceListView(frame: CGRect(x: self.view.frame.origin.x, y: self.view.frame.height, width: self.view.frame.width, height: self.view.frame.height))
-        
-        self.listMenuView.delegate = self
-//        self.view.addSubview(listMenuView)
-    }
+    
     
     @objc func toggleMenu() {
         let parent = self.parent as! NewsicPageViewController
