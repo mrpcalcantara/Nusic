@@ -65,9 +65,17 @@
 		8C626E9A1FE77F9900BF0E08 /* NewsicScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C626E991FE77F9900BF0E08 /* NewsicScrollView.swift */; };
 		8C626EA01FE7A27000BF0E08 /* ChoiceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C626E9F1FE7A27000BF0E08 /* ChoiceList.swift */; };
 		8C64F45D1F56C9540006B644 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C64F45C1F56C9540006B644 /* Spotify.swift */; };
+		8C7989351FEA16160079A99D /* MusicChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7989331FEA16160079A99D /* MusicChoiceCell.swift */; };
+		8C7989361FEA16160079A99D /* MusicChoiceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7989341FEA16160079A99D /* MusicChoiceCell.xib */; };
+		8C7989391FEA17050079A99D /* NewsicDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7989381FEA17050079A99D /* NewsicDefaults.swift */; };
+		8C79893B1FEA22890079A99D /* NewsicCollectionViewLayoutBKP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C79893A1FEA22890079A99D /* NewsicCollectionViewLayoutBKP.swift */; };
+		8C79893D1FEA53D20079A99D /* ChoiceList.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C79893C1FEA53D20079A99D /* ChoiceList.xib */; };
 		8C7A58411FD7A0D3006A2E43 /* SPTAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7A58401FD7A0D3006A2E43 /* SPTAuth.swift */; };
 		8C7BE3291F78AD70004D9F15 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7BE3281F78AD70004D9F15 /* SideMenuViewController.swift */; };
 		8C7BE32C1F78AE7B004D9F15 /* SideMenuDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7BE32B1F78AE7B004D9F15 /* SideMenuDelegate.swift */; };
+		8C7C0A3F1FEA76780077B109 /* CL-ToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C0A3E1FEA76780077B109 /* CL-ToggleView.swift */; };
+		8C7C0A411FEA76820077B109 /* CL-CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C0A401FEA76820077B109 /* CL-CollectionView.swift */; };
+		8C7C0A431FEA768D0077B109 /* CL-NewsicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C0A421FEA768D0077B109 /* CL-NewsicButton.swift */; };
 		8C848ED71F5675BF0070C08A /* SpotifyAudioPlayback.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C848ED41F5675BF0070C08A /* SpotifyAudioPlayback.framework */; };
 		8C848ED81F5675BF0070C08A /* SpotifyAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C848ED51F5675BF0070C08A /* SpotifyAuthentication.framework */; };
 		8C848ED91F5675BF0070C08A /* SpotifyMetadata.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C848ED61F5675BF0070C08A /* SpotifyMetadata.framework */; };
@@ -189,9 +197,17 @@
 		8C626E991FE77F9900BF0E08 /* NewsicScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicScrollView.swift; sourceTree = "<group>"; };
 		8C626E9F1FE7A27000BF0E08 /* ChoiceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceList.swift; sourceTree = "<group>"; };
 		8C64F45C1F56C9540006B644 /* Spotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
+		8C7989331FEA16160079A99D /* MusicChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicChoiceCell.swift; sourceTree = "<group>"; };
+		8C7989341FEA16160079A99D /* MusicChoiceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MusicChoiceCell.xib; sourceTree = "<group>"; };
+		8C7989381FEA17050079A99D /* NewsicDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicDefaults.swift; sourceTree = "<group>"; };
+		8C79893A1FEA22890079A99D /* NewsicCollectionViewLayoutBKP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicCollectionViewLayoutBKP.swift; sourceTree = "<group>"; };
+		8C79893C1FEA53D20079A99D /* ChoiceList.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChoiceList.xib; sourceTree = "<group>"; };
 		8C7A58401FD7A0D3006A2E43 /* SPTAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTAuth.swift; sourceTree = "<group>"; };
 		8C7BE3281F78AD70004D9F15 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		8C7BE32B1F78AE7B004D9F15 /* SideMenuDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuDelegate.swift; sourceTree = "<group>"; };
+		8C7C0A3E1FEA76780077B109 /* CL-ToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CL-ToggleView.swift"; sourceTree = "<group>"; };
+		8C7C0A401FEA76820077B109 /* CL-CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CL-CollectionView.swift"; sourceTree = "<group>"; };
+		8C7C0A421FEA768D0077B109 /* CL-NewsicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CL-NewsicButton.swift"; sourceTree = "<group>"; };
 		8C848ED41F5675BF0070C08A /* SpotifyAudioPlayback.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyAudioPlayback.framework; sourceTree = "<group>"; };
 		8C848ED51F5675BF0070C08A /* SpotifyAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyAuthentication.framework; sourceTree = "<group>"; };
 		8C848ED61F5675BF0070C08A /* SpotifyMetadata.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyMetadata.framework; sourceTree = "<group>"; };
@@ -586,9 +602,29 @@
 		8C626E9E1FE7A21500BF0E08 /* Mood Genre List */ = {
 			isa = PBXGroup;
 			children = (
+				8C7C0A3D1FEA76640077B109 /* Extensions */,
+				8C79893C1FEA53D20079A99D /* ChoiceList.xib */,
 				8C626E9F1FE7A27000BF0E08 /* ChoiceList.swift */,
+				8C7989321FEA15ED0079A99D /* Mood Genre Cell */,
 			);
 			path = "Mood Genre List";
+			sourceTree = "<group>";
+		};
+		8C7989321FEA15ED0079A99D /* Mood Genre Cell */ = {
+			isa = PBXGroup;
+			children = (
+				8C7989331FEA16160079A99D /* MusicChoiceCell.swift */,
+				8C7989341FEA16160079A99D /* MusicChoiceCell.xib */,
+			);
+			path = "Mood Genre Cell";
+			sourceTree = "<group>";
+		};
+		8C7989371FEA16F90079A99D /* Newsic */ = {
+			isa = PBXGroup;
+			children = (
+				8C7989381FEA17050079A99D /* NewsicDefaults.swift */,
+			);
+			path = Newsic;
 			sourceTree = "<group>";
 		};
 		8C7BE3271F78AD50004D9F15 /* Side Menu View Controller */ = {
@@ -606,6 +642,16 @@
 				8C7BE32B1F78AE7B004D9F15 /* SideMenuDelegate.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		8C7C0A3D1FEA76640077B109 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8C7C0A3E1FEA76780077B109 /* CL-ToggleView.swift */,
+				8C7C0A401FEA76820077B109 /* CL-CollectionView.swift */,
+				8C7C0A421FEA768D0077B109 /* CL-NewsicButton.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		8C848EDA1F5676770070C08A /* Spotify Login View Controller */ = {
@@ -745,6 +791,7 @@
 		8C90E8891F53EE43002B135F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				8C7989371FEA16F90079A99D /* Newsic */,
 				8C2701181FDA45840044D10F /* Connectivity */,
 				8C291A781FD655F900E568EF /* Firebase */,
 				8C251BC11FD1B057008D2419 /* Error Handling */,
@@ -857,6 +904,7 @@
 			children = (
 				8CB529E01F8375D900C8050F /* MoodCollectionView.swift */,
 				8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */,
+				8C79893A1FEA22890079A99D /* NewsicCollectionViewLayoutBKP.swift */,
 				8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */,
 				8C3A6F1A1FCD769C00BA7981 /* ShowSongDataTransfer.swift */,
 				8C268B511FCFAF3200BB4C6F /* TransitionAnimation.swift */,
@@ -1004,11 +1052,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C7989361FEA16160079A99D /* MusicChoiceCell.xib in Resources */,
 				8C9DB4FE1F6BB38800F35268 /* SongTableViewCell.xib in Resources */,
 				8CC991D91FDA86050028F33A /* GoogleService-InfoBKP.plist in Resources */,
 				8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */,
 				8C90E86C1F53D838002B135F /* LaunchScreen.storyboard in Resources */,
 				8CF78D271F82026500249C2F /* SongTableViewHeader.xib in Resources */,
+				8C79893D1FEA53D20079A99D /* ChoiceList.xib in Resources */,
 				8CB529DE1F83745200C8050F /* MoodViewCell.xib in Resources */,
 				8CD11B561F5FB6E3000004EA /* GoogleService-Info.plist in Resources */,
 				8C9DB5021F6FD9C600F35268 /* SongTableViewCellBackup.xib in Resources */,
@@ -1153,6 +1203,7 @@
 				8C2877451FDE4CC200772269 /* YoutubeResult.swift in Sources */,
 				8C8C65971F55A6B4000711AC /* ShowSongViewController.swift in Sources */,
 				8CA40DF51F8B7C8200C95B9D /* SpotifyArtists.swift in Sources */,
+				8C7C0A431FEA768D0077B109 /* CL-NewsicButton.swift in Sources */,
 				8C268B521FCFAF3200BB4C6F /* TransitionAnimation.swift in Sources */,
 				8C0C1E9F1F61343900CF8516 /* Date.swift in Sources */,
 				8C27011B1FDA46090044D10F /* ConnectivityStatus.swift in Sources */,
@@ -1182,10 +1233,12 @@
 				8C18E0BC1F55306B002C4A07 /* YouTubeSearch.swift in Sources */,
 				8C27011D1FDA55E10044D10F /* FirebaseHelper.swift in Sources */,
 				8CB529E11F8375D900C8050F /* MoodCollectionView.swift in Sources */,
+				8C7989391FEA17050079A99D /* NewsicDefaults.swift in Sources */,
 				8CA40DFE1F8C99B500C95B9D /* UIButton.swift in Sources */,
 				8C64F45D1F56C9540006B644 /* Spotify.swift in Sources */,
 				8C9DB4FD1F6BB38800F35268 /* SongTableViewCell.swift in Sources */,
 				8C268B581FD0086E00BB4C6F /* NewsicCustomLayer.swift in Sources */,
+				8C7989351FEA16160079A99D /* MusicChoiceCell.swift in Sources */,
 				8C0C1E961F60F7F300CF8516 /* HTTPErrorCodes.swift in Sources */,
 				8C9C9E911F67C7E10093C14A /* NewsicActivityIndicator.swift in Sources */,
 				8C7A58411FD7A0D3006A2E43 /* SPTAuth.swift in Sources */,
@@ -1195,6 +1248,7 @@
 				8C0C1E911F5FF3B700CF8516 /* SpotifyTrackFeature.swift in Sources */,
 				8C90E88B1F53EE87002B135F /* MusicGraph.swift in Sources */,
 				8C21E7121FC6B2730033B477 /* NewsicViewController.swift in Sources */,
+				8C79893B1FEA22890079A99D /* NewsicCollectionViewLayoutBKP.swift in Sources */,
 				8C0962301F61550D0025A65E /* NewsicGenre.swift in Sources */,
 				8C4D43731F57CF9100FD0A92 /* YoutubeDelegate.swift in Sources */,
 				8C5595681FD4FA8E00E70667 /* NewsicErrorCodes.swift in Sources */,
@@ -1230,7 +1284,9 @@
 				8CD0C7291FD55B4D0095A309 /* SpotifyErrorCodeDescription.swift in Sources */,
 				8C9DB4F91F6B8FF900F35268 /* SongListTableView.swift in Sources */,
 				8C90E8621F53D838002B135F /* AppDelegate.swift in Sources */,
+				8C7C0A411FEA76820077B109 /* CL-CollectionView.swift in Sources */,
 				8C268B541FCFB53100BB4C6F /* DismissAnimationController.swift in Sources */,
+				8C7C0A3F1FEA76780077B109 /* CL-ToggleView.swift in Sources */,
 				8C2B40891FD9488C00F08087 /* NewsicPopupButton.swift in Sources */,
 				8C0ED6BD1FE7C79700394909 /* ChoiceListViewDelegate.swift in Sources */,
 				8CFFBF371F9708F100A69E78 /* NewsicCollectionViewLayout.swift in Sources */,

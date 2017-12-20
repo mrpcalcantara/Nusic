@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Futura.ttc">
+            <string>Futura-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ChoiceListView" customModule="Newsic" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="byy-01-6yV">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="HnL-I0-xkv"/>
+                    </constraints>
+                </view>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="dkE-xr-9ZB">
+                    <rect key="frame" x="0.0" y="40" width="375" height="592"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Bpm-xW-rY1">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wK4-Xu-a6g" customClass="NewsicButton" customModule="Newsic" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="632" width="375" height="35"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                    <state key="normal" title="Button">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="allowBlur" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerSize">
+                            <real key="value" value="15"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderSize">
+                            <real key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderAlpha">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="dkE-xr-9ZB" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="9cP-aa-Hr8"/>
+                <constraint firstItem="byy-01-6yV" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="DMb-gb-VDI"/>
+                <constraint firstItem="wK4-Xu-a6g" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="GTX-YW-Fho"/>
+                <constraint firstItem="wK4-Xu-a6g" firstAttribute="top" secondItem="dkE-xr-9ZB" secondAttribute="bottom" id="NgL-g6-VDn"/>
+                <constraint firstItem="dkE-xr-9ZB" firstAttribute="top" secondItem="byy-01-6yV" secondAttribute="bottom" id="aea-5C-F7J"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="wK4-Xu-a6g" secondAttribute="trailing" id="kVv-8f-wSs"/>
+                <constraint firstItem="byy-01-6yV" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="t4Q-n2-kA2"/>
+                <constraint firstItem="wK4-Xu-a6g" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="wTF-aE-Liy"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="dkE-xr-9ZB" secondAttribute="trailing" id="zRs-hI-Pjr"/>
+                <constraint firstItem="byy-01-6yV" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="zvC-n2-WHF"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="choiceCollectionView" destination="dkE-xr-9ZB" id="W1N-Pt-Kvx"/>
+                <outlet property="fetchSongsButton" destination="wK4-Xu-a6g" id="u47-Bl-e41"/>
+                <outlet property="toggleView" destination="byy-01-6yV" id="Zvc-gP-zgD"/>
+            </connections>
+            <point key="canvasLocation" x="32.5" y="83.5"/>
+        </view>
+    </objects>
+</document>

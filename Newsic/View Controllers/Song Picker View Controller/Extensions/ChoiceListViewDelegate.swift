@@ -20,30 +20,40 @@ extension SongPickerViewController {
 }
 
 extension SongPickerViewController : ChoiceListDelegate {
+    
+    func getSongs() {
+        getNewSong(NewsicButton(type: .system))
+    }
+    func didRemoveGenres() {
+//        resetGenresPerSection()
+    }
+    
+    func didRemoveMoods() {
+        
+    }
+    
     func isEmpty() {
+        manageButton(for: genreCollectionView);
         closeChoiceMenu()
     }
     
     func isNotEmpty() {
-        showChoiceMenu()
+        manageButton(for: genreCollectionView);
+        openChoiceMenu()
     }
     
     func willMove(to point: CGPoint, animated: Bool) {
-        let minPointY = self.view.safeAreaInsets.top + self.navbar.frame.height + self.newsicControl.frame.origin.y + self.newsicControl.frame.height
-        let maxPointY = self.view.frame.height
-//        self.listViewBottomConstraint.constant = self.view.frame.height - point.y
-        if animated {
-            animateMove(to: point)
-        } else {
-            listMenuView.frame.origin.y = point.y
-            self.view.layoutIfNeeded()
-        }
+        animateMove(to: point)
+//        if animated {
+//            
+//        } else {
+//            listMenuView.frame.origin.y = point.y
+//            self.view.layoutIfNeeded()
+//        }
+//        listMenuView.layoutChoiceView()
     }
     
     func didTapGenre(value: String) {
-//        if let firstCharacter = value.first?.description {
-//            manageSectionTitle(for: firstCharacter);
-//        }
         if let indexPath = getIndexPathForGenre(value) {
             if let genre = SpotifyGenres(rawValue: value) {
                 
@@ -62,13 +72,12 @@ extension SongPickerViewController : ChoiceListDelegate {
     }
     
     func didTapMood(value: String) {
-//        if let indexPath = getIndexPathForGenre(value) {
-//            sectionGenres[indexPath.section].insert(SpotifyGenres(rawValue: value), at: indexPath.row)
-//        }
+        
     }
     
     func didTapHeader(willOpen: Bool) {
         toggleChoiceMenu(willOpen: willOpen)
+        self.view.layoutIfNeeded()
         self.view.sizeToFit()
     }
     
@@ -79,18 +88,33 @@ extension SongPickerViewController : ChoiceListDelegate {
     }
     
     func showChoiceMenu() {
-        self.listViewBottomConstraint.constant = self.view.frame.height*0.25 + 16
-        willMove(to: CGPoint(x: listMenuView.frame.origin.x, y: self.view.frame.height*0.75), animated: true)
+        self.listViewBottomConstraint.constant = self.view.frame.height/2
+        let point = CGPoint(x: listMenuView.frame.origin.x, y: self.view.frame.height/2)
+        willMove(to: point, animated: true)
+        listMenuView.animateMove(to: point)
     }
     
     func hideChoiceMenu() {
-        self.listViewBottomConstraint.constant = listMenuView.toggleViewHeight + 16
-        willMove(to: CGPoint(x: listMenuView.frame.origin.x, y: self.view.frame.height - listMenuView.toggleViewHeight), animated: true)
+        self.listViewBottomConstraint.constant = listMenuView.toggleViewHeight
+        let point = CGPoint(x: listMenuView.frame.origin.x, y: self.view.frame.height - listMenuView.toggleViewHeight)
+        willMove(to: point, animated: true)
+        listMenuView.animateMove(to: point)
+    }
+    
+    func openChoiceMenu() {
+        self.listViewBottomConstraint.constant = listMenuView.toggleViewHeight
+        let point = CGPoint(x: listMenuView.frame.origin.x, y: self.view.frame.height - listMenuView.toggleViewHeight)
+        willMove(to: point, animated: true)
+        listMenuView.animateMove(to: point)
+        UIView.animate(withDuration: 1, delay: 0, options: [.curveEaseInOut, .autoreverse, .repeat], animations: {
+            self.listMenuView.arrowImageView.alpha = 0.2
+        }, completion: nil)
     }
     
     func closeChoiceMenu() {
         self.listViewBottomConstraint.constant = 0
         willMove(to: CGPoint(x: listMenuView.frame.origin.x, y: self.view.frame.height), animated: true)
+        self.listMenuView.arrowImageView.alpha = 1
     }
     
     func toggleChoiceMenu(willOpen: Bool) {
@@ -105,6 +129,9 @@ extension SongPickerViewController : ChoiceListDelegate {
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.listMenuView.frame.origin.y = point.y
             self.view.layoutIfNeeded()
-        }, completion: nil)
+        }, completion: { (isCompleted) in
+//            self.listMenuView.animateMove(to: point)
+        })
+        
     }
 }

@@ -249,18 +249,21 @@ class ShowSongViewController: NewsicDefaultViewController {
     }
     
     @IBAction func songSeek(_ sender: UISlider) {
+        updateElapsedTime(elapsedTime: sender.value)
         if sender.isTracking {
-            updateElapsedTime(elapsedTime: sender.value)
+            
         } else {
-            if preferredPlayer == NewsicPreferredPlayer.spotify {
-                seekSong(interval: sender.value)
-            } else {
-                ytSeekTo(seconds: sender.value)
-            }
             
         }
     }
     
+    @IBAction func finishSeek(_ sender: UISlider) {
+        if preferredPlayer == NewsicPreferredPlayer.spotify {
+            seekSong(interval: sender.value)
+        } else {
+            ytSeekTo(seconds: sender.value)
+        }
+    }
     
     
     
@@ -371,19 +374,19 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
 //        <#code#>
 //    }
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        let result = !(touch.view is SongTableViewCell)
-        print("gestureRecognizer should receive touch")
-        return result
-        //        return true;
-    }
-    
-    
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        let gesture = gestureRecognizer
-        print("gestureRecognizer should begin")
-        return true
-    }
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+//        let result = !(touch.view is SongTableViewCell)
+//        print("gestureRecognizer should receive touch")
+//        return result
+//        //        return true;
+//    }
+//
+//
+//    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        let gesture = gestureRecognizer
+//        print("gestureRecognizer should begin")
+//        return true
+//    }
     
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -460,30 +463,4 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
     
 }
 
-extension ShowSongViewController: UIScrollViewDelegate {
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first
-        print("event = \(event?.description)");
-        
-        print("touch in view = \(touch?.view?.description)")
-    }
-    
-    override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        print("event = \(event?.description)");
-        
-        print("touch in view = \(presses.first?.responder?.description)")
-    }
-    
-    override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        print("event = \(event?.description)");
-        
-        print("touch in view = \(presses.first?.responder?.description)")
-    }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        
-    }
-    
-    
-}
 
