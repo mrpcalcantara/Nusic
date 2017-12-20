@@ -132,6 +132,9 @@
                                             </collectionView>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="na7-Jq-MEC" customClass="NewsicButton" customModule="Newsic" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="532" width="375" height="35"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="35" id="ieg-f5-GXs"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                                 <state key="normal" title="Get Songs"/>
                                                 <userDefinedRuntimeAttributes>
@@ -219,6 +222,7 @@
                         <outlet property="moodCollectionView" destination="8t3-hW-Upx" id="z5u-GH-yc4"/>
                         <outlet property="newsicControl" destination="JE2-ew-ku9" id="YUe-zb-Vy8"/>
                         <outlet property="searchButton" destination="na7-Jq-MEC" id="3sd-Te-vHt"/>
+                        <outlet property="searchButtonHeightConstraint" destination="ieg-f5-GXs" id="Y2R-nt-XGh"/>
                         <segue destination="eJS-am-Jyf" kind="presentation" identifier="showVideoSegue" animates="NO" id="c9F-Gf-aWx"/>
                     </connections>
                 </viewController>
@@ -428,6 +432,7 @@
                                     <slider opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="8qg-KD-JNS">
                                         <rect key="frame" x="-2" y="34" width="315" height="31"/>
                                         <connections>
+                                            <action selector="finishSeek:" destination="eJS-am-Jyf" eventType="touchUpInside" id="b0S-E2-gbf"/>
                                             <action selector="songSeek:" destination="eJS-am-Jyf" eventType="valueChanged" id="SPl-QY-bUM"/>
                                         </connections>
                                     </slider>

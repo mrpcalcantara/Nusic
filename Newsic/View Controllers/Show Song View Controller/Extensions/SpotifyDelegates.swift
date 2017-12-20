@@ -34,7 +34,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didSeekToPosition position: TimeInterval) {
-        
+        print("seeked")
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: String!) {
@@ -61,12 +61,14 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             
             print("track started");
             if let currentTrack = currentTrack {
+                let songTitle = "\(currentTrack.artistName) - \(currentTrack.name)"
+                let currentPlayingTrack = SpotifyTrack(title: songTitle, thumbNail: nil, trackUri: currentTrack.uri, trackId: Spotify.transformToID(trackUri: currentTrack.uri), songName: currentTrack.name ,artist: SpotifyArtist(artistName: currentTrack.artistName, subGenres: nil, popularity: nil, uri: currentTrack.artistUri), audioFeatures: nil)
+                self.currentPlayingTrack = currentPlayingTrack;
+                
                 if let imageURL = currentTrack.albumCoverArtURL {
                     let imageURL = URL(string: imageURL)!
                     let image = UIImage(); image.downloadImage(from: imageURL) { (image) in
-                        let songTitle = "\(currentTrack.artistName) - \(currentTrack.name)"
-                        let currentPlayingTrack = SpotifyTrack(title: songTitle, thumbNail: image, trackUri: currentTrack.uri, trackId: Spotify.transformToID(trackUri: currentTrack.uri), songName: currentTrack.name ,artist: SpotifyArtist(artistName: currentTrack.artistName, subGenres: nil, popularity: nil, uri: currentTrack.artistUri), audioFeatures: nil)
-                        self.currentPlayingTrack = currentPlayingTrack;
+                        currentPlayingTrack.thumbNail = image
                         self.activateAudioSession()
                         self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
                         DispatchQueue.main.async {
@@ -93,7 +95,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         
             let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
             if let nowPlayingInfo = nowPlayingInfo, let currentTrack = audioStreaming.metadata.currentTrack {
-                let elapsedTime = nowPlayingInfo["playbackDuration"] as? Double
+                let elapsedTime = nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? Double
                 let duration = Double(currentTrack.duration)
                 if elapsedTime != nil && elapsedTime == duration {
                     songCardView.swipe(.left);

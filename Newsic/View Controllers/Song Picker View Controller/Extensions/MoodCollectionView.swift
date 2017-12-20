@@ -23,13 +23,15 @@ extension SongPickerViewController {
         genreCollectionView.allowsMultipleSelection = true;
         genreCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "collectionViewHeader")
         genreCollectionView.register(view, forCellWithReuseIdentifier: "moodCell");
-        sectionTitles = getSectionTitles()
-        setupGenresPerSection()
+        
         
         let genreLayout = genreCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         genreLayout.sectionHeadersPinToVisibleBounds = true
         let genreHeaderSize = CGSize(width: genreCollectionView.bounds.width, height: 45)
         genreLayout.headerReferenceSize = genreHeaderSize
+        
+        sectionTitles = getSectionTitles()
+        setupGenresPerSection()
         
         moodCollectionView.delegate = self;
         moodCollectionView.dataSource = self;
@@ -42,7 +44,7 @@ extension SongPickerViewController {
         moodLayout.headerReferenceSize = moodHeaderSize
         
         //Populate every section
-        setupGenresPerSection()
+//        setupGenresPerSection()
         
     }
     
@@ -114,7 +116,8 @@ extension SongPickerViewController {
             }, completion: { (completed) in
                 
             })
-            
+//            listMenuView.emptyGenres()
+            closeChoiceMenu()
             isMoodSelected = true
         } else {
             self.moodCollectionLeadingConstraint.constant = -self.moodCollectionView.frame.width + 8
@@ -130,7 +133,10 @@ extension SongPickerViewController {
             }, completion: { (completed) in
                 
             })
-            
+//            listMenuView.emptyMoods()
+            if selectedGenres.count > 0 {
+                toggleChoiceMenu(willOpen: true)
+            }
             isMoodSelected = false
         }
     }
@@ -146,6 +152,12 @@ extension SongPickerViewController {
             }
         }
         return sectionTitles
+    }
+    
+    func resetGenresPerSection() {
+        sectionTitles = getSectionTitles()
+        setupGenresPerSection()
+        genreCollectionView.reloadData()
     }
     
     func setupGenresPerSection() {
@@ -226,6 +238,7 @@ extension SongPickerViewController {
                 
             }) { (isCompleted) in
                 DispatchQueue.main.async {
+                    self.searchButtonHeightConstraint.constant = 35
                     self.searchButton.setTitle("Get Songs!", for: .normal)
                 }
                 
@@ -235,10 +248,15 @@ extension SongPickerViewController {
                 DispatchQueue.main.async {
                     self.searchButton.alpha = 1
                     if self.selectedGenres.count == 0 {
+                        
+                        self.searchButtonHeightConstraint.constant = 35
                         self.searchButton.setTitle("Random it up!", for: .normal)
                     } else {
+                        self.searchButtonHeightConstraint.constant = 0
                         self.searchButton.setTitle("Get Songs!", for: .normal)
                     }
+                    self.view.layoutIfNeeded()
+//                    self.searchButton.layoutIfNeeded()
                 }
                 
             })
@@ -316,8 +334,6 @@ extension SongPickerViewController: UICollectionViewDelegate {
             isMoodCellSelected = true
             manageButton(for: moodCollectionView)
             cell.selectCell()
-            moods.remove(at: indexPath.row)
-//            passDataToShowSong()
             
         } else {
             let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
@@ -331,7 +347,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
 //                sectionTitles.remove(at: indexPath.section-1)
 //            }
             selectedGenres.updateValue(1, forKey: selectedGenre.lowercased());
-            manageButton(for: genreCollectionView);
+//            manageButton(for: genreCollectionView);
 //            cell.selectCell()
         }
         
@@ -345,7 +361,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
                 selectedGenres.removeValue(forKey: genre.lowercased());
                 cell.deselectCell()
             }
-            manageButton(for: genreCollectionView);
+//            manageButton(for: genreCollectionView);
         } else if collectionView == self.moodCollectionView {
             let cell = moodCollectionView.cellForItem(at: indexPath) as! MoodViewCell
             isMoodCellSelected = false
@@ -421,10 +437,10 @@ extension SongPickerViewController: UICollectionViewDataSource {
             cell.moodLabel.text = "\(genre)"
             isLastRow = indexPath.row > genres.count - 3
         }
-        
+        cell.configure(for: indexPath.row, offsetRect: self.sectionHeaderFrame, isLastRow: isLastRow);
+        cell.layoutIfNeeded()
         DispatchQueue.main.async {
-            cell.configure(for: indexPath.row, offsetRect: self.sectionHeaderFrame, isLastRow: isLastRow);
-            cell.layoutIfNeeded()
+            
         }
         
         return cell;

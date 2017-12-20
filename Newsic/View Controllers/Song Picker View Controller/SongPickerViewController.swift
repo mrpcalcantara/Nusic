@@ -136,7 +136,7 @@ class SongPickerViewController: NewsicDefaultViewController {
     @IBOutlet weak var genreCollectionTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var genreCollectionTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var listViewBottomConstraint: NSLayoutConstraint!
-    
+    @IBOutlet weak var searchButtonHeightConstraint: NSLayoutConstraint!
     //Outlets
     @IBOutlet weak var mainControlView: UIView!
     @IBOutlet weak var moodText: UITextView!
