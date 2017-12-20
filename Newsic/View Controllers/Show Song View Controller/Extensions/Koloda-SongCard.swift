@@ -175,7 +175,10 @@ extension ShowSongViewController {
                                     
                                 })
                             }
-                            
+                        } else {
+                            DispatchQueue.main.async {
+                                SwiftSpinner.show(duration: 2, title: "Liked!");
+                            }
                         }
                         
                     }

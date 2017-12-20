@@ -28,7 +28,8 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             let currentPosition = Float(position)
             songProgressSlider.value = currentPosition
             updateElapsedTime(elapsedTime: currentPosition)
-            self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: currentPlayingTrack.thumbNail as AnyObject, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+            let thumbNail = currentPlayingTrack.thumbNail != nil ? currentPlayingTrack.thumbNail : nil
+            self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: thumbNail, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
         }
         
     }

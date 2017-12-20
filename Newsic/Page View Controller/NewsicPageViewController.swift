@@ -57,22 +57,22 @@ class NewsicPageViewController: UIPageViewController {
         
         for view in view.subviews {
             if let myView = view as? UIScrollView {
-                myView.canCancelContentTouches = true
-                myView.delegate = self
+                myView.canCancelContentTouches = false
+//                myView.delegate = self
                 
                 //            myView.delaysContentTouches = true
             }
         }
         
-        if let myView = view?.subviews.first as? UIScrollView {
-//            var scrollView = NewsicScrollView(frame: myView.frame)
-//            scrollView = myView
-//            
-//            myView.removeFromSuperview()
-//            view.addSubview(scrollView)
-            myView.canCancelContentTouches = true
-//            myView.delaysContentTouches = true
-        }
+//        if let myView = view?.subviews.first as? UIScrollView {
+////            var scrollView = NewsicScrollView(frame: myView.frame)
+////            scrollView = myView
+////            
+////            myView.removeFromSuperview()
+////            view.addSubview(scrollView)
+//            myView.canCancelContentTouches = true
+////            myView.delaysContentTouches = true
+//        }
         
 //        if let showSongVC = showSongVC {
 //            orderedViewControllers.insert(showSongVC, at: 2)

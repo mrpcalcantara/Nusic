@@ -25,24 +25,6 @@ extension ChoiceListView {
         arrowImageView = UIImageView(frame: CGRect(x: toggleView.bounds.origin.x, y: toggleView.bounds.origin.y, width: toggleView.bounds.width, height: toggleView.frame.height))
         arrowImageView.image = image!
         arrowImageView.contentMode = .scaleAspectFit
-        
-        
-//        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut, .autoreverse, .repeat], animations: {
-//            arrowImageView.alpha = 0
-//        }, completion: nil)
-        
-//        let flashAnimation = CABasicAnimation(keyPath: "opacity")
-//        flashAnimation.fromValue = 0
-//        flashAnimation.toValue = 1
-//        flashAnimation.duration = 0.5
-//        flashAnimation.autoreverses = true
-//        flashAnimation.repeatCount = .infinity
-//
-//        let animationGroup = CAAnimationGroup()
-//        animationGroup.animations = [flashAnimation]
-//        animationGroup.duration = 0.5
-//
-//        arrowImageView.layer.add(animationGroup, forKey: "myAnimation")
         toggleView.addSubview(arrowImageView)
         showOpenArrow()
     }

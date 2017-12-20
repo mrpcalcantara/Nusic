@@ -256,15 +256,17 @@ extension NewsicUser: FirebaseModel {
         if favoriteGenres == nil {
             self.favoriteGenres = []
         }
-        if let favoriteGenres = favoriteGenres {
+        if var favoriteGenres = favoriteGenres {
             let key = reference.child("genres").child(userName)
             var localGenre: NewsicGenre
             var updatedValue: [String: Int]
             if let genreIndex = favoriteGenres.index(where: { (localGenre) -> Bool in
                 return localGenre.mainGenre == genre
             }) {
+//                favoriteGenres[genreIndex].count += 1
                 localGenre = favoriteGenres[genreIndex]
                 localGenre.count += 1
+                self.favoriteGenres![genreIndex] = localGenre
             } else {
                 localGenre = NewsicGenre(mainGenre: genre, count: 1, userName: userName)
                 self.favoriteGenres?.append(localGenre)
