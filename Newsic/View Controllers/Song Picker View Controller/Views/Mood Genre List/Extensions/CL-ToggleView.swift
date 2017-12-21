@@ -79,7 +79,7 @@ extension ChoiceListView {
         leftLayer.path = leftPath.cgPath
         leftLayer.fillColor = UIColor.clear.cgColor
         leftLayer.strokeColor = UIColor.green.cgColor
-        leftLayer.lineWidth = 5
+        leftLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(leftLayer)
         
@@ -96,7 +96,7 @@ extension ChoiceListView {
         rightLayer.path = rightPath.cgPath
         rightLayer.fillColor = UIColor.clear.cgColor
         rightLayer.strokeColor = UIColor.green.cgColor
-        rightLayer.lineWidth = 5
+        rightLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(rightLayer)
     }
@@ -116,7 +116,7 @@ extension ChoiceListView {
         leftLayer.path = leftPath.cgPath
         leftLayer.fillColor = UIColor.clear.cgColor
         leftLayer.strokeColor = UIColor.green.cgColor
-        leftLayer.lineWidth = 5
+        leftLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(leftLayer)
         
@@ -133,7 +133,7 @@ extension ChoiceListView {
         rightLayer.path = rightPath.cgPath
         rightLayer.fillColor = UIColor.clear.cgColor
         rightLayer.strokeColor = UIColor.green.cgColor
-        rightLayer.lineWidth = 5
+        rightLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(rightLayer)
     }
