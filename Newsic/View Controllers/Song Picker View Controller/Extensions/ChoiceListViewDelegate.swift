@@ -46,17 +46,10 @@ extension SongPickerViewController : ChoiceListDelegate {
     
     func willMove(to point: CGPoint, animated: Bool) {
         animateMove(to: point)
-//        if animated {
-//            
-//        } else {
-//            listMenuView.frame.origin.y = point.y
-//            self.view.layoutIfNeeded()
-//        }
-//        listMenuView.layoutChoiceView()
     }
     
     func didTapGenre(value: String) {
-        if let indexPath = getIndexPathForGenre(value) {
+        if var indexPath = getIndexPathForGenre(value) {
             if let genre = SpotifyGenres(rawValue: value) {
                 
                 sectionGenres[indexPath.section-1].append(genre)
@@ -64,10 +57,26 @@ extension SongPickerViewController : ChoiceListDelegate {
                     return genre1.rawValue < genre2.rawValue
                 })
                 selectedGenres.removeValue(forKey: genre.rawValue.lowercased());
-                var indexSet = IndexSet()
-                indexSet.insert(indexPath.section)
-                genreCollectionView.reloadSections(indexSet)
+//                var indexSet = IndexSet()
+//                indexSet.insert(indexPath.section)
+//                genreCollectionView.reloadSections(indexSet)
 //                genreCollectionView.reloadData()
+                genreCollectionView.performBatchUpdates({
+                    print("indexPath tapped = \(indexPath)")
+                    print("sectionGenres[\(indexPath.section)] = \(sectionGenres[indexPath.section-1].count)")
+                    
+                    if indexPath.row + 1 > sectionGenres[indexPath.section-1].count {
+                        indexPath.row = sectionGenres[indexPath.section-1].count-1
+                        print("new indexPath \(indexPath)")
+                    }
+                    self.genreCollectionView.insertItems(at: [indexPath])
+                    var indexSet = IndexSet()
+                    indexSet.insert(indexPath.section)
+                    self.genreCollectionView.reloadSections(indexSet)
+                }, completion: { (isCompleted) in
+                    
+                })
+                
             }
             
         }
