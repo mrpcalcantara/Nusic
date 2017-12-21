@@ -17,6 +17,8 @@ class NewsicButton: UIButton {
     @IBInspectable var borderAlpha: CGFloat = 1.0
     @IBInspectable var bezierPath: UIBezierPath = UIBezierPath()
     @IBInspectable var allowBlur: Bool = false;
+    @IBInspectable var blurAlpha: CGFloat = 1.0;
+    @IBInspectable var animated: Bool = false;
     //
     
     
@@ -28,40 +30,44 @@ class NewsicButton: UIButton {
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
         
-        let width = self.bounds.width;
-        let height = self.bounds.height;
-        let initialX:CGFloat = 0
-        let initialY:CGFloat = 0
-        
-        self.layer.masksToBounds = true
         self.titleLabel?.textColor = borderColor;
         
-        //self.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 15);
-        
-        //self.layer.borderColor = borderColor.withAlphaComponent(borderAlpha).cgColor
-        //self.layer.borderWidth = borderSize
+        self.layer.masksToBounds = true
+        self.layer.borderColor = borderColor.withAlphaComponent(borderAlpha).cgColor
+        self.layer.borderWidth = borderSize
+        self.layer.cornerRadius = cornerSize
         
         if allowBlur {
             let containerEffect = UIBlurEffect(style: .dark)
             let containerView = UIVisualEffectView(effect: containerEffect)
-            containerView.alpha = borderAlpha
+            containerView.alpha = blurAlpha
             containerView.frame = self.bounds
             
             containerView.isUserInteractionEnabled = false // Edit: so that subview simply passes the event through to the button
             
             self.insertSubview(containerView, belowSubview: self.titleLabel!)
         }
-        
-
-//        let vibrancy = UIVibrancyEffect(blurEffect: containerEffect)
-//        let vibrancyView = UIVisualEffectView(effect: vibrancy)
-//        vibrancyView.frame = containerView.bounds
-//        containerView.contentView.addSubview(vibrancyView)
-//
-//        vibrancyView.contentView.addSubview(self.titleLabel!)
-//
-//        blurEffectView.insertSubview(vibrancyEffectView, at: 0)
-        
+    
+        if animated {
+            let flashAnimation = CABasicAnimation(keyPath: "fillColor")
+            flashAnimation.fromValue = NewsicDefaults.deselectedColor.cgColor
+            flashAnimation.toValue = NewsicDefaults.greenColor.cgColor
+            flashAnimation.duration = 0.5
+            flashAnimation.autoreverses = true
+            flashAnimation.repeatCount = .infinity
+            
+            let strokeColorAnimation = CABasicAnimation(keyPath: "strokeColor")
+            strokeColorAnimation.fromValue = NewsicDefaults.greenColor.cgColor
+            strokeColorAnimation.toValue = UIColor.green.cgColor
+            strokeColorAnimation.duration = 0.5
+            strokeColorAnimation.autoreverses = true
+            strokeColorAnimation.repeatCount = .infinity
+            
+            let animationGroup = CAAnimationGroup()
+            animationGroup.animations = [strokeColorAnimation, flashAnimation]
+            animationGroup.duration = .greatestFiniteMagnitude
+            self.layer.add(animationGroup, forKey: "buttonAnimation")
+        }
     }
     
     func setBackgroundColor(color: UIColor, forState: UIControlState) {
@@ -73,15 +79,5 @@ class NewsicButton: UIButton {
         UIGraphicsEndImageContext()
         self.setBackgroundImage(colorImage, for: forState)
     }
-
-//    func handleTouch(button: NewsicButton, event: UIEvent) {
-//        if let touch = event.touches(for: button)?.first {
-//            let location = touch.location(in: button);
-//
-//            if !bezierPath.contains(location) {
-//                button.cancelTracking(with: nil);
-//            }
-//        }
-//    }
     
 }

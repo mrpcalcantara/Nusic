@@ -12,6 +12,8 @@ class CollectionViewHeader: UICollectionReusableView {
 
     @IBOutlet weak var sectionHeaderLabel: UILabel!
     
+    static let reuseIdentifier = "collectionViewHeader"
+    
     override class var layerClass: AnyClass {
         get { return NewsicCustomLayer.self }
     }

@@ -25,7 +25,9 @@ extension SongPickerViewController : ChoiceListDelegate {
         getNewSong(NewsicButton(type: .system))
     }
     func didRemoveGenres() {
-//        resetGenresPerSection()
+        selectedGenres.removeAll()
+        
+        resetGenresPerSection()
     }
     
     func didRemoveMoods() {

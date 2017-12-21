@@ -29,11 +29,10 @@ extension ChoiceListView {
             layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
         }
         
+        let headerNib = UINib(nibName: ChoiceListViewHeader.className, bundle: nil)
+        let view = UINib(nibName: MusicChoiceCell.className, bundle: nil);
         
-        let headerNib = UINib(nibName: "CollectionViewHeader", bundle: nil)
-        let view = UINib(nibName: "MusicChoiceCell", bundle: nil);
-        
-        choiceCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "collectionViewHeader")
+        choiceCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ChoiceListViewHeader.reuseIdentifier)
         choiceCollectionView.register(view, forCellWithReuseIdentifier: MusicChoiceCell.reuseIdentifier);
         
         let genreLayout = choiceCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
@@ -100,12 +99,14 @@ extension ChoiceListView: UICollectionViewDataSource {
         
         if kind == UICollectionElementKindSectionHeader {
             
-            let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "collectionViewHeader", for: indexPath) as! CollectionViewHeader
+            let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ChoiceListViewHeader.reuseIdentifier, for: indexPath) as! ChoiceListViewHeader
+//            let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "collectionViewHeader", for: indexPath) as! CollectionViewHeader
             if indexPath.section == Section.genreSection.rawValue {
                 headerCell.configure(label: "Genres picked")
             } else {
                 headerCell.configure(label: "Mood");
             }
+            headerCell.delegate = self
             return headerCell
         } else {
             fatalError("Unknown reusable kind element");
@@ -116,11 +117,7 @@ extension ChoiceListView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: MusicChoiceCell = collectionView.dequeueReusableCell(withReuseIdentifier: MusicChoiceCell.reuseIdentifier, for: indexPath) as! MusicChoiceCell;
         
-        
-        //        cell.configure(for: indexPath.row, offsetRect: CGRect.zero, isLastRow: false)
-        
         if indexPath.section == Section.genreSection.rawValue {
-            //            cell.moodLabel.text =
             cell.configure(with: self.chosenGenres[indexPath.row])
             cell.layoutIfNeeded()
         } else {
@@ -166,6 +163,15 @@ extension ChoiceListView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8;
+    }
+    
+    
+}
+
+extension ChoiceListView: ChoiceListViewHeaderDelegate {
+    
+    func buttonClicked() {
+        emptyGenres()
     }
     
     
