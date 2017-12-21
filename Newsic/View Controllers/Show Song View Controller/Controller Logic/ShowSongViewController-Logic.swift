@@ -30,6 +30,7 @@ extension ShowSongViewController {
     }
     
     func fetchLikedTracks() {
+        likedTrackList.removeAll()
         if moodObject?.emotions.first?.basicGroup == EmotionDyad.unknown {
             spotifyHandler.getAllTracksForPlaylist(playlistId: playlist.id!) { (spotifyTracks, error) in
                 if let error = error {

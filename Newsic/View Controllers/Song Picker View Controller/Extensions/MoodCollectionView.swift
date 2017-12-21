@@ -23,7 +23,7 @@ extension SongPickerViewController {
         genreCollectionView.allowsMultipleSelection = true;
         genreCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
         genreCollectionView.register(view, forCellWithReuseIdentifier: MoodViewCell.reuseIdentifier);
-        
+        genreCollectionView.setCollectionViewLayout(NewsicCollectionViewLayout(), animated: true)
         
         let genreLayout = genreCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         genreLayout.sectionHeadersPinToVisibleBounds = true
@@ -274,7 +274,8 @@ extension SongPickerViewController: UICollectionViewDelegate {
                 if let selectedMood = moodObject?.emotions.first?.basicGroup.rawValue {
                     if mood == selectedMood {
                         DispatchQueue.main.async {
-                            newsicCell.isSelected = true
+                            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: UICollectionViewScrollPosition.centeredVertically)
+//                            newsicCell.isSelected = true
                             newsicCell.selectCell()
                         }
                     }
@@ -341,17 +342,28 @@ extension SongPickerViewController: UICollectionViewDelegate {
             let selectedGenre = sectionGenres[indexPath.section-1][indexPath.row].rawValue
             listMenuView.insertChosenGenre(value: selectedGenre)
             sectionGenres[indexPath.section-1].remove(at: indexPath.row)
-//            if sectionGenres[indexPath.section-1].count == 0 {
-//                var indexSet = IndexSet(); indexSet.insert(indexPath.section)
-//                sectionGenres.remove(at: indexPath.section-1)
-//                sectionTitles.remove(at: indexPath.section-1)
-//            }
             selectedGenres.updateValue(1, forKey: selectedGenre.lowercased());
-//            manageButton(for: genreCollectionView);
 //            cell.selectCell()
+            var indexSet = IndexSet()
+            indexSet.insert(indexPath.section)
+            collectionView.performBatchUpdates({
+                collectionView.deleteItems(at: [indexPath])
+                collectionView.reloadSections(indexSet)
+//                if self.sectionGenres[indexPath.section-1].count == 0 {
+//                    sectionTitles.remove(at: indexPath.section-1)
+//                    var indexSet = IndexSet();
+//                    indexSet.insert(indexPath.section)
+//                    collectionView.deleteSections(indexSet)
+//
+//                }
+            }, completion: { (isCompleted) in
+                
+            })
+            
         }
         
-        collectionView.reloadData()
+//        collectionView.reloadData()
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

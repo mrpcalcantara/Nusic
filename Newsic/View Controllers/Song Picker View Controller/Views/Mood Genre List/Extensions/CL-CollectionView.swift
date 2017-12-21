@@ -24,6 +24,8 @@ extension ChoiceListView {
         choiceCollectionView.autoresizingMask = [.flexibleHeight, .flexibleBottomMargin]
         choiceCollectionView.backgroundColor = UIColor.clear
         
+        choiceCollectionView.setCollectionViewLayout(NewsicCollectionViewLayout(), animated: true)
+        
         if let layout = choiceCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .vertical
             layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
