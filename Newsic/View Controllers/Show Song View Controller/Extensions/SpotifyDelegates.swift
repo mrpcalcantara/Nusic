@@ -35,7 +35,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didSeekToPosition position: TimeInterval) {
-        print("seeked")
+//        print("seeked")
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: String!) {
@@ -87,23 +87,13 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             }
         }
     }
+    
 
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
         DispatchQueue.main.async {
             self.hideLikeButtons()
         }
-        
-        
-            let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-            if let nowPlayingInfo = nowPlayingInfo, let currentTrack = audioStreaming.metadata.currentTrack {
-                let elapsedTime = nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? Double
-                let duration = Double(currentTrack.duration)
-                if elapsedTime != nil && elapsedTime == duration {
-                    songCardView.swipe(.left);
-                }
-            }
-        
-        
+        songCardView.swipe(.left);
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {

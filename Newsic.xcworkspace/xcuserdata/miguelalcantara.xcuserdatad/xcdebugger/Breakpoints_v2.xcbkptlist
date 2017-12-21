@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Views/Mood Genre List/ChoiceList.swift"
-            timestampString = "535467576.123822"
+            timestampString = "535524244.406817"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "214"
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/ChoiceListViewDelegate.swift"
-            timestampString = "535467576.124032"
+            timestampString = "535526343.746538"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
             landmarkName = "didPanHeader(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/ChoiceListViewDelegate.swift"
-            timestampString = "535467576.124225"
+            timestampString = "535526343.746601"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
             landmarkName = "didTapGenre(value:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,7 +90,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "535467576.124293"
+            timestampString = "535526343.746649"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "214"
@@ -106,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "535467576.124477"
+            timestampString = "535526343.7467"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "218"
@@ -122,7 +122,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "535467576.124536"
+            timestampString = "535526343.746747"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "220"
@@ -138,7 +138,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Views/Mood Genre List/ChoiceList.swift"
-            timestampString = "535467576.124591"
+            timestampString = "535524244.407414"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "214"
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/ChoiceListViewDelegate.swift"
-            timestampString = "535467576.12465"
+            timestampString = "535526343.746812"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
             landmarkName = "isNotEmpty()"
             landmarkType = "7">
          </BreakpointContent>
@@ -169,24 +169,8 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/ChoiceListViewDelegate.swift"
-            timestampString = "535467576.124707"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
-            landmarkName = "didRemoveGenres()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "535467576.124764"
+            timestampString = "535526343.746855"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "164"
@@ -202,7 +186,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "535467576.124815"
+            timestampString = "535526343.746901"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "165"
@@ -218,7 +202,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "535467576.124867"
+            timestampString = "535526343.746948"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "171"
@@ -234,7 +218,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "535467576.124918"
+            timestampString = "535526343.746995"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "104"
@@ -250,7 +234,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "535467576.12497"
+            timestampString = "535526343.74704"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "250"
@@ -266,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/ChoiceListViewDelegate.swift"
-            timestampString = "535467576.125019"
+            timestampString = "535526343.747087"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
             landmarkName = "willMove(to:animated:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -282,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/ChoiceListViewDelegate.swift"
-            timestampString = "535467576.125066"
+            timestampString = "535526343.747127"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
             landmarkName = "didTapHeader(willOpen:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -298,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/ChoiceListViewDelegate.swift"
-            timestampString = "535467576.125112"
+            timestampString = "535526343.747168"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "openChoiceMenu()"
             landmarkType = "7">
          </BreakpointContent>
@@ -346,23 +330,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/Extensions/SpotifyDelegates.swift"
-            timestampString = "535467576.1254"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "audioStreaming(_:didStopPlayingTrack:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Show Song View Controller/Extensions/SpotifyDelegates.swift"
-            timestampString = "535467576.125578"
+            timestampString = "535526343.747261"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "173"
@@ -394,7 +362,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/Extensions/SpotifyDelegates.swift"
-            timestampString = "535467576.125799"
+            timestampString = "535526343.747641"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
@@ -410,11 +378,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/Extensions/SpotifyDelegates.swift"
-            timestampString = "535467576.12585"
+            timestampString = "535526343.747857"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
             landmarkName = "audioStreaming(_:didSeekToPosition:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -426,12 +394,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/Extensions/SpotifyDelegates.swift"
-            timestampString = "535467576.125897"
+            timestampString = "535526343.748052"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "256"
             endingLineNumber = "256"
-            landmarkName = "actionSeekForward()"
+            landmarkName = "seekToTime()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -447,8 +415,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "263"
             endingLineNumber = "263"
-            landmarkName = "updateGenreCount(for:updateGenreHandler:)"
-            landmarkType = "7">
+            landmarkName = "unknown"
+            landmarkType = "0">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -495,7 +463,23 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "270"
             endingLineNumber = "270"
-            landmarkName = "updateGenreCount(for:updateGenreHandler:)"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
+            timestampString = "535526343.748328"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "toggleCollectionViews(for:progress:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

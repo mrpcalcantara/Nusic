@@ -15,14 +15,14 @@ extension SongPickerViewController {
     
     func setupCollectionCellViews() {
         
-        let headerNib = UINib(nibName: "CollectionViewHeader", bundle: nil)
-        let view = UINib(nibName: "MoodViewCell", bundle: nil);
+        let headerNib = UINib(nibName: CollectionViewHeader.className, bundle: nil)
+        let view = UINib(nibName: MoodViewCell.className, bundle: nil);
         
         genreCollectionView.delegate = self;
         genreCollectionView.dataSource = self;
         genreCollectionView.allowsMultipleSelection = true;
-        genreCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "collectionViewHeader")
-        genreCollectionView.register(view, forCellWithReuseIdentifier: "moodCell");
+        genreCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
+        genreCollectionView.register(view, forCellWithReuseIdentifier: MoodViewCell.reuseIdentifier);
         
         
         let genreLayout = genreCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
@@ -285,7 +285,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
             if let genre = newsicCell.moodLabel.text {
                 if selectedGenres[genre.lowercased()] != nil {
                     DispatchQueue.main.async {
-                        newsicCell.selectCell()
+//                        newsicCell.selectCell()
                     }
                 }
             }
@@ -403,7 +403,7 @@ extension SongPickerViewController: UICollectionViewDataSource {
         
         if kind == UICollectionElementKindSectionHeader {
             
-            let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "collectionViewHeader", for: indexPath) as! CollectionViewHeader
+            let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier, for: indexPath) as! CollectionViewHeader
             if collectionView == genreCollectionView {
                 if indexPath.section == 0 {
                     headerCell.configure(label: "Genres")
@@ -426,7 +426,7 @@ extension SongPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         var isLastRow: Bool = false
-        let cell: MoodViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "moodCell", for: indexPath) as! MoodViewCell;
+        let cell: MoodViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: MoodViewCell.reuseIdentifier, for: indexPath) as! MoodViewCell;
         if collectionView == self.moodCollectionView {
             let mood = moods[indexPath.row].rawValue
             cell.moodLabel.text = "\(mood)"

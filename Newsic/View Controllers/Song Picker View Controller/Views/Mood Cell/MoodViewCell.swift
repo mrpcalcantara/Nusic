@@ -10,9 +10,10 @@ import UIKit
 
 class MoodViewCell: UICollectionViewCell {
     
-    
-    
     @IBOutlet weak var moodLabel: UILabel!
+    
+    static let reuseIdentifier = "moodCell"
+    
     var borderPathLayer: CAShapeLayer?;
     var pointerPathLayer: CAShapeLayer?;
     var selectedColor: UIColor = UIColor.green.withAlphaComponent(0.2)
