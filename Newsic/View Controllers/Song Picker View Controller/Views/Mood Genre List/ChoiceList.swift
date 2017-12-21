@@ -39,6 +39,7 @@ class ChoiceListView: NewsicView {
     var arrowImageView: UIImageView = UIImageView()
     var leftLayer: CAShapeLayer = CAShapeLayer()
     var rightLayer: CAShapeLayer = CAShapeLayer()
+    var lineWidth: CGFloat = 3
 //    var fetchSongsButton: NewsicButton = NewsicButton()
     
     @IBOutlet weak var toggleView: UIView!

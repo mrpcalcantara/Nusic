@@ -129,6 +129,8 @@ extension SongPickerViewController : ChoiceListDelegate {
     }
     
     func toggleChoiceMenu(willOpen: Bool) {
+        listMenuView.isOpen = willOpen
+        listMenuView.manageToggleView()
         if willOpen {
             showChoiceMenu()
         } else {
