@@ -81,7 +81,7 @@
                                         <rect key="frame" x="0.0" y="36" width="375" height="567"/>
                                         <subviews>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bqf-Kb-x3U" userLabel="Genre Collection View">
-                                                <rect key="frame" x="8" y="0.0" width="359" height="532"/>
+                                                <rect key="frame" x="16" y="0.0" width="343" height="532"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="z9q-vZ-mww">
                                                     <size key="itemSize" width="50" height="50"/>
                                                     <size key="headerReferenceSize" width="50" height="50"/>
@@ -99,12 +99,12 @@
                                                     </collectionViewCell>
                                                 </cells>
                                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="zdn-W7-dib">
-                                                    <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="50"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </collectionReusableView>
                                             </collectionView>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8t3-hW-Upx">
-                                                <rect key="frame" x="8" y="0.0" width="359" height="567"/>
+                                                <rect key="frame" x="16" y="0.0" width="343" height="567"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cp9-Te-6Sc">
                                                     <size key="itemSize" width="50" height="50"/>
                                                     <size key="headerReferenceSize" width="50" height="50"/>
@@ -122,7 +122,7 @@
                                                     </collectionViewCell>
                                                 </cells>
                                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="cg7-Jf-YtF">
-                                                    <rect key="frame" x="0.0" y="0.0" width="359" height="50"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="50"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </collectionReusableView>
                                                 <connections>
@@ -151,13 +151,13 @@
                                             <constraint firstItem="8t3-hW-Upx" firstAttribute="top" secondItem="TJk-WK-DBD" secondAttribute="top" id="5yh-dv-De2"/>
                                             <constraint firstAttribute="bottom" secondItem="8t3-hW-Upx" secondAttribute="bottom" id="AAn-8r-AFY"/>
                                             <constraint firstItem="na7-Jq-MEC" firstAttribute="top" secondItem="bqf-Kb-x3U" secondAttribute="bottom" id="POC-Qr-hu5"/>
-                                            <constraint firstAttribute="trailing" secondItem="bqf-Kb-x3U" secondAttribute="trailing" constant="8" id="Sly-RS-Nga"/>
+                                            <constraint firstAttribute="trailing" secondItem="bqf-Kb-x3U" secondAttribute="trailing" constant="16" id="Sly-RS-Nga"/>
                                             <constraint firstAttribute="trailing" secondItem="na7-Jq-MEC" secondAttribute="trailing" id="aH4-07-xcN"/>
                                             <constraint firstItem="bqf-Kb-x3U" firstAttribute="top" secondItem="TJk-WK-DBD" secondAttribute="top" id="b8x-VJ-s8f"/>
                                             <constraint firstItem="na7-Jq-MEC" firstAttribute="leading" secondItem="TJk-WK-DBD" secondAttribute="leading" id="hA1-w2-QMg"/>
-                                            <constraint firstAttribute="trailing" secondItem="8t3-hW-Upx" secondAttribute="trailing" constant="8" id="jXN-8W-5xa"/>
-                                            <constraint firstItem="bqf-Kb-x3U" firstAttribute="leading" secondItem="TJk-WK-DBD" secondAttribute="leading" constant="8" id="kS7-Ac-QMR"/>
-                                            <constraint firstItem="8t3-hW-Upx" firstAttribute="leading" secondItem="TJk-WK-DBD" secondAttribute="leading" constant="8" id="z1z-cv-BeE"/>
+                                            <constraint firstAttribute="trailing" secondItem="8t3-hW-Upx" secondAttribute="trailing" constant="16" id="jXN-8W-5xa"/>
+                                            <constraint firstItem="bqf-Kb-x3U" firstAttribute="leading" secondItem="TJk-WK-DBD" secondAttribute="leading" constant="16" id="kS7-Ac-QMR"/>
+                                            <constraint firstItem="8t3-hW-Upx" firstAttribute="leading" secondItem="TJk-WK-DBD" secondAttribute="leading" constant="16" id="z1z-cv-BeE"/>
                                         </constraints>
                                     </view>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JE2-ew-ku9" customClass="NewsicSegmentedControl" customModule="Newsic" customModuleProvider="target">
@@ -599,6 +599,49 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DJb-df-dVx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1370" y="-778"/>
+        </scene>
+        <!--Side Menu View Controller2-->
+        <scene sceneID="DyM-Kw-kZb">
+            <objects>
+                <viewController storyboardIdentifier="SideMenu2" id="iJM-BN-XbD" customClass="SideMenuViewController2" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LkH-zk-pFj"/>
+                        <viewControllerLayoutGuide type="bottom" id="3BI-vs-VKs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="r1t-i0-hfg">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7NX-4B-CKb">
+                                <rect key="frame" x="0.0" y="52" width="375" height="615"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="settingsCell" id="aAr-Sc-MJa" customClass="SettingsCell" customModule="Newsic" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aAr-Sc-MJa" id="2Tu-gE-WV9">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="3BI-vs-VKs" firstAttribute="top" secondItem="7NX-4B-CKb" secondAttribute="bottom" id="amu-lc-L9p"/>
+                            <constraint firstAttribute="trailing" secondItem="7NX-4B-CKb" secondAttribute="trailing" id="dJN-C3-kM7"/>
+                            <constraint firstItem="7NX-4B-CKb" firstAttribute="leading" secondItem="r1t-i0-hfg" secondAttribute="leading" id="fdJ-HU-ZXn"/>
+                            <constraint firstItem="7NX-4B-CKb" firstAttribute="top" secondItem="r1t-i0-hfg" secondAttribute="top" constant="52" id="zld-x2-cRE"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="settingsTableView" destination="7NX-4B-CKb" id="gSM-Rd-AAW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CeU-ux-kfh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-94" y="43"/>
         </scene>
     </scenes>
     <resources>

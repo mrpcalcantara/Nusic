@@ -43,13 +43,16 @@ class SongPickerViewController: NewsicDefaultViewController {
     var newsicUser: NewsicUser! = nil {
         didSet {
             let parent = self.parent as! NewsicPageViewController
-            let sideMenu = parent.sideMenuVC as! SideMenuViewController
+//            let sideMenu = parent.sideMenuVC as! SideMenuViewController
+            let sideMenu = parent.sideMenuVC2 as! SideMenuViewController2
             
             sideMenu.username = self.newsicUser.displayName != "" ? self.newsicUser.displayName : self.newsicUser.userName;
             
             sideMenu.preferredPlayer = self.newsicUser.settingValues.preferredPlayer
             sideMenu.useMobileData = self.newsicUser.settingValues.useMobileData
             sideMenu.enablePlayerSwitch = self.newsicUser.isPremium! ? true : false
+            
+            sideMenu.settings = self.newsicUser.settingValues
             
             if self.spotifyHandler.user.smallestImage != nil, let imageURL = self.spotifyHandler.user.smallestImage.imageURL {
                 sideMenu.profileImageURL = imageURL
