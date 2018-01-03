@@ -19,4 +19,6 @@ struct NewsicUserSettings {
         self.preferredPlayer = preferredPlayer
     }
     
+    
+    
 }

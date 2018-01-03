@@ -16,6 +16,8 @@ class NewsicPageViewController: UIPageViewController {
     var sideMenuVC: UIViewController?
     var showSongVC: UIViewController?
     
+    var sideMenuVC2: UIViewController?
+    
     private(set) lazy var orderedViewControllers: [UIViewController] = {
         // The view controllers will be shown in this order
 //        return [self.newColoredViewController(color: "Green"),
@@ -42,10 +44,17 @@ class NewsicPageViewController: UIPageViewController {
         
         songPickerVC = UIStoryboard(name: "Main", bundle: nil) .
             instantiateViewController(withIdentifier: "SongPicker")
-        sideMenuVC = UIStoryboard(name: "Main", bundle: nil) .
-            instantiateViewController(withIdentifier: "SideMenu")
+//        sideMenuVC = UIStoryboard(name: "Main", bundle: nil) .
+//            instantiateViewController(withIdentifier: "SideMenu")
         showSongVC = UIStoryboard(name: "Main", bundle: nil) .
             instantiateViewController(withIdentifier: "ShowSong")
+        
+        sideMenuVC2 = UIStoryboard(name: "Main", bundle: nil) .
+            instantiateViewController(withIdentifier: "SideMenu2")
+        
+        if let sideMenuVC2 = sideMenuVC2 {
+            orderedViewControllers.insert(sideMenuVC2, at: 0)
+        }
         
         if let sideMenuVC = sideMenuVC {
             orderedViewControllers.insert(sideMenuVC, at: 0)

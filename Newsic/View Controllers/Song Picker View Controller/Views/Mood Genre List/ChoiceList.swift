@@ -148,7 +148,7 @@ class ChoiceListView: NewsicView {
             if panProgress > 1-closeThreshold || self.frame.origin.y > maxY {
                 finalY = maxY
                 isOpen = false
-            } else if panProgress < 0.25 {
+            } else if panProgress < 0.10 {
                 finalY = self.frame.height/4
             } else {
                 finalY = midY

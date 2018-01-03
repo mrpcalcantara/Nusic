@@ -11,4 +11,13 @@ import Foundation
 enum NewsicPreferredPlayer: Int {
     case spotify
     case youtube
+    
+    func description() -> String {
+        switch self {
+        case .spotify:
+            return "Spotify"
+        case .youtube:
+            return "YouTube"
+        }
+    }
 }
