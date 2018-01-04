@@ -52,7 +52,8 @@ class SongPickerViewController: NewsicDefaultViewController {
             sideMenu.useMobileData = self.newsicUser.settingValues.useMobileData
             sideMenu.enablePlayerSwitch = self.newsicUser.isPremium! ? true : false
             
-            sideMenu.settings = self.newsicUser.settingValues
+            sideMenu.newsicUser = newsicUser
+//            sideMenu.settings = self.newsicUser.settingValues
             
             if self.spotifyHandler.user.smallestImage != nil, let imageURL = self.spotifyHandler.user.smallestImage.imageURL {
                 sideMenu.profileImageURL = imageURL

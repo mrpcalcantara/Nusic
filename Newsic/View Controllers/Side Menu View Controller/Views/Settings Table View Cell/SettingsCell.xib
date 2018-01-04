@@ -24,16 +24,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="479-cU-ea3" userLabel="Item Description">
-                        <rect key="frame" x="16" y="11" width="233.5" height="22"/>
+                        <rect key="frame" x="16" y="11" width="267.5" height="22"/>
                         <constraints>
-                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="233.5" id="pwB-W6-CfY"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="233.5" id="pwB-W6-CfY"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zrn-GG-1zZ" userLabel="Item Value">
-                        <rect key="frame" x="257.5" y="11" width="78.5" height="22"/>
+                        <rect key="frame" x="291.5" y="11" width="44.5" height="22"/>
                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>

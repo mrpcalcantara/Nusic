@@ -216,6 +216,7 @@ extension NewsicUser: FirebaseModel {
                 
                 var preferredPlayer: NewsicPreferredPlayer?
                 var useMobileData: Bool? = true
+                var spotifySettings = NewsicUserSpotifySettings(bitrate: .normal)
                 
                 if let preferredPlayerValue = dictionary["preferredPlayer"] as? NSNumber {
                     preferredPlayer = NewsicPreferredPlayer(rawValue: Int(preferredPlayerValue))
@@ -225,7 +226,12 @@ extension NewsicUser: FirebaseModel {
                     useMobileData = Bool(useMobileDataValue)
                 }
                 
-                let settings = NewsicUserSettings(useMobileData: useMobileData!, preferredPlayer: preferredPlayer!)
+                if let spotifyDict = dictionary["spotify"] as? NSDictionary {
+                    let bitrate = spotifyDict["bitrate"] as? NSNumber
+                    spotifySettings.bitrate = SPTBitrate(rawValue: UInt(bitrate!))!
+                }
+                
+                let settings = NewsicUserSettings(useMobileData: useMobileData!, preferredPlayer: preferredPlayer!, spotifySettings: spotifySettings)
                 
                 fetchSettingsHandler(settings, nil);
             } else {
@@ -237,8 +243,10 @@ extension NewsicUser: FirebaseModel {
     }
     
     func saveSettings(saveSettingsHandler: @escaping(Bool, NewsicError?) -> ()) {
+        let spotify = settingValues.spotifySettings?.toDictionary()
         let dictionary = ["preferredPlayer": settingValues.preferredPlayer?.rawValue,
-                          "useMobileData": settingValues.useMobileData! ? 1 : 0] as [String : Any]
+                          "useMobileData": settingValues.useMobileData! ? 1 : 0,
+                          "spotify": spotify] as [String : Any]
         
         
         reference.child("settings").child(userName).updateChildValues(dictionary) { (error, reference) in

@@ -1,5 +1,5 @@
 //
-//  SettingsTitle.swift
+//  NewsicSettings.swift
 //  Newsic
 //
 //  Created by Miguel Alcantara on 03/01/2018.
@@ -9,6 +9,7 @@
 import Foundation
 
 enum NewsicSettingsTitle: String {
+    case spotifySettings = "Spotify"
     case playerSettings = "Music Player"
     case connectionSettings = "Connection"
     case actionSettings = "Actions"
@@ -17,5 +18,6 @@ enum NewsicSettingsTitle: String {
 enum NewsicSettingsLabel: String {
     case useMobileData = "Use Mobile Data"
     case preferredPlayer = "Preferred Player"
+    case spotifyQuality = "Sound Quality"
     case logout = "Logout"
 }

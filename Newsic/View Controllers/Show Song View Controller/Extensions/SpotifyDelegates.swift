@@ -39,7 +39,6 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: String!) {
-        
         if Connectivity.isConnectedToNetwork() == .connectedCellular && !playOnCellularData! {
             let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
             
@@ -131,6 +130,12 @@ extension ShowSongViewController {
                 try self.player?.start(withClientId: self.auth.clientID);
             } catch { print("error starting") }
         }
+        if let bitrate = self.user.settingValues.spotifySettings?.bitrate {
+            self.player?.setTargetBitrate(bitrate, callback: { (error) in
+                
+            })
+        }
+        
         self.player?.login(withAccessToken: self.auth.session.accessToken);
         
     }

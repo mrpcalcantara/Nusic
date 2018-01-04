@@ -56,6 +56,9 @@
 		8C5595681FD4FA8E00E70667 /* NewsicErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5595671FD4FA8E00E70667 /* NewsicErrorCodes.swift */; };
 		8C55956B1FD4FDA100E70667 /* SpotifyErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C55956A1FD4FDA100E70667 /* SpotifyErrorCodes.swift */; };
 		8C55956D1FD4FE6600E70667 /* NewsicError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C55956C1FD4FE6600E70667 /* NewsicError.swift */; };
+		8C58ACEB1FFE1B9E00E68FD5 /* NewsicUserSpotifySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C58ACEA1FFE1B9E00E68FD5 /* NewsicUserSpotifySettings.swift */; };
+		8C58ACED1FFE202500E68FD5 /* SPTBitrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C58ACEC1FFE202500E68FD5 /* SPTBitrate.swift */; };
+		8C58ACF31FFE400600E68FD5 /* YBAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C58ACF21FFE400600E68FD5 /* YBAlertController.swift */; };
 		8C5B18F21FCBBEF400EBFAE1 /* CollectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B18F01FCBBEF400EBFAE1 /* CollectionViewHeader.swift */; };
 		8C5B18F31FCBBEF400EBFAE1 /* CollectionViewHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B18F11FCBBEF400EBFAE1 /* CollectionViewHeader.xib */; };
 		8C5E89291FBD7B2E00FF75AC /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5E89281FBD7B2E00FF75AC /* CustomNavigationController.swift */; };
@@ -198,6 +201,9 @@
 		8C5595671FD4FA8E00E70667 /* NewsicErrorCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicErrorCodes.swift; sourceTree = "<group>"; };
 		8C55956A1FD4FDA100E70667 /* SpotifyErrorCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyErrorCodes.swift; sourceTree = "<group>"; };
 		8C55956C1FD4FE6600E70667 /* NewsicError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicError.swift; sourceTree = "<group>"; };
+		8C58ACEA1FFE1B9E00E68FD5 /* NewsicUserSpotifySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicUserSpotifySettings.swift; sourceTree = "<group>"; };
+		8C58ACEC1FFE202500E68FD5 /* SPTBitrate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTBitrate.swift; sourceTree = "<group>"; };
+		8C58ACF21FFE400600E68FD5 /* YBAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YBAlertController.swift; sourceTree = "<group>"; };
 		8C5B18F01FCBBEF400EBFAE1 /* CollectionViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewHeader.swift; sourceTree = "<group>"; };
 		8C5B18F11FCBBEF400EBFAE1 /* CollectionViewHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewHeader.xib; sourceTree = "<group>"; };
 		8C5E89281FBD7B2E00FF75AC /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
@@ -466,8 +472,8 @@
 		8C26C3531FE510B700365142 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				8C58ACE91FFE1B8100E68FD5 /* Settings */,
 				8C0C1E971F61005100CF8516 /* NewsicUser.swift */,
-				8C26C3591FE517F600365142 /* NewsicUserSettings.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -580,6 +586,7 @@
 			isa = PBXGroup;
 			children = (
 				8C7A58401FD7A0D3006A2E43 /* SPTAuth.swift */,
+				8C58ACEC1FFE202500E68FD5 /* SPTBitrate.swift */,
 			);
 			path = Spotify;
 			sourceTree = "<group>";
@@ -613,6 +620,23 @@
 				8C2B40881FD9488C00F08087 /* NewsicPopupButton.swift */,
 			);
 			path = Popup;
+			sourceTree = "<group>";
+		};
+		8C58ACE91FFE1B8100E68FD5 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				8C26C3591FE517F600365142 /* NewsicUserSettings.swift */,
+				8C58ACEA1FFE1B9E00E68FD5 /* NewsicUserSpotifySettings.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		8C58ACF11FFE3FF700E68FD5 /* Action Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				8C58ACF21FFE400600E68FD5 /* YBAlertController.swift */,
+			);
+			path = "Action Sheet";
 			sourceTree = "<group>";
 		};
 		8C5B18EF1FCBBEC900EBFAE1 /* Collection View Header */ = {
@@ -878,6 +902,7 @@
 		8C9C9E8F1F67C2CF0093C14A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8C58ACF11FFE3FF700E68FD5 /* Action Sheet */,
 				8C5595691FD4FB3500E70667 /* Popup */,
 				8C9C9E901F67C7E10093C14A /* NewsicActivityIndicator.swift */,
 				8C9DB4F61F6B840400F35268 /* NewsicButton.swift */,
@@ -1369,12 +1394,15 @@
 				8C268B541FCFB53100BB4C6F /* DismissAnimationController.swift in Sources */,
 				8C7C0A3F1FEA76780077B109 /* CL-ToggleView.swift in Sources */,
 				8C2B40891FD9488C00F08087 /* NewsicPopupButton.swift in Sources */,
+				8C58ACEB1FFE1B9E00E68FD5 /* NewsicUserSpotifySettings.swift in Sources */,
+				8C58ACED1FFE202500E68FD5 /* SPTBitrate.swift in Sources */,
 				8C0ED6BD1FE7C79700394909 /* ChoiceListViewDelegate.swift in Sources */,
 				8CFFBF371F9708F100A69E78 /* NewsicCollectionViewLayout.swift in Sources */,
 				8C1434701FDE63EC0061E2CB /* NewsicPreferredPlayer.swift in Sources */,
 				8C0F428C1FE3A2F000EDD9FA /* ShowSongViewController-Logic.swift in Sources */,
 				8C21E7101FC6AF950033B477 /* NewsicPageViewController.swift in Sources */,
 				8CCC55361F67975F005090A4 /* Double.swift in Sources */,
+				8C58ACF31FFE400600E68FD5 /* YBAlertController.swift in Sources */,
 				8CB47FA01F581DC5008D8847 /* SpotifyFollowedArtist.swift in Sources */,
 				8CF8D3FE1FBA9C9300E130BC /* CustomNavigationAnimationController.swift in Sources */,
 			);
