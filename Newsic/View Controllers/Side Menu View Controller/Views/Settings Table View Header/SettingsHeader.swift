@@ -50,7 +50,8 @@ class SettingsHeader: NewsicView {
     func configure(image: UIImage? = nil, imageURL: String? = nil, username: String) {
         loadFromNib()
         
-        self.addBlurEffect(style: .dark, alpha: 1)
+        let customBounds = CGRect(x: self.bounds.origin.x, y: self.bounds.origin.y + self.bounds.height * 0.25, width: self.bounds.width, height: self.bounds.height * 0.75)
+        self.addBlurEffect(style: .dark, alpha: 0.8, customBounds: customBounds)
         self.usernameLabel.textColor = UIColor.lightText
         
         if image == nil && imageURL == nil {

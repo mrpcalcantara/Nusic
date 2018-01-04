@@ -13,10 +13,12 @@ struct NewsicUserSettings {
     
     var useMobileData: Bool?
     var preferredPlayer: NewsicPreferredPlayer?
+    var spotifySettings: NewsicUserSpotifySettings?
     
-    init(useMobileData: Bool? = false, preferredPlayer: NewsicPreferredPlayer? = .youtube) {
+    init(useMobileData: Bool? = false, preferredPlayer: NewsicPreferredPlayer? = .youtube, spotifySettings: NewsicUserSpotifySettings? = NewsicUserSpotifySettings(bitrate: SPTBitrate.normal)) {
         self.useMobileData = useMobileData
         self.preferredPlayer = preferredPlayer
+        self.spotifySettings = spotifySettings
     }
     
     

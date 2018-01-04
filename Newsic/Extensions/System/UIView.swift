@@ -12,11 +12,11 @@ extension UIView {
     
     
     
-    func addBlurEffect(style: UIBlurEffectStyle, alpha: CGFloat) {
+    func addBlurEffect(style: UIBlurEffectStyle, alpha: CGFloat, customBounds: CGRect? = nil) {
         
         let blurEffect = UIBlurEffect(style: style)
         let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.frame = self.bounds
+        blurView.frame = customBounds != nil ? customBounds! : self.bounds
         blurView.autoresizingMask = [.flexibleHeight, .flexibleWidth];
         blurView.tag = 1
         blurView.alpha = alpha
