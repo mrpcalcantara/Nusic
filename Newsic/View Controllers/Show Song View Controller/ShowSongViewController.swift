@@ -59,6 +59,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     var menuEdgePanGestureRecognizer: UIScreenEdgePanGestureRecognizer!
     var preferredPlayer: NewsicPreferredPlayer?
     var playOnCellularData: Bool?
+    var musicSearchType: NewsicSearch = .normal
     //var songPosition: Double! = 0
     
     //Constraints
@@ -100,23 +101,13 @@ class ShowSongViewController: NewsicDefaultViewController {
         super.viewWillAppear(animated)
         if newMoodOrGenre {
             resetView()
-            
             showSwiftSpinner()
             _ = checkConnectivity()
-//            self.viewDidLoad()
-        } else {
-            
         }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        //        actionStopPlayer();
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        actionStopPlayer();
         closePlayerMenu(animated: true)
     }
     
@@ -128,11 +119,8 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     func setupShowSongVC() {
         
-        
-        
         if checkConnectivity() {
             preferredPlayer = user.settingValues.preferredPlayer
-//            playOnCellularData = false
             showSwiftSpinner()
             setupMainView()
             setupNavigationBar()

@@ -29,6 +29,7 @@ extension SongPickerViewController {
             selectedGenres.removeAll()
             playerViewController.selectedGenreList = nil
         } else {
+            
             playerViewController.selectedGenreList = selectedGenres;
         }
         

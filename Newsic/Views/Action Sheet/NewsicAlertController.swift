@@ -27,20 +27,23 @@ class NewsicAlertController : YBAlertController {
     }
     
     func setupUI() {
-        super.overlayColor = UIColor.black.withAlphaComponent(0.8)
-        super.containerView.backgroundColor = UIColor.red
+        super.overlayColor = UIColor.black.withAlphaComponent(0.9)
+        
+        //Title details
+        super.titleFont = NewsicDefaults.font
+        super.titleTextColor = NewsicDefaults.greenColor
         
         //Message Details
-        super.messageFont = UIFont(name: "Futura", size: 15)
+        super.messageFont = NewsicDefaults.font
         super.messageTextColor = NewsicDefaults.greenColor
         super.messageLabel.backgroundColor = NewsicDefaults.blackColor
         
         //Button Details
-        super.buttonFont = UIFont(name: "Futura", size: 15)
+        super.buttonFont = NewsicDefaults.font
         super.buttonTextColor = NewsicDefaults.greenColor
         
         //Cancel Button Details
-        super.cancelButtonFont = UIFont(name: "Futura", size: 15)
+        super.cancelButtonFont = NewsicDefaults.font
         super.cancelButtonTextColor = NewsicDefaults.greenColor
         
     }

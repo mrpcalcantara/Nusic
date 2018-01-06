@@ -29,7 +29,7 @@ extension Spotify {
         var trackUriList: [URL] = []
         
         for trackURI in currentTrackList {
-            trackUriList.append(URL(string: Spotify.transformToURI(trackId: trackURI))!)
+            trackUriList.append(URL(string: Spotify.transformToURI(type: .track, id: trackURI))!)
         }
         
         do {

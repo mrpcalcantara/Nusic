@@ -38,4 +38,14 @@ struct SpotifyArtist {
         return ""
     }
     
+    func listDictionary() -> [String: Int] {
+        var dict: [String: Int] = [:]
+        let genres = listGenres(showPrefix: false).split(separator: ",")
+        for genre in genres {
+            dict[genre.lowercased()] = 1
+        }
+        
+        return dict
+    }
+    
 }

@@ -74,19 +74,22 @@ extension ShowSongViewController {
     }
     
     func getSongsForSelectedGenres() {
+        trackFeatures?.removeAll()
         fetchSongsAndSetup(moodObject: self.moodObject)
     }
     
     func fetchSongsAndSetup(numberOfSongs: Int? = nil, moodObject: NewsicMood?) {
+        
+        DispatchQueue.main.async {
+            self.showSwiftSpinner(text: "Fetching tracks..")
+        }
+        
         let songCountToSearch = numberOfSongs == nil ? self.cardCount : numberOfSongs
-        self.spotifyHandler.searchMusicInGenres(numberOfSongs: songCountToSearch!, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: self.selectedGenreList) { (results, error) in
+        self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: songCountToSearch!, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: self.selectedGenreList) { (results, error) in
             if let error = error {
-                //                self.present(error.popupDialog!, animated: true, completion: nil);
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
             }
-            DispatchQueue.main.async {
-                self.showSwiftSpinner(text: "Fetching tracks..")
-            }
+            
             var newsicTracks:[SpotifyTrack] = [];
             for track in results {
                 newsicTracks.append(track);
@@ -107,6 +110,8 @@ extension ShowSongViewController {
             }
         }
     }
+    
+    
     
     func getYouTubeResults(tracks: [SpotifyTrack], youtubeSearchHandler: @escaping ([NewsicTrack]) -> ()) {
         var index = 0
@@ -178,11 +183,196 @@ extension ShowSongViewController {
         })
     }
     
-    func fetchNewCard(cardFetchingHandler: ((Bool) -> ())?){
+    func fetchNewCard(numberOfSongs: Int? = 1, cardFetchingHandler: ((Bool) -> ())?){
         //        print("fetching new card...")
         let moodObject = self.moodObject
         
-        spotifyHandler.searchMusicInGenres(numberOfSongs: 1, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: selectedGenreList) { (results, error)  in
+        switch musicSearchType {
+            case NewsicSearch.normal:
+                fetchNewCardNormal(numberOfSongs: numberOfSongs!, cardFetchingHandler: cardFetchingHandler)
+            case NewsicSearch.genre:
+                fetchNewCardGenre(numberOfSongs: numberOfSongs!, cardFetchingHandler: cardFetchingHandler)
+            case NewsicSearch.artist:
+                fetchNewCardArtist(numberOfSongs: numberOfSongs!, cardFetchingHandler: cardFetchingHandler)
+            case NewsicSearch.track:
+                fetchNewCardTrack(numberOfSongs: numberOfSongs!, cardFetchingHandler: cardFetchingHandler)
+        }
+        
+        
+    }
+    
+    func fetchNewCardArtist(numberOfSongs: Int, cardFetchingHandler: ((Bool) -> ())?) {
+        if let artist = currentPlayingTrack?.artist {
+            self.spotifyHandler.fetchRecommendations(for: .artist, numberOfSongs: numberOfSongs, artists: [artist]) { (results, error) in
+                if let error = error {
+                    error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
+                }
+                
+                for track in results {
+                    print(track.songName)
+                    self.getYouTubeResults(tracks: [track], youtubeSearchHandler: { (tracks) in
+                        for track in tracks {
+                            self.addSongToCardPlaylist(track: track)
+                        }
+                        DispatchQueue.main.async {
+                            //                                self.songCardView.reloadCardsInIndexRange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+                            self.songCardView.reloadData();
+                        }
+                    })
+                    
+                    if let cardFetchingHandler = cardFetchingHandler {
+                        cardFetchingHandler(true);
+                    }
+                }
+                
+//                for track in results {
+//                    print(track.songName)
+//                    let containsCheck = self.playedSongsHistory?.contains(where: { (trackInHistory) -> Bool in
+//                        return trackInHistory.trackId == track.trackId
+//                    })
+//                    if !containsCheck! {
+//                        self.getYouTubeResults(tracks: [track], youtubeSearchHandler: { (tracks) in
+//                            for track in tracks {
+//                                self.addSongToCardPlaylist(track: track)
+//                            }
+//                            DispatchQueue.main.async {
+////                                self.songCardView.reloadCardsInIndexRange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+//                                self.songCardView.reloadData();
+//                            }
+//                        })
+//
+//                        if let cardFetchingHandler = cardFetchingHandler {
+//                            cardFetchingHandler(true);
+//                        }
+//                    }
+//                }
+                
+            }
+        } else {
+            cardFetchingHandler!(false)
+        }
+        
+    }
+    
+    func fetchNewCardTrack(numberOfSongs: Int, cardFetchingHandler: ((Bool) -> ())?) {
+        
+        if let track = currentPlayingTrack {
+            self.spotifyHandler.fetchRecommendations(for: .track, numberOfSongs: numberOfSongs, tracks: [track]) { (results, error) in
+                if let error = error {
+                    error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
+                }
+                
+                for track in results {
+                    self.getYouTubeResults(tracks: [track], youtubeSearchHandler: { (tracks) in
+                        for track in tracks {
+                            self.addSongToCardPlaylist(track: track)
+                        }
+                        DispatchQueue.main.async {
+                            //                                self.songCardView.reloadCardsInIndexRange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+                            self.songCardView.reloadData();
+                        }
+                    })
+                    
+                    if let cardFetchingHandler = cardFetchingHandler {
+                        cardFetchingHandler(true);
+                    }
+                }
+                
+//                for track in results {
+//                    print(track.songName)
+//                    let containsCheck = self.playedSongsHistory?.contains(where: { (trackInHistory) -> Bool in
+//                        return trackInHistory.trackId == track.trackId
+//                    })
+//                    if !containsCheck! {
+//                        self.getYouTubeResults(tracks: [track], youtubeSearchHandler: { (tracks) in
+//                            for track in tracks {
+//                                self.addSongToCardPlaylist(track: track)
+//                            }
+//                            DispatchQueue.main.async {
+////                                self.songCardView.reloadCardsInIndexRange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+//                                self.songCardView.reloadData();
+//                            }
+//                        })
+//
+//                        if let cardFetchingHandler = cardFetchingHandler {
+//                            cardFetchingHandler(true);
+//                        }
+//                    }
+//                }
+            }
+        } else {
+            cardFetchingHandler!(false)
+        }
+    }
+    
+    func fetchNewCardGenre(numberOfSongs: Int, cardFetchingHandler: ((Bool) -> ())?) {
+        if let track = currentPlayingTrack {
+            
+            self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, moodObject: moodObject, selectedGenreList: selectedGenreList) { (results, error) in
+                if let error = error {
+                    error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
+                }
+                
+                if let track = results.first {
+                    for track in results {
+                        self.getYouTubeResults(tracks: [track], youtubeSearchHandler: { (tracks) in
+                            for track in tracks {
+                                self.addSongToCardPlaylist(track: track)
+                            }
+                            DispatchQueue.main.async {
+                                //                                self.songCardView.reloadCardsInIndexRange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+                                self.songCardView.reloadData();
+                            }
+                        })
+                        
+                        if let cardFetchingHandler = cardFetchingHandler {
+                            cardFetchingHandler(true);
+                        }
+                    }
+                }
+                
+//                if let track = results.first {
+//                    let containsCheck = self.playedSongsHistory?.contains(where: { (trackInHistory) -> Bool in
+//                        return trackInHistory.trackId == track.trackId
+//                    })
+//                    if containsCheck! {
+//                        //                    print("REFETCHING NEW CARD.. \(track.trackId) already in list")
+//                        self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, moodObject: self.moodObject, selectedGenreList: self.selectedGenreList, completionHandler: { (results, error) in
+//
+//                            if let cardFetchingHandler = cardFetchingHandler {
+//                                cardFetchingHandler(false)
+//                            }
+//
+//                        })
+//                    } else {
+//                        if let track = results.first {
+//                            self.getYouTubeResults(tracks: [track], youtubeSearchHandler: { (tracks) in
+//                                for track in tracks {
+//                                    self.addSongToCardPlaylist(track: track)
+//                                }
+//                                DispatchQueue.main.async {
+////                                    self.songCardView.reloadCardsInIndexRange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+//                                    self.songCardView.reloadData();
+//                                }
+//                            })
+//
+//                        }
+//
+//                        if let cardFetchingHandler = cardFetchingHandler {
+//                            cardFetchingHandler(true);
+//                        }
+//
+//                    }
+//                }
+            }
+        } else {
+            cardFetchingHandler!(false)
+        }
+    }
+
+    
+    func fetchNewCardNormal(numberOfSongs: Int, cardFetchingHandler: ((Bool) -> ())?) {
+        self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: selectedGenreList) { (results, error) in
             if let error = error {
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
             }
@@ -193,7 +383,7 @@ extension ShowSongViewController {
                 })
                 if containsCheck! {
                     //                    print("REFETCHING NEW CARD.. \(track.trackId) already in list")
-                    self.spotifyHandler.searchMusicInGenres(numberOfSongs: 1, moodObject: moodObject, completionHandler: { (results, error) in
+                    self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, moodObject: self.moodObject, completionHandler: { (results, error) in
                         
                         if let cardFetchingHandler = cardFetchingHandler {
                             cardFetchingHandler(false)
@@ -247,8 +437,12 @@ extension ShowSongViewController {
         }
     }
     
-    func addSongToCardPlaylist(track: NewsicTrack) {
-        self.cardList.append(track)
+    func addSongToCardPlaylist(index: Int? = nil, track: NewsicTrack) {
+        if index != nil {
+            self.cardList.insert(track, at: index!)
+        } else {
+            self.cardList.append(track)
+        }
         self.playedSongsHistory?.append(track.trackInfo)
     }
     

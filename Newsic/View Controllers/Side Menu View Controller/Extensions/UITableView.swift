@@ -49,7 +49,6 @@ extension SideMenuViewController2 : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! SettingsCell
-//        self.present(cell.alertController!, animated: true, completion: nil)
         cell.alertController?.show()
         cell.setSelected(false, animated: true)
     }
@@ -142,7 +141,7 @@ extension SideMenuViewController2 {
                 }
                 buttonYoutube.action = actionYoutube
                 
-                cell.configureCell(title: title, value: str.description(), icon: UIImage(named: "PreferredPlayer"), options: [buttonSpotify, buttonYoutube], acessoryType: UITableViewCellAccessoryType.disclosureIndicator, enableCell: enablePlayerSwitch!)
+                cell.configureCell(title: title, value: str.description(), icon: UIImage(named: "PreferredPlayer"), options: [buttonSpotify, buttonYoutube], enableCell: enablePlayerSwitch!)
                 
             }
         }
@@ -165,7 +164,7 @@ extension SideMenuViewController2 {
             }
             buttonOff.action = actionOff
             
-            cell.configureCell(title: title, value: useMobileData.toString(), icon: UIImage(named: "MobileData"), options: [buttonOn, buttonOff], acessoryType: UITableViewCellAccessoryType.disclosureIndicator)
+            cell.configureCell(title: title, value: useMobileData.toString(), icon: UIImage(named: "MobileData"), options: [buttonOn, buttonOff])
         }
     }
     
@@ -203,7 +202,7 @@ extension SideMenuViewController2 {
             }
             buttonLow.action = actionLow
             
-            cell.configureCell(title: title, value: bitrate.description(), icon: UIImage(named: "SpotifySoundQuality"), options: [buttonHigh, buttonNormal, buttonLow], acessoryType: UITableViewCellAccessoryType.disclosureIndicator)
+            cell.configureCell(title: title, value: bitrate.description(), icon: UIImage(named: "SpotifySoundQuality"), options: [buttonHigh, buttonNormal, buttonLow])
         }
     }
     
