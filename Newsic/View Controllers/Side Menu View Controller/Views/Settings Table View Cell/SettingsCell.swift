@@ -8,21 +8,20 @@
 
 import UIKit
 
-protocol SettingsCellDelegate: class {
-    func updateSettings(_ path: String)
-    func showAlertController()
-}
-
 class SettingsCell: UITableViewCell {
 
-    
     @IBOutlet weak var itemDescription: UILabel!
     @IBOutlet weak var itemValue: UILabel!
+    @IBOutlet weak var descriptionImage: UIImageView!
+    
+    //Image View Constraints
+    @IBOutlet weak var itemDescriptionLeadingConstraint: NSLayoutConstraint!
+    
     
     static let reuseIdentifier = "settingsCell"
     static let rowHeight:CGFloat = 45
-    weak var delegate: SettingsCellDelegate?
-    var alertController: UIAlertController?
+    var alertController: NewsicAlertController?
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -43,9 +42,7 @@ class SettingsCell: UITableViewCell {
         
     }
     
-    func configureCell(title: String, value: String, options: [UIAlertAction]? = nil, acessoryType: UITableViewCellAccessoryType? = .none, centerText: Bool? = false, alertText: String? = nil, enableCell: Bool? = true) {
-        
-        
+    func configureCell(title: String, value: String, icon: UIImage?, options: [YBButton]? = nil, acessoryType: UITableViewCellAccessoryType? = .none, centerText: Bool? = false, alertText: String? = nil, enableCell: Bool? = true) {
         
         self.backgroundColor = NewsicDefaults.deselectedColor
         self.accessoryType = accessoryType
@@ -54,6 +51,13 @@ class SettingsCell: UITableViewCell {
         self.itemValue.textColor = UIColor.white
         self.itemDescription.textAlignment = centerText! ? .center : .natural;
         self.itemDescription.textColor = UIColor.lightText
+        if let icon = icon {
+            self.descriptionImage.image = icon
+        }
+        else {
+            self.itemDescriptionLeadingConstraint.constant += self.descriptionImage.bounds.size.width 
+        }
+        
         
         if !enableCell! {
             self.isUserInteractionEnabled = enableCell!
@@ -64,28 +68,13 @@ class SettingsCell: UITableViewCell {
         itemValue.text = value
         
         if let options = options {
-            alertController = UIAlertController(title: alertText != nil ? alertText! : nil, message: nil, preferredStyle: .actionSheet)
-            
-            alertController?.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
-                self.setSelected(false, animated: true)
-                self.alertController?.dismiss(animated: true, completion: nil);
-            }))
+            alertController = NewsicAlertController(title: alertText != nil ? alertText! : nil, message: nil, style: YBAlertControllerStyle.ActionSheet)
             
             for option in options {
-                alertController?.addAction(option);
+                alertController?.addButton(icon: option.icon, title: option.textLabel.text!, action: option.action)
             }
-            
-//            alertController?.view.tintColor = NewsicDefaults.greenColor
-            //WORKAROUND: Change Alert controller Background color
-//            for subview in (alertController?.view.subviews.first?.subviews.first?.subviews)! {
-//                subview.backgroundColor = UIColor.black.withAlphaComponent(0.9)
-////                subview.addBlurEffect(style: .dark, alpha: 0.7)
-//            }
             
         }
     }
-    
-    
-    
     
 }
