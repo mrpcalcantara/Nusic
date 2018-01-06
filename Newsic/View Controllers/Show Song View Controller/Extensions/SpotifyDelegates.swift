@@ -62,7 +62,8 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             print("track started");
             if let currentTrack = currentTrack {
                 let songTitle = "\(currentTrack.artistName) - \(currentTrack.name)"
-                let currentPlayingTrack = SpotifyTrack(title: songTitle, thumbNail: nil, trackUri: currentTrack.uri, trackId: Spotify.transformToID(trackUri: currentTrack.uri), songName: currentTrack.name ,artist: SpotifyArtist(artistName: currentTrack.artistName, subGenres: nil, popularity: nil, uri: currentTrack.artistUri), audioFeatures: nil)
+                let currentPlayingTrack = self.cardList[self.songCardView.currentCardIndex].trackInfo
+//                let currentPlayingTrack = SpotifyTrack(title: songTitle, thumbNail: nil, trackUri: currentTrack.uri, trackId: Spotify.transformToID(type: .track, uri: currentTrack.uri), songName: currentTrack.name ,artist: SpotifyArtist(artistName: currentTrack.artistName, subGenres: nil, popularity: nil, uri: currentTrack.artistUri, id: Spotify.transformToID(type: .artist, uri: currentTrack.artistUri)), audioFeatures: nil)
                 self.currentPlayingTrack = currentPlayingTrack;
                 
                 if let imageURL = currentTrack.albumCoverArtURL {

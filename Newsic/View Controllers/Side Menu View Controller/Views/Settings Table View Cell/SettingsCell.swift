@@ -42,10 +42,9 @@ class SettingsCell: UITableViewCell {
         
     }
     
-    func configureCell(title: String, value: String, icon: UIImage?, options: [YBButton]? = nil, acessoryType: UITableViewCellAccessoryType? = .none, centerText: Bool? = false, alertText: String? = nil, enableCell: Bool? = true) {
+    func configureCell(title: String, value: String, icon: UIImage?, options: [YBButton]? = nil, centerText: Bool? = false, alertText: String? = nil, enableCell: Bool? = true) {
         
         self.backgroundColor = NewsicDefaults.deselectedColor
-        self.accessoryType = accessoryType
         self.selectionStyle = .none
         self.addBlurEffect(style: .dark, alpha: 0.2)
         self.itemValue.textColor = UIColor.white

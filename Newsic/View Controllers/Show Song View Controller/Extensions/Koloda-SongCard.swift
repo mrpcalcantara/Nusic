@@ -40,6 +40,46 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didSelectCardAt index: Int) {
+        let alertController = NewsicAlertController(title: "More tracks based on:", message: nil, style: YBAlertControllerStyle.ActionSheet)
+        
+        let actionArtist: () -> Void = {
+//            self.showSwiftSpinner(text: "Fetching tracks..", duration: 1)
+            self.musicSearchType = .artist
+            self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+            self.fetchNewCard(numberOfSongs: 9, cardFetchingHandler: { (isFetched) in
+//                self.showSwiftSpinner(text: "Done", duration: 1)
+            })
+        }
+        
+        let actionTrack: () -> Void = {
+//            self.showSwiftSpinner(text: "Fetching tracks..", duration: 1)
+            self.musicSearchType = .track
+            self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+            self.fetchNewCard(numberOfSongs: 9, cardFetchingHandler: { (isFetched) in
+//                self.showSwiftSpinner(text: "Done", duration: 1)
+            })
+        }
+        
+        let actionGenre: () -> Void = {
+//            self.showSwiftSpinner(text: "Fetching tracks..", duration: 1)
+            let dict = self.currentPlayingTrack?.artist.listDictionary()
+            let count: Int! = dict?.count
+            if count > 0 {
+                self.selectedGenreList = dict!
+            }
+            
+            self.musicSearchType = .genre
+            self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+            self.fetchNewCard(numberOfSongs: 9, cardFetchingHandler: { (isFetched) in
+//                self.showSwiftSpinner(text: "Done", duration: 1)
+            })
+        }
+        
+        alertController.addButton(icon: UIImage(named: "GenreIcon"), title: "Current Genre", action: actionGenre)
+        alertController.addButton(icon: UIImage(named: "ArtistIcon"), title: "Current Artist", action: actionArtist)
+        alertController.addButton(icon: UIImage(named: "TrackIcon"), title: "Current Track", action: actionTrack)
+        
+        alertController.show()
         
     }
     
@@ -130,8 +170,6 @@ extension ShowSongViewController: KolodaViewDataSource {
         //TODO: Swiping for Spotify shows YT view regardless, and as such, the album image is hidden.
         if preferredPlayer == NewsicPreferredPlayer.spotify {
             view.setupViewForSpotify()
-        } else {
-            
         }
         
         view.layer.borderWidth = 0.5;

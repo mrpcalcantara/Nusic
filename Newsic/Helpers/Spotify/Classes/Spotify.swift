@@ -352,13 +352,13 @@ class Spotify {
     
     // STATIC FUNCTIONS
     
-    static func transformToURI(trackId: String) -> String {
-        return "spotify:track:\(trackId)"
+    static func transformToURI(type: SpotifyType, id: String) -> String {
+        return "\(type.rawValue)\(id)"
     }
     
-    static func transformToID(trackUri: String) -> String {
-        var uri = trackUri
-        uri.removeSubrange(trackUri.range(of: "spotify:track:")!)
+    static func transformToID(type: SpotifyType, uri: String) -> String {
+        var uri = uri
+        uri.removeSubrange(uri.range(of: type.rawValue)!)
         return uri
     }
     
