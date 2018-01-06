@@ -40,9 +40,17 @@ extension SideMenuViewController2 {
 }
 
 extension SideMenuViewController2 : UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if settingsValues[indexPath.section][0] == NewsicSettingsLabel.logout.rawValue {
+            cell.accessoryType = .none
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! SettingsCell
-        self.present(cell.alertController!, animated: true, completion: nil)
+//        self.present(cell.alertController!, animated: true, completion: nil)
+        cell.alertController?.show()
         cell.setSelected(false, animated: true)
     }
     
@@ -94,68 +102,109 @@ extension SideMenuViewController2 : UITableViewDataSource {
         print(title)
         switch title {
         case NewsicSettingsLabel.preferredPlayer.rawValue:
-            if let value = settings?.preferredPlayer?.rawValue {
-                if let str = NewsicPreferredPlayer(rawValue: value) {
-                    
-                    let actionSpotify = UIAlertAction(title: NewsicPreferredPlayer.spotify.description(), style: UIAlertActionStyle.default, handler: { (action) in
-                        self.settings?.preferredPlayer = NewsicPreferredPlayer.spotify
-                        cell.itemValue.text = action.title
-                    })
-                    
-                    let actionYoutube = UIAlertAction(title: NewsicPreferredPlayer.youtube.description(), style: UIAlertActionStyle.default, handler: { (action) in
-                        self.settings?.preferredPlayer = NewsicPreferredPlayer.youtube
-                        cell.itemValue.text = action.title
-                    })
-                    
-                    cell.configureCell(title: title, value: str.description(), options: [actionSpotify, actionYoutube], acessoryType: UITableViewCellAccessoryType.disclosureIndicator, enableCell: enablePlayerSwitch!)
-                    
-                }
-            }
+            setupPlayerSettings(for: cell, title: title)
         case NewsicSettingsLabel.spotifyQuality.rawValue:
-            if let bitrate = settings?.spotifySettings?.bitrate {
-                let actionHigh = UIAlertAction(title: "High", style: UIAlertActionStyle.default, handler: { (action) in
-                    self.settings?.spotifySettings?.bitrate = .high
-                    cell.itemValue.text = action.title
-                })
-                
-                let actionNormal = UIAlertAction(title: "Normal", style: UIAlertActionStyle.default, handler: { (action) in
-                    self.settings?.spotifySettings?.bitrate = .normal
-                    cell.itemValue.text = action.title
-                })
-                
-                let actionLow = UIAlertAction(title: "Low", style: UIAlertActionStyle.default, handler: { (action) in
-                    self.settings?.spotifySettings?.bitrate = .low
-                    cell.itemValue.text = action.title
-                })
-                
-                cell.configureCell(title: title, value: bitrate.description(), options: [actionHigh, actionNormal, actionLow], acessoryType: UITableViewCellAccessoryType.disclosureIndicator)
-            }
+            setupSpotifySettings(for: cell, title: title)
         case NewsicSettingsLabel.useMobileData.rawValue:
-            if let useMobileData = settings?.useMobileData {
-                
-                let actionOn = UIAlertAction(title: (true).toString(), style: UIAlertActionStyle.default, handler: { (action) in
-                    self.settings?.useMobileData = true
-                    cell.itemValue.text = action.title
-                })
-                
-                let actionOff = UIAlertAction(title: (false).toString(), style: UIAlertActionStyle.default, handler: { (action) in
-                    self.settings?.useMobileData = false
-                    cell.itemValue.text = action.title
-                })
-                
-                cell.configureCell(title: title, value: useMobileData.toString(), options: [actionOn, actionOff], acessoryType: UITableViewCellAccessoryType.disclosureIndicator)
-            }
+            setupConnectionSettings(for: cell, title: title)
         case NewsicSettingsLabel.logout.rawValue:
-            let actionLogout = UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-                self.logoutUser()
-            })
-            cell.configureCell(title: title, value: "", options: [actionLogout], centerText: true, alertText: "Are you sure?")
+            setupActionSettings(for: cell, title: title)
+            
+            
         default:
             return UITableViewCell()
         }
         
         cell.layoutIfNeeded()
         return cell
+    }
+    
+}
+
+extension SideMenuViewController2 {
+    
+    //Setup functions for Table View cells and sections
+    func setupPlayerSettings(for cell: SettingsCell, title: String) {
+        if let value = settings?.preferredPlayer?.rawValue {
+            if let str = NewsicPreferredPlayer(rawValue: value) {
+                
+                let buttonSpotify = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifyIconHighlighted"), text: NewsicPreferredPlayer.spotify.description())
+                let actionSpotify = { () -> Void in
+                    self.settings?.preferredPlayer = NewsicPreferredPlayer.spotify
+                    cell.itemValue.text = buttonSpotify.textLabel.text
+                }
+                buttonSpotify.action = actionSpotify
+                
+                let buttonYoutube = YBButton(frame: CGRect.zero, icon: UIImage(named: "YoutubeIconHighlighted"), text: NewsicPreferredPlayer.youtube.description())
+                let actionYoutube = { () -> Void in
+                    self.settings?.preferredPlayer = NewsicPreferredPlayer.youtube
+                    cell.itemValue.text = buttonYoutube.textLabel.text
+                }
+                buttonYoutube.action = actionYoutube
+                
+                cell.configureCell(title: title, value: str.description(), icon: UIImage(named: "PreferredPlayer"), options: [buttonSpotify, buttonYoutube], acessoryType: UITableViewCellAccessoryType.disclosureIndicator, enableCell: enablePlayerSwitch!)
+                
+            }
+        }
+    }
+    
+    func setupConnectionSettings(for cell: SettingsCell, title: String) {
+        if let useMobileData = settings?.useMobileData {
+            
+            let buttonOn = YBButton(frame: CGRect.zero, icon: UIImage(named: "CheckmarkIcon"), text: (true).toString())
+            let actionOn = { () -> Void in
+                self.settings?.useMobileData = true
+                cell.itemValue.text = buttonOn.textLabel.text
+            }
+            buttonOn.action = actionOn
+            
+            let buttonOff = YBButton(frame: CGRect.zero, icon: UIImage(named: "WrongIcon"), text: (false).toString())
+            let actionOff = { () -> Void in
+                self.settings?.useMobileData = false
+                cell.itemValue.text = buttonOff.textLabel.text
+            }
+            buttonOff.action = actionOff
+            
+            cell.configureCell(title: title, value: useMobileData.toString(), icon: UIImage(named: "MobileData"), options: [buttonOn, buttonOff], acessoryType: UITableViewCellAccessoryType.disclosureIndicator)
+        }
+    }
+    
+    func setupActionSettings(for cell: SettingsCell, title: String) {
+        let buttonLogout = YBButton(frame: CGRect.zero, icon: nil, text: "Yes")
+        let actionLogout = { () -> Void in
+            self.logoutUser()
+            cell.itemValue.text = buttonLogout.textLabel.text
+        }
+        buttonLogout.action = actionLogout
+        cell.configureCell(title: title, value: "", icon: nil, options: [buttonLogout], centerText: true, alertText: "Are you sure?")
+        
+    }
+    
+    func setupSpotifySettings(for cell: SettingsCell, title: String) {
+        if let bitrate = settings?.spotifySettings?.bitrate {
+            let buttonHigh = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifySoundQualityHigh"), text: SPTBitrate.high.description())
+            let actionHigh = { () -> Void in
+                self.settings?.spotifySettings?.bitrate = .high
+                cell.itemValue.text = buttonHigh.textLabel.text
+            }
+            buttonHigh.action = actionHigh
+            
+            let buttonNormal = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifySoundQualityMedium"), text: SPTBitrate.normal.description())
+            let actionNormal = { () -> Void in
+                self.settings?.spotifySettings?.bitrate = .normal
+                cell.itemValue.text = buttonNormal.textLabel.text
+            }
+            buttonNormal.action = actionNormal
+            
+            let buttonLow = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifySoundQualityLow"), text: SPTBitrate.low.description())
+            let actionLow = { () -> Void in
+                self.settings?.spotifySettings?.bitrate = .low
+                cell.itemValue.text = buttonLow.textLabel.text
+            }
+            buttonLow.action = actionLow
+            
+            cell.configureCell(title: title, value: bitrate.description(), icon: UIImage(named: "SpotifySoundQuality"), options: [buttonHigh, buttonNormal, buttonLow], acessoryType: UITableViewCellAccessoryType.disclosureIndicator)
+        }
     }
     
 }

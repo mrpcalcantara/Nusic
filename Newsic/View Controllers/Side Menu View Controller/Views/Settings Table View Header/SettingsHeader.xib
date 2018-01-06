@@ -30,7 +30,6 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Q2L-Dh-Hbh" secondAttribute="trailing" constant="8" id="7aC-sT-KT4"/>
                 <constraint firstItem="CeT-TB-DpL" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="C8o-dV-Jgm"/>

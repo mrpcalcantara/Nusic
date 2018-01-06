@@ -77,7 +77,7 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
         
-        NotificationCenter.default.addObserver(self, selector: Selector(("changedOrientation:")), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: Selector(("changedOrientation:")), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     }
     
     public convenience init(style: YBAlertControllerStyle) {
@@ -235,7 +235,8 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
             containerView.addSubview(titleLabel)
             
             let line = UIView(frame: CGRect(x: 0, y: titleLabel.frame.height, width: viewWidth, height: 1))
-            line.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
+//            line.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
+            line.backgroundColor = UIColor(white: 0, alpha: 1)
             line.autoresizingMask = [.flexibleWidth]
             containerView.addSubview(line)
             posY = titleLabel.frame.height + line.frame.height
@@ -306,7 +307,8 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
         
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.frame = CGRect(x: (view.frame.width - viewWidth) / 2, y:view.frame.height , width: viewWidth, height: posY)
-        containerView.backgroundColor = UIColor.white
+        //Change
+        containerView.backgroundColor = UIColor.clear
         view.addSubview(containerView)
         
         
@@ -404,7 +406,7 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
         addButton(icon: nil, title: title, target: target, selector: selector)
     }
     
-    func buttonTapped(button:YBButton) {
+    @objc func buttonTapped(button:YBButton) {
         if button.actionType == YBButtonActionType.Closure {
             button.action()
         } else if button.actionType == YBButtonActionType.Selector {
@@ -419,9 +421,12 @@ public class YBButton : UIButton {
     
     override public var isHighlighted : Bool {
         didSet {
-            alpha = isHighlighted ? 0.3 : 1.0
+            alpha = isHighlighted ? 0.3 : 1
+            
+//            backgroundColor = isHighlighted ? NewsicDefaults.greenColor.withAlphaComponent(0.5) : NewsicDefaults.blackColor
         }
     }
+    
     var buttonColor:UIColor? {
         didSet {
             if let buttonColor = buttonColor {
@@ -451,6 +456,14 @@ public class YBButton : UIButton {
     init(frame:CGRect,icon:UIImage?, text:String) {
         super.init(frame:frame)
         
+        //Change
+//        self.backgroundColor = UIColor.black
+        self.setBackgroundColor(NewsicDefaults.blackColor, for: .normal)
+        
+        print(self.state)
+        self.layer.borderWidth = 2
+        self.layer.borderColor = NewsicDefaults.blackColor.cgColor
+        
         self.icon = icon
         let iconHeight:CGFloat = frame.height * 0.45
         iconImageView.frame = CGRect(x: 9, y: frame.height/2 - iconHeight/2, width: iconHeight, height: iconHeight)
@@ -469,6 +482,9 @@ public class YBButton : UIButton {
         textLabel.font = buttonFont
         addSubview(textLabel)
     }
+    
+    //Added override selected and highlighted
+    
     
     func appear() {
         iconImageView.transform = CGAffineTransform(scaleX: 0, y: 0)
