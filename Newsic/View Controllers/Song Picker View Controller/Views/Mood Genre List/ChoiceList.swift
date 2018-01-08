@@ -55,7 +55,7 @@ class ChoiceListView: NewsicView {
     var startY: CGFloat = 0
     var maxY: CGFloat = 0
     var midY: CGFloat = 0
-    var closeThreshold: CGFloat = 0.25
+    var closeThreshold: CGFloat = 0.3
     var panProgress: CGFloat = 0
     
     
@@ -148,7 +148,7 @@ class ChoiceListView: NewsicView {
             if panProgress > 1-closeThreshold || self.frame.origin.y > maxY {
                 finalY = maxY
                 isOpen = false
-            } else if panProgress < 0.10 {
+            } else if panProgress < 0.30 {
                 finalY = self.frame.height/4
             } else {
                 finalY = midY
@@ -157,9 +157,7 @@ class ChoiceListView: NewsicView {
             animateMove(to: CGPoint(x: self.frame.origin.x, y: finalY))
             delegate?.didPanHeader(translation.x, finalY)
             manageToggleView()
-            
-//            print(self.frame.size)
-//            print(self.choiceCollectionView.frame.size)
+
         default:
             break
         }

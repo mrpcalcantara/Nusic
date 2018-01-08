@@ -14,7 +14,7 @@ final class NewsicDefaults {
     //Text
     static let font = UIFont(name: "Futura", size: 16)
     static let greenColor = UIColor.green.withAlphaComponent(0.8)
-    static let blackColor = UIColor.black.withAlphaComponent(0.5)
+    static let blackColor = UIColor.black.withAlphaComponent(0.75)
     static let deselectedColor = UIColor.clear
     
 }

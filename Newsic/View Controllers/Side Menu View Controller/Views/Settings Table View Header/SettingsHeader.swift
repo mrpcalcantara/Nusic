@@ -50,6 +50,7 @@ class SettingsHeader: NewsicView {
     func configure(image: UIImage? = nil, imageURL: String? = nil, username: String) {
         loadFromNib()
         
+        self.backgroundColor = UIColor.clear
         let customBounds = CGRect(x: self.bounds.origin.x, y: self.bounds.origin.y + self.bounds.height * 0.25, width: self.bounds.width, height: self.bounds.height * 0.75)
         self.addBlurEffect(style: .dark, alpha: 0.8, customBounds: customBounds)
         self.usernameLabel.textColor = UIColor.lightText
@@ -59,7 +60,17 @@ class SettingsHeader: NewsicView {
         } else if let image = image {
             profileImageView.image = image
         } else if let imageURL = imageURL {
-            profileImageView.downloadedFrom(link: imageURL, contentMode: .scaleAspectFit, roundImage: true);
+            let image = UIImage()
+            if let url = URL(string: imageURL) {
+                image.downloadImage(from: url, downloadImageHandler: { (image) in
+                    DispatchQueue.main.async {
+                        self.profileImageView.image = image
+                        self.profileImageView.roundImage(border: true)
+                    }
+                })
+            }
+            
+//            profileImageView.downloadedFrom(link: imageURL, contentMode: .scaleAspectFit, roundImage: true);
         }
         
         usernameLabel.text = username

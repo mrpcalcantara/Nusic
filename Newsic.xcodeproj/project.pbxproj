@@ -81,7 +81,6 @@
 		8C7989391FEA17050079A99D /* NewsicDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7989381FEA17050079A99D /* NewsicDefaults.swift */; };
 		8C79893D1FEA53D20079A99D /* ChoiceList.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C79893C1FEA53D20079A99D /* ChoiceList.xib */; };
 		8C7A58411FD7A0D3006A2E43 /* SPTAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7A58401FD7A0D3006A2E43 /* SPTAuth.swift */; };
-		8C7BE3291F78AD70004D9F15 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7BE3281F78AD70004D9F15 /* SideMenuViewController.swift */; };
 		8C7C0A3F1FEA76780077B109 /* CL-ToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C0A3E1FEA76780077B109 /* CL-ToggleView.swift */; };
 		8C7C0A411FEA76820077B109 /* CL-CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C0A401FEA76820077B109 /* CL-CollectionView.swift */; };
 		8C7C0A431FEA768D0077B109 /* CL-NewsicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C0A421FEA768D0077B109 /* CL-NewsicButton.swift */; };
@@ -233,7 +232,6 @@
 		8C7989381FEA17050079A99D /* NewsicDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicDefaults.swift; sourceTree = "<group>"; };
 		8C79893C1FEA53D20079A99D /* ChoiceList.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChoiceList.xib; sourceTree = "<group>"; };
 		8C7A58401FD7A0D3006A2E43 /* SPTAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTAuth.swift; sourceTree = "<group>"; };
-		8C7BE3281F78AD70004D9F15 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		8C7C0A3E1FEA76780077B109 /* CL-ToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CL-ToggleView.swift"; sourceTree = "<group>"; };
 		8C7C0A401FEA76820077B109 /* CL-CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CL-CollectionView.swift"; sourceTree = "<group>"; };
 		8C7C0A421FEA768D0077B109 /* CL-NewsicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CL-NewsicButton.swift"; sourceTree = "<group>"; };
@@ -739,7 +737,6 @@
 			children = (
 				8C7C41DF1FFC8E710051845D /* Views */,
 				8C7BE32A1F78AE6C004D9F15 /* Extensions */,
-				8C7BE3281F78AD70004D9F15 /* SideMenuViewController.swift */,
 				8C7C41DD1FFC8D2F0051845D /* SideMenuViewController2.swift */,
 			);
 			path = "Side Menu View Controller";
@@ -1394,7 +1391,6 @@
 				8C7A58411FD7A0D3006A2E43 /* SPTAuth.swift in Sources */,
 				8C291A7B1FD6561800E568EF /* FirebaseErrorCodeDescription.swift in Sources */,
 				8C626EA01FE7A27000BF0E08 /* ChoiceList.swift in Sources */,
-				8C7BE3291F78AD70004D9F15 /* SideMenuViewController.swift in Sources */,
 				8C0C1E911F5FF3B700CF8516 /* SpotifyTrackFeature.swift in Sources */,
 				8C7C41E21FFC8F3D0051845D /* SettingsHeader.swift in Sources */,
 				8C2605F31FEB61740025DD1E /* ChoiceListViewHeader.swift in Sources */,

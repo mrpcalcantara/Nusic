@@ -33,8 +33,23 @@ extension UIImageView {
         downloadedFrom(url: url, contentMode: mode)
     }
     
-    func roundImage() {
+    func roundImage(border: Bool? = false) {
         self.layer.cornerRadius = self.frame.height/2
         self.layer.masksToBounds = true;
+        
+        if border! {
+            addRoundBorder()
+        }
+    }
+    
+    func addRoundBorder(borderColor: UIColor? = UIColor.white.withAlphaComponent(0.8), borderWidth: CGFloat? = 8) {
+        let path = UIBezierPath(roundedRect: self.bounds, cornerRadius: self.frame.height/2)
+        let border = CAShapeLayer()
+        border.path = path.cgPath
+        border.fillColor = UIColor.clear.cgColor
+        border.strokeColor = borderColor?.cgColor
+        border.lineWidth = borderWidth!
+        
+        self.layer.addSublayer(border)
     }
 }

@@ -22,4 +22,6 @@ extension UIImage {
             downloadImageHandler(image);
         }.resume()
     }
+    
+    
 }

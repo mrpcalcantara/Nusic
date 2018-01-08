@@ -43,36 +43,34 @@ extension ShowSongViewController: KolodaViewDelegate {
         let alertController = NewsicAlertController(title: "More tracks based on:", message: nil, style: YBAlertControllerStyle.ActionSheet)
         
         let actionArtist: () -> Void = {
-//            self.showSwiftSpinner(text: "Fetching tracks..", duration: 1)
+            DispatchQueue.main.async {
+                self.showSwiftSpinner(text: "Fetching tracks..", duration: nil)
+            }
+            print("getting new songs for artist")
             self.musicSearchType = .artist
-            self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
-            self.fetchNewCard(numberOfSongs: 9, cardFetchingHandler: { (isFetched) in
-//                self.showSwiftSpinner(text: "Done", duration: 1)
-            })
+            self.handleFetchNewCard(numberOfSongs: 9)
         }
         
         let actionTrack: () -> Void = {
-//            self.showSwiftSpinner(text: "Fetching tracks..", duration: 1)
+            DispatchQueue.main.async {
+                self.showSwiftSpinner(text: "Fetching tracks..", duration: nil)
+            }
             self.musicSearchType = .track
-            self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
-            self.fetchNewCard(numberOfSongs: 9, cardFetchingHandler: { (isFetched) in
-//                self.showSwiftSpinner(text: "Done", duration: 1)
-            })
+            self.handleFetchNewCard(numberOfSongs: 9)
         }
         
         let actionGenre: () -> Void = {
-//            self.showSwiftSpinner(text: "Fetching tracks..", duration: 1)
+            DispatchQueue.main.async {
+                self.showSwiftSpinner(text: "Fetching tracks..", duration: nil)
+            }
             let dict = self.currentPlayingTrack?.artist.listDictionary()
-            let count: Int! = dict?.count
-            if count > 0 {
+            let count: Int? = dict?.count
+            if let count = count, count > 0 {
                 self.selectedGenreList = dict!
             }
             
             self.musicSearchType = .genre
-            self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
-            self.fetchNewCard(numberOfSongs: 9, cardFetchingHandler: { (isFetched) in
-//                self.showSwiftSpinner(text: "Done", duration: 1)
-            })
+            self.handleFetchNewCard(numberOfSongs: 9)
         }
         
         alertController.addButton(icon: UIImage(named: "GenreIcon"), title: "Current Genre", action: actionGenre)
@@ -92,21 +90,29 @@ extension ShowSongViewController: KolodaViewDelegate {
         }
         didUserSwipe = false;
         
-        fetchNewCard { (isFetched) in
-            if self.songCardView.countOfVisibleCards < 3 || !isFetched {
+        let handler: (Bool) -> Void = { didHandle in
+            if self.songCardView.countOfVisibleCards < 3 || !didHandle {
+//                fetchNewCard(cardFetchingHandler: handler)
                 self.fetchNewCard(cardFetchingHandler: nil)
             }
+            else {
+                DispatchQueue.main.async {
+                    self.songCardView.reloadData()
+                }
+            }
+        }
+        
+        fetchNewCard { (isFetched) in
+            handler(isFetched);
         }
     }
     
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
-        //isPlaying = false
         print("showing card at: \(index)")
         self.songListTableView.reloadData()
         presentedCardIndex = index
         let cardView = koloda.viewForCard(at: index) as! SongOverlayView
         if isPlayerMenuOpen {
-//            let cardView = koloda.viewForCard(at: index) as! SongOverlayView
             cardView.genreLabel.alpha = 0
             cardView.songArtist.alpha = 0
         }
@@ -161,7 +167,6 @@ extension ShowSongViewController: KolodaViewDataSource {
         let view = UINib(nibName: "OverlayView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SongOverlayView
         
         //print("index = \(index) -> artist = \(self.cardList[index].trackInfo.artist!) and songName = \(self.cardList[index].trackInfo.songName!)");
-        
         view.songArtist.text = self.cardList[index].trackInfo.artist.artistName
         view.songTitle.text = self.cardList[index].trackInfo.songName;
         view.genreLabel.text = self.cardList[index].trackInfo.artist.listGenres()
@@ -256,6 +261,17 @@ extension ShowSongViewController {
     
     func getCurrentCardView() -> SongOverlayView {
         return songCardView.viewForCard(at: songCardView.currentCardIndex) as! SongOverlayView
+    }
+    
+    func handleFetchNewCard(numberOfSongs: Int) {
+        self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+        self.fetchNewCard(numberOfSongs: numberOfSongs, cardFetchingHandler: { (isFetched) in
+            DispatchQueue.main.async {
+                self.songCardView.reloadCardsInIndexRange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+                SwiftSpinner.hide()
+            }
+        })
+        
     }
 }
 
