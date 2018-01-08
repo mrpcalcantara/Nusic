@@ -20,6 +20,7 @@ class SettingsCell: UITableViewCell {
     
     static let reuseIdentifier = "settingsCell"
     static let rowHeight:CGFloat = 45
+    var initialDescriptionConstraintConstant: CGFloat? = nil
     var alertController: NewsicAlertController?
     
     
@@ -46,7 +47,12 @@ class SettingsCell: UITableViewCell {
         
         self.backgroundColor = NewsicDefaults.deselectedColor
         self.selectionStyle = .none
-        self.addBlurEffect(style: .dark, alpha: 0.2)
+        if !self.subviews.contains(where: { (view) -> Bool in
+            return view.tag == 1
+        }) {
+            self.addBlurEffect(style: .dark, alpha: 0.2)
+        }
+        
         self.itemValue.textColor = UIColor.white
         self.itemDescription.textAlignment = centerText! ? .center : .natural;
         self.itemDescription.textColor = UIColor.lightText
@@ -54,7 +60,10 @@ class SettingsCell: UITableViewCell {
             self.descriptionImage.image = icon
         }
         else {
-            self.itemDescriptionLeadingConstraint.constant += self.descriptionImage.bounds.size.width 
+            if initialDescriptionConstraintConstant == nil {
+                initialDescriptionConstraintConstant = self.descriptionImage.bounds.size.width
+                self.itemDescriptionLeadingConstraint.constant += initialDescriptionConstraintConstant!
+            }
         }
         
         
@@ -68,7 +77,6 @@ class SettingsCell: UITableViewCell {
         
         if let options = options {
             alertController = NewsicAlertController(title: alertText != nil ? alertText! : nil, message: nil, style: YBAlertControllerStyle.ActionSheet)
-            
             for option in options {
                 alertController?.addButton(icon: option.icon, title: option.textLabel.text!, action: option.action)
             }

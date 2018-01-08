@@ -422,8 +422,6 @@ public class YBButton : UIButton {
     override public var isHighlighted : Bool {
         didSet {
             alpha = isHighlighted ? 0.3 : 1
-            
-//            backgroundColor = isHighlighted ? NewsicDefaults.greenColor.withAlphaComponent(0.5) : NewsicDefaults.blackColor
         }
     }
     
@@ -457,10 +455,8 @@ public class YBButton : UIButton {
         super.init(frame:frame)
         
         //Change
-//        self.backgroundColor = UIColor.black
         self.setBackgroundColor(NewsicDefaults.blackColor, for: .normal)
         
-        print(self.state)
         self.layer.borderWidth = 2
         self.layer.borderColor = NewsicDefaults.blackColor.cgColor
         

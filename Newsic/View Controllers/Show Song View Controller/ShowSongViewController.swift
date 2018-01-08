@@ -403,18 +403,11 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
             }
             
             songListMenuProgress = CGFloat(fminf(fmaxf(Float(songListMenuProgress), 0.0), 1.0))
-            shouldCompleteTransition = translation.x > 0 ? songListMenuProgress > CGFloat(0.5) : songListMenuProgress < CGFloat(0.5)
+//            shouldCompleteTransition = translation.x > 0 ? songListMenuProgress > CGFloat(0.5) : songListMenuProgress < CGFloat(0.5)
+            shouldCompleteTransition = translation.x > 0 && songListMenuProgress > CGFloat(0.25) ? true : false
             self.view.layoutIfNeeded();
             
         } else if recognizer.state == .ended {
-            
-//            for subview in self.view.subviews {
-//                if let view = subview as? UIScrollView {
-//                    view.panGestureRecognizer.shouldBeRequiredToFail(by: menuEdgePanGestureRecognizer)
-////                    view.panGestureRecognizer.shouldRequireFailure(of: menuEdgePanGestureRecognizer)
-//                }
-//            }
-            
             if shouldCompleteTransition {
                 closeMenu()
             } else {

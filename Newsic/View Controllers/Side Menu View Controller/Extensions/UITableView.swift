@@ -29,13 +29,8 @@ extension SideMenuViewController2 {
         header.configure(image: nil, imageURL: profileImageURL?.absoluteString, username: username!)
         
         settingsTableView.tableHeaderView = header
-        
-//        settingsTableView.estimatedSectionHeaderHeight = 150
-//        settingsTableView.estimatedRowHeight = 40
-//        settingsTableView.rowHeight = UITableViewAutomaticDimension
         settingsTableView.backgroundColor = UIColor.clear
-//        settingsTableView.translatesAutoresizingMaskIntoConstraints = false
-//        settingsTableView.addBlurEffect(style: .dark, alpha: 0.8)
+
     }
 }
 
@@ -65,8 +60,6 @@ extension SideMenuViewController2 : UITableViewDelegate {
         let header = SettingsCellHeader(frame: CGRect(x: settingsTableView.frame.origin.x, y: settingsTableView.frame.origin.y, width: settingsTableView.frame.width, height: 80))
         let headerTitle = settingsValues[section][0]
         
-        
-        print("headerTitle = \(headerTitle)")
         switch headerTitle {
         case NewsicSettingsLabel.preferredPlayer.rawValue:
             header.headerLabel.text = NewsicSettingsTitle.playerSettings.rawValue
@@ -98,7 +91,6 @@ extension SideMenuViewController2 : UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseIdentifier, for: indexPath) as? SettingsCell else { fatalError("Unexpected Table View Cell") }
         
         let title = settingsValues[indexPath.section][0]
-        print(title)
         switch title {
         case NewsicSettingsLabel.preferredPlayer.rawValue:
             setupPlayerSettings(for: cell, title: title)
@@ -169,13 +161,20 @@ extension SideMenuViewController2 {
     }
     
     func setupActionSettings(for cell: SettingsCell, title: String) {
-        let buttonLogout = YBButton(frame: CGRect.zero, icon: nil, text: "Yes")
+        let buttonLogout = YBButton(frame: CGRect.zero, icon: UIImage(named: "CheckmarkIcon"), text: "Yes")
         let actionLogout = { () -> Void in
             self.logoutUser()
             cell.itemValue.text = buttonLogout.textLabel.text
         }
         buttonLogout.action = actionLogout
-        cell.configureCell(title: title, value: "", icon: nil, options: [buttonLogout], centerText: true, alertText: "Are you sure?")
+        
+        let buttonDismiss = YBButton(frame: CGRect.zero, icon: UIImage(named: "WrongIcon"), text: "No")
+        let actionDismiss = { () -> Void in
+            cell.alertController?.dismiss()
+        }
+        buttonDismiss.action = actionDismiss
+        
+        cell.configureCell(title: title, value: "", icon: nil, options: [buttonLogout, buttonDismiss], centerText: true, alertText: "Are you sure?")
         
     }
     

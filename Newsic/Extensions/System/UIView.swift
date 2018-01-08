@@ -11,7 +11,6 @@ import UIKit
 extension UIView {
     
     
-    
     func addBlurEffect(style: UIBlurEffectStyle, alpha: CGFloat, customBounds: CGRect? = nil) {
         
         let blurEffect = UIBlurEffect(style: style)
