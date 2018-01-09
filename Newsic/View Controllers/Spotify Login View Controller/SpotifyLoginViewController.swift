@@ -38,12 +38,13 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        
+        checkFirebaseConnectivity()
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateAfterFirstLogin), name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(setupSpotify), name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(notificationResetLogin), name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
     
@@ -51,7 +52,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
-        checkFirebaseConnectivity()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -84,11 +85,12 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     func checkFirebaseConnectivity() {
         FirebaseHelper.detectFirebaseConnectivity { (isConnected) in
             if isConnected {
-                self.setupSpotify()
-                if self.timer != nil {
-                    self.timer.invalidate()
+                if !self.gotToken {
+                    self.setupSpotify()
+                    if self.timer != nil {
+                        self.timer.invalidate()
+                    }
                 }
-                
             } else {
                 self.timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.fireErrorPopup), userInfo: nil, repeats: false)
             }
@@ -101,13 +103,12 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
         let pageViewController = NewsicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
 //        self.present(pageViewController, animated: false, completion: nil);
-        self.present(pageViewController, animated: true) {
-//            self.dismiss(animated: false, completion: nil)
-        }
+        self.present(pageViewController, animated: true, completion: nil)
     }
     
     
     @objc fileprivate func setupSpotify() {
+        gotToken = false
         auth.clientID = Spotify.clientId;
         auth.redirectURL = URL(string: Spotify.redirectURI!);
         auth.requestedScopes = [SPTAuthStreamingScope, SPTAuthPlaylistReadPrivateScope, SPTAuthPlaylistModifyPrivateScope, SPTAuthPlaylistModifyPublicScope, SPTAuthUserFollowReadScope, SPTAuthUserReadPrivateScope];
@@ -128,8 +129,12 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         
     }
     
-    @objc func updateAfterFirstLogin () {
-        gotToken = true
+    @objc func updateAfterFirstLogin(notification: Notification) {
+        gotToken = notification.object as! Bool
+        print(gotToken)
+        if gotToken {
+            
+        }
         getSession();
     }
     
@@ -201,7 +206,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     }
     
     @objc func notificationResetLogin() {
-        resetSpotifyLogin()
+        resetLogin()
 //        viewDidLoad()
     }
     

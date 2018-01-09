@@ -140,7 +140,10 @@ extension Spotify {
             if let artists = artists {
                 var artistString = "&seed_artists="
                 for artist in artists {
-                    artistString.append("\(artist.id!),")
+                    if let artistId = artist.id {
+                        artistString.append("\(artistId),")
+                    }
+                    
                 }
                 
                 artistString.removeLast();

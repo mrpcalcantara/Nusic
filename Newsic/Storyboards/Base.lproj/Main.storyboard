@@ -454,10 +454,10 @@
             </objects>
             <point key="canvasLocation" x="1370" y="-778"/>
         </scene>
-        <!--Side Menu View Controller2-->
+        <!--Side Menu View Controller-->
         <scene sceneID="DyM-Kw-kZb">
             <objects>
-                <viewController storyboardIdentifier="SideMenu2" id="iJM-BN-XbD" customClass="SideMenuViewController2" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SideMenu" id="iJM-BN-XbD" customClass="SideMenuViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LkH-zk-pFj"/>
                         <viewControllerLayoutGuide type="bottom" id="3BI-vs-VKs"/>

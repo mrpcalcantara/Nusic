@@ -16,13 +16,8 @@ class NewsicPageViewController: UIPageViewController {
     var sideMenuVC: UIViewController?
     var showSongVC: UIViewController?
     
-    var sideMenuVC2: UIViewController?
-    
     private(set) lazy var orderedViewControllers: [UIViewController] = {
         // The view controllers will be shown in this order
-//        return [self.newColoredViewController(color: "Green"),
-//                self.newColoredViewController(color: "Red"),
-//                self.newColoredViewController(color: "Blue")]
         return []
     }()
     
@@ -33,28 +28,13 @@ class NewsicPageViewController: UIPageViewController {
         dataSource = self
         delegate = self
         
-        for subview in self.view.subviews {
-            if let view = subview as? UIScrollView {
-//                view.bounces = false
-            }
-        }
-        
-        
-        
-        
         songPickerVC = UIStoryboard(name: "Main", bundle: nil) .
             instantiateViewController(withIdentifier: "SongPicker")
-//        sideMenuVC = UIStoryboard(name: "Main", bundle: nil) .
-//            instantiateViewController(withIdentifier: "SideMenu")
         showSongVC = UIStoryboard(name: "Main", bundle: nil) .
             instantiateViewController(withIdentifier: "ShowSong")
+        sideMenuVC = UIStoryboard(name: "Main", bundle: nil) .
+            instantiateViewController(withIdentifier: "SideMenu")
         
-        sideMenuVC2 = UIStoryboard(name: "Main", bundle: nil) .
-            instantiateViewController(withIdentifier: "SideMenu2")
-        
-        if let sideMenuVC2 = sideMenuVC2 {
-            orderedViewControllers.insert(sideMenuVC2, at: 0)
-        }
         
         if let sideMenuVC = sideMenuVC {
             orderedViewControllers.insert(sideMenuVC, at: 0)
@@ -67,34 +47,11 @@ class NewsicPageViewController: UIPageViewController {
         for view in view.subviews {
             if let myView = view as? UIScrollView {
                 myView.canCancelContentTouches = false
-//                myView.delegate = self
-                
-                //            myView.delaysContentTouches = true
             }
         }
-        
-//        if let myView = view?.subviews.first as? UIScrollView {
-////            var scrollView = NewsicScrollView(frame: myView.frame)
-////            scrollView = myView
-////            
-////            myView.removeFromSuperview()
-////            view.addSubview(scrollView)
-//            myView.canCancelContentTouches = true
-////            myView.delaysContentTouches = true
-//        }
-        
-//        if let showSongVC = showSongVC {
-//            orderedViewControllers.insert(showSongVC, at: 2)
-//        }
-        
-//        self.navigationController?.pushViewController(songPicker, animated: true)
-//        self.navigationController?.pushViewController(songPicker, animated: true)
+
         let initialViewController = orderedViewControllers[1]
         scrollToViewController(viewController: initialViewController)
-//        if let initialViewController = orderedViewControllers.last {
-//            scrollToViewController(viewController: initialViewController)
-//        }
-        
         newsicDelegate?.newsicPageViewController(newsicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
         
     }

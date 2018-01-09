@@ -10,6 +10,32 @@ import UIKit
 import Koloda
 import SwiftSpinner
 
+//class CardOperation: Operation {
+//    
+//    let songCardView: SongKolodaView
+//    init(songCardView: SongKolodaView) {
+//        self.songCardView = songCardView
+//    }
+//    
+//    override func main() {
+//        DispatchQueue.main.async {
+//            self.songCardView.reloadData();
+//        }
+//    }
+//}
+//
+//class CardOperationQueue: OperationQueue {
+//    
+//    lazy var reloadsInProgress = [String:Operation]()
+//    lazy var reloadQueue:OperationQueue = {
+//        var queue = OperationQueue()
+//        queue.name = "Card reload queue"
+//        queue.maxConcurrentOperationCount = 1
+//        return queue
+//    }()
+//
+//}
+
 extension ShowSongViewController: KolodaViewDelegate {
     
     func setupCards() {
@@ -20,7 +46,7 @@ extension ShowSongViewController: KolodaViewDelegate {
         doubleTapRecognizer.numberOfTapsRequired = 2
         songCardView.addGestureRecognizer(doubleTapRecognizer);
         
-      
+        
     }
     
     func addSongToPosition(at index: Int, position: Int) {
@@ -35,10 +61,6 @@ extension ShowSongViewController: KolodaViewDelegate {
         return false;
     }
     
-    func kolodaDidRunOutOfCards(_ koloda: KolodaView) {
-        
-    }
-    
     func koloda(_ koloda: KolodaView, didSelectCardAt index: Int) {
         let alertController = NewsicAlertController(title: "More tracks based on:", message: nil, style: YBAlertControllerStyle.ActionSheet)
         
@@ -46,7 +68,6 @@ extension ShowSongViewController: KolodaViewDelegate {
             DispatchQueue.main.async {
                 self.showSwiftSpinner(text: "Fetching tracks..", duration: nil)
             }
-            print("getting new songs for artist")
             self.musicSearchType = .artist
             self.handleFetchNewCard(numberOfSongs: 9)
         }
@@ -92,11 +113,10 @@ extension ShowSongViewController: KolodaViewDelegate {
         
         let handler: (Bool) -> Void = { didHandle in
             if self.songCardView.countOfVisibleCards < 3 || !didHandle {
-//                fetchNewCard(cardFetchingHandler: handler)
                 self.fetchNewCard(cardFetchingHandler: nil)
             }
             else {
-                DispatchQueue.main.async {
+                DispatchQueue.main.sync {
                     self.songCardView.reloadData()
                 }
             }
@@ -108,8 +128,10 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
-        print("showing card at: \(index)")
-        self.songListTableView.reloadData()
+//        print("showing card at: \(index)")
+        DispatchQueue.main.async {
+            self.songListTableView.reloadData()
+        }
         presentedCardIndex = index
         let cardView = koloda.viewForCard(at: index) as! SongOverlayView
         if isPlayerMenuOpen {
@@ -155,7 +177,11 @@ extension ShowSongViewController: KolodaViewDataSource {
     }
     
     func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
-        return configure(index: index)
+        //WORKAROUND: Because of concurrent reloading, we need to validate the indexes are valid.
+        if index < cardList.count {
+            return configure(index: index)
+        }
+        return UIView()
     }
     
     func koloda(_ koloda: KolodaView, viewForCardOverlayAt index: Int) -> OverlayView? {
@@ -164,6 +190,8 @@ extension ShowSongViewController: KolodaViewDataSource {
     }
     
     func configure(index: Int) -> UIView {
+        
+        
         let view = UINib(nibName: "OverlayView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SongOverlayView
         
         //print("index = \(index) -> artist = \(self.cardList[index].trackInfo.artist!) and songName = \(self.cardList[index].trackInfo.songName!)");
@@ -175,6 +203,8 @@ extension ShowSongViewController: KolodaViewDataSource {
         //TODO: Swiping for Spotify shows YT view regardless, and as such, the album image is hidden.
         if preferredPlayer == NewsicPreferredPlayer.spotify {
             view.setupViewForSpotify()
+        } else {
+            view.setupViewForYoutube()
         }
         
         view.layer.borderWidth = 0.5;
@@ -264,14 +294,28 @@ extension ShowSongViewController {
     }
     
     func handleFetchNewCard(numberOfSongs: Int) {
-        self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
-        self.fetchNewCard(numberOfSongs: numberOfSongs, cardFetchingHandler: { (isFetched) in
-            DispatchQueue.main.async {
-                self.songCardView.reloadCardsInIndexRange(self.songCardView.currentCardIndex+1..<self.cardList.count)
-                SwiftSpinner.hide()
-            }
-        })
-        
+        DispatchQueue.main.async {
+            self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+            self.fetchNewCard(numberOfSongs: numberOfSongs, cardFetchingHandler: { (isFetched) in
+                DispatchQueue.main.async {
+                    self.songCardView.reloadCardsInIndexRange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+                    SwiftSpinner.hide()
+                }
+            })
+        }
     }
+    
+//    @objc func reloadCards(operation: String) {
+//        if let operation = cardReloadingQueue.reloadsInProgress[operation] {
+//            return
+//        }
+//        
+//        let reloadOperation = CardOperation(songCardView: songCardView);
+//        reloadOperation.completionBlock = {
+//            
+//        }
+//    }
 }
+
+
 

@@ -84,7 +84,7 @@
 		8C7C0A3F1FEA76780077B109 /* CL-ToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C0A3E1FEA76780077B109 /* CL-ToggleView.swift */; };
 		8C7C0A411FEA76820077B109 /* CL-CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C0A401FEA76820077B109 /* CL-CollectionView.swift */; };
 		8C7C0A431FEA768D0077B109 /* CL-NewsicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C0A421FEA768D0077B109 /* CL-NewsicButton.swift */; };
-		8C7C41DE1FFC8D2F0051845D /* SideMenuViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C41DD1FFC8D2F0051845D /* SideMenuViewController2.swift */; };
+		8C7C41DE1FFC8D2F0051845D /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C41DD1FFC8D2F0051845D /* SideMenuViewController.swift */; };
 		8C7C41E21FFC8F3D0051845D /* SettingsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C41E11FFC8F3D0051845D /* SettingsHeader.swift */; };
 		8C7C41E41FFC8F5F0051845D /* SettingsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7C41E31FFC8F5F0051845D /* SettingsHeader.xib */; };
 		8C7C41E81FFC928C0051845D /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7C41E61FFC928C0051845D /* SettingsCell.swift */; };
@@ -235,7 +235,7 @@
 		8C7C0A3E1FEA76780077B109 /* CL-ToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CL-ToggleView.swift"; sourceTree = "<group>"; };
 		8C7C0A401FEA76820077B109 /* CL-CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CL-CollectionView.swift"; sourceTree = "<group>"; };
 		8C7C0A421FEA768D0077B109 /* CL-NewsicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CL-NewsicButton.swift"; sourceTree = "<group>"; };
-		8C7C41DD1FFC8D2F0051845D /* SideMenuViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController2.swift; sourceTree = "<group>"; };
+		8C7C41DD1FFC8D2F0051845D /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		8C7C41E11FFC8F3D0051845D /* SettingsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeader.swift; sourceTree = "<group>"; };
 		8C7C41E31FFC8F5F0051845D /* SettingsHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsHeader.xib; sourceTree = "<group>"; };
 		8C7C41E61FFC928C0051845D /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
@@ -737,7 +737,7 @@
 			children = (
 				8C7C41DF1FFC8E710051845D /* Views */,
 				8C7BE32A1F78AE6C004D9F15 /* Extensions */,
-				8C7C41DD1FFC8D2F0051845D /* SideMenuViewController2.swift */,
+				8C7C41DD1FFC8D2F0051845D /* SideMenuViewController.swift */,
 			);
 			path = "Side Menu View Controller";
 			sourceTree = "<group>";
@@ -1434,7 +1434,7 @@
 				8CD0C72B1FD55E450095A309 /* NewsicErrorSubCode.swift in Sources */,
 				8C848EDC1F5676A00070C08A /* SpotifyLoginViewController.swift in Sources */,
 				8CD0C7291FD55B4D0095A309 /* SpotifyErrorCodeDescription.swift in Sources */,
-				8C7C41DE1FFC8D2F0051845D /* SideMenuViewController2.swift in Sources */,
+				8C7C41DE1FFC8D2F0051845D /* SideMenuViewController.swift in Sources */,
 				8C9DB4F91F6B8FF900F35268 /* SongListTableView.swift in Sources */,
 				8C90E8621F53D838002B135F /* AppDelegate.swift in Sources */,
 				8C7C0A411FEA76820077B109 /* CL-CollectionView.swift in Sources */,

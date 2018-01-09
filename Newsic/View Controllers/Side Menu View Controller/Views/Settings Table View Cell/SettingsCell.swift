@@ -67,10 +67,10 @@ class SettingsCell: UITableViewCell {
         }
         
         
-        if !enableCell! {
-            self.isUserInteractionEnabled = enableCell!
-            self.itemValue.textColor = UIColor.gray
-        }
+//        if !enableCell! {
+//            self.isUserInteractionEnabled = enableCell!
+//            self.itemValue.textColor = UIColor.gray
+//        }
         
         itemDescription.text = title
         itemValue.text = value
