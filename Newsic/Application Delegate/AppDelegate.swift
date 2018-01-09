@@ -16,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var auth = SPTAuth()
-    //var player: SPTAudioStreamingController?
     var safariViewController: SFSafariViewController?
 
 
@@ -37,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //NOTE: DELETE WHEN RELEASE. Suppressing the constraint errors for the cards
 //        UserDefaults.standard.setValue(true, forKey:"_UIConstraintBasedLayoutLogUnsatisfiable")
-        UserDefaults.standard.setValue(false, forKey:"_UIConstraintBasedLayoutLogUnsatisfiable")
+//        UserDefaults.standard.setValue(false, forKey:"_UIConstraintBasedLayoutLogUnsatisfiable")
         
         
         // Override point for customization after application launch.
@@ -54,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 if error != nil || session == nil {
                     print("error!: \(String(describing: error?.localizedDescription))")
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "loginUnsuccessful"), object: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "loginUnsuccessful"), object: false)
                 } else {
                     // 5- Add session to User Defaults
                     
@@ -64,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     userDefaults.synchronize()
                     
                     // 6 - Tell notification center login is successful
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "loginSuccessful"), object: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "loginSuccessful"), object: true)
                 }
                 
             })

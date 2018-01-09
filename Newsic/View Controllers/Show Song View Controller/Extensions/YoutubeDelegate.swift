@@ -51,6 +51,7 @@ extension ShowSongViewController: YTPlayerViewDelegate {
         } else {
         
         }
+        currentPlayingTrack = self.cardList[self.songCardView.currentCardIndex].trackInfo
         playerView.playVideo();
     }
     

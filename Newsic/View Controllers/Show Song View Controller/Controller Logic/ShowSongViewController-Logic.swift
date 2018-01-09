@@ -287,7 +287,7 @@ extension ShowSongViewController {
         }
     }
     
-    func fetchNewCardGenre(numberOfSongs: Int, cardFetchingHandler: ((Bool) -> ())?) {
+    func fetchNewCardGenre(numberOfSongs: Int, insert inIndex: Int? = nil, cardFetchingHandler: ((Bool) -> ())?) {
         if let track = currentPlayingTrack {
             
             self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, moodObject: moodObject, selectedGenreList: selectedGenreList) { (results, error) in
@@ -298,7 +298,7 @@ extension ShowSongViewController {
                 for spotifyTrack in results {
                     self.getYouTubeResults(tracks: [spotifyTrack], youtubeSearchHandler: { (tracks) in
                         for ytTrack in tracks {
-                            self.addSongToCardPlaylist(track: ytTrack)
+                            self.addSongToCardPlaylist(index: inIndex, track: ytTrack)
                         }
                         
                         if results[results.count-1].trackId == spotifyTrack.trackId {
@@ -390,7 +390,6 @@ extension ShowSongViewController {
     }
     
     func addSongToCardPlaylist(index: Int? = nil, track: NewsicTrack) {
-        print("added \(track.trackInfo.songName)")
         if index != nil {
             self.cardList.insert(track, at: index!)
         } else {

@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import PopupDialog
 
-extension SideMenuViewController2 {
+extension SideMenuViewController {
     func setupTableView() {
         settingsTableView.delegate = self;
         settingsTableView.dataSource = self;
@@ -34,7 +35,7 @@ extension SideMenuViewController2 {
     }
 }
 
-extension SideMenuViewController2 : UITableViewDelegate {
+extension SideMenuViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if settingsValues[indexPath.section][0] == NewsicSettingsLabel.logout.rawValue {
@@ -44,7 +45,13 @@ extension SideMenuViewController2 : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! SettingsCell
-        cell.alertController?.show()
+        if indexPath.section == 0 && !enablePlayerSwitch! {
+            let popup = PopupDialog(title: "Sorry!", message: "It appears you're not a Spotify Premium user. As such, you can only use the YouTube player.")
+            popup.addButton(DefaultButton(title: "Got It!", action: nil))
+            self.present(popup, animated: true, completion: nil)
+        } else {
+            cell.alertController?.show()
+        }
         cell.setSelected(false, animated: true)
     }
     
@@ -77,7 +84,7 @@ extension SideMenuViewController2 : UITableViewDelegate {
     
 }
 
-extension SideMenuViewController2 : UITableViewDataSource {
+extension SideMenuViewController : UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return settingsValues.count;
@@ -112,7 +119,7 @@ extension SideMenuViewController2 : UITableViewDataSource {
     
 }
 
-extension SideMenuViewController2 {
+extension SideMenuViewController {
     
     //Setup functions for Table View cells and sections
     func setupPlayerSettings(for cell: SettingsCell, title: String) {

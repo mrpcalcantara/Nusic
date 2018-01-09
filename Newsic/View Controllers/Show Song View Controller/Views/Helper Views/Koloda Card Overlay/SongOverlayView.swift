@@ -40,6 +40,7 @@ class SongOverlayView: OverlayView {
         [unowned self] in
         
         var label = UILabel()
+        label.backgroundColor = UIColor.clear
         label.font = UIFont(name: "Futura", size: 15)
         return label;
     }()
@@ -47,6 +48,7 @@ class SongOverlayView: OverlayView {
         [unowned self] in
         
         var label = UILabel()
+        label.backgroundColor = UIColor.clear
         label.font = UIFont(name: "Futura", size: 15)
         return label;
     }()
@@ -55,10 +57,18 @@ class SongOverlayView: OverlayView {
         [unowned self] in
         
         var label = UILabel()
+        label.backgroundColor = UIColor.clear
         label.font = UIFont(name: "Futura", size: 10)
         return label;
         }()
     
+    @IBOutlet lazy var clickIcon: UIImageView! = {
+        [unowned self] in
+        
+        var imageView = UIImageView()
+//        imageView.image = UIImage(named: "Click")
+        return imageView
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -80,17 +90,21 @@ class SongOverlayView: OverlayView {
         self.addSubview(genreLabel);
         genreLabel.layer.zPosition = 1;
         genreLabel.alpha = 0.5
+        youtubePlayer.tag = 123
         self.addSubview(youtubePlayer);
+        
+        
         self.layer.cornerRadius = 15
+        
     }
     
     func setupViewForSpotify() {
-        self.youtubePlayer.removeFromSuperview()
+        self.youtubePlayer.alpha = 0
 //        self.layoutIfNeeded()
     }
     
     func setupViewForYoutube() {
-        
+        self.albumImage.alpha = 0
     }
     
     func loadViewFromNib() -> UIView {
@@ -101,6 +115,7 @@ class SongOverlayView: OverlayView {
     override var overlayState: SwipeResultDirection?  {
         didSet {
             switch overlayState {
+                
             case .left? :
                 albumImage.image = UIImage(named: songOverlaySwipedLeftImage)
                 albumImage.contentMode = .scaleToFill
@@ -117,7 +132,8 @@ class SongOverlayView: OverlayView {
     }
     
     override func update(progress: CGFloat) {
-        alpha = progress * 1.5
+        alpha = progress < 0.75 ? progress : 0.75
+        
         backgroundColor = UIColor.clear
     }
 

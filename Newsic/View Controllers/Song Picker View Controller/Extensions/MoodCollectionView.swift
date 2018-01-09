@@ -214,7 +214,6 @@ extension SongPickerViewController {
                 if title.elementsEqual(firstCharacter) {
                     let genres = getGenresForSection(section: section-1)
                     if let row = genres.index(where: { (genre) -> Bool in
-                        print(genre.rawValue)
                         return genre.rawValue == value
                     }) {
                         return IndexPath(row: row, section: section)
