@@ -8,7 +8,12 @@
 
 import Foundation
 
-struct SpotifyTrackFeature {
+struct SpotifyTrackFeature: Hashable {
+    var hashValue: Int {
+        return (youtubeId?.hashValue)!
+    }
+    
+    
     
     var danceability: Double? = 0;
     var energy: Double? = 0;
@@ -53,6 +58,30 @@ struct SpotifyTrackFeature {
         self.valence           = valence
         self.genre             = genre
         self.youtubeId         = youtubeId
+    }
+    
+    static func ==(lhs: SpotifyTrackFeature, rhs: SpotifyTrackFeature) -> Bool {
+        return
+            lhs.danceability == rhs.danceability &&
+                lhs.energy == rhs.energy &&
+                lhs.key == rhs.key &&
+                lhs.loudness == rhs.loudness &&
+                lhs.mode == rhs.mode &&
+                lhs.speechiness == rhs.speechiness &&
+                lhs.acousticness == rhs.acousticness &&
+                lhs.instrumentalness == rhs.instrumentalness &&
+                lhs.liveness == rhs.liveness &&
+                lhs.valence == rhs.valence &&
+                lhs.tempo == rhs.tempo &&
+                lhs.type == rhs.type &&
+                lhs.id == rhs.id &&
+                lhs.uri == rhs.uri &&
+                lhs.trackHref == rhs.trackHref &&
+                lhs.analysisUrl == rhs.analysisUrl &&
+                lhs.durationMs == rhs.durationMs &&
+                lhs.timeSignature == rhs.timeSignature &&
+                lhs.genre == rhs.genre &&
+                lhs.youtubeId == rhs.youtubeId
     }
     
     func toDictionary() -> [String: AnyObject] {

@@ -8,7 +8,11 @@
 
 import Foundation
 
-struct SpotifyArtist {
+struct SpotifyArtist: Hashable {
+    var hashValue: Int {
+        return (uri?.hashValue)!
+    }
+    
     var artistName: String! = ""
     var subGenres: [String]? = []
     var popularity: Int? = -1
@@ -21,6 +25,14 @@ struct SpotifyArtist {
         self.popularity = popularity;
         self.uri = uri;
         self.id = id;
+    }
+    
+    static func ==(lhs: SpotifyArtist, rhs: SpotifyArtist) -> Bool {
+        return lhs.artistName == rhs.artistName &&
+            lhs.subGenres! == rhs.subGenres! &&
+            lhs.popularity == rhs.popularity &&
+            lhs.uri == rhs.uri &&
+            lhs.id == rhs.id
     }
     
     func listGenres(showPrefix: Bool? = true) -> String {

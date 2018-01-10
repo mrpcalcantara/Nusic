@@ -63,7 +63,6 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             if let currentTrack = currentTrack {
                 let songTitle = "\(currentTrack.artistName) - \(currentTrack.name)"
                 let currentPlayingTrack = self.cardList[self.songCardView.currentCardIndex].trackInfo
-//                let currentPlayingTrack = SpotifyTrack(title: songTitle, thumbNail: nil, trackUri: currentTrack.uri, trackId: Spotify.transformToID(type: .track, uri: currentTrack.uri), songName: currentTrack.name ,artist: SpotifyArtist(artistName: currentTrack.artistName, subGenres: nil, popularity: nil, uri: currentTrack.artistUri, id: Spotify.transformToID(type: .artist, uri: currentTrack.artistUri)), audioFeatures: nil)
                 self.currentPlayingTrack = currentPlayingTrack;
                 
                 if let imageURL = currentTrack.albumCoverArtURL {
@@ -90,10 +89,21 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     
 
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
+        if trackUri != "" {
+            
+        }
         DispatchQueue.main.async {
             self.hideLikeButtons()
         }
+        
         songCardView.swipe(.left);
+        
+        if UIApplication.shared.applicationState == .background {
+            presentedCardIndex += 1
+            playCard(at: presentedCardIndex)
+            getNextSong()
+            //
+        }
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
@@ -185,6 +195,7 @@ extension ShowSongViewController {
     }
     
     @objc func actionNextSong() {
+        player?.playbackDelegate.audioStreaming!(player, didStopPlayingTrack: currentPlayingTrack?.trackUri)
         songCardView.swipe(.left)
     }
     

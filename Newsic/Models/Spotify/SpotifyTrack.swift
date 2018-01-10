@@ -9,7 +9,13 @@
 import Foundation
 import UIKit
 
-class SpotifyTrack {
+class SpotifyTrack: Hashable {
+    var hashValue: Int {
+        return trackId.hashValue
+    }
+    
+    
+    
     
     var title: String!;
     var thumbNail: UIImage?;
@@ -17,12 +23,20 @@ class SpotifyTrack {
     var trackId: String!;
     var trackUri: String!;
     var songName: String!;
-    var artist: SpotifyArtist!;
+    var artist: SpotifyArtist;
     var addedAt: Date?!
     var audioFeatures: SpotifyTrackFeature? = nil
     
     init(title: String? = "", thumbNail: UIImage? = nil, thumbNailUrl: String? = "", trackUri: String? = "", trackId: String, songName: String? = "", artist: SpotifyArtist?, addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?) {
         self.title = title;
+        self.thumbNailUrl = thumbNailUrl;
+        self.trackUri = trackUri;
+        self.trackId = trackId;
+        self.songName = songName;
+        self.artist = artist!
+        self.addedAt = addedAt;
+        self.audioFeatures = audioFeatures
+        
         let image = UIImage()
         if let thumbNail = thumbNail {
             self.thumbNail = thumbNail
@@ -36,13 +50,19 @@ class SpotifyTrack {
             }
         }
         
-        self.thumbNailUrl = thumbNailUrl;
-        self.trackUri = trackUri;
-        self.trackId = trackId;
-        self.songName = songName;
-        self.artist = artist
-        self.addedAt = addedAt;
-        self.audioFeatures = audioFeatures
+        
+    }
+    
+    static func ==(lhs: SpotifyTrack, rhs: SpotifyTrack) -> Bool {
+        return lhs.title == rhs.title &&
+            lhs.thumbNail == rhs.thumbNail &&
+            lhs.thumbNailUrl == rhs.thumbNailUrl &&
+            lhs.trackId == rhs.trackId &&
+            lhs.trackUri == rhs.trackUri &&
+            lhs.songName == rhs.songName &&
+            lhs.artist == rhs.artist &&
+            lhs.addedAt == rhs.addedAt &&
+            lhs.audioFeatures == rhs.audioFeatures
     }
     
     func setImage() {
@@ -58,4 +78,5 @@ class SpotifyTrack {
             completion(data, response, error)
             }.resume()
     }
+
 }
