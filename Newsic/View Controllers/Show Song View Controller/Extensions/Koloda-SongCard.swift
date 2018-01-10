@@ -65,33 +65,32 @@ extension ShowSongViewController: KolodaViewDelegate {
         let alertController = NewsicAlertController(title: "More tracks based on:", message: nil, style: YBAlertControllerStyle.ActionSheet)
         
         let actionArtist: () -> Void = {
-            DispatchQueue.main.async {
-                self.showSwiftSpinner(text: "Fetching tracks..", duration: nil)
-            }
             self.musicSearchType = .artist
-            self.handleFetchNewCard(numberOfSongs: 9)
+            self.showSwiftSpinner(text: "Fetching tracks..")
+            self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
+            self.showMore.transform = CGAffineTransform.identity;
+            self.handleFetchNewTracks(numberOfSongs: 9, completionHandler: nil)
+            
         }
         
         let actionTrack: () -> Void = {
-            DispatchQueue.main.async {
-                self.showSwiftSpinner(text: "Fetching tracks..", duration: nil)
-            }
             self.musicSearchType = .track
-            self.handleFetchNewCard(numberOfSongs: 9)
+            self.showSwiftSpinner(text: "Fetching tracks..")
+            self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
+            self.handleFetchNewTracks(numberOfSongs: 9, completionHandler: nil)
         }
         
         let actionGenre: () -> Void = {
-            DispatchQueue.main.async {
-                self.showSwiftSpinner(text: "Fetching tracks..", duration: nil)
-            }
             let dict = self.currentPlayingTrack?.artist.listDictionary()
             let count: Int? = dict?.count
             if let count = count, count > 0 {
                 self.selectedGenreList = dict!
             }
             
+            self.showSwiftSpinner(text: "Fetching tracks..")
+            self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
             self.musicSearchType = .genre
-            self.handleFetchNewCard(numberOfSongs: 9)
+            self.handleFetchNewTracks(numberOfSongs: 9, completionHandler: nil)
         }
         
         alertController.addButton(icon: UIImage(named: "GenreIcon"), title: "Current Genre", action: actionGenre)
@@ -110,21 +109,9 @@ extension ShowSongViewController: KolodaViewDelegate {
             likeTrack(in: index);
         }
         didUserSwipe = false;
-        
-        let handler: (Bool) -> Void = { didHandle in
-            if self.songCardView.countOfVisibleCards < 3 || !didHandle {
-                self.fetchNewCard(cardFetchingHandler: nil)
-            }
-            else {
-                DispatchQueue.main.sync {
-                    self.songCardView.reloadData()
-                }
-            }
-        }
-        
-        fetchNewCard { (isFetched) in
-            handler(isFetched);
-        }
+//        player?.playbackDelegate.audioStreaming!(player, didStopPlayingTrack: currentPlayingTrack?.trackUri)
+        getNextSong()
+
     }
     
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
@@ -141,16 +128,15 @@ extension ShowSongViewController: KolodaViewDelegate {
         isSongLiked = containsTrack(trackId: cardList[index].trackInfo.trackId);
         toggleLikeButtons();
         
-        
-        if preferredPlayer == NewsicPreferredPlayer.spotify {
-            print("attempting to start track = \(cardList[index].trackInfo.trackUri)")
-            actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.trackUri);
-        } else {
-            if let youtubeTrackId = cardList[index].youtubeInfo?.trackId {
-                setupYTPlayer(for: cardView, with: youtubeTrackId)
-                ytPlayTrack()
+        if currentPlayingTrack?.trackId != cardList[index].trackInfo.trackId {
+            if preferredPlayer == NewsicPreferredPlayer.spotify {
+                playCard(at: index)
+            } else {
+                if let youtubeTrackId = cardList[index].youtubeInfo?.trackId {
+                    setupYTPlayer(for: cardView, with: youtubeTrackId)
+                    ytPlayTrack()
+                }
             }
-            
         }
         
     }
@@ -293,28 +279,18 @@ extension ShowSongViewController {
         return songCardView.viewForCard(at: songCardView.currentCardIndex) as! SongOverlayView
     }
     
-    func handleFetchNewCard(numberOfSongs: Int) {
-        DispatchQueue.main.async {
-            self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
-            self.fetchNewCard(numberOfSongs: numberOfSongs, cardFetchingHandler: { (isFetched) in
-                DispatchQueue.main.async {
-                    self.songCardView.reloadCardsInIndexRange(self.songCardView.currentCardIndex+1..<self.cardList.count)
-                    SwiftSpinner.hide()
-                }
-            })
+    func handleFetchNewTracks(numberOfSongs: Int, completionHandler: ((Bool) -> ())?) {
+        fetchNewCardsFromSpotify(numberOfSongs: numberOfSongs) { (tracks) in
+            DispatchQueue.main.async {
+                self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+                self.addSongsToCardList(for: nil, tracks: tracks)
+                self.songCardView.reloadCardsInIndexRange(self.songCardView.currentCardIndex+1..<self.cardList.count)
+                SwiftSpinner.hide()
+                completionHandler?(true)
+            }
         }
     }
     
-//    @objc func reloadCards(operation: String) {
-//        if let operation = cardReloadingQueue.reloadsInProgress[operation] {
-//            return
-//        }
-//        
-//        let reloadOperation = CardOperation(songCardView: songCardView);
-//        reloadOperation.completionBlock = {
-//            
-//        }
-//    }
 }
 
 

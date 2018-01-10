@@ -304,14 +304,22 @@ class ShowSongViewController: NewsicDefaultViewController {
         
     }
     
-    func showSwiftSpinner(text: String? = nil, duration: Double? = nil) {
+    func showSwiftSpinner(delay: Double? = nil, text: String? = nil, duration: Double? = nil) {
         
         var spinnerText = ""
         if let text = text {
             spinnerText = text
             if let duration = duration {
                 SwiftSpinner.show(duration: duration, title: spinnerText)
-            } else {
+            } else if let delay = delay {
+                let delayInSeconds = DispatchTime.now() + Double(Int64(Double(NSEC_PER_SEC) * delay )) / Double(NSEC_PER_SEC)
+                DispatchQueue.main.asyncAfter(deadline: delayInSeconds, execute: {
+                    if SwiftSpinner.sharedInstance.animating {
+                        SwiftSpinner.show(duration: 1, title: text, animated: true)
+                    }
+                })
+            }
+            else {
                 SwiftSpinner.show(spinnerText, animated: true);
             }
             

@@ -220,6 +220,7 @@
 		8C5E892C1FBD930600FF75AC /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControl.swift; sourceTree = "<group>"; };
 		8C60524A1F864FB300892205 /* UserSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsViewController.swift; sourceTree = "<group>"; };
+		8C617F112005E93100235FA7 /* Newsic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Newsic.entitlements; sourceTree = "<group>"; };
 		8C626E971FE77F7F00BF0E08 /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		8C626E991FE77F9900BF0E08 /* NewsicScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicScrollView.swift; sourceTree = "<group>"; };
 		8C626E9F1FE7A27000BF0E08 /* ChoiceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceList.swift; sourceTree = "<group>"; };
@@ -830,6 +831,7 @@
 		8C90E8601F53D838002B135F /* Newsic */ = {
 			isa = PBXGroup;
 			children = (
+				8C617F112005E93100235FA7 /* Newsic.entitlements */,
 				8C21E70E1FC6AB270033B477 /* Page View Controller */,
 				8CF8D3FC1FBA9C6400E130BC /* Interaction Controllers */,
 				8C9C9E8F1F67C2CF0093C14A /* Views */,
@@ -1154,6 +1156,9 @@
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
+							};
+							com.apple.InterAppAudio = {
+								enabled = 0;
 							};
 						};
 					};
