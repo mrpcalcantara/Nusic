@@ -1,6 +1,6 @@
 //
-//  NewsicErrorSubCode.swift
-//  Newsic
+//  NusicErrorSubCode.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 04/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum NewsicErrorSubCode: Int {
+enum NusicErrorSubCode: Int {
     case unknown
     case technicalError
     case functionalError

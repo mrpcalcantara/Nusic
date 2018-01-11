@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 28/08/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -74,8 +74,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
-    
-
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
+    }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

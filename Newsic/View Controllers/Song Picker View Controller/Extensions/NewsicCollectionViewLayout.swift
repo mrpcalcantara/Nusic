@@ -1,6 +1,6 @@
 //
-//  NewsicCollectionViewLayout.swift
-//  Newsic
+//  NusicCollectionViewLayout.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 18/10/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewsicCollectionViewLayout: UICollectionViewFlowLayout {
+class NusicCollectionViewLayout: UICollectionViewFlowLayout {
     
     var insertingIndexPaths = [IndexPath]()
     var deletingIndexPaths = [IndexPath]()

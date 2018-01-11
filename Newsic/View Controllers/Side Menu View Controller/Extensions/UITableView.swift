@@ -1,6 +1,6 @@
 //
 //  UITableView.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 03/01/2018.
 //  Copyright © 2018 Miguel Alcantara. All rights reserved.
@@ -38,7 +38,7 @@ extension SideMenuViewController {
 extension SideMenuViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if settingsValues[indexPath.section][0] == NewsicSettingsLabel.logout.rawValue {
+        if settingsValues[indexPath.section][0] == NusicSettingsLabel.logout.rawValue {
             cell.accessoryType = .none
         }
     }
@@ -68,14 +68,14 @@ extension SideMenuViewController : UITableViewDelegate {
         let headerTitle = settingsValues[section][0]
         
         switch headerTitle {
-        case NewsicSettingsLabel.preferredPlayer.rawValue:
-            header.headerLabel.text = NewsicSettingsTitle.playerSettings.rawValue
-        case NewsicSettingsLabel.useMobileData.rawValue:
-            header.headerLabel.text = NewsicSettingsTitle.connectionSettings.rawValue
-        case NewsicSettingsLabel.logout.rawValue:
-            header.headerLabel.text = NewsicSettingsTitle.actionSettings.rawValue
-        case NewsicSettingsLabel.spotifyQuality.rawValue:
-            header.headerLabel.text = NewsicSettingsTitle.spotifySettings.rawValue
+        case NusicSettingsLabel.preferredPlayer.rawValue:
+            header.headerLabel.text = NusicSettingsTitle.playerSettings.rawValue
+        case NusicSettingsLabel.useMobileData.rawValue:
+            header.headerLabel.text = NusicSettingsTitle.connectionSettings.rawValue
+        case NusicSettingsLabel.logout.rawValue:
+            header.headerLabel.text = NusicSettingsTitle.actionSettings.rawValue
+        case NusicSettingsLabel.spotifyQuality.rawValue:
+            header.headerLabel.text = NusicSettingsTitle.spotifySettings.rawValue
         default:
             header.headerLabel.text = ""
         }
@@ -99,13 +99,13 @@ extension SideMenuViewController : UITableViewDataSource {
         
         let title = settingsValues[indexPath.section][0]
         switch title {
-        case NewsicSettingsLabel.preferredPlayer.rawValue:
+        case NusicSettingsLabel.preferredPlayer.rawValue:
             setupPlayerSettings(for: cell, title: title)
-        case NewsicSettingsLabel.spotifyQuality.rawValue:
+        case NusicSettingsLabel.spotifyQuality.rawValue:
             setupSpotifySettings(for: cell, title: title)
-        case NewsicSettingsLabel.useMobileData.rawValue:
+        case NusicSettingsLabel.useMobileData.rawValue:
             setupConnectionSettings(for: cell, title: title)
-        case NewsicSettingsLabel.logout.rawValue:
+        case NusicSettingsLabel.logout.rawValue:
             setupActionSettings(for: cell, title: title)
             
             
@@ -124,18 +124,18 @@ extension SideMenuViewController {
     //Setup functions for Table View cells and sections
     func setupPlayerSettings(for cell: SettingsCell, title: String) {
         if let value = settings?.preferredPlayer?.rawValue {
-            if let str = NewsicPreferredPlayer(rawValue: value) {
+            if let str = NusicPreferredPlayer(rawValue: value) {
                 
-                let buttonSpotify = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifyIconHighlighted"), text: NewsicPreferredPlayer.spotify.description())
+                let buttonSpotify = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifyIconHighlighted"), text: NusicPreferredPlayer.spotify.description())
                 let actionSpotify = { () -> Void in
-                    self.settings?.preferredPlayer = NewsicPreferredPlayer.spotify
+                    self.settings?.preferredPlayer = NusicPreferredPlayer.spotify
                     cell.itemValue.text = buttonSpotify.textLabel.text
                 }
                 buttonSpotify.action = actionSpotify
                 
-                let buttonYoutube = YBButton(frame: CGRect.zero, icon: UIImage(named: "YoutubeIconHighlighted"), text: NewsicPreferredPlayer.youtube.description())
+                let buttonYoutube = YBButton(frame: CGRect.zero, icon: UIImage(named: "YoutubeIconHighlighted"), text: NusicPreferredPlayer.youtube.description())
                 let actionYoutube = { () -> Void in
-                    self.settings?.preferredPlayer = NewsicPreferredPlayer.youtube
+                    self.settings?.preferredPlayer = NusicPreferredPlayer.youtube
                     cell.itemValue.text = buttonYoutube.textLabel.text
                 }
                 buttonYoutube.action = actionYoutube

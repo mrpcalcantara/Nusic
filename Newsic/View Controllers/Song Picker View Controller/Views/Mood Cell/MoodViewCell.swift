@@ -1,6 +1,6 @@
 //
 //  MoodViewCell.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 03/10/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.

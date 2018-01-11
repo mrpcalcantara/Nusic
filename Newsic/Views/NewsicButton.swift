@@ -1,6 +1,6 @@
 //
-//  NewsicButton.swift
-//  Newsic
+//  NusicButton.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 15/09/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewsicButton: UIButton {
+class NusicButton: UIButton {
 
     // IBInspectable properties for rounded corners and border color / width
     @IBInspectable var cornerSize: CGFloat = 0
@@ -50,14 +50,14 @@ class NewsicButton: UIButton {
     
         if animated {
             let flashAnimation = CABasicAnimation(keyPath: "fillColor")
-            flashAnimation.fromValue = NewsicDefaults.deselectedColor.cgColor
-            flashAnimation.toValue = NewsicDefaults.greenColor.cgColor
+            flashAnimation.fromValue = NusicDefaults.deselectedColor.cgColor
+            flashAnimation.toValue = NusicDefaults.greenColor.cgColor
             flashAnimation.duration = 0.5
             flashAnimation.autoreverses = true
             flashAnimation.repeatCount = .infinity
             
             let strokeColorAnimation = CABasicAnimation(keyPath: "strokeColor")
-            strokeColorAnimation.fromValue = NewsicDefaults.greenColor.cgColor
+            strokeColorAnimation.fromValue = NusicDefaults.greenColor.cgColor
             strokeColorAnimation.toValue = UIColor.green.cgColor
             strokeColorAnimation.duration = 0.5
             strokeColorAnimation.autoreverses = true

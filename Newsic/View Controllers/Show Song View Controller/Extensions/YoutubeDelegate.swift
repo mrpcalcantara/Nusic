@@ -1,6 +1,6 @@
 //
 //  YoutubeDelegate.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 31/08/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -31,7 +31,6 @@ extension ShowSongViewController: YTPlayerViewDelegate {
         view.youtubePlayer.load(withVideoId: videoId, playerVars: playerVars)
     }
     
-    
     func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
         if Connectivity.isConnectedToNetwork() == .connectedCellular && !playOnCellularData! {
             let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
@@ -41,7 +40,7 @@ extension ShowSongViewController: YTPlayerViewDelegate {
                 self.playerViewDidBecomeReady(playerView)
             }))
             dialog.addButton(CancelButton(title: "No", action: {
-                let parent = self.parent as! NewsicPageViewController
+                let parent = self.parent as! NusicPageViewController
                 parent.scrollToPreviousViewController();
                 parent.removeViewControllerFromPageVC(viewController: self)
                 playerView.stopVideo()

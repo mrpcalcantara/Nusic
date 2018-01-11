@@ -37,7 +37,7 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wK4-Xu-a6g" customClass="NewsicButton" customModule="Newsic" customModuleProvider="target">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wK4-Xu-a6g" customClass="NusicButton" customModule="Newsic" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="632" width="375" height="35"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
@@ -71,7 +71,7 @@
                 <outlet property="fetchSongsButton" destination="wK4-Xu-a6g" id="u47-Bl-e41"/>
                 <outlet property="toggleView" destination="byy-01-6yV" id="Zvc-gP-zgD"/>
             </connections>
-            <point key="canvasLocation" x="32.5" y="83.5"/>
+            <point key="canvasLocation" x="11" y="56"/>
         </view>
     </objects>
 </document>

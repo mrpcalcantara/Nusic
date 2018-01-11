@@ -1,6 +1,6 @@
 //
 //  SpotifyBrowse.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 09/10/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -8,11 +8,10 @@
 
 extension Spotify {
     
-    func getUser(completion: @escaping(SPTUser?, NewsicError?) -> ()) {
+    func getUser(completion: @escaping(SPTUser?, NusicError?) -> ()) {
         SPTUser.requestCurrentUser(withAccessToken: auth.session.accessToken) { (error, results) in
             if error != nil {
-                print("error getting user: \(error?.localizedDescription)")
-                let error = NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError)
+                let error = NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError)
                 completion(nil, error)
             }
             if let results = results {
@@ -20,7 +19,7 @@ extension Spotify {
                 print(userResult.description)
                 completion(userResult, nil);
             } else {
-                completion(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError))
+                completion(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError))
             }
             
             

@@ -1,6 +1,6 @@
 //
-//  NewsicSegmentedControl.swift
-//  Newsic
+//  NusicSegmentedControl.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 23/11/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -8,7 +8,8 @@
 
 import Foundation
 
-extension SongPickerViewController: NewsicSegmentedControlDelegate {
+extension SongPickerViewController: NusicSegmentedControlDelegate {
+    
     func didSelect(_ segmentIndex: Int) {
         toggleCollectionViews(for: segmentIndex)
     }
@@ -32,5 +33,5 @@ extension SongPickerViewController: NewsicSegmentedControlDelegate {
             searchButton.alpha = showProgress
         }
     }
-    
+
 }

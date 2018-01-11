@@ -1,6 +1,6 @@
 //
-//  NewsicNavigationController.swift
-//  Newsic
+//  NusicNavigationController.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 15/11/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewsicNavigationController: UINavigationController, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate {
+class NusicNavigationController: UINavigationController, UINavigationControllerDelegate, UIViewControllerTransitioningDelegate {
 
     //Transition Delegate
     var customNavigationAnimationController = CustomNavigationAnimationController()

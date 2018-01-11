@@ -29,18 +29,18 @@
                         <constraints>
                             <constraint firstAttribute="width" secondItem="DYB-98-Mea" secondAttribute="height" multiplier="1:1" id="xwf-Tf-18d"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="2k9-xo-aBi"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="479-cU-ea3" userLabel="Item Description">
                         <rect key="frame" x="43.5" y="11" width="206" height="22"/>
-                        <constraints>
-                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="233.5" id="pwB-W6-CfY"/>
-                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="1wU-bz-4Wb"/>
                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zrn-GG-1zZ" userLabel="Item Value">
                         <rect key="frame" x="257.5" y="11" width="44.5" height="22"/>
+                        <viewLayoutGuide key="safeArea" id="Ghd-tC-5iI"/>
                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -53,6 +53,7 @@
                     <constraint firstAttribute="trailing" secondItem="Zrn-GG-1zZ" secondAttribute="trailing" constant="8" id="UbJ-eg-qjV"/>
                     <constraint firstItem="DYB-98-Mea" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="YA1-qV-QKo"/>
                     <constraint firstAttribute="bottom" secondItem="DYB-98-Mea" secondAttribute="bottom" constant="8" id="cGg-S6-S8b"/>
+                    <constraint firstItem="Zrn-GG-1zZ" firstAttribute="width" relation="greaterThanOrEqual" secondItem="DYB-98-Mea" secondAttribute="width" id="cwp-Py-xDb"/>
                     <constraint firstItem="Zrn-GG-1zZ" firstAttribute="leading" secondItem="479-cU-ea3" secondAttribute="trailing" constant="8" id="eHU-gY-hEz"/>
                     <constraint firstItem="DYB-98-Mea" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="jsq-ne-GTT"/>
                     <constraint firstAttribute="bottom" secondItem="479-cU-ea3" secondAttribute="bottom" constant="10.5" id="khk-ak-uc3"/>

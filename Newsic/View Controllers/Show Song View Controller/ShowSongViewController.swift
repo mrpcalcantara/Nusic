@@ -1,6 +1,6 @@
 //
 //  ShowSongViewController.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 29/08/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -13,11 +13,19 @@ import SwiftSpinner
 import PopupDialog
 
 
-class ShowSongViewController: NewsicDefaultViewController {
+class ShowSongViewController: NusicDefaultViewController {
     
-    var user: NewsicUser! = nil;
-    var player: SPTAudioStreamingController?
-    var likedTrackList:[NewsicTrack] = [] {
+    //Views
+    var isMenuOpen: Bool = false;
+    var isPlayerMenuOpen: Bool = false;
+    var navbar: UINavigationBar = UINavigationBar()
+    var menuEdgePanGestureRecognizer: UIScreenEdgePanGestureRecognizer!
+    
+    //Nusic Objects
+    var cardList:[NusicTrack] = [];
+    var playlist:NusicPlaylist! = nil
+    var user: NusicUser! = nil;
+    var likedTrackList:[NusicTrack] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.songListTableView.reloadData()
@@ -25,47 +33,44 @@ class ShowSongViewController: NewsicDefaultViewController {
             }
         }
     }
-    var cardList:[NewsicTrack] = [];
-    var playlist:NewsicPlaylist! = nil
+    var preferredPlayer: NusicPreferredPlayer?
+    var musicSearchType: NusicSearch = .normal
+    var moodObject: NusicMood? = nil;
+    var currentMoodDyad: EmotionDyad? = EmotionDyad.unknown
+    
+    //Spotify
+    var player: SPTAudioStreamingController?
     var spotifyHandler: Spotify! = nil;
     var auth: SPTAuth! = nil;
-    var moodObject: NewsicMood? = nil;
-    var currentMoodDyad: EmotionDyad? = EmotionDyad.unknown
-    var trackFeatures: [SpotifyTrackFeature]? = nil
     var isPlaying: Bool = false;
-    var isMenuOpen: Bool = false;
-    var isPlayerMenuOpen: Bool = false;
+    var selectedGenreList: [String: Int]? = nil
+    var currentPlayingTrack: SpotifyTrack?
+    var playedSongsHistory: [SpotifyTrack]? = []
+    var trackFeatures: [SpotifyTrackFeature]? = nil
+    
+    //Koloda Cards
     var isSongLiked: Bool = false;
-    var isMoodSelected: Bool = false;
     var didUserSwipe: Bool = false;
+    var presentedCardIndex: Int = 0;
+    var playOnCellularData: Bool?
+    var isMoodSelected: Bool = false;
     var shouldCompleteTransition: Bool = false;
     var cardCount = 10;
-    var presentedCardIndex: Int = 0;
-    var videoId: String! = "";
-    var songArtist: String! = "";
-    var songName: String! = "";
-    var selectedGenreList: [String: Int]? = nil
     var initialSongListCenter: CGPoint? = nil
     var initialPlayerMenuIconCenter: CGRect? = nil
     var songListMenuProgress: CGFloat! = 0;
     var initialSwipeLocation: CGPoint! = CGPoint.zero
     var dismissProgress: CGFloat! = 0
     var seguePerformed: Bool = false;
-//    var swipeInteractionController: SwipeInteractionController?
-    var currentPlayingTrack: SpotifyTrack?
-    var playedSongsHistory: [SpotifyTrack]? = []
     var newMoodOrGenre: Bool = true
-    var navbar: UINavigationBar = UINavigationBar()
-    var menuEdgePanGestureRecognizer: UIScreenEdgePanGestureRecognizer!
-    var preferredPlayer: NewsicPreferredPlayer?
-    var playOnCellularData: Bool?
-    var musicSearchType: NewsicSearch = .normal
-    //var songPosition: Double! = 0
+    
     
     //Constraints
     @IBOutlet weak var tableViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var songCardLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var songCardBottomConstraint: NSLayoutConstraint!
+    
     
     @IBOutlet weak var songCardView: SongKolodaView!
     @IBOutlet weak var songListTableView: UITableView!
@@ -113,125 +118,11 @@ class ShowSongViewController: NewsicDefaultViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews();
-    }
-    
-    
-    
-    func setupShowSongVC() {
-        
-        if checkConnectivity() {
-            preferredPlayer = user.settingValues.preferredPlayer
-            showSwiftSpinner()
-            setupMainView()
+        if navbar.frame.origin.y != self.view.safeAreaLayoutGuide.layoutFrame.origin.y {
             setupNavigationBar()
-            setupMenu()
-            setupCards()
-            setupTableView()
-            setupSongs()
-            setupPlayerMenu()
-            if preferredPlayer == NewsicPreferredPlayer.spotify {
-                setupSpotify()
-                setupCommandCenter()
-                UIApplication.shared.beginReceivingRemoteControlEvents()
-            }
-            
-            NotificationCenter.default.addObserver(self, selector: #selector(updateAuthObject), name: NSNotification.Name(rawValue: "refreshSuccessful"), object: nil)
-            
         }
-        
-        newMoodOrGenre = false
     }
-    
-    
-    
-    func setupMainView() {
-        
-        currentMoodDyad = moodObject?.emotions.first?.basicGroup
-        menuEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
-        menuEdgePanGestureRecognizer.edges = .right
-        
-        self.view.addGestureRecognizer(menuEdgePanGestureRecognizer);
-       
-    }
-    
-    func setupCommandCenter() {
-        let commandCenter = MPRemoteCommandCenter.shared()
-        commandCenter.changePlaybackPositionCommand.isEnabled = true
-        commandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(remoteControlSeekSong))
-        
-        commandCenter.playCommand.isEnabled = true
-        commandCenter.playCommand.addTarget(self, action: #selector(remoteControlPlaySong))
-        
-        commandCenter.pauseCommand.isEnabled = true
-        commandCenter.pauseCommand.addTarget(self, action: #selector(remoteControlPauseSong))
-        
-        commandCenter.nextTrackCommand.isEnabled = true
-        commandCenter.nextTrackCommand.addTarget(self, action: #selector(actionNextSong))
-        
-        commandCenter.previousTrackCommand.isEnabled = true
-        commandCenter.previousTrackCommand.addTarget(self, action: #selector(actionPreviousSong))
-        
-//        commandCenter.likeCommand.isEnabled = true
-//        commandCenter.likeCommand.addTarget(self, action: #selector(likeSongClicked(_:)))
-        //
-    }
-    
-    func setupNavigationBar() {
-        if self.view.subviews.contains(navbar) {
-            navbar.removeFromSuperview()
-        }
-        navbar  = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: 44));
-        navbar.barStyle = .default
-//        navbar.tintColor = UIColor.white
-//        UINavigationBar.appearance().tintColor = UIColor.white
-        
-//        let buttonLeft = UIButton(type: .system)
-//        buttonLeft.setImage(UIImage(named: "MoodIcon"), for: .normal)
-//        buttonLeft.addTarget(self, action: #selector(backToSongPicker), for: .touchUpInside)
-//        let barButtonLeft = UIBarButtonItem(customView: buttonLeft);
-//        self.navigationItem.leftBarButtonItem = barButtonLeft
-//
-        let barButtonLeft = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(backToSongPicker));
-        
-        self.navigationItem.leftBarButtonItem = barButtonLeft
-        
-//        let buttonRight = UIButton(type: .system)
-//        buttonRight.setImage(UIImage(named: "MusicNote"), for: .normal)
-//        buttonRight.addTarget(self, action: #selector(toggleSongMenu), for: .touchUpInside)
-//        let barButtonRight = UIBarButtonItem(customView: buttonRight);
-//
-        
-        
-        let barButtonRight = UIBarButtonItem(image: UIImage(named: "MusicNote"), style: .plain, target: self, action: #selector(toggleSongMenu));
-        
-        self.navigationItem.rightBarButtonItem = barButtonRight
-        
-        let labelView = UILabel()
-        labelView.font = UIFont(name: "Futura", size: 20)
-        labelView.textColor = UIColor.white
-        if let currentMoodDyad = currentMoodDyad {
-            labelView.text = currentMoodDyad == EmotionDyad.unknown ? "" : "Mood: \(currentMoodDyad.rawValue)"
-        }
-        
-        labelView.sizeToFit()
-        self.navigationItem.titleView = labelView
-        
-        let navItem = self.navigationItem
-        navbar.items = [navItem]
-        self.view.addSubview(navbar)
-    }
-    
-    func setupMenu() {
-        
-        self.view.sendSubview(toBack: trackStackView)
-        self.view.sendSubview(toBack: songCardView)
-        songListTableView.layer.zPosition = 1
-        self.songListTableView.tableHeaderView?.frame = CGRect(x: (self.songListTableView.tableHeaderView?.frame.origin.x)!, y: -8, width: (self.songListTableView.tableHeaderView?.frame.width)!, height: (self.songListTableView.tableHeaderView?.frame.height)!)
-        
-        fetchLikedTracks()
-        
-    }
-    
+
     @IBAction func showMoreClicked(_ sender: UIButton) {
         togglePlayerMenu();
     }
@@ -246,24 +137,12 @@ class ShowSongViewController: NewsicDefaultViewController {
     }
     
     @IBAction func finishSeek(_ sender: UISlider) {
-        if preferredPlayer == NewsicPreferredPlayer.spotify {
+        if preferredPlayer == NusicPreferredPlayer.spotify {
             seekSong(interval: sender.value)
         } else {
             ytSeekTo(seconds: sender.value)
         }
     }
-    
-    
-    
-    func setupSongs() {
-        if selectedGenreList == nil {
-            getSongsForSelectedMood();
-        } else {
-            getSongsForSelectedGenres();
-        }
-    }
-    
-    
     
     @IBAction func previousTrackClicked(_ sender: UIButton) {
         
@@ -295,7 +174,7 @@ class ShowSongViewController: NewsicDefaultViewController {
     @IBAction func pausePlayClicked(_ sender: UIButton) {
         
         sender.animateClick();
-        if preferredPlayer == NewsicPreferredPlayer.spotify {
+        if preferredPlayer == NusicPreferredPlayer.spotify {
             spotifyPausePlay();
         } else {
             ytPausePlay()
@@ -304,6 +183,110 @@ class ShowSongViewController: NewsicDefaultViewController {
         
     }
     
+    func setupShowSongVC() {
+        
+        if checkConnectivity() {
+            preferredPlayer = user.settingValues.preferredPlayer
+            showSwiftSpinner()
+            setupMainView()
+//                        setupNavigationBar()
+            setupMenu()
+            setupCards()
+            setupTableView()
+            setupSongs()
+            setupPlayerMenu()
+            if preferredPlayer == NusicPreferredPlayer.spotify {
+                setupSpotify()
+                setupCommandCenter()
+                UIApplication.shared.beginReceivingRemoteControlEvents()
+            }
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(updateAuthObject), name: NSNotification.Name(rawValue: "refreshSuccessful"), object: nil)
+            
+        }
+        
+        newMoodOrGenre = false
+    }
+    
+    func setupMainView() {
+        
+        currentMoodDyad = moodObject?.emotions.first?.basicGroup
+        menuEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
+        menuEdgePanGestureRecognizer.edges = .right
+        
+        self.view.addGestureRecognizer(menuEdgePanGestureRecognizer);
+        
+    }
+    
+    func setupCommandCenter() {
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.changePlaybackPositionCommand.isEnabled = true
+        commandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(remoteControlSeekSong))
+        
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.playCommand.addTarget(self, action: #selector(remoteControlPlaySong))
+        
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.pauseCommand.addTarget(self, action: #selector(remoteControlPauseSong))
+        
+        commandCenter.nextTrackCommand.isEnabled = true
+        commandCenter.nextTrackCommand.addTarget(self, action: #selector(actionNextSong))
+        
+        commandCenter.previousTrackCommand.isEnabled = true
+        commandCenter.previousTrackCommand.addTarget(self, action: #selector(actionPreviousSong))
+        
+        //        commandCenter.likeCommand.isEnabled = true
+        //        commandCenter.likeCommand.addTarget(self, action: #selector(likeSongClicked(_:)))
+        //
+    }
+    
+    func setupNavigationBar() {
+        if self.view.subviews.contains(navbar) {
+            navbar.removeFromSuperview()
+        }
+        navbar  = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
+        navbar.barStyle = .default
+        
+        let barButtonLeft = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(backToSongPicker));
+        self.navigationItem.leftBarButtonItem = barButtonLeft
+        
+        let barButtonRight = UIBarButtonItem(image: UIImage(named: "MusicNote"), style: .plain, target: self, action: #selector(toggleSongMenu));
+        self.navigationItem.rightBarButtonItem = barButtonRight
+        
+        let labelView = UILabel()
+        labelView.font = UIFont(name: "Futura", size: 20)
+        labelView.textColor = UIColor.white
+        if let currentMoodDyad = currentMoodDyad {
+            labelView.text = currentMoodDyad == EmotionDyad.unknown ? "" : "Mood: \(currentMoodDyad.rawValue)"
+        }
+        
+        self.navigationItem.titleView = labelView
+        
+        let navItem = self.navigationItem
+        navbar.items = [navItem]
+        self.view.insertSubview(navbar, at: 0)
+//        self.view.addSubview(navbar)
+    }
+    
+    func setupMenu() {
+        
+        self.view.sendSubview(toBack: trackStackView)
+        self.view.sendSubview(toBack: songCardView)
+        songListTableView.layer.zPosition = 1
+        self.songListTableView.tableHeaderView?.frame = CGRect(x: (self.songListTableView.tableHeaderView?.frame.origin.x)!, y: -8, width: (self.songListTableView.tableHeaderView?.frame.width)!, height: (self.songListTableView.tableHeaderView?.frame.height)!)
+        
+        fetchLikedTracks()
+        
+    }
+    
+    func setupSongs() {
+        if selectedGenreList == nil {
+            getSongsForSelectedMood();
+        } else {
+            getSongsForSelectedGenres();
+        }
+    }
+
     func showSwiftSpinner(delay: Double? = nil, text: String? = nil, duration: Double? = nil) {
         
         var spinnerText = ""
@@ -340,14 +323,12 @@ class ShowSongViewController: NewsicDefaultViewController {
         }
     }
     
-    
-    
     func resetView() {
         self.cardList.removeAll();
         self.songCardView.resetCurrentCardIndex()
         self.songCardView.reloadData();
         
-        if preferredPlayer == NewsicPreferredPlayer.youtube {
+        if preferredPlayer == NusicPreferredPlayer.youtube {
             if let player = player, player.initialized {
                 resetPlaybackDelegate()
                 resetStreamingDelegate()
@@ -355,35 +336,10 @@ class ShowSongViewController: NewsicDefaultViewController {
             }
         }
     }
+
 }
 
 extension ShowSongViewController: UIGestureRecognizerDelegate {
-    
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//        let gesture1 = gestureRecognizer
-//        let gesture2 = otherGestureRecognizer
-//        gesture2.
-//        return ;
-//    }
-    
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//        <#code#>
-//    }
-    
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-//        let result = !(touch.view is SongTableViewCell)
-//        print("gestureRecognizer should receive touch")
-//        return result
-//        //        return true;
-//    }
-//
-//
-//    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-//        let gesture = gestureRecognizer
-//        print("gestureRecognizer should begin")
-//        return true
-//    }
-    
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return false
@@ -411,7 +367,6 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
             }
             
             songListMenuProgress = CGFloat(fminf(fmaxf(Float(songListMenuProgress), 0.0), 1.0))
-//            shouldCompleteTransition = translation.x > 0 ? songListMenuProgress > CGFloat(0.5) : songListMenuProgress < CGFloat(0.5)
             shouldCompleteTransition = translation.x > 0 && songListMenuProgress > CGFloat(0.25) ? true : false
             self.view.layoutIfNeeded();
             
@@ -426,8 +381,6 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
         }
         
     }
-    
-    
     
     @objc func handleDismissSwipe(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
         let touchPoint = gestureRecognizer.location(in: self.view)

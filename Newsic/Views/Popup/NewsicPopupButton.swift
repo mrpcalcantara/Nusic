@@ -1,6 +1,6 @@
 //
-//  NewsicPopupButton.swift
-//  Newsic
+//  NusicPopupButton.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 07/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -10,7 +10,7 @@ import UIKit
 import PopupDialog
 
 //
-//class NewsicPopupWindow : PopupDialog {
+//class NusicPopupWindow : PopupDialog {
 //
 //    var function: () -> Void;
 //

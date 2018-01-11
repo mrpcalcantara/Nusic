@@ -60,7 +60,7 @@ class CustomNavigationController: UINavigationController {
     
     fileprivate var interactionController: UIPercentDrivenInteractiveTransition?
     
-    func handleSwipeFromLeft(_ gesture: UIScreenEdgePanGestureRecognizer) {
+    @objc func handleSwipeFromLeft(_ gesture: UIScreenEdgePanGestureRecognizer) {
         let percent = gesture.translation(in: gesture.view!).x / gesture.view!.bounds.size.width
         
         if gesture.state == .began {
@@ -90,7 +90,7 @@ class CustomNavigationController: UINavigationController {
         }
     }
     
-    func handleSwipeFromRight(_ gesture: UIScreenEdgePanGestureRecognizer) {
+    @objc func handleSwipeFromRight(_ gesture: UIScreenEdgePanGestureRecognizer) {
         let percent = -gesture.translation(in: gesture.view!).x / gesture.view!.bounds.size.width
         
         if gesture.state == .began {

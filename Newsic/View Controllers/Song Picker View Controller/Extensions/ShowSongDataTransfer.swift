@@ -1,6 +1,6 @@
 //
 //  ShowSongDataTransfer.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 28/11/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -16,12 +16,12 @@ extension SongPickerViewController {
             SPTAudioStreamingController.sharedInstance().logout()
         }
         
-        let parent = self.parent as! NewsicPageViewController
+        let parent = self.parent as! NusicPageViewController
         let playerViewController = parent.showSongVC as! ShowSongViewController
         parent.removeViewControllerFromPageVC(viewController: playerViewController)
         parent.addViewControllerToPageVC(viewController: playerViewController)
-        playerViewController.user = newsicUser;
-        playerViewController.playlist = newsicPlaylist;
+        playerViewController.user = nusicUser;
+        playerViewController.playlist = nusicPlaylist;
         playerViewController.spotifyHandler = spotifyHandler;
         playerViewController.moodObject = moodObject
         playerViewController.isMoodSelected = isMoodSelected
@@ -33,7 +33,7 @@ extension SongPickerViewController {
             playerViewController.selectedGenreList = selectedGenres;
         }
         
-        playerViewController.playOnCellularData = newsicUser.settingValues.useMobileData
+        playerViewController.playOnCellularData = nusicUser.settingValues.useMobileData
         
         playerViewController.newMoodOrGenre = true;
         parent.scrollToNextViewController()

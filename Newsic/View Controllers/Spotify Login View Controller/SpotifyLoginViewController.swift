@@ -1,6 +1,6 @@
 //
 //  SpotifyLoginViewController.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 30/08/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -11,7 +11,7 @@ import SwiftSpinner
 import SafariServices
 import PopupDialog
 
-class SpotifyLoginViewController: NewsicDefaultViewController {
+class SpotifyLoginViewController: NusicDefaultViewController {
     
     var auth = SPTAuth.defaultInstance()!
     var session:SPTSession!
@@ -24,7 +24,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     //Objects for extracting User and Genres
     
     @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var newsicLabl: UILabel!
+    @IBOutlet weak var nusicLabl: UILabel!
     
     @IBAction func spotifyLoginButton(_ sender: UIButton) {
        
@@ -67,14 +67,13 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         self.removeFromParentViewController()
     }
     
-    
     @objc func fireErrorPopup() {
-        let popup = NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: "Unable to connect. Please try again later.");
+        let popup = NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: "Unable to connect. Please try again later.");
         popup.presentPopup(for: self);
     }
     
     func setupLabel() {
-        newsicLabl.textColor = UIColor.lightText
+        nusicLabl.textColor = UIColor.lightText
     }
     
     func setupView() {
@@ -101,12 +100,11 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
-        let pageViewController = NewsicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        let pageViewController = NusicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
 //        self.present(pageViewController, animated: false, completion: nil);
         self.present(pageViewController, animated: true, completion: nil)
     }
-    
-    
+
     @objc fileprivate func setupSpotify() {
         gotToken = false
         auth.clientID = Spotify.clientId;
@@ -137,21 +135,7 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
         }
         getSession();
     }
-    
-    func animateLogo() {
-        loginButton.alpha = 0
-        newsicLabl.alpha = 0
-        
-        UIView.animate(withDuration: 1, animations: {
-            self.newsicLabl.alpha = 1;
-        })
-        
-        UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: {
-            self.newsicLabl.center.y += 20
-            self.newsicLabl.center.y -= 20
-        }, completion: nil)
-    }
-    
+   
     func getSession() {
         
         let userDefaults = UserDefaults.standard
@@ -225,11 +209,25 @@ class SpotifyLoginViewController: NewsicDefaultViewController {
     
     func resetViewLogin() {
         UIView.animate(withDuration: 1, animations: {
-            self.newsicLabl.center.y = self.view.bounds.height / 4
+            self.nusicLabl.center.y = self.view.bounds.height / 4
         })
         UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
             self.loginButton.alpha = 1;
             self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    func animateLogo() {
+        loginButton.alpha = 0
+        nusicLabl.alpha = 0
+        
+        UIView.animate(withDuration: 1, animations: {
+            self.nusicLabl.alpha = 1;
+        })
+        
+        UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: {
+            self.nusicLabl.center.y += 20
+            self.nusicLabl.center.y -= 20
         }, completion: nil)
     }
     

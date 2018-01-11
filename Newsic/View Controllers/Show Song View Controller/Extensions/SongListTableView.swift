@@ -1,6 +1,6 @@
 //
 //  SongListTableView.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 15/09/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -83,7 +83,7 @@ extension ShowSongViewController {
     }
     
     func closeMenu() {
-        //self.view.sendSubview(toBack: self.songListTableView);
+
         isMenuOpen = false
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
@@ -133,7 +133,7 @@ extension ShowSongViewController: UITableViewDelegate {
         isSongLiked = true; toggleLikeButtons();
         addSongToPosition(at: indexPath.row, position: frontPosition);
         closeMenu();
-        if preferredPlayer == NewsicPreferredPlayer.spotify {
+        if preferredPlayer == NusicPreferredPlayer.spotify {
             actionPlaySpotifyTrack(spotifyTrackId: cardList[frontPosition].trackInfo.trackUri);
         }
         
@@ -194,7 +194,7 @@ extension ShowSongViewController: UITableViewDataSource {
             let emotion = moodObject?.emotions.first?.basicGroup.rawValue
             headerCell.displayName.text = "Mood: \(emotion!)"
         } else {
-            headerCell.displayName.text = "Liked in Newsic"
+            headerCell.displayName.text = "Liked in Nusic"
         }
         
         headerCell.layer.shadowColor = UIColor.black.cgColor;

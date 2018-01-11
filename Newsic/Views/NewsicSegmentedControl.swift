@@ -1,6 +1,6 @@
 //
-//  NewsicSegmentedControl.swift
-//  Newsic
+//  NusicSegmentedControl.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 05/10/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -8,13 +8,13 @@
 
 import UIKit
 
-public protocol NewsicSegmentedControlDelegate: class {
+public protocol NusicSegmentedControlDelegate: class {
     func didSelect(_ segmentIndex: Int)
     func didMove(_ control: UIControl, _ progress: CGFloat, _ toIndex: Int)
 }
 
 
-class NewsicSegmentedControl: UIControl {
+class NusicSegmentedControl: UIControl {
 
     /*
     // Only override draw() if you perform custom drawing.
@@ -28,7 +28,7 @@ class NewsicSegmentedControl: UIControl {
     private var labels = [UIImageView]()
     private var correction: CGFloat = 0
     private var thumbView = UIView()
-    open weak var delegate: NewsicSegmentedControlDelegate?
+    open weak var delegate: NusicSegmentedControlDelegate?
     
     var items: [UIImage] = [UIImage(named: "MoodIcon")!.withRenderingMode(.alwaysTemplate), UIImage(named: "MusicNote")!.withRenderingMode(.alwaysTemplate)] {
         didSet {
@@ -125,12 +125,6 @@ class NewsicSegmentedControl: UIControl {
             label.image = items[index - 1]
             label.backgroundColor = UIColor.clear;
             label.tintColor = UIColor.white
-            let button = UIButton(type: .system)
-            /*
-            label.textAlignment = .center
-            label.font = UIFont(name: "Avenir-Black", size: 15)
-            label.textColor = index == 1 ? selectedLabelColor : unselectedLabelColor
-            */
             label.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(label)
             labels.append(label)
@@ -287,7 +281,7 @@ class NewsicSegmentedControl: UIControl {
             let location = panGesture.location(in: self)
             thumbView.center.x = location.x - correction
             let trans = panGesture.translation(in: self)
-            var progress = trans.x / self.thumbView.frame.width
+            let progress = trans.x / self.thumbView.frame.width
             var toIndex = progress < 0 ? selectedIndex - 1 : selectedIndex + 1
             
             var allowMove: Bool = true;

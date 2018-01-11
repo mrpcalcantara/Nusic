@@ -1,7 +1,7 @@
 
 //
 //  MoodCollectionView.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 03/10/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -23,7 +23,7 @@ extension SongPickerViewController {
         genreCollectionView.allowsMultipleSelection = true;
         genreCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
         genreCollectionView.register(view, forCellWithReuseIdentifier: MoodViewCell.reuseIdentifier);
-        genreCollectionView.setCollectionViewLayout(NewsicCollectionViewLayout(), animated: true)
+        genreCollectionView.setCollectionViewLayout(NusicCollectionViewLayout(), animated: true)
         
         let genreLayout = genreCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         genreLayout.sectionHeadersPinToVisibleBounds = true
@@ -36,8 +36,8 @@ extension SongPickerViewController {
         moodCollectionView.delegate = self;
         moodCollectionView.dataSource = self;
         moodCollectionView.allowsMultipleSelection = false;
-        moodCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "collectionViewHeader")
-        moodCollectionView.register(view, forCellWithReuseIdentifier: "moodCell");
+        moodCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
+        moodCollectionView.register(view, forCellWithReuseIdentifier: MoodViewCell.reuseIdentifier);
         let moodLayout = moodCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         moodLayout.sectionHeadersPinToVisibleBounds = true
         let moodHeaderSize = CGSize(width: moodCollectionView.bounds.width, height: 45)
@@ -268,24 +268,24 @@ extension SongPickerViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if collectionView == moodCollectionView {
-            let newsicCell = cell as! MoodViewCell
-            if let mood = newsicCell.moodLabel.text {
+            let nusicCell = cell as! MoodViewCell
+            if let mood = nusicCell.moodLabel.text {
                 if let selectedMood = moodObject?.emotions.first?.basicGroup.rawValue {
                     if mood == selectedMood {
                         DispatchQueue.main.async {
                             collectionView.selectItem(at: indexPath, animated: true, scrollPosition: UICollectionViewScrollPosition.centeredVertically)
-//                            newsicCell.isSelected = true
-                            newsicCell.selectCell()
+//                            nusicCell.isSelected = true
+                            nusicCell.selectCell()
                         }
                     }
                 }
             }
         } else if collectionView == genreCollectionView {
-            let newsicCell = cell as! MoodViewCell
-            if let genre = newsicCell.moodLabel.text {
+            let nusicCell = cell as! MoodViewCell
+            if let genre = nusicCell.moodLabel.text {
                 if selectedGenres[genre.lowercased()] != nil {
                     DispatchQueue.main.async {
-//                        newsicCell.selectCell()
+//                        nusicCell.selectCell()
                     }
                 }
             }
@@ -328,7 +328,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
             let dyad = moods[indexPath.row]
             
             let emotion = Emotion(basicGroup: dyad, detailedEmotions: [], rating: 0)
-            self.moodObject = NewsicMood(emotions: [emotion], isAmbiguous: false, sentiment: 0.5, date: Date(), userName: spotifyHandler.auth.session.canonicalUsername, associatedGenres: [], associatedTracks: []);
+            self.moodObject = NusicMood(emotions: [emotion], isAmbiguous: false, sentiment: 0.5, date: Date(), userName: spotifyHandler.auth.session.canonicalUsername, associatedGenres: [], associatedTracks: []);
             self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
             self.selectedGenres.removeAll()
             isMoodCellSelected = true
@@ -336,32 +336,21 @@ extension SongPickerViewController: UICollectionViewDelegate {
             cell.selectCell()
             
         } else {
-            let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
             //Get genre from section genre for section and row.
             let selectedGenre = sectionGenres[indexPath.section-1][indexPath.row].rawValue
             listMenuView.insertChosenGenre(value: selectedGenre)
             sectionGenres[indexPath.section-1].remove(at: indexPath.row)
             selectedGenres.updateValue(1, forKey: selectedGenre.lowercased());
-//            cell.selectCell()
             var indexSet = IndexSet()
             indexSet.insert(indexPath.section)
             collectionView.performBatchUpdates({
                 collectionView.deleteItems(at: [indexPath])
                 collectionView.reloadSections(indexSet)
-//                if self.sectionGenres[indexPath.section-1].count == 0 {
-//                    sectionTitles.remove(at: indexPath.section-1)
-//                    var indexSet = IndexSet();
-//                    indexSet.insert(indexPath.section)
-//                    collectionView.deleteSections(indexSet)
-//
-//                }
             }, completion: { (isCompleted) in
                 
             })
             
         }
-        
-//        collectionView.reloadData()
         
     }
     
@@ -464,14 +453,13 @@ extension SongPickerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let sizeWidth = collectionView.frame.width/2
+        //If iPad show 4 per row, otherwise only 2
+        let sizeWidth = UIDevice.current.userInterfaceIdiom == .pad ? collectionView.frame.width/4 : collectionView.frame.width/2
         if let window = UIApplication.shared.keyWindow {
             return CGSize(width: sizeWidth, height: window.frame.height/10);
         } else {
             return CGSize(width: sizeWidth, height: collectionView.frame.height/10);
         }
-        
-        //- sectionInsets.left;
         
     }
     

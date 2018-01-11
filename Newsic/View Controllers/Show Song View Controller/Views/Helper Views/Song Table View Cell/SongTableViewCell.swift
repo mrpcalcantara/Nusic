@@ -1,6 +1,6 @@
 //
 //  SongTableViewCell.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 15/09/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.

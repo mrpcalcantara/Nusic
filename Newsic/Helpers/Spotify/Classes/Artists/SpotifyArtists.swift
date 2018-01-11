@@ -1,6 +1,6 @@
 //
 //  SpotifyBrowse.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 09/10/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -8,7 +8,7 @@
 
 extension Spotify {
     
-    func getFollowedArtistsForUser(user: SPTUser, artistList:[SpotifyArtist]? = nil, searchFollowedUrl: String? = nil, followedArtistsHandler: @escaping([SpotifyArtist], NewsicError?) -> ()) {
+    func getFollowedArtistsForUser(user: SPTUser, artistList:[SpotifyArtist]? = nil, searchFollowedUrl: String? = nil, followedArtistsHandler: @escaping([SpotifyArtist], NusicError?) -> ()) {
         do {
             var currentArtistList: [SpotifyArtist] = artistList == nil ? [] : artistList!
             
@@ -57,10 +57,10 @@ extension Spotify {
                 } else {
                     switch statusCode {
                     case 400...499:
-                        followedArtistsHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
+                        followedArtistsHandler([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
                     case 500...599:
-                        followedArtistsHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: followedArtistsHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
+                        followedArtistsHandler([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
+                    default: followedArtistsHandler([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
                     }
                 }
             })
@@ -71,7 +71,7 @@ extension Spotify {
     }
     
     
-    func getAllArtistsForPlaylist(userId: String, playlistId: String, nextTrackPageRequest: URLRequest? = nil, currentArtistList: [String]? = nil, fetchedPlaylistArtists: @escaping([String], NewsicError?) -> ()) {
+    func getAllArtistsForPlaylist(userId: String, playlistId: String, nextTrackPageRequest: URLRequest? = nil, currentArtistList: [String]? = nil, fetchedPlaylistArtists: @escaping([String], NusicError?) -> ()) {
         
         var currentList: [String] = currentArtistList != nil ? currentArtistList! : [];
         var pageRequest = nextTrackPageRequest;
@@ -115,10 +115,10 @@ extension Spotify {
                 } else {
                     switch statusCode {
                     case 400...499:
-                        fetchedPlaylistArtists([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
+                        fetchedPlaylistArtists([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
                     case 500...599:
-                        fetchedPlaylistArtists([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: fetchedPlaylistArtists([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
+                        fetchedPlaylistArtists([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
+                    default: fetchedPlaylistArtists([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
                     }
                 }
             })
@@ -126,7 +126,7 @@ extension Spotify {
         }
     }
     
-    func getAllGenresForArtists(_ artistList: [String], offset: Int, currentFollowedArtistList: [SpotifyArtist]? = nil, artistGenresHandler: @escaping([SpotifyArtist]?, NewsicError?) -> ()) {
+    func getAllGenresForArtists(_ artistList: [String], offset: Int, currentFollowedArtistList: [SpotifyArtist]? = nil, artistGenresHandler: @escaping([SpotifyArtist]?, NusicError?) -> ()) {
         
         if artistList.count <= 0 {
             artistGenresHandler(nil, nil);
@@ -165,7 +165,7 @@ extension Spotify {
                         
                         if let error = jsonObject["error"] as? [String: AnyObject] {
                             print(error);
-                            artistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.functionalError))
+                            artistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.functionalError))
                         } else {
                             let items =  jsonObject["artists"] as! [[String: AnyObject]];
 
@@ -198,10 +198,10 @@ extension Spotify {
                 } else {
                     switch statusCode {
                     case 400...499:
-                        artistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
+                        artistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
                     case 500...599:
-                        artistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: artistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
+                        artistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
+                    default: artistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
                     }
                 }
             })
@@ -213,7 +213,7 @@ extension Spotify {
     }
     
     
-    func getGenresForArtist(artistId: String, fetchedArtistGenresHandler: @escaping ([String]?, NewsicError?) -> () ) {
+    func getGenresForArtist(artistId: String, fetchedArtistGenresHandler: @escaping ([String]?, NusicError?) -> () ) {
         do {
             
             let trackUrl = URL(string: "spotify:artist:\(artistId)")!
@@ -232,14 +232,14 @@ extension Spotify {
                 } else {
                     switch statusCode {
                     case 400...499:
-                        fetchedArtistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
+                        fetchedArtistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
                     case 500...599:
-                        fetchedArtistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: fetchedArtistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
+                        fetchedArtistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
+                    default: fetchedArtistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
                     }
                 }
             })
-        } catch { fetchedArtistGenresHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
+        } catch { fetchedArtistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
                         print("error creating request for artist genres for artist \(artistId)");
             
         }

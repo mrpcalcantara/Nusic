@@ -1,6 +1,6 @@
 //
-//  NewsicActivityIndicator.swift
-//  Newsic
+//  NusicActivityIndicator.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 12/09/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 
-class NewsicActivityIndicator: UIView {
+class NusicActivityIndicator: UIView {
     
-    public class var sharedInstance: NewsicActivityIndicator {
+    public class var sharedInstance: NusicActivityIndicator {
         struct Singleton {
-            static let instance = NewsicActivityIndicator(frame: CGRect.zero)
+            static let instance = NusicActivityIndicator(frame: CGRect.zero)
         }
         return Singleton.instance
     }
@@ -67,12 +67,12 @@ class NewsicActivityIndicator: UIView {
     }
     
     
-    func show(_ title: String, animated: Bool = true) -> NewsicActivityIndicator {
+    func show(_ title: String, animated: Bool = true) -> NusicActivityIndicator {
         activityIndicatorView.centerXAnchor.constraint(equalTo: blurView.centerXAnchor).isActive = true;
         activityIndicatorView.centerYAnchor.constraint(equalTo: blurView.centerYAnchor).isActive = true;
         titleLabel.centerXAnchor.constraint(equalTo: blurView.centerXAnchor).isActive = true;
         titleLabel.topAnchor.constraint(equalTo: blurView.topAnchor, constant: 8).isActive = true
-        let spinner = NewsicActivityIndicator.sharedInstance
+        let spinner = NusicActivityIndicator.sharedInstance
         
         if spinner.superview == nil {
             //show the spinner
@@ -95,7 +95,7 @@ class NewsicActivityIndicator: UIView {
     
     func hide(_ completion: (() -> Void)? = nil) {
         
-        let spinner = NewsicActivityIndicator.sharedInstance
+        let spinner = NusicActivityIndicator.sharedInstance
         
         NotificationCenter.default.removeObserver(spinner)
         
@@ -121,42 +121,5 @@ class NewsicActivityIndicator: UIView {
             spinner.activityIndicatorView.stopAnimating()
         })
     }
-    /*
-    @discardableResult
-    func customActivityIndicatory(_ viewContainer: UIView, startAnimate:Bool? = true) -> UIActivityIndicatorView {
-        let mainContainer: UIView = UIView(frame: viewContainer.frame)
-        mainContainer.center = viewContainer.center
-        mainContainer.backgroundColor = UIColor.init(netHex: 0xFFFFFF)
-        mainContainer.alpha = 0.5
-        mainContainer.tag = 789456123
-        mainContainer.isUserInteractionEnabled = false
-        
-        let viewBackgroundLoading: UIView = UIView(frame: CGRect(x:0,y: 0,width: 80,height: 80))
-        viewBackgroundLoading.center = viewContainer.center
-        viewBackgroundLoading.backgroundColor = UIColor.init(netHex: 0x444444)
-        viewBackgroundLoading.alpha = 0.5
-        viewBackgroundLoading.clipsToBounds = true
-        viewBackgroundLoading.layer.cornerRadius = 15
-        
-        let activityIndicatorView: UIActivityIndicatorView = UIActivityIndicatorView()
-        activityIndicatorView.frame = CGRect(x:0.0,y: 0.0,width: 40.0, height: 40.0)
-        activityIndicatorView.activityIndicatorViewStyle =
-            UIActivityIndicatorViewStyle.whiteLarge
-        activityIndicatorView.center = CGPoint(x: viewBackgroundLoading.frame.size.width / 2, y: viewBackgroundLoading.frame.size.height / 2)
-        if startAnimate!{
-            viewBackgroundLoading.addSubview(activityIndicatorView)
-            mainContainer.addSubview(viewBackgroundLoading)
-            viewContainer.addSubview(mainContainer)
-            activityIndicatorView.startAnimating()
-        }else{
-            for subview in viewContainer.subviews{
-                if subview.tag == 789456123{
-                    subview.removeFromSuperview()
-                }
-            }
-        }
-        return activityIndicatorView
-    }
-    */
     
 }

@@ -1,6 +1,6 @@
 //
 //  FirebaseHelper.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 08/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -18,7 +18,7 @@ class FirebaseHelper {
         })
     }
     
-    class func fetchAllMoods(user: String, fetchMoodsHandler: @escaping([EmotionDyad], NewsicError?) -> ()) {
+    class func fetchAllMoods(user: String, fetchMoodsHandler: @escaping([EmotionDyad], NusicError?) -> ()) {
         Database.database().reference().child("emotions").observeSingleEvent(of: .value, with: { (dataSnapshot) in
             if let values = dataSnapshot.value as? [String : AnyObject] {
                 var dyadList: [EmotionDyad] = []
@@ -33,7 +33,7 @@ class FirebaseHelper {
                 }), nil)
             }
         }) { (error) in
-            fetchMoodsHandler(EmotionDyad.allValues, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: "", systemError: error))
+            fetchMoodsHandler(EmotionDyad.allValues, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: "", systemError: error))
         }
     }
     
@@ -50,7 +50,7 @@ class FirebaseHelper {
         reference.observe(.value) { (snapshot) in
             reference.runTransactionBlock({ (data) -> TransactionResult in
                 
-                if var currentData = data.value as? [String: AnyObject] {
+                if let currentData = data.value as? [String: AnyObject] {
                     
                     data.value = currentData
                     return TransactionResult.success(withValue: data)
@@ -65,7 +65,7 @@ class FirebaseHelper {
     }
     
     private class func fetchAllDataForDelete(user: String, fetchAllDataHandler: @escaping ([[String: AnyObject]]) -> ()) {
-        let user = NewsicUser(userName: user)
+        let user = NusicUser(userName: user)
     
     }
     

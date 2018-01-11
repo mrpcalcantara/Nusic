@@ -1,6 +1,6 @@
 //
 //  MusicChoiceCell.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 20/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -49,16 +49,16 @@ class MusicChoiceCell: UICollectionViewCell {
         
 //        let borderLayer = CAShapeLayer()
 //        borderLayer.path = UIBezierPath(roundedRect: self.frame, cornerRadius: 15).cgPath
-//        borderLayer.strokeColor = NewsicDefaults.greenColor.cgColor
+//        borderLayer.strokeColor = NusicDefaults.greenColor.cgColor
 //        borderLayer.fillColor = UIColor.clear.cgColor
 ////        self.layer.insertSublayer(borderLayer, at: 0)
 ////        self.layer.addSublayer(borderLayer)
     }
     
     func setupLabel(with text: String) {
-        choiceLabel.font = NewsicDefaults.font!
+        choiceLabel.font = NusicDefaults.font!
         choiceLabel.textAlignment = .center
-        choiceLabel.textColor = NewsicDefaults.greenColor
+        choiceLabel.textColor = NusicDefaults.greenColor
         choiceLabel.text = text
         choiceLabel.minimumScaleFactor = 0.1
     }

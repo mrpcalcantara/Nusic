@@ -1,6 +1,6 @@
 //
 //  SpotifyBrowse.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 09/10/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -8,7 +8,7 @@
 
 extension Spotify {
     
-    func getAllPlaylists(for pageRequest: URLRequest? = nil, currentPlaylistList: [SPTPartialPlaylist]? = nil, fetchedPlaylistsHandler: @escaping ([SPTPartialPlaylist], NewsicError?) -> ()) {
+    func getAllPlaylists(for pageRequest: URLRequest? = nil, currentPlaylistList: [SPTPartialPlaylist]? = nil, fetchedPlaylistsHandler: @escaping ([SPTPartialPlaylist], NusicError?) -> ()) {
         
         var nextPagePlaylistList = currentPlaylistList == nil ? [] : currentPlaylistList;
         
@@ -44,16 +44,16 @@ extension Spotify {
             } else {
                 switch statusCode {
                 case 400...499:
-                    fetchedPlaylistsHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
+                    fetchedPlaylistsHandler([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
                 case 500...599:
-                    fetchedPlaylistsHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                default: fetchedPlaylistsHandler([], NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError));
+                    fetchedPlaylistsHandler([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
+                default: fetchedPlaylistsHandler([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
                 }
             }
         })
     }
     
-    func checkPlaylistExists(playlistId: String, playlistExistHandler: @escaping(Bool?, NewsicError?) -> ()) {
+    func checkPlaylistExists(playlistId: String, playlistExistHandler: @escaping(Bool?, NusicError?) -> ()) {
         self.getAllPlaylists { (playListList, error) in
             if let error = error {
                 playlistExistHandler(nil, error);
@@ -67,7 +67,7 @@ extension Spotify {
         }
     }
     
-    func createNewsicPlaylist(playlistName: String, playlistCreationHandler: @escaping(Bool?, NewsicPlaylist?, NewsicError?) -> ()) {
+    func createNusicPlaylist(playlistName: String, playlistCreationHandler: @escaping(Bool?, NusicPlaylist?, NusicError?) -> ()) {
         let username: String! = auth.session.canonicalUsername
         let accessToken: String! = auth.session.accessToken!
         let url = "https://api.spotify.com/v1/users/\(username!)/playlists"
@@ -88,20 +88,20 @@ extension Spotify {
                     let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
                     //print(jsonObject);
                     let playlistId: String = jsonObject["id"] as! String
-                    let newsicPlaylist = NewsicPlaylist(name : playlistName, id: playlistId, userName: username)
-                    playlistCreationHandler(true, newsicPlaylist, nil)
+                    let nusicPlaylist = NusicPlaylist(name : playlistName, id: playlistId, userName: username)
+                    playlistCreationHandler(true, nusicPlaylist, nil)
                 } else {
                     switch statusCode {
                     case 400...499:
-                        playlistCreationHandler(false, nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.clientError))
+                        playlistCreationHandler(false, nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
                     case 500...599:
-                        playlistCreationHandler(false, nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.serverError))
-                    default: playlistCreationHandler(false, nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError))
+                        playlistCreationHandler(false, nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
+                    default: playlistCreationHandler(false, nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError))
                         ;
                     }
                 }
             } catch {
-                playlistCreationHandler(false, nil, NewsicError(newsicErrorCode: NewsicErrorCodes.spotifyError, newsicErrorSubCode: NewsicErrorSubCode.technicalError))
+                playlistCreationHandler(false, nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError))
                 print("error creating request creating playlist list with name \(playlistName)");
             }
         })

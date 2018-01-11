@@ -1,6 +1,6 @@
 //
 //  URLSession.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 04/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -21,9 +21,6 @@ extension URLSession {
                 let httpResponse = response as! HTTPURLResponse
                 let statusCode = httpResponse.statusCode
                 if (200...299).contains(statusCode) {
-                    if let url = request.url {
-//                        print("Call OK for URL: \(url.absoluteString)")
-                    }
                     completionHandler(data, httpResponse, error, true)
                 }
                 else {
@@ -36,9 +33,6 @@ extension URLSession {
                         }
                         if retryNumberLeft > 0 {
                             let timeToWait = DispatchTime.now()+Double(retryAfter)
-                            if let url = request.url {
-//                                print("Error: \(statusCode) - Retrying call for URL: \(url.absoluteString)")
-                            }
                             
                             DispatchQueue.main.asyncAfter(deadline: timeToWait, execute: {
                                 self.executeCall(with: request, retryNumber: retryNumberLeft-1, retryAfter: retryAfter, completionHandler: completionHandler)
