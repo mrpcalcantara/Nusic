@@ -1,6 +1,6 @@
 //
 //  SpotifyDelegates.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 31/08/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -47,7 +47,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
                 self.audioStreaming(audioStreaming, didStartPlayingTrack: trackUri)
             }))
             dialog.addButton(CancelButton(title: "No", action: {
-                let parent = self.parent as! NewsicPageViewController
+                let parent = self.parent as! NusicPageViewController
                 parent.scrollToPreviousViewController();
                 parent.removeViewControllerFromPageVC(viewController: self)
                 self.actionStopPlayer()
@@ -61,7 +61,6 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             
             print("track started");
             if let currentTrack = currentTrack {
-                let songTitle = "\(currentTrack.artistName) - \(currentTrack.name)"
                 let currentPlayingTrack = self.cardList[self.songCardView.currentCardIndex].trackInfo
                 self.currentPlayingTrack = currentPlayingTrack;
                 
@@ -272,7 +271,7 @@ extension ShowSongViewController {
             
             player?.seek(to: seekTime, callback: { (error) in
                 if error != nil {
-                    print("error seeking forward. Error: \(error?.localizedDescription)")
+//                    print("error seeking forward. Error: \(error?.localizedDescription)")
                 }
                 nowPlayingInfo.updateValue(seekTime, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime);
                 nowPlayingInfo.updateValue(1, forKey: MPNowPlayingInfoPropertyPlaybackRate);
@@ -291,7 +290,7 @@ extension ShowSongViewController {
             if seekTime >= 0 {
                 player?.seek(to: seekTime, callback: { (error) in
                     if error != nil {
-                        print("error seeking forward. Error: \(error?.localizedDescription)")
+                        //print("error seeking forward. Error: \(error?.localizedDescription)")
                     }
                 })
             }

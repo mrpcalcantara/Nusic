@@ -455,10 +455,10 @@ public class YBButton : UIButton {
         super.init(frame:frame)
         
         //Change
-        self.setBackgroundColor(NewsicDefaults.blackColor, for: .normal)
+        self.setBackgroundColor(NusicDefaults.blackColor, for: .normal)
         
         self.layer.borderWidth = 2
-        self.layer.borderColor = NewsicDefaults.blackColor.cgColor
+        self.layer.borderColor = NusicDefaults.blackColor.cgColor
         
         self.icon = icon
         let iconHeight:CGFloat = frame.height * 0.45

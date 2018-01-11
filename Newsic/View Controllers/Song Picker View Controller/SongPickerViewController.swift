@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 28/08/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -16,7 +16,7 @@ import SwiftSpinner
 //TEST FIREBASE
 import FirebaseDatabase
 
-class SongPickerViewController: NewsicDefaultViewController {
+class SongPickerViewController: NusicDefaultViewController {
     
     var genreList:[SpotifyGenres] = SpotifyGenres.allShownValues;
     let itemsPerRow: CGFloat = 2;
@@ -28,8 +28,8 @@ class SongPickerViewController: NewsicDefaultViewController {
     let username = "81d1a191-5d1e-47df-934a-c4bf91b63dd0"
     let password = "Ibls3Rzrbuy0"
     var spotifyHandler = Spotify();
-    var moodObject: NewsicMood? = nil;
-    var genres:[NewsicGenre]! = nil {
+    var moodObject: NusicMood? = nil;
+    var genres:[NusicGenre]! = nil {
         //TEST
         didSet {
             
@@ -40,23 +40,23 @@ class SongPickerViewController: NewsicDefaultViewController {
             moodCollectionView.reloadData();
         }
     }
-    var newsicUser: NewsicUser! = nil {
+    var nusicUser: NusicUser! = nil {
         didSet {
-            let parent = self.parent as! NewsicPageViewController
+            let parent = self.parent as! NusicPageViewController
             let sideMenu = parent.sideMenuVC as! SideMenuViewController
             
-            sideMenu.username = self.newsicUser.displayName != "" ? self.newsicUser.displayName : self.newsicUser.userName;
+            sideMenu.username = self.nusicUser.displayName != "" ? self.nusicUser.displayName : self.nusicUser.userName;
             
-            sideMenu.preferredPlayer = self.newsicUser.settingValues.preferredPlayer
-            sideMenu.useMobileData = self.newsicUser.settingValues.useMobileData
-            sideMenu.enablePlayerSwitch = self.newsicUser.isPremium! ? true : false
+            sideMenu.preferredPlayer = self.nusicUser.settingValues.preferredPlayer
+            sideMenu.useMobileData = self.nusicUser.settingValues.useMobileData
+            sideMenu.enablePlayerSwitch = self.nusicUser.isPremium! ? true : false
             
-            sideMenu.newsicUser = newsicUser
+            sideMenu.nusicUser = nusicUser
 
             if self.spotifyHandler.user.smallestImage != nil, let imageURL = self.spotifyHandler.user.smallestImage.imageURL {
                 sideMenu.profileImageURL = imageURL
             } 
-            newsicUser.saveUser { (isSaved, error) in
+            nusicUser.saveUser { (isSaved, error) in
                 if let error = error {
                     error.presentPopup(for: self)
                 }
@@ -65,7 +65,7 @@ class SongPickerViewController: NewsicDefaultViewController {
             
         }
     }
-    var newsicPlaylist: NewsicPlaylist! = nil;
+    var nusicPlaylist: NusicPlaylist! = nil;
     var moodHacker: MoodHacker? = nil;
     var user: SPTUser? = nil;
     var selectedGenres: [String: Int] = [:] {
@@ -102,7 +102,7 @@ class SongPickerViewController: NewsicDefaultViewController {
             } else {
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.3, animations: {
-                        self.searchButton.alpha = self.newsicControl.selectedIndex == 0 ? 0 : 1
+                        self.searchButton.alpha = self.nusicControl.selectedIndex == 0 ? 0 : 1
                     }, completion: nil)
                 }
             }
@@ -146,7 +146,7 @@ class SongPickerViewController: NewsicDefaultViewController {
     @IBOutlet weak var moodGenreSegmentedControl: UISegmentedControl!
     @IBOutlet weak var genreCollectionView: UICollectionView!
     @IBOutlet weak var searchButton: UIButton!
-    @IBOutlet weak var newsicControl: NewsicSegmentedControl!
+    @IBOutlet weak var nusicControl: NusicSegmentedControl!
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var userView: UIView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -165,24 +165,36 @@ class SongPickerViewController: NewsicDefaultViewController {
     
     @IBAction func getNewSong(_ sender: Any) {
         if !isMoodSelected {
-            var newsicMood = NewsicMood();
-            newsicMood.emotions = [Emotion(basicGroup: .unknown, detailedEmotions: [], rating: 0)]
-            self.moodObject = newsicMood;
+            var nusicMood = NusicMood();
+            nusicMood.emotions = [Emotion(basicGroup: .unknown, detailedEmotions: [], rating: 0)]
+            self.moodObject = nusicMood;
         }
         
         self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
         
-        if Connectivity.isConnectedToNetwork() == .connectedCellular && newsicUser.settingValues.useMobileData! == false {
+        if Connectivity.isConnectedToNetwork() == .connectedCellular && nusicUser.settingValues.useMobileData! == false {
             showMobileDataPopup()
         } else {
             passDataToShowSong();
         }
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+//        if listMenuView.maxY != self.view.safeAreaLayoutGuide.layoutFrame.maxY {
+//            listMenuView.maxY = self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
+//        }
+        setupNavigationBar()
+        print("viewDidLayoutSubviews = \(self.view.frame.width)")
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         genreCollectionView.layoutIfNeeded()
         moodCollectionView.layoutIfNeeded()
+        
+        print("viewDidAppear = \(self.view.safeAreaLayoutGuide.layoutFrame.maxY)")
+        
     }
     
     
@@ -191,17 +203,18 @@ class SongPickerViewController: NewsicDefaultViewController {
         super.viewWillAppear(animated)
         genreCollectionView.reloadData()
         moodCollectionView.reloadData()
+        
     }
  
     override func viewDidLoad() {
         super.viewDidLoad()        
-
-        setupListMenu()
         
-        setupView()
-        setupNavigationBar()
-        setupCollectionCellViews();
-        setupSegmentedControl()
+        self.setupCollectionCellViews();
+        self.setupView()
+        self.setupNavigationBar()
+        self.setupListMenu()
+        self.setupSegmentedControl()
+        
         moodHacker = MoodHacker()
         extractInformationFromUser { (isFinished) in
             print(isFinished)
@@ -210,8 +223,8 @@ class SongPickerViewController: NewsicDefaultViewController {
     }
     
     func setupSegmentedControl() {
-        self.newsicControl.selectedIndex = 0
-        self.newsicControl.delegate = self
+        self.nusicControl.selectedIndex = 0
+        self.nusicControl.delegate = self
         toggleCollectionViews(for: 0);
     }
     
@@ -219,7 +232,7 @@ class SongPickerViewController: NewsicDefaultViewController {
         if self.view.subviews.contains(navbar) {
             navbar.removeFromSuperview()
         }
-        navbar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: 44));
+        navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
         navbar.barStyle = .default
         
         let barButton = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
@@ -230,6 +243,7 @@ class SongPickerViewController: NewsicDefaultViewController {
         navbar.items = [navItem]
         
         self.view.addSubview(navbar)
+        self.navbar.setNeedsLayout()
     }
     
     func setupView() {
@@ -237,29 +251,27 @@ class SongPickerViewController: NewsicDefaultViewController {
         self.mainControlView.backgroundColor = UIColor.clear
         self.genreCollectionView.backgroundColor = UIColor.clear
         self.moodCollectionView.backgroundColor = UIColor.clear
-        self.newsicControl.backgroundColor = UIColor.clear
-        self.newsicControl.layer.zPosition = 1
+        self.nusicControl.backgroundColor = UIColor.clear
+        self.nusicControl.layer.zPosition = 1
         self.searchButton.backgroundColor = UIColor.clear
         self.searchButton.setTitle("Random it up!", for: .normal)
         
         moodCollectionView.layer.zPosition = -1
         genreCollectionView.layer.zPosition = -1
         
-        self.mainControlView.bringSubview(toFront: newsicControl)
+        self.mainControlView.bringSubview(toFront: nusicControl)
         
         let collectionViewsPanGestureRecoginizer = UIPanGestureRecognizer(target: self, action: #selector(panCollectionViews(_:)))
         self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecoginizer)
     }
     
-    
-    
     @objc func toggleMenu() {
-        let parent = self.parent as! NewsicPageViewController
+        let parent = self.parent as! NusicPageViewController
         parent.scrollToViewController(index: 0)
     }
     
     func manageViewControllerShowSong() {
-        let pageVC = (self.parent as! NewsicPageViewController)
+        let pageVC = (self.parent as! NusicPageViewController)
         if SPTAudioStreamingController.sharedInstance().initialized {
             pageVC.addViewControllerToPageVC(viewController: pageVC.showSongVC!)
         } else {
@@ -286,7 +298,7 @@ class SongPickerViewController: NewsicDefaultViewController {
         }
         
         self.spotifyHandler.getUser { (user, error) in
-            if let error = error {
+            if error != nil {
                 self.showLoginErrorPopup()
                 self.loadingFinished = true
             } else {
@@ -303,7 +315,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                     let profileImage = user.smallestImage != nil ? user.smallestImage.imageURL.absoluteString : ""
                     let territory = user.territory != nil ? user.territory! : "";
                     let isPremium = user.product == SPTProduct.premium ? true : false
-                    let user = NewsicUser(userName: username, displayName: displayName!, emailAddress: emailAddress!, imageURL: profileImage, territory: territory, isPremium: isPremium)
+                    let user = NusicUser(userName: username, displayName: displayName!, emailAddress: emailAddress!, imageURL: profileImage, territory: territory, isPremium: isPremium)
                     self.moodObject?.userName = username;
                     self.spotifyPlaylistCheck();
                     user.getUser(getUserHandler: { (fbUser, error) in
@@ -311,7 +323,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                             error.presentPopup(for: self)
                         }
                         if fbUser == nil || fbUser?.userName == "" {
-                            self.newsicUser = user
+                            self.nusicUser = user
                             self.extractGenresFromSpotify(genreExtractionHandler: { (isSuccessful) in
                                 if !isSuccessful {
                                     if let error = error {
@@ -320,19 +332,19 @@ class SongPickerViewController: NewsicDefaultViewController {
                                 }
                             })
                         } else {
-                            self.newsicUser = fbUser!
+                            self.nusicUser = fbUser!
                             
                             DispatchQueue.main.async {
                                 SwiftSpinner.show("Getting Favorite Genres..", animated: true);
                             }
-                            self.newsicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount, error) in
+                            self.nusicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount, error) in
                                 if let error = error {
                                     error.presentPopup(for: self)
                                 }
                                 if let dbGenreCount = dbGenreCount {
                                     if dbGenreCount.count > 0 {
                                         self.spotifyHandler.genreCount = dbGenreCount;
-                                        self.newsicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
+                                        self.nusicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
                                             if let error = error {
                                                 error.presentPopup(for: self)
                                             }
@@ -355,7 +367,7 @@ class SongPickerViewController: NewsicDefaultViewController {
         //Get Followed Artists
         SwiftSpinner.show("Extracting Followed Artists..", animated: true)
         spotifyHandler.getFollowedArtistsForUser(user: spotifyHandler.user, followedArtistsHandler: { (followedArtistsList, error) in
-            if let error = error {
+            if error != nil {
                 genreExtractionHandler(false)
             }
             DispatchQueue.main.sync {
@@ -368,7 +380,7 @@ class SongPickerViewController: NewsicDefaultViewController {
             }
             //Get All Playlists from user
             self.spotifyHandler.getAllPlaylists(fetchedPlaylistsHandler: { (playlistList, error) in
-                if let error = error {
+                if error != nil {
                     genreExtractionHandler(false)
                 }
                 self.fullPlaylistList = playlistList
@@ -381,7 +393,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                 for playlist in self.fullPlaylistList {
                     let playlistId = playlist.uri.absoluteString.substring(from: (playlist.uri.absoluteString.range(of: "playlist:")?.upperBound)!)
                     self.spotifyHandler.getAllArtistsForPlaylist(userId: playlist.owner.canonicalUserName!, playlistId: playlistId, fetchedPlaylistArtists: { (results, error) in
-                        if let error = error {
+                        if error != nil {
                             genreExtractionHandler(false)
                         }
                         DispatchQueue.main.async {
@@ -401,8 +413,8 @@ class SongPickerViewController: NewsicDefaultViewController {
                                 
                                 if self.currentPlaylistIndex == self.fullPlaylistList.count {
                                     let dict = self.spotifyHandler.getGenreCount(for: self.fullArtistList);
-                                    self.newsicUser.favoriteGenres = NewsicGenre.convertGenreCountToGenres(userName: self.newsicUser.userName, dict: dict);
-                                    self.newsicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
+                                    self.nusicUser.favoriteGenres = NusicGenre.convertGenreCountToGenres(userName: self.nusicUser.userName, dict: dict);
+                                    self.nusicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
                                         if let error = error {
                                             error.presentPopup(for: self)
                                         }
@@ -422,8 +434,8 @@ class SongPickerViewController: NewsicDefaultViewController {
     }
     
     func spotifyPlaylistCheck() {
-        newsicPlaylist = NewsicPlaylist(userName: SPTAuth.defaultInstance().session.canonicalUsername);
-        newsicPlaylist.getPlaylist { (playlist, error) in
+        nusicPlaylist = NusicPlaylist(userName: SPTAuth.defaultInstance().session.canonicalUsername);
+        nusicPlaylist.getPlaylist { (playlist, error) in
             if let error = error {
                 error.presentPopup(for: self)
             }
@@ -437,7 +449,7 @@ class SongPickerViewController: NewsicDefaultViewController {
                         } else {
                             if let isExisting = isExisting, !isExisting {
                                 self.createPlaylistSpotify()
-                                FirebaseHelper.deleteAllTracks(user: self.newsicUser.userName, deleteTracksCompleteHandler: { (reference, error) in
+                                FirebaseHelper.deleteAllTracks(user: self.nusicUser.userName, deleteTracksCompleteHandler: { (reference, error) in
                                     
                                 })
                             }
@@ -450,13 +462,13 @@ class SongPickerViewController: NewsicDefaultViewController {
     }
     
     func createPlaylistSpotify() {
-        self.spotifyHandler.createNewsicPlaylist(playlistName: "Liked in Newsic", playlistCreationHandler: { (isCreated, playlist, error) in
+        self.spotifyHandler.createNusicPlaylist(playlistName: "Liked in Nusic", playlistCreationHandler: { (isCreated, playlist, error) in
             if let error = error {
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.createPlaylist.rawValue)
             } else {
                 if let isCreated = isCreated {
                     if isCreated {
-                        self.newsicPlaylist = playlist;
+                        self.nusicPlaylist = playlist;
                         playlist?.addNewPlaylist(addNewPlaylistHandler: { (isAdded, error) in
                             if let error = error {
                                 error.presentPopup(for: self)
@@ -468,26 +480,6 @@ class SongPickerViewController: NewsicDefaultViewController {
         })
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//
-//        if segue.identifier == showVideoSegue {
-//            let playerViewController = segue.destination as! ShowSongViewController
-//            playerViewController.transitioningDelegate = self
-//            playerViewController.user = newsicUser;
-//            playerViewController.playlist = newsicPlaylist;
-//            playerViewController.spotifyHandler = spotifyHandler;
-//            playerViewController.moodObject = moodObject
-//            playerViewController.selectedGenreList = !selectedGenres.isEmpty ? selectedGenres : nil;
-//            playerViewController.isMoodSelected = isMoodSelected
-//
-//
-//        } else if segue.identifier == sideMenuSegue {
-//            let sideMenuViewController = segue.destination as! SideMenuViewController
-//            sideMenuViewController.profileImage = newsicUser.profileImage
-//            sideMenuViewController.username = newsicUser.displayName
-//        }
-//    }
-
 }
 
 
@@ -499,13 +491,13 @@ extension SongPickerViewController: UIGestureRecognizerDelegate {
         var progress = (translation.x / divisor )
         let panDirection: UISwipeGestureRecognizerDirection = translation.x < 0 ? .left : .right;
         progress = CGFloat(fminf(fmaxf(Float(abs(progress)), 0.0), 1.0))
-        var toIndex = panDirection == .left ? newsicControl.selectedIndex + 1 : newsicControl.selectedIndex - 1
+        var toIndex = panDirection == .left ? nusicControl.selectedIndex + 1 : nusicControl.selectedIndex - 1
         var allowMove = true
         if toIndex < 0 {
             toIndex = 0
             allowMove = panDirection == .right ? false : true
-        } else if toIndex > newsicControl.items.count - 1 {
-            toIndex = newsicControl.items.count - 1
+        } else if toIndex > nusicControl.items.count - 1 {
+            toIndex = nusicControl.items.count - 1
             allowMove = panDirection == .left ? false : true
         }
         switch gestureRecognizer.state {
@@ -516,13 +508,13 @@ extension SongPickerViewController: UIGestureRecognizerDelegate {
                 segmentedControlMove(progress, toIndex);
             }
         case .cancelled:
-            segmentedControlMove(1, newsicControl.selectedIndex)
+            segmentedControlMove(1, nusicControl.selectedIndex)
         case .ended:
             if progress > 0.5 {
-                newsicControl.move(to: toIndex)
-                newsicControl.delegate?.didSelect(toIndex)
+                nusicControl.move(to: toIndex)
+                nusicControl.delegate?.didSelect(toIndex)
             } else {
-                newsicControl.delegate?.didSelect(newsicControl.selectedIndex)
+                nusicControl.delegate?.didSelect(nusicControl.selectedIndex)
             }
             
         default:

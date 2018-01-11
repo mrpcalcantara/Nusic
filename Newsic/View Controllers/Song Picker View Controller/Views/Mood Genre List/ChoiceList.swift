@@ -1,6 +1,6 @@
 //
 //  ChoiceList.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 18/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -12,7 +12,6 @@ import UIKit
     func didTapGenre(value: String)
     func didRemoveGenres()
     func didTapMood(value: String)
-    func didRemoveMoods()
     func didTapHeader(willOpen: Bool)
     func didPanHeader(_ translationX: CGFloat, _ translationY: CGFloat)
     func willMove(to point:CGPoint, animated: Bool)
@@ -22,7 +21,7 @@ import UIKit
 //    @objc optional func didFinishPanHeader()
 }
 
-class ChoiceListView: NewsicView {
+class ChoiceListView: NusicView {
     
 
     //Delegate
@@ -40,11 +39,11 @@ class ChoiceListView: NewsicView {
     var leftLayer: CAShapeLayer = CAShapeLayer()
     var rightLayer: CAShapeLayer = CAShapeLayer()
     var lineWidth: CGFloat = 3
-//    var fetchSongsButton: NewsicButton = NewsicButton()
+//    var fetchSongsButton: NusicButton = NusicButton()
     
     @IBOutlet weak var toggleView: UIView!
     @IBOutlet weak var choiceCollectionView: UICollectionView!
-    @IBOutlet weak var fetchSongsButton: NewsicButton!
+    @IBOutlet weak var fetchSongsButton: NusicButton!
     
     //Animator
     let viewAnimator = UIViewPropertyAnimator()
@@ -53,7 +52,12 @@ class ChoiceListView: NewsicView {
 //    let choiceCollectionView: UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     var startY: CGFloat = 0
-    var maxY: CGFloat = 0
+    var maxY: CGFloat = 0 {
+        didSet {
+            midY = maxY/2
+            print("set midY = \(midY)")
+        }
+    }
     var midY: CGFloat = 0
     var closeThreshold: CGFloat = 0.3
     var panProgress: CGFloat = 0
@@ -82,7 +86,11 @@ class ChoiceListView: NewsicView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         loadFromNib()
-        setupView()
+    }
+    
+    convenience init(frame: CGRect, maxY: CGFloat) {
+        self.init(frame: frame)
+        setupView(maxY: maxY)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -105,17 +113,14 @@ class ChoiceListView: NewsicView {
         addSubview(contentView)
     }
     
-    func setupView() {
+    func setupView(maxY: CGFloat) {
         
         setupToggleView();
         setupCollectionView();
         setupButton()
         setupGestureRecognizers()
-        
-        maxY = (UIApplication.shared.keyWindow?.frame.height)! - self.toggleView.frame.height
+        self.maxY = maxY
         startY = self.frame.origin.y
-        midY = maxY / 2
-        
         
     }
     
@@ -129,7 +134,7 @@ class ChoiceListView: NewsicView {
     
     @objc func handleListMenuPan(_ gestureRecognizer: UIPanGestureRecognizer) {
         let translation = gestureRecognizer.translation(in: self)
-        self.frame.size = CGSize(width: self.frame.width, height: (UIApplication.shared.keyWindow?.frame.height)! - self.frame.origin.y)
+        self.frame.size = CGSize(width: self.frame.width, height: maxY)
         switch gestureRecognizer.state {
         case .began:
             lastPanPoint = self.frame.origin
@@ -144,18 +149,10 @@ class ChoiceListView: NewsicView {
             break;
         case .ended:
             isOpen = true
-            var finalY: CGFloat = midY
             if panProgress > 1-closeThreshold || self.frame.origin.y > maxY {
-                finalY = maxY
                 isOpen = false
-            } else if panProgress < 0.30 {
-                finalY = self.frame.height/4
-            } else {
-                finalY = midY
             }
-            
-            animateMove(to: CGPoint(x: self.frame.origin.x, y: finalY))
-            delegate?.didPanHeader(translation.x, finalY)
+            delegate?.didTapHeader(willOpen: isOpen)
             manageToggleView()
 
         default:
@@ -188,12 +185,8 @@ class ChoiceListView: NewsicView {
         chosenGenres.sort()
         let indexPath = IndexPath(row: chosenGenres.index(of: value)!, section: Section.genreSection.rawValue)
         choiceCollectionView.performBatchUpdates({
-//            var indexSet = IndexSet(); indexSet.insert(Section.genreSection.rawValue)
-//            choiceCollectionView.reloadSections(indexSet)
             choiceCollectionView.insertItems(at: [indexPath])
         }, completion: nil)
-        
-//        choiceCollectionView.reloadData()
     }
     
     func emptyGenres() {
@@ -205,7 +198,6 @@ class ChoiceListView: NewsicView {
     func emptyMoods() {
         chosenMoods.removeAll()
         choiceCollectionView.reloadData()
-        delegate?.didRemoveMoods()
     }
     
 }

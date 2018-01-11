@@ -1,6 +1,6 @@
 //
-//  NewsicScrollView.swift
-//  Newsic
+//  NusicScrollView.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 18/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewsicScrollView: UIScrollView {
+class NusicScrollView: UIScrollView {
 
     /*
     // Only override draw() if you perform custom drawing.

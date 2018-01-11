@@ -1,6 +1,6 @@
 //
 //  CL-CollectionView.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 20/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -24,7 +24,7 @@ extension ChoiceListView {
         choiceCollectionView.autoresizingMask = [.flexibleHeight, .flexibleBottomMargin]
         choiceCollectionView.backgroundColor = UIColor.clear
         
-        choiceCollectionView.setCollectionViewLayout(NewsicCollectionViewLayout(), animated: true)
+        choiceCollectionView.setCollectionViewLayout(NusicCollectionViewLayout(), animated: true)
         
         if let layout = choiceCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .vertical
@@ -133,32 +133,6 @@ extension ChoiceListView: UICollectionViewDataSource {
 
 extension ChoiceListView: UICollectionViewDelegateFlowLayout {
     
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    //        var width: CGFloat = 100
-    //        let height = window!.frame.height/10
-    ////        let font = UIFont(name: "Futura", size: 36)
-    //        switch indexPath.section {
-    //        case Section.genreSection.rawValue:
-    //            width = chosenGenres[indexPath.row].width(withConstraintedHeight: height, font: NewsicDefaults.font!)
-    ////        case Section.moodSection.rawValue:
-    ////            width = chosenMoods[indexPath.row].width(withConstraintedHeight: 50, font: font!)
-    //        default:
-    //            break;
-    //        }
-    //
-    //
-    //
-    //        if let cell = collectionView.cellForItem(at: indexPath) {
-    //            print("exists")
-    //
-    //        }
-    ////        let size = UICollectionViewFlowLayoutAutomaticSize
-    //
-    //        return CGSize(width: width, height: height)
-    ////        return UICollectionViewFlowLayoutAutomaticSize
-    //
-    //    }
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 8
     }
@@ -166,7 +140,6 @@ extension ChoiceListView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8;
     }
-    
     
 }
 

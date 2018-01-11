@@ -1,6 +1,6 @@
 //
-//  NewsicPreferredPlayer.swift
-//  Newsic
+//  NusicPreferredPlayer.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 11/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum NewsicPreferredPlayer: Int {
+enum NusicPreferredPlayer: Int {
     case spotify
     case youtube
     

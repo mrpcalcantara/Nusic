@@ -1,6 +1,6 @@
 //
 //  CollectionViewHeader.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 27/11/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -15,14 +15,14 @@ protocol ChoiceListViewHeaderDelegate: class {
 class ChoiceListViewHeader: UICollectionReusableView {
 
     @IBOutlet weak var sectionHeaderLabel: UILabel!
-    @IBOutlet weak var clearButton: NewsicButton!
+    @IBOutlet weak var clearButton: NusicButton!
     static let reuseIdentifier = "choiceViewHeader"
 //    static let reuseIdentifier: String? = "choiceListViewHeader"
     
     weak var delegate: ChoiceListViewHeaderDelegate?
     
     override class var layerClass: AnyClass {
-        get { return NewsicCustomLayer.self }
+        get { return NusicCustomLayer.self }
     }
     
     override func prepareForReuse() {

@@ -1,6 +1,6 @@
 //
-//  NewsicTrack.swift
-//  Newsic
+//  NusicTrack.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 07/09/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -9,15 +9,15 @@
 import Foundation
 import FirebaseDatabase
 
-struct NewsicTrack {
+struct NusicTrack {
     
     var youtubeInfo: YouTubeResult?
     var trackInfo: SpotifyTrack
     var userName: String
-    var moodInfo: NewsicMood?;
+    var moodInfo: NusicMood?;
     var reference: DatabaseReference! = Database.database().reference()
     
-    init(trackInfo: SpotifyTrack, moodInfo: NewsicMood?, userName: String, youtubeInfo: YouTubeResult? = nil) {
+    init(trackInfo: SpotifyTrack, moodInfo: NusicMood?, userName: String, youtubeInfo: YouTubeResult? = nil) {
         self.trackInfo = trackInfo;
         self.moodInfo = moodInfo;
         self.userName = userName;
@@ -27,34 +27,34 @@ struct NewsicTrack {
     
 }
 
-extension NewsicTrack : FirebaseModel {
+extension NusicTrack : FirebaseModel {
     
-    internal func getData(getCompleteHandler: @escaping (NSDictionary?, NewsicError?) -> ()) {
+    internal func getData(getCompleteHandler: @escaping (NSDictionary?, NusicError?) -> ()) {
         reference.child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
             getCompleteHandler(value, nil);
         }) { (error) in
-            getCompleteHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getLikedTracks.rawValue, systemError: error));
+            getCompleteHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getLikedTracks.rawValue, systemError: error));
         }
         
         
     }
     
-    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
+    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         
         if let audioFeatures = trackInfo.audioFeatures {
             if let moodInfo = moodInfo {
                 for emotion in moodInfo.emotions {
                     reference.child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(trackInfo.trackId!).updateChildValues(audioFeatures.toDictionary()) { (error, reference) in
                         if let error = error {
-                            saveCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.saveLikedTracks.rawValue, systemError: error))
+                            saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveLikedTracks.rawValue, systemError: error))
                         }
                     }
                 }
             } else {
                 reference.child(userName).child("moods").child(EmotionDyad.unknown.rawValue).child(trackInfo.trackId!).updateChildValues(audioFeatures.toDictionary()) { (error, reference) in
                         if let error = error {
-                            saveCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
+                            saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
                         }
                     }
                 }
@@ -63,12 +63,12 @@ extension NewsicTrack : FirebaseModel {
         
     }
     
-    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
+    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         if let moodInfo = moodInfo {
             for emotion in moodInfo.emotions {
                 reference.child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(trackInfo.trackId!).removeValue(completionBlock: { (error, reference) in
                     if let error = error {
-                        deleteCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
+                        deleteCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
                     }
                 })
             }
@@ -78,7 +78,7 @@ extension NewsicTrack : FirebaseModel {
                 
                 reference.child(userName).child("moods").child(dyad.rawValue.lowercased()).child(trackInfo.trackId!).removeValue(completionBlock: { (error, reference) in
                     if let error = error {
-                        deleteCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
+                        deleteCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
                     }
                 })
             }

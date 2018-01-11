@@ -1,6 +1,6 @@
 //
 //  Koloda-SongCard.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 29/08/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -50,8 +50,8 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func addSongToPosition(at index: Int, position: Int) {
-        let newsicTrack = likedTrackList[index]
-        cardList.insert(newsicTrack, at: position);
+        let nusicTrack = likedTrackList[index]
+        cardList.insert(nusicTrack, at: position);
         
         songCardView.insertCardAtIndexRange(position..<position+1, animated: false);
         songCardView.delegate?.koloda(songCardView, didShowCardAt: position)
@@ -62,7 +62,7 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didSelectCardAt index: Int) {
-        let alertController = NewsicAlertController(title: "More tracks based on:", message: nil, style: YBAlertControllerStyle.ActionSheet)
+        let alertController = NusicAlertController(title: "More tracks based on:", message: nil, style: YBAlertControllerStyle.ActionSheet)
         
         let actionArtist: () -> Void = {
             self.musicSearchType = .artist
@@ -129,7 +129,7 @@ extension ShowSongViewController: KolodaViewDelegate {
         toggleLikeButtons();
         
         if currentPlayingTrack?.trackId != cardList[index].trackInfo.trackId {
-            if preferredPlayer == NewsicPreferredPlayer.spotify {
+            if preferredPlayer == NusicPreferredPlayer.spotify {
                 playCard(at: index)
             } else {
                 if let youtubeTrackId = cardList[index].youtubeInfo?.trackId {
@@ -187,7 +187,7 @@ extension ShowSongViewController: KolodaViewDataSource {
         view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
         
         //TODO: Swiping for Spotify shows YT view regardless, and as such, the album image is hidden.
-        if preferredPlayer == NewsicPreferredPlayer.spotify {
+        if preferredPlayer == NusicPreferredPlayer.spotify {
             view.setupViewForSpotify()
         } else {
             view.setupViewForYoutube()

@@ -1,6 +1,6 @@
 //
 //  SideMenuViewController.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 25/09/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import PopupDialog
 
-class SideMenuViewController: NewsicDefaultViewController {
+class SideMenuViewController: NusicDefaultViewController {
     
     
     //Local variables
@@ -18,10 +18,10 @@ class SideMenuViewController: NewsicDefaultViewController {
     var username: String?
     var profileImageURL: URL?
     var useMobileData: Bool?
-    var preferredPlayer: NewsicPreferredPlayer?
+    var preferredPlayer: NusicPreferredPlayer?
     var enablePlayerSwitch: Bool?
-    var newsicUser: NewsicUser?
-    var settings: NewsicUserSettings?
+    var nusicUser: NusicUser?
+    var settings: NusicUserSettings?
     var settingsValues:[[String]]!
     
     @IBOutlet weak var settingsTableView: UITableView!
@@ -32,8 +32,8 @@ class SideMenuViewController: NewsicDefaultViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated);
-        newsicUser?.settingValues = settings!
-        newsicUser?.saveSettings(saveSettingsHandler: { (didSave, error) in
+        nusicUser?.settingValues = settings!
+        nusicUser?.saveSettings(saveSettingsHandler: { (didSave, error) in
             if let error = error {
                 error.presentPopup(for: self)
             }
@@ -45,24 +45,35 @@ class SideMenuViewController: NewsicDefaultViewController {
         super.viewDidLoad();
         setupSettingsArray()
         setupTableView()
-        setupNavigationBar()
+//        setupNavigationBar()
         
-        settings = newsicUser?.settingValues
+        settings = nusicUser?.settingValues
         
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews();
+        setupNavigationBar()
+    }
+   
     func setupSettingsArray() {
-        settingsValues = [[NewsicSettingsLabel.preferredPlayer.rawValue]]
-        settingsValues.append([NewsicSettingsLabel.spotifyQuality.rawValue])
-        settingsValues.append([NewsicSettingsLabel.useMobileData.rawValue])
-        settingsValues.append([NewsicSettingsLabel.logout.rawValue])
+        settingsValues = [[NusicSettingsLabel.preferredPlayer.rawValue]]
+        settingsValues.append([NusicSettingsLabel.spotifyQuality.rawValue])
+        settingsValues.append([NusicSettingsLabel.useMobileData.rawValue])
+        settingsValues.append([NusicSettingsLabel.logout.rawValue])
         
         
     }
     
     func setupNavigationBar() {
         
-        navbar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: self.view.frame.width, height: 44));
+        if let navbar = navbar {
+            if self.view.subviews.contains(navbar) {
+                navbar.removeFromSuperview()
+            }
+        }
+        
+        navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
         if let navbar = navbar {
             navbar.barStyle = .default
             let button = UIButton(type: .system)
@@ -79,7 +90,7 @@ class SideMenuViewController: NewsicDefaultViewController {
     }
     
     @objc func dismissMenu() {
-        let vc = self.parent as! NewsicPageViewController
+        let vc = self.parent as! NusicPageViewController
         vc.scrollToViewController(index: 1)
     }
     

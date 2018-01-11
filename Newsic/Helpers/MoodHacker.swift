@@ -1,6 +1,6 @@
 //
 //  MoodHacker.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 01/09/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -19,12 +19,12 @@ struct MoodHacker {
         self.emotions = emotions
     }
     /*
-    func getMood(for userText:String?, completionHandler: @escaping (NewsicMood?, Bool?) -> ()) {
+    func getMood(for userText:String?, completionHandler: @escaping (NusicMood?, Bool?) -> ()) {
     
         guard let userText = userText, userText != "Tell me how are you feeling.." && userText != "" else {
-            var newsicMood = NewsicMood();
-            newsicMood.emotions = [Emotion(basicGroup: .unknown, detailedEmotions: [], rating: 0)]
-            completionHandler(newsicMood, false);
+            var nusicMood = NusicMood();
+            nusicMood.emotions = [Emotion(basicGroup: .unknown, detailedEmotions: [], rating: 0)]
+            completionHandler(nusicMood, false);
             return;
         }
         
@@ -52,7 +52,7 @@ struct MoodHacker {
                         completionHandler(nil, true)
                     } else {
                         let emotionGroups = dataJson["groups"] as! [[String: AnyObject]]
-                        var result = NewsicMood()
+                        var result = NusicMood()
                         for emotion in emotionGroups {
                             
                             var listEmotions:[String] = []

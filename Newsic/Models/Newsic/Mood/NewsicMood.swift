@@ -1,6 +1,6 @@
 //
 //  MoodHackerResult.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 01/09/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -9,7 +9,7 @@
 import Foundation
 import FirebaseDatabase
 
-struct NewsicMood: FirebaseModel, Iterable {
+struct NusicMood: FirebaseModel, Iterable {
     
     var emotions: [Emotion];
     var sentiment: Double;
@@ -17,7 +17,7 @@ struct NewsicMood: FirebaseModel, Iterable {
     var userName: String;
     var date: Date!
     var associatedGenres: [String];
-    var associatedTracks: [NewsicTrack];
+    var associatedTracks: [NusicTrack];
     var reference: DatabaseReference!
     
     init() {
@@ -31,7 +31,7 @@ struct NewsicMood: FirebaseModel, Iterable {
         self.reference = Database.database().reference();
     }
     
-    init(emotions: [Emotion], isAmbiguous: Bool, sentiment: Double, date: Date, userName: String? = "", associatedGenres: [String], associatedTracks: [NewsicTrack]) {
+    init(emotions: [Emotion], isAmbiguous: Bool, sentiment: Double, date: Date, userName: String? = "", associatedGenres: [String], associatedTracks: [NusicTrack]) {
         self.emotions = emotions;
         self.isAmbiguous = isAmbiguous;
         self.sentiment = sentiment;
@@ -42,25 +42,25 @@ struct NewsicMood: FirebaseModel, Iterable {
         self.reference = Database.database().reference();
     }
     
-    internal func getData(getCompleteHandler: @escaping (NSDictionary?, NewsicError?) -> ()) {
+    internal func getData(getCompleteHandler: @escaping (NSDictionary?, NusicError?) -> ()) {
         reference.child("emotions").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
             getCompleteHandler(value, nil);
         }) { (error) in
-            getCompleteHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getMoodInfo.rawValue, systemError: error));
+            getCompleteHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getMoodInfo.rawValue, systemError: error));
         }
         
         
     }
     
-    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
+    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         var emotionArray: [[String: AnyObject]] = [];
         for emotion in emotions {
             let firstEmotion = emotion.toDictionary()
             emotionArray.append(firstEmotion)
             reference.child("emotions").child(userName).child(emotion.basicGroup.rawValue.lowercased()).child(date.toString()).updateChildValues(emotion.toDictionary()) { (error, reference) in
                 if let error = error {
-                    saveCompleteHandler(reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.saveMoodInfo.rawValue, systemError: error))
+                    saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveMoodInfo.rawValue, systemError: error))
                 } else {
                     saveCompleteHandler(reference, nil)
                 }
@@ -70,10 +70,10 @@ struct NewsicMood: FirebaseModel, Iterable {
 
     }
     
-    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
+    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         reference.child("emotions").child(userName).removeValue { (error, databaseReference) in
             if let error = error {
-                deleteCompleteHandler(self.reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deleteMoodInfo.rawValue, systemError: error))
+                deleteCompleteHandler(self.reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteMoodInfo.rawValue, systemError: error))
             } else {
                 deleteCompleteHandler(self.reference, nil)
             }
@@ -81,7 +81,7 @@ struct NewsicMood: FirebaseModel, Iterable {
         }
     }
     
-    func getTrackListForEmotionGenre(getAssociatedTrackHandler: @escaping ([String: SpotifyTrackFeature]?, NewsicError?) -> ()) {
+    func getTrackListForEmotionGenre(getAssociatedTrackHandler: @escaping ([String: SpotifyTrackFeature]?, NusicError?) -> ()) {
         let count = emotions.count;
         var index = 0;
         for emotion in emotions {
@@ -108,14 +108,14 @@ struct NewsicMood: FirebaseModel, Iterable {
                 }
                 
             }, withCancel: { (error) in
-                getAssociatedTrackHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getTrackListForEmotion.rawValue, systemError: error));
+                getAssociatedTrackHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackListForEmotion.rawValue, systemError: error));
             })
         }
         
     }
     
     
-    func getTrackIdListForEmotionGenre(getAssociatedTrackHandler: @escaping ([String]?, NewsicError?) -> ()) {
+    func getTrackIdListForEmotionGenre(getAssociatedTrackHandler: @escaping ([String]?, NusicError?) -> ()) {
         let count = emotions.count;
         var index = 0;
         for emotion in emotions {
@@ -139,19 +139,16 @@ struct NewsicMood: FirebaseModel, Iterable {
                 }
                 
             }, withCancel: { (error) in
-                getAssociatedTrackHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getTrackListForEmotion.rawValue, systemError: error));
+                getAssociatedTrackHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackListForEmotion.rawValue, systemError: error));
             })
         }
         //getAssociatedTrackHandler(nil)
     }
     
-    func getDefaultTrackFeatures(getDefaultTrackFeaturesHandler: @escaping ([SpotifyTrackFeature]?, NewsicError?) -> ()) {
+    func getDefaultTrackFeatures(getDefaultTrackFeaturesHandler: @escaping ([SpotifyTrackFeature]?, NusicError?) -> ()) {
         for emotion in emotions {
             reference.child("emotions").child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
                 let value = dataSnapshot.value as? [String: AnyObject];
-                var iterator = value?.makeIterator();
-                
-                var element = iterator?.next()
                 var extractedTrackFeatures:[SpotifyTrackFeature] = []
                 var feature = SpotifyTrackFeature();
                 if value != nil {
@@ -160,12 +157,12 @@ struct NewsicMood: FirebaseModel, Iterable {
                 extractedTrackFeatures.append(feature);
                 getDefaultTrackFeaturesHandler(extractedTrackFeatures, nil);
             }, withCancel: { (error) in
-                getDefaultTrackFeaturesHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getTrackFeatures.rawValue, systemError: error));
+                getDefaultTrackFeaturesHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackFeatures.rawValue, systemError: error));
             })
         }
     }
     
-    func getTrackFeaturesForEmotionGenre(getTrackFeaturesHandler: @escaping ([SpotifyTrackFeature]?, NewsicError?) -> ()) {
+    func getTrackFeaturesForEmotionGenre(getTrackFeaturesHandler: @escaping ([SpotifyTrackFeature]?, NusicError?) -> ()) {
         let count = emotions.count;
         var index = 0;
         for emotion in emotions {
@@ -192,13 +189,13 @@ struct NewsicMood: FirebaseModel, Iterable {
                 }
                 
             }, withCancel: { (error) in
-                getTrackFeaturesHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getTrackFeatures.rawValue, systemError: error));
+                getTrackFeaturesHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackFeatures.rawValue, systemError: error));
             })
         }
         
     }
     
-    func getTrackIdAndFeaturesForEmotion(trackIdAndFeaturesHandler: @escaping ([String]?, [SpotifyTrackFeature]?, NewsicError?) -> ()) {
+    func getTrackIdAndFeaturesForEmotion(trackIdAndFeaturesHandler: @escaping ([String]?, [SpotifyTrackFeature]?, NusicError?) -> ()) {
         getTrackIdListForEmotionGenre { (genres, error) in
             if genres != nil && genres!.count > 0 {
                 self.getTrackFeaturesForEmotionGenre(getTrackFeaturesHandler: { (trackFeatures, error) in

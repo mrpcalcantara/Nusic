@@ -1,6 +1,6 @@
 //
-//  NewsicErrorHandler.swift
-//  Newsic
+//  NusicErrorHandler.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 04/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -9,19 +9,19 @@
 import Foundation
 import PopupDialog
 
-class NewsicError: NSObject, Error {
+class NusicError: NSObject, Error {
     
-    var newsicErrorCode: NewsicErrorCodes?
-    var newsicErrorSubCode: NewsicErrorSubCode?
-    var newsicErrorDescription: String?
+    var nusicErrorCode: NusicErrorCodes?
+    var nusicErrorSubCode: NusicErrorSubCode?
+    var nusicErrorDescription: String?
     var systemError: Error?
     var popupDialog: PopupDialog?
     
-    init(newsicErrorCode: NewsicErrorCodes?, newsicErrorSubCode: NewsicErrorSubCode?, newsicErrorDescription: String? = nil, systemError: Error? = nil) {
+    init(nusicErrorCode: NusicErrorCodes?, nusicErrorSubCode: NusicErrorSubCode?, nusicErrorDescription: String? = nil, systemError: Error? = nil) {
         super.init()
-        self.newsicErrorCode = newsicErrorCode
-        self.newsicErrorSubCode = newsicErrorSubCode
-        self.newsicErrorDescription = newsicErrorDescription
+        self.nusicErrorCode = nusicErrorCode
+        self.nusicErrorSubCode = nusicErrorSubCode
+        self.nusicErrorDescription = nusicErrorDescription
         self.systemError = systemError
         //self.popupDialog = setupDialog();
     }
@@ -29,7 +29,7 @@ class NewsicError: NSObject, Error {
     func setupDialog(description: String? = nil) -> PopupDialog {
         var popupMessage = ""
         popupMessage.append("Error \(codesToString())")
-        if let description = self.newsicErrorDescription {
+        if let description = self.nusicErrorDescription {
             popupMessage.append(" - "); popupMessage.append(description)
         }
         else if let description = description  {
@@ -61,8 +61,8 @@ class NewsicError: NSObject, Error {
     }
 
     func codesToString() -> String {
-        if let newsicErrorCode = newsicErrorCode, let newsicErrorSubCode = newsicErrorSubCode {
-            return "\(newsicErrorCode.rawValue)\(newsicErrorSubCode.rawValue)"
+        if let nusicErrorCode = nusicErrorCode, let nusicErrorSubCode = nusicErrorSubCode {
+            return "\(nusicErrorCode.rawValue)\(nusicErrorSubCode.rawValue)"
         }
         return ""
     }

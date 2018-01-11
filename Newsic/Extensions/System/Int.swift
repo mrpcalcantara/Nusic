@@ -1,6 +1,6 @@
 //
 //  Int.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 28/08/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.

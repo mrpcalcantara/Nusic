@@ -1,6 +1,6 @@
 //
 //  SettingsCellHeader.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 03/01/2018.
 //  Copyright © 2018 Miguel Alcantara. All rights reserved.
@@ -43,11 +43,11 @@ class SettingsCellHeader: UIView {
     func loadFromNib() {
         let contentView = UINib(nibName: self.className, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SettingsCellHeader
         contentView.addBlurEffect(style: .dark, alpha: 0.8)
-        contentView.backgroundColor = NewsicDefaults.deselectedColor
+        contentView.backgroundColor = NusicDefaults.deselectedColor
         contentView.frame = self.bounds
         contentView.tag = 1
         
-        contentView.headerLabel.textColor = NewsicDefaults.greenColor
+        contentView.headerLabel.textColor = NusicDefaults.greenColor
     
         self.headerLabel = contentView.headerLabel
         

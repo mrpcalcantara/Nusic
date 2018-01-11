@@ -1,5 +1,5 @@
 //
-//  NewsicViewController.swift
+//  NusicViewController.swift
 //  UIPageViewController Post
 //
 //  Created by Jeffrey Burt on 2/3/16.
@@ -8,14 +8,14 @@
 
 import UIKit
 
-class NewsicViewController: UIViewController {
+class NusicViewController: UIViewController {
     
     
     @IBOutlet weak var containerView: UIView!
     
-    var newsicPageViewController: NewsicPageViewController? {
+    var nusicPageViewController: NusicPageViewController? {
         didSet {
-            newsicPageViewController?.newsicDelegate = self
+            nusicPageViewController?.nusicDelegate = self
         }
     }
     
@@ -24,21 +24,21 @@ class NewsicViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let newsicPageViewController = segue.destination as? NewsicPageViewController {
-            self.newsicPageViewController = newsicPageViewController
+        if let nusicPageViewController = segue.destination as? NusicPageViewController {
+            self.nusicPageViewController = nusicPageViewController
         }
     }
     
 }
 
-extension NewsicViewController: NewsicPageViewControllerDelegate {
+extension NusicViewController: NusicPageViewControllerDelegate {
     
-    func newsicPageViewController(newsicPageViewController: NewsicPageViewController,
+    func nusicPageViewController(nusicPageViewController: NusicPageViewController,
                                     didUpdatePageCount count: Int) {
         
     }
     
-    func newsicPageViewController(newsicPageViewController: NewsicPageViewController,
+    func nusicPageViewController(nusicPageViewController: NusicPageViewController,
                                     didUpdatePageIndex index: Int) {
         
     }

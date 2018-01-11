@@ -1,6 +1,6 @@
 //
-//  CL-NewsicButton.swift
-//  Newsic
+//  CL-NusicButton.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 20/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.

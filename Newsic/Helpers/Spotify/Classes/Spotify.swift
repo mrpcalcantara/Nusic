@@ -1,6 +1,6 @@
 //
 //  Spotify.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 30/08/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -26,7 +26,7 @@ class Spotify {
     var user: SPTUser! = nil;
     var genreCount: [String: Int] = [:]
     
-    func getGenreForTrack(trackId: String, trackGenreHandler: @escaping([String]?, NewsicError?) -> ()) {
+    func getGenreForTrack(trackId: String, trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
         getTrackArtist(trackId: trackId) { (fetchedArtistId, error) in
             if error != nil {
                 trackGenreHandler(nil, error)
@@ -40,7 +40,7 @@ class Spotify {
         }
     }
     
-    func getGenresForTrackList(trackIdList: [String], trackGenreHandler: @escaping([String]?, NewsicError?) -> ()) {
+    func getGenresForTrackList(trackIdList: [String], trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
         let count = trackIdList.count;
         var index = 0
         var allGenres:[String] = [];
@@ -267,8 +267,6 @@ class Spotify {
         
         totalCount = genreListCount
         
-        var tempGenreList = selectedGenreList
-        
         //NOTE: Spotify recommendations max seed genres is 5. This is a workaround by fixing the max count to 5.
         if numberOfSongs > 5 && genreListCount > 5 {
            totalCount = 5
@@ -304,7 +302,7 @@ class Spotify {
                 self.auth.session = session;
                 refreshTokenCompletionHandler(true)
             } else {
-                print("error refreshing session: \(error?.localizedDescription)");
+//                print("error refreshing session: \(error?.localizedDescription)");
                 refreshTokenCompletionHandler(false)
             }
             

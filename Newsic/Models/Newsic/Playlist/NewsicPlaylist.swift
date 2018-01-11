@@ -1,6 +1,6 @@
 //
-//  NewsicPlaylist.swift
-//  Newsic
+//  NusicPlaylist.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 13/09/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -9,7 +9,7 @@
 import Foundation
 import FirebaseDatabase
 
-class NewsicPlaylist {
+class NusicPlaylist {
     var reference: DatabaseReference!
     var name: String?;
     var id: String?;
@@ -24,19 +24,19 @@ class NewsicPlaylist {
 
 }
 
-extension NewsicPlaylist : FirebaseModel {
-    internal func getData(getCompleteHandler: @escaping (NSDictionary?, NewsicError?) -> ()) {
+extension NusicPlaylist : FirebaseModel {
+    internal func getData(getCompleteHandler: @escaping (NSDictionary?, NusicError?) -> ()) {
         reference.child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let value = dataSnapshot.value as? NSDictionary
             getCompleteHandler(value, nil);
         }) { (error) in
-            getCompleteHandler(nil, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.getPlaylist.rawValue, systemError: error));
+            getCompleteHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getPlaylist.rawValue, systemError: error));
         }
         
         
     }
     
-    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
+    internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         let dict = ["name" : self.name!]
         
 //        reference.child(userName).child(self.id!).setValue(dict) { (error, reference) in
@@ -47,10 +47,10 @@ extension NewsicPlaylist : FirebaseModel {
 //        reference.child(userName).child(self.id!).updateChildValues(dict);
     }
     
-    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NewsicError?) -> ()) {
+    internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         reference.child(userName).removeValue { (error, databaseReference) in
             if let error = error {
-                deleteCompleteHandler(self.reference, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.deletePlaylist.rawValue, systemError: error))
+                deleteCompleteHandler(self.reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deletePlaylist.rawValue, systemError: error))
             } else {
                 deleteCompleteHandler(self.reference, nil)
             }
@@ -58,7 +58,7 @@ extension NewsicPlaylist : FirebaseModel {
         }
     }
     
-    func getPlaylist(getPlaylistHandler: @escaping(NewsicPlaylist?, NewsicError?) -> ()) {
+    func getPlaylist(getPlaylistHandler: @escaping(NusicPlaylist?, NusicError?) -> ()) {
         getData { (dict, error) in
             if error != nil || dict == nil {
                 getPlaylistHandler(nil, error)
@@ -73,17 +73,17 @@ extension NewsicPlaylist : FirebaseModel {
                 /*
                 let id = convertedDict["id"] as! String;
                 let name = converted
-                let playlist = NewsicPlaylist(name: <#T##String#>, id: id, userName: userName)
+                let playlist = NusicPlaylist(name: <#T##String#>, id: id, userName: userName)
                 */
             }
         }
     }
     
-    func addNewPlaylist(addNewPlaylistHandler: @escaping (Bool?, NewsicError?) -> ()) {
+    func addNewPlaylist(addNewPlaylistHandler: @escaping (Bool?, NusicError?) -> ()) {
         deleteData { (reference, error) in
             self.saveData(saveCompleteHandler: { (reference, error) in
                 if let error = error {
-                    addNewPlaylistHandler(false, NewsicError(newsicErrorCode: NewsicErrorCodes.firebaseError, newsicErrorSubCode: NewsicErrorSubCode.technicalError, newsicErrorDescription: FirebaseErrorCodeDescription.addNewPlaylist.rawValue, systemError: error))
+                    addNewPlaylistHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.addNewPlaylist.rawValue, systemError: error))
                 } else {
                     addNewPlaylistHandler(true, nil)
                 }

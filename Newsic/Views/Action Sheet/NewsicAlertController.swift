@@ -1,6 +1,6 @@
 //
-//  NewsicAlertController.swift
-//  Newsic
+//  NusicAlertController.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 04/01/2018.
 //  Copyright © 2018 Miguel Alcantara. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewsicAlertController : YBAlertController {
+class NusicAlertController : YBAlertController {
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder);
@@ -30,21 +30,21 @@ class NewsicAlertController : YBAlertController {
         super.overlayColor = UIColor.black.withAlphaComponent(0.9)
         
         //Title details
-        super.titleFont = NewsicDefaults.font
-        super.titleTextColor = NewsicDefaults.greenColor
+        super.titleFont = NusicDefaults.font
+        super.titleTextColor = NusicDefaults.greenColor
         
         //Message Details
-        super.messageFont = NewsicDefaults.font
-        super.messageTextColor = NewsicDefaults.greenColor
-        super.messageLabel.backgroundColor = NewsicDefaults.blackColor
+        super.messageFont = NusicDefaults.font
+        super.messageTextColor = NusicDefaults.greenColor
+        super.messageLabel.backgroundColor = NusicDefaults.blackColor
         
         //Button Details
-        super.buttonFont = NewsicDefaults.font
-        super.buttonTextColor = NewsicDefaults.greenColor
+        super.buttonFont = NusicDefaults.font
+        super.buttonTextColor = NusicDefaults.greenColor
         
         //Cancel Button Details
-        super.cancelButtonFont = NewsicDefaults.font
-        super.cancelButtonTextColor = NewsicDefaults.greenColor
+        super.cancelButtonFont = NusicDefaults.font
+        super.cancelButtonTextColor = NusicDefaults.greenColor
         
     }
     

@@ -1,6 +1,6 @@
 //
-//  NewsicView.swift
-//  Newsic
+//  NusicView.swift
+//  Nusic
 //
 //  Created by Miguel Alcantara on 18/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -8,18 +8,18 @@
 
 import UIKit
 
-class NewsicView: UIView {
+class NusicView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupNewsicView()
+        setupNusicView()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    func setupNewsicView() {
+    func setupNusicView() {
         if let image = UIImage(named: "BackgroundPattern") {
             self.backgroundColor = UIColor(patternImage: image)
         }

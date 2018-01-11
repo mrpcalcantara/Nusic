@@ -1,6 +1,6 @@
 //
 //  SettingsHeader.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 03/01/2018.
 //  Copyright © 2018 Miguel Alcantara. All rights reserved.
@@ -12,7 +12,7 @@ protocol SettingsHeaderDelegate: class {
     func logout()
 }
 
-class SettingsHeader: NewsicView {
+class SettingsHeader: NusicView {
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -36,7 +36,7 @@ class SettingsHeader: NewsicView {
     
     func loadFromNib() {
         let contentView = UINib(nibName: self.className, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SettingsHeader
-        contentView.backgroundColor = NewsicDefaults.deselectedColor
+        contentView.backgroundColor = NusicDefaults.deselectedColor
         contentView.frame = self.bounds
         contentView.tag = 1
         

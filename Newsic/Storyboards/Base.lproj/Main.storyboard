@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="alU-Ei-zcq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="alU-Ei-zcq">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,6 +7,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -19,10 +20,6 @@
         <scene sceneID="97z-rB-0Yo">
             <objects>
                 <viewController storyboardIdentifier="SpotifyLogin" id="alU-Ei-zcq" customClass="SpotifyLoginViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="QfX-t6-AMU"/>
-                        <viewControllerLayoutGuide type="bottom" id="Lmx-mM-USA"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ckI-yp-Fw4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -37,8 +34,8 @@
                                     <action selector="spotifyLoginButton:" destination="alU-Ei-zcq" eventType="touchUpInside" id="Q62-X5-yhl"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Newsic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNX-a4-ASH">
-                                <rect key="frame" x="102.5" y="303.5" width="170" height="60"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nusic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNX-a4-ASH">
+                                <rect key="frame" x="122" y="303.5" width="131.5" height="60"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="50"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -46,16 +43,17 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="bNX-a4-ASH" firstAttribute="centerX" secondItem="ckI-yp-Fw4" secondAttribute="centerX" id="9Ly-Oi-IfI"/>
+                            <constraint firstItem="bNX-a4-ASH" firstAttribute="centerX" secondItem="nfP-bc-mRV" secondAttribute="centerX" id="9Ly-Oi-IfI"/>
                             <constraint firstItem="Tgc-jo-MXh" firstAttribute="centerY" secondItem="ckI-yp-Fw4" secondAttribute="centerY" id="CGc-a8-FOW"/>
-                            <constraint firstItem="Tgc-jo-MXh" firstAttribute="centerX" secondItem="ckI-yp-Fw4" secondAttribute="centerX" id="cVr-Bg-WjL"/>
+                            <constraint firstItem="Tgc-jo-MXh" firstAttribute="centerX" secondItem="nfP-bc-mRV" secondAttribute="centerX" id="cVr-Bg-WjL"/>
                             <constraint firstItem="bNX-a4-ASH" firstAttribute="centerY" secondItem="ckI-yp-Fw4" secondAttribute="centerY" id="e8w-G8-lio"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="nfP-bc-mRV"/>
                     </view>
                     <navigationItem key="navigationItem" id="thj-kJ-QZb"/>
                     <connections>
                         <outlet property="loginButton" destination="Tgc-jo-MXh" id="dpa-Gz-hAG"/>
-                        <outlet property="newsicLabl" destination="bNX-a4-ASH" id="bWV-4z-91Q"/>
+                        <outlet property="nusicLabl" destination="bNX-a4-ASH" id="bWV-4z-91Q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0EX-ux-1tR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -66,10 +64,6 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="SongPicker" id="BYZ-38-t0r" customClass="SongPickerViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" userLabel="Main View">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -130,7 +124,7 @@
                                                     <outlet property="delegate" destination="BYZ-38-t0r" id="nds-7t-3X8"/>
                                                 </connections>
                                             </collectionView>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="na7-Jq-MEC" customClass="NewsicButton" customModule="Newsic" customModuleProvider="target">
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="na7-Jq-MEC" customClass="NusicButton" customModule="Newsic" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="532" width="375" height="35"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="35" id="ieg-f5-GXs"/>
@@ -160,7 +154,7 @@
                                             <constraint firstItem="8t3-hW-Upx" firstAttribute="leading" secondItem="TJk-WK-DBD" secondAttribute="leading" constant="16" id="z1z-cv-BeE"/>
                                         </constraints>
                                     </view>
-                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JE2-ew-ku9" customClass="NewsicSegmentedControl" customModule="Newsic" customModuleProvider="target">
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JE2-ew-ku9" customClass="NusicSegmentedControl" customModule="Newsic" customModuleProvider="target">
                                         <rect key="frame" x="8" y="0.0" width="359" height="28"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -188,11 +182,12 @@
                             </view>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="Sau-Kp-Sny" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="2Sc-5t-NYT"/>
-                            <constraint firstItem="Sau-Kp-Sny" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="44" id="B8n-w9-qAO"/>
-                            <constraint firstAttribute="trailing" secondItem="Sau-Kp-Sny" secondAttribute="trailing" id="LMl-sm-W11"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Sau-Kp-Sny" secondAttribute="bottom" id="lPZ-Xg-JMM"/>
+                            <constraint firstItem="Sau-Kp-Sny" firstAttribute="leading" secondItem="fdZ-Cf-t8R" secondAttribute="leading" id="2Sc-5t-NYT"/>
+                            <constraint firstItem="Sau-Kp-Sny" firstAttribute="top" secondItem="fdZ-Cf-t8R" secondAttribute="top" constant="44" id="B8n-w9-qAO"/>
+                            <constraint firstItem="fdZ-Cf-t8R" firstAttribute="trailing" secondItem="Sau-Kp-Sny" secondAttribute="trailing" id="LMl-sm-W11"/>
+                            <constraint firstItem="fdZ-Cf-t8R" firstAttribute="bottom" secondItem="Sau-Kp-Sny" secondAttribute="bottom" id="lPZ-Xg-JMM"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="fdZ-Cf-t8R"/>
                     </view>
                     <navigationItem key="navigationItem" id="sG0-bm-crL"/>
                     <connections>
@@ -208,7 +203,7 @@
                         <outlet property="moodCollectionTopConstraint" destination="5yh-dv-De2" id="c9i-Ir-VwM"/>
                         <outlet property="moodCollectionTrailingConstraint" destination="jXN-8W-5xa" id="3Zh-oG-6dC"/>
                         <outlet property="moodCollectionView" destination="8t3-hW-Upx" id="z5u-GH-yc4"/>
-                        <outlet property="newsicControl" destination="JE2-ew-ku9" id="YUe-zb-Vy8"/>
+                        <outlet property="nusicControl" destination="JE2-ew-ku9" id="YUe-zb-Vy8"/>
                         <outlet property="searchButton" destination="na7-Jq-MEC" id="3sd-Te-vHt"/>
                         <outlet property="searchButtonHeightConstraint" destination="ieg-f5-GXs" id="Y2R-nt-XGh"/>
                         <segue destination="eJS-am-Jyf" kind="presentation" identifier="showVideoSegue" animates="NO" id="c9F-Gf-aWx"/>
@@ -222,10 +217,6 @@
         <scene sceneID="0N8-Rd-hNt">
             <objects>
                 <viewController storyboardIdentifier="ShowSong" automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="flipHorizontal" modalPresentationStyle="overFullScreen" id="eJS-am-Jyf" customClass="ShowSongViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="YgY-HS-9oM"/>
-                        <viewControllerLayoutGuide type="bottom" id="F5G-5z-bLG"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Yet-46-QVi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -253,7 +244,7 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="alX-vn-cgC">
-                                <rect key="frame" x="155" y="551" width="64" height="64"/>
+                                <rect key="frame" x="155.5" y="551" width="64" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="alX-vn-cgC" secondAttribute="height" multiplier="1:1" id="MLM-eQ-4za"/>
                                 </constraints>
@@ -355,36 +346,37 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="uVu-im-pgF" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="05z-3e-b3v"/>
-                            <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="Any-Pf-dnV" secondAttribute="bottom" constant="8" id="0Cp-ds-gGe"/>
-                            <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="Iig-1D-otX" secondAttribute="bottom" constant="8" id="3eq-9V-kik"/>
-                            <constraint firstItem="Any-Pf-dnV" firstAttribute="leading" secondItem="Yet-46-QVi" secondAttribute="leading" constant="60" id="9Ib-eq-uoR"/>
-                            <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="80" id="HDx-N2-1Fw"/>
+                            <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="Any-Pf-dnV" secondAttribute="bottom" constant="8" id="0Cp-ds-gGe"/>
+                            <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="Iig-1D-otX" secondAttribute="bottom" constant="8" id="3eq-9V-kik"/>
+                            <constraint firstItem="Any-Pf-dnV" firstAttribute="leading" secondItem="WhN-EJ-UOd" secondAttribute="leading" constant="60" id="9Ib-eq-uoR"/>
+                            <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="80" id="HDx-N2-1Fw"/>
                             <constraint firstItem="uVu-im-pgF" firstAttribute="trailing" secondItem="Yet-46-QVi" secondAttribute="trailingMargin" constant="-16" id="Ill-Y3-Qti"/>
-                            <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="k6E-Yi-lJS" secondAttribute="bottom" constant="8" id="KtE-le-FYf"/>
+                            <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="k6E-Yi-lJS" secondAttribute="bottom" constant="8" id="KtE-le-FYf"/>
                             <constraint firstItem="uVu-im-pgF" firstAttribute="leading" secondItem="Yet-46-QVi" secondAttribute="leadingMargin" constant="16" id="Lpd-zq-eJ8"/>
-                            <constraint firstItem="alX-vn-cgC" firstAttribute="centerX" secondItem="Yet-46-QVi" secondAttribute="centerX" id="XQo-Fy-Buo"/>
-                            <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="Qgp-ff-fLa" secondAttribute="bottom" constant="8" id="YpW-ge-llq"/>
+                            <constraint firstItem="alX-vn-cgC" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="XQo-Fy-Buo"/>
+                            <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="Qgp-ff-fLa" secondAttribute="bottom" constant="8" id="YpW-ge-llq"/>
                             <constraint firstItem="alX-vn-cgC" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="Yzb-nM-FQD"/>
                             <constraint firstItem="Iig-1D-otX" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="c8r-0N-0Ki"/>
-                            <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="HQy-9W-NO5" secondAttribute="bottom" constant="8" id="c9f-1V-cd7"/>
-                            <constraint firstItem="b3r-mr-Y8T" firstAttribute="top" secondItem="YgY-HS-9oM" secondAttribute="bottom" constant="44" id="cEx-Rd-wxv"/>
-                            <constraint firstItem="V03-pk-egn" firstAttribute="centerX" secondItem="Yet-46-QVi" secondAttribute="centerX" id="gkI-as-pns"/>
-                            <constraint firstItem="k6E-Yi-lJS" firstAttribute="centerX" secondItem="Yet-46-QVi" secondAttribute="centerX" id="hbC-F6-Ape"/>
-                            <constraint firstItem="Any-Pf-dnV" firstAttribute="top" secondItem="YgY-HS-9oM" secondAttribute="bottom" constant="44" id="hgB-44-2Hq"/>
-                            <constraint firstItem="HQy-9W-NO5" firstAttribute="centerX" secondItem="Yet-46-QVi" secondAttribute="centerX" id="hrT-wC-tiN"/>
+                            <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="HQy-9W-NO5" secondAttribute="bottom" constant="8" id="c9f-1V-cd7"/>
+                            <constraint firstItem="b3r-mr-Y8T" firstAttribute="top" secondItem="WhN-EJ-UOd" secondAttribute="top" constant="44" id="cEx-Rd-wxv"/>
+                            <constraint firstItem="V03-pk-egn" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="gkI-as-pns"/>
+                            <constraint firstItem="k6E-Yi-lJS" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="hbC-F6-Ape"/>
+                            <constraint firstItem="Any-Pf-dnV" firstAttribute="top" secondItem="WhN-EJ-UOd" secondAttribute="top" constant="44" id="hgB-44-2Hq"/>
+                            <constraint firstItem="HQy-9W-NO5" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="hrT-wC-tiN"/>
                             <constraint firstItem="b3r-mr-Y8T" firstAttribute="trailing" secondItem="Yet-46-QVi" secondAttribute="trailingMargin" constant="-8" id="jRq-Q6-LzD"/>
-                            <constraint firstItem="Iig-1D-otX" firstAttribute="centerX" secondItem="Yet-46-QVi" secondAttribute="centerX" id="lTg-3Y-Eq7"/>
-                            <constraint firstItem="Qgp-ff-fLa" firstAttribute="centerX" secondItem="Yet-46-QVi" secondAttribute="centerX" id="lfI-i2-93n"/>
-                            <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="V03-pk-egn" secondAttribute="bottom" constant="8" id="ltS-uG-JhY"/>
+                            <constraint firstItem="Iig-1D-otX" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="lTg-3Y-Eq7"/>
+                            <constraint firstItem="Qgp-ff-fLa" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="lfI-i2-93n"/>
+                            <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="V03-pk-egn" secondAttribute="bottom" constant="8" id="ltS-uG-JhY"/>
                             <constraint firstItem="Qgp-ff-fLa" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="lzU-fL-98Z"/>
-                            <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="alX-vn-cgC" secondAttribute="bottom" constant="8" id="pKv-yj-mlX"/>
+                            <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="alX-vn-cgC" secondAttribute="bottom" constant="8" id="pKv-yj-mlX"/>
                             <constraint firstItem="k6E-Yi-lJS" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="qAN-XT-z87"/>
-                            <constraint firstAttribute="trailing" secondItem="Any-Pf-dnV" secondAttribute="trailing" id="s2Z-aW-ZFo"/>
-                            <constraint firstItem="F5G-5z-bLG" firstAttribute="top" secondItem="uVu-im-pgF" secondAttribute="bottom" constant="8" id="siZ-64-5RR"/>
+                            <constraint firstItem="WhN-EJ-UOd" firstAttribute="trailing" secondItem="Any-Pf-dnV" secondAttribute="trailing" id="s2Z-aW-ZFo"/>
+                            <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="uVu-im-pgF" secondAttribute="bottom" constant="8" id="siZ-64-5RR"/>
                             <constraint firstItem="b3r-mr-Y8T" firstAttribute="leading" secondItem="Yet-46-QVi" secondAttribute="leadingMargin" constant="8" id="uCK-lc-dd6"/>
                             <constraint firstItem="HQy-9W-NO5" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="vwZ-oO-l4k"/>
                             <constraint firstItem="V03-pk-egn" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="zbc-Wm-RlZ"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="WhN-EJ-UOd"/>
                     </view>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
@@ -395,6 +387,7 @@
                         <outlet property="previousSong" destination="HQy-9W-NO5" id="UXb-dN-Qzf"/>
                         <outlet property="previousTrack" destination="k6E-Yi-lJS" id="ka1-MA-DHN"/>
                         <outlet property="showMore" destination="alX-vn-cgC" id="mtA-kE-ekt"/>
+                        <outlet property="songCardBottomConstraint" destination="HDx-N2-1Fw" id="fWk-GL-QLI"/>
                         <outlet property="songCardLeadingConstraint" destination="uCK-lc-dd6" id="Bel-A6-3aK"/>
                         <outlet property="songCardView" destination="lxK-RZ-2XL" id="DTA-id-vZl"/>
                         <outlet property="songDurationLabel" destination="h7B-Kq-TRB" id="Wu8-ub-Rem"/>
@@ -411,14 +404,10 @@
             </objects>
             <point key="canvasLocation" x="2184.8000000000002" y="42.728635682158924"/>
         </scene>
-        <!--Newsic View Controller-->
+        <!--Nusic View Controller-->
         <scene sceneID="nR0-Mq-T1f">
             <objects>
-                <viewController id="PP7-iy-gZe" customClass="NewsicViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="amq-Nj-CyB"/>
-                        <viewControllerLayoutGuide type="bottom" id="b9D-7G-LPF"/>
-                    </layoutGuides>
+                <viewController id="PP7-iy-gZe" customClass="NusicViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5WI-mz-G2n">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -432,11 +421,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Kwr-dP-F4f" firstAttribute="leading" secondItem="5WI-mz-G2n" secondAttribute="leading" id="6XY-wP-sBk"/>
-                            <constraint firstItem="Kwr-dP-F4f" firstAttribute="top" secondItem="amq-Nj-CyB" secondAttribute="bottom" id="RiY-cF-ir1"/>
-                            <constraint firstItem="b9D-7G-LPF" firstAttribute="top" secondItem="Kwr-dP-F4f" secondAttribute="bottom" id="YtO-YB-Ps8"/>
-                            <constraint firstAttribute="trailing" secondItem="Kwr-dP-F4f" secondAttribute="trailing" id="kej-h9-CSo"/>
+                            <constraint firstItem="Kwr-dP-F4f" firstAttribute="leading" secondItem="rfz-rx-kap" secondAttribute="leading" id="6XY-wP-sBk"/>
+                            <constraint firstItem="Kwr-dP-F4f" firstAttribute="top" secondItem="rfz-rx-kap" secondAttribute="top" id="RiY-cF-ir1"/>
+                            <constraint firstItem="rfz-rx-kap" firstAttribute="bottom" secondItem="Kwr-dP-F4f" secondAttribute="bottom" id="YtO-YB-Ps8"/>
+                            <constraint firstItem="rfz-rx-kap" firstAttribute="trailing" secondItem="Kwr-dP-F4f" secondAttribute="trailing" id="kej-h9-CSo"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="rfz-rx-kap"/>
                     </view>
                     <connections>
                         <outlet property="containerView" destination="Kwr-dP-F4f" id="1Ez-Ih-Ei1"/>
@@ -446,10 +436,10 @@
             </objects>
             <point key="canvasLocation" x="1370" y="-1565"/>
         </scene>
-        <!--Newsic Page View Controller-->
+        <!--Nusic Page View Controller-->
         <scene sceneID="myP-Ue-yU6">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="q9d-7g-4cf" customClass="NewsicPageViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="q9d-7g-4cf" customClass="NusicPageViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DJb-df-dVx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1370" y="-778"/>
@@ -458,10 +448,6 @@
         <scene sceneID="DyM-Kw-kZb">
             <objects>
                 <viewController storyboardIdentifier="SideMenu" id="iJM-BN-XbD" customClass="SideMenuViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="LkH-zk-pFj"/>
-                        <viewControllerLayoutGuide type="bottom" id="3BI-vs-VKs"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="r1t-i0-hfg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -483,11 +469,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="3BI-vs-VKs" firstAttribute="top" secondItem="7NX-4B-CKb" secondAttribute="bottom" id="amu-lc-L9p"/>
-                            <constraint firstAttribute="trailing" secondItem="7NX-4B-CKb" secondAttribute="trailing" id="dJN-C3-kM7"/>
-                            <constraint firstItem="7NX-4B-CKb" firstAttribute="leading" secondItem="r1t-i0-hfg" secondAttribute="leading" id="fdJ-HU-ZXn"/>
+                            <constraint firstItem="t2p-kZ-WcP" firstAttribute="bottom" secondItem="7NX-4B-CKb" secondAttribute="bottom" id="amu-lc-L9p"/>
+                            <constraint firstItem="t2p-kZ-WcP" firstAttribute="trailing" secondItem="7NX-4B-CKb" secondAttribute="trailing" id="dJN-C3-kM7"/>
+                            <constraint firstItem="7NX-4B-CKb" firstAttribute="leading" secondItem="t2p-kZ-WcP" secondAttribute="leading" id="fdJ-HU-ZXn"/>
                             <constraint firstItem="7NX-4B-CKb" firstAttribute="top" secondItem="r1t-i0-hfg" secondAttribute="top" constant="52" id="zld-x2-cRE"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="t2p-kZ-WcP"/>
                     </view>
                     <connections>
                         <outlet property="settingsTableView" destination="7NX-4B-CKb" id="gSM-Rd-AAW"/>

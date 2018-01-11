@@ -1,6 +1,6 @@
 //
 //  CL-ToggleView.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 20/12/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -21,8 +21,11 @@ extension ChoiceListView {
     }
     
     func setupArrow() {
+        if toggleView.subviews.contains(arrowImageView) {
+            arrowImageView.removeFromSuperview()
+        }
         let image = UIImage(named: "Arrow")
-        arrowImageView = UIImageView(frame: CGRect(x: toggleView.bounds.origin.x, y: toggleView.bounds.origin.y, width: toggleView.bounds.width, height: toggleView.frame.height))
+        arrowImageView = UIImageView(frame: CGRect(x: toggleView.bounds.origin.x, y: toggleView.bounds.origin.y, width: self.bounds.width, height: toggleViewHeight))
         arrowImageView.image = image!
         arrowImageView.contentMode = .scaleAspectFit
         toggleView.addSubview(arrowImageView)
@@ -30,6 +33,7 @@ extension ChoiceListView {
     }
     
     func toggleArrow() {
+//        setupArrow()
         if isOpen {
             showCloseArrow()
         } else {

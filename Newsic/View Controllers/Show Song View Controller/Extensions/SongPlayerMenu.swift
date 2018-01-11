@@ -1,6 +1,6 @@
 //
 //  SongPlayerMenu.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 09/10/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -55,7 +55,7 @@ extension ShowSongViewController {
         nextTrack.translatesAutoresizingMaskIntoConstraints = true;
         nextTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         
-        if preferredPlayer == NewsicPreferredPlayer.spotify {
+        if preferredPlayer == NusicPreferredPlayer.spotify {
             songProgressSlider.isHidden = false
             
             songProgressView.frame = buttonsInitFrame;
@@ -130,7 +130,7 @@ extension ShowSongViewController {
             self.nextSong.alpha = 1
             self.nextSong.isHidden = false
             
-            if self.preferredPlayer == NewsicPreferredPlayer.spotify {
+            if self.preferredPlayer == NusicPreferredPlayer.spotify {
                 self.songProgressView.frame.origin.x = self.trackStackView.frame.origin.x
                 self.songProgressView.frame.origin.y = self.view.frame.height * 0.9 - buttonWidth
                 self.songProgressView.isHidden = false
@@ -138,7 +138,7 @@ extension ShowSongViewController {
                 self.songProgressView.frame.size = CGSize(width: self.trackStackView.frame.width, height: self.songProgressView.frame.height)
             }
             
-            self.showMore.frame.origin.y = self.preferredPlayer == NewsicPreferredPlayer.spotify ? self.view.frame.height * 0.84 - buttonWidth : self.view.frame.height * 0.9 - buttonWidth
+            self.showMore.frame.origin.y = self.preferredPlayer == NusicPreferredPlayer.spotify ? self.view.frame.height * 0.84 - buttonWidth : self.view.frame.height * 0.9 - buttonWidth
             
             self.toggleLikeButtons();
             self.trackStackView.alpha = 0.9;
@@ -147,8 +147,9 @@ extension ShowSongViewController {
                 cardView.genreLabel.alpha = 0
                 cardView.songArtist.alpha = 0
             }
-            
-            
+            if !self.isPlayerMenuOpen {
+                self.songCardBottomConstraint.constant += self.view.frame.height * 0.84
+            }
             self.view.layoutIfNeeded();
         }
         self.showMore.transform = CGAffineTransform.identity;
@@ -175,7 +176,7 @@ extension ShowSongViewController {
                     self.nextTrack.frame = buttonsInitFrame;
                     self.nextTrack.alpha = 0
                     
-                    if self.preferredPlayer == NewsicPreferredPlayer.spotify {
+                    if self.preferredPlayer == NusicPreferredPlayer.spotify {
                         self.songProgressView.frame = buttonsInitFrame
                         self.songProgressView.alpha = 0
                     }
@@ -199,7 +200,7 @@ extension ShowSongViewController {
                 self.nextSong.isHidden = true
                 self.previousTrack.isHidden = true
                 self.nextTrack.isHidden = true
-                if self.preferredPlayer == NewsicPreferredPlayer.spotify {
+                if self.preferredPlayer == NusicPreferredPlayer.spotify {
                     self.songProgressView.isHidden = true
                 }
                 
@@ -214,8 +215,11 @@ extension ShowSongViewController {
                 self.nextSong.frame = buttonsInitFrame;
                 self.previousTrack.frame = buttonsInitFrame;
                 self.nextTrack.frame = buttonsInitFrame;
-                if self.preferredPlayer == NewsicPreferredPlayer.spotify {
+                if self.preferredPlayer == NusicPreferredPlayer.spotify {
                     self.songProgressView.frame = buttonsInitFrame
+                }
+                if self.isPlayerMenuOpen {
+                    self.songCardBottomConstraint.constant -= self.view.frame.height * 0.84
                 }
                 
                 self.view.layoutIfNeeded();
@@ -253,7 +257,7 @@ extension ShowSongViewController {
         self.previousTrack.isHidden = true
         self.nextTrack.frame = buttonsInitFrame;
         self.nextTrack.isHidden = true
-        if preferredPlayer == NewsicPreferredPlayer.spotify {
+        if preferredPlayer == NusicPreferredPlayer.spotify {
             self.songProgressView.frame = buttonsInitFrame;
             self.songProgressView.isHidden = true
         }

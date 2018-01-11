@@ -1,6 +1,6 @@
 //
 //  CollectionViewHeader.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 27/11/2017.
 //  Copyright © 2017 Miguel Alcantara. All rights reserved.
@@ -15,7 +15,7 @@ class CollectionViewHeader: UICollectionReusableView {
     static let reuseIdentifier = "collectionViewHeader"
     
     override class var layerClass: AnyClass {
-        get { return NewsicCustomLayer.self }
+        get { return NusicCustomLayer.self }
     }
     
     override func prepareForReuse() {

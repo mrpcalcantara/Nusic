@@ -1,5 +1,5 @@
 //
-//  NewsicPageViewController.swift
+//  NusicPageViewController.swift
 //  UIPageViewController Post
 //
 //  Created by Jeffrey Burt on 12/11/15.
@@ -8,9 +8,9 @@
 
 import UIKit
 
-class NewsicPageViewController: UIPageViewController {
+class NusicPageViewController: UIPageViewController {
     
-    weak var newsicDelegate: NewsicPageViewControllerDelegate?
+    weak var nusicDelegate: NusicPageViewControllerDelegate?
     
     var songPickerVC: UIViewController?
     var sideMenuVC: UIViewController?
@@ -52,14 +52,14 @@ class NewsicPageViewController: UIPageViewController {
 
         let initialViewController = orderedViewControllers[1]
         scrollToViewController(viewController: initialViewController)
-        newsicDelegate?.newsicPageViewController(newsicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
+        nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
         
     }
     
     @objc func addViewControllerToPageVC(viewController: UIViewController) {
         if !orderedViewControllers.contains(viewController) {
             orderedViewControllers.insert(viewController, at: orderedViewControllers.count)
-            newsicDelegate?.newsicPageViewController(newsicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
+            nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
         }
         
     }
@@ -68,7 +68,7 @@ class NewsicPageViewController: UIPageViewController {
         if orderedViewControllers.contains(viewController) {
             if let index = orderedViewControllers.index(of: viewController) {
                 orderedViewControllers.remove(at: index)
-                newsicDelegate?.newsicPageViewController(newsicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
+                nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
             }
         }
     }
@@ -128,18 +128,18 @@ class NewsicPageViewController: UIPageViewController {
                            completion: { (finished) -> Void in
                             // Setting the view controller programmatically does not fire
                             // any delegate methods, so we have to manually notify the
-                            // 'newsicDelegate' of the new index.
-                            self.notifyNewsicDelegateOfNewIndex()
+                            // 'nusicDelegate' of the new index.
+                            self.notifyNusicDelegateOfNewIndex()
                             
         })
     }
     
     /**
-     Notifies '_newsicDelegate' that the current page index was updated.
+     Notifies '_nusicDelegate' that the current page index was updated.
      */
-    private func notifyNewsicDelegateOfNewIndex() {
+    private func notifyNusicDelegateOfNewIndex() {
         if let firstViewController = viewControllers?.first, let index = orderedViewControllers.index(of: firstViewController) {
-            newsicDelegate?.newsicPageViewController(newsicPageViewController: self, didUpdatePageIndex: index)
+            nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageIndex: index)
         }
     }
     
@@ -147,7 +147,7 @@ class NewsicPageViewController: UIPageViewController {
 
 // MARK: UIPageViewControllerDataSource
 
-extension NewsicPageViewController: UIPageViewControllerDataSource {
+extension NusicPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let viewControllerIndex = orderedViewControllers.index(of: viewController) else {
@@ -196,7 +196,7 @@ extension NewsicPageViewController: UIPageViewControllerDataSource {
     
 }
 
-extension NewsicPageViewController : UIScrollViewDelegate {
+extension NusicPageViewController : UIScrollViewDelegate {
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         print("started dragging")
@@ -205,13 +205,13 @@ extension NewsicPageViewController : UIScrollViewDelegate {
     
 }
 
-extension NewsicPageViewController: UIPageViewControllerDelegate {
+extension NusicPageViewController: UIPageViewControllerDelegate {
     
     func pageViewController(_ pageViewController: UIPageViewController,
                             didFinishAnimating finished: Bool,
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
-        notifyNewsicDelegateOfNewIndex()
+        notifyNusicDelegateOfNewIndex()
         
     }
     
@@ -221,35 +221,35 @@ extension NewsicPageViewController: UIPageViewControllerDelegate {
     
 }
 
-protocol NewsicPageViewControllerDelegate: class {
+protocol NusicPageViewControllerDelegate: class {
     
     /**
      Called when the number of pages is updated.
      
-     - parameter newsicPageViewController: the NewsicPageViewController instance
+     - parameter nusicPageViewController: the NusicPageViewController instance
      - parameter count: the total number of pages.
      */
-    func newsicPageViewController(newsicPageViewController: NewsicPageViewController,
+    func nusicPageViewController(nusicPageViewController: NusicPageViewController,
                                     didUpdatePageCount count: Int)
     
     /**
      Called when the current index is updated.
      
-     - parameter newsicPageViewController: the NewsicPageViewController instance
+     - parameter nusicPageViewController: the NusicPageViewController instance
      - parameter index: the index of the currently visible page.
      */
-    func newsicPageViewController(newsicPageViewController: NewsicPageViewController,
+    func nusicPageViewController(nusicPageViewController: NusicPageViewController,
                                     didUpdatePageIndex index: Int)
     
 //
 //    /**
 //     Called when the new view controller is to be presented
 //
-//     - parameter newsicPageViewController: the NewsicPageViewController instance
+//     - parameter nusicPageViewController: the NusicPageViewController instance
 //     - parameter enableNext: the next view controller on the stack
 //    */
 //
-//    func newsicPageViewController(newsicPageViewController: NewsicPageViewController,
+//    func nusicPageViewController(nusicPageViewController: NusicPageViewController,
 //                                  enableNext: Bool)
     
 }

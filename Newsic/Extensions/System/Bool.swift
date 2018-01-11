@@ -1,6 +1,6 @@
 //
 //  Bool.swift
-//  Newsic
+//  Nusic
 //
 //  Created by Miguel Alcantara on 03/01/2018.
 //  Copyright © 2018 Miguel Alcantara. All rights reserved.
