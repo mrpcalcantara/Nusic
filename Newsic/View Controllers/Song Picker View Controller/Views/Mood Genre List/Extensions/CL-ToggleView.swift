@@ -12,7 +12,18 @@ extension ChoiceListView {
     
     func setupToggleView() {
         toggleView.backgroundColor = UIColor.clear
-        toggleView.addBlurEffect(style: .dark, alpha: 0.7)
+        
+        var containsBlurEffect = false
+        for toggleViewSubview in toggleView.subviews {
+            if toggleViewSubview.tag == 1 {
+                containsBlurEffect = true
+                break;
+            }
+        }
+        
+        if !containsBlurEffect {
+            toggleView.addBlurEffect(style: .dark, alpha: 0.7)
+        }
         
         toggleViewHeight = toggleView.frame.height
         setupArrow()

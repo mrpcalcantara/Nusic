@@ -77,6 +77,7 @@ class ChoiceListView: NusicView {
     }
     var hasGenres: Bool = false
     var isOpen: Bool = false
+    var isShowing: Bool = false
     
     enum Section: Int {
 //        case moodSection
@@ -121,6 +122,20 @@ class ChoiceListView: NusicView {
         setupGestureRecognizers()
         self.maxY = maxY
         startY = self.frame.origin.y
+        
+    }
+    
+    func reloadView() {
+        setupArrow()
+        toggleArrow()
+        removeBezierPaths()
+        toggleBezierPaths()
+        
+        startY = self.frame.origin.y
+        self.fetchSongsButton.layoutIfNeeded()
+        if self.isShowing {
+            self.layoutChoiceView()
+        }
         
     }
     

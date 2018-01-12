@@ -14,6 +14,7 @@ extension ShowSongViewController {
     @objc func toggleSongMenu() {
         if !isMenuOpen {
             openMenu();
+            
             closePlayerMenu(animated: true)
         } else {
             closeMenu();

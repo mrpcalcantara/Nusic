@@ -47,6 +47,7 @@ extension ShowSongViewController: KolodaViewDelegate {
         songCardView.addGestureRecognizer(doubleTapRecognizer);
         
         
+        
     }
     
     func addSongToPosition(at index: Int, position: Int) {
