@@ -430,18 +430,15 @@ extension SongPickerViewController: UICollectionViewDataSource {
         if collectionView == self.moodCollectionView {
             let mood = moods[indexPath.row].rawValue
             cell.moodLabel.text = "\(mood)"
-            isLastRow = indexPath.row > moods.count - 3
+            isLastRow = indexPath.row > moods.count - Int(cellsPerRow)-1
         } else {
             let genres = sectionGenres[indexPath.section-1]
             let genre = genres[indexPath.row].rawValue
             cell.moodLabel.text = "\(genre)"
-            isLastRow = indexPath.row > genres.count - 3
+            isLastRow = indexPath.row > genres.count - Int(cellsPerRow)-1
         }
         cell.configure(for: indexPath.row, offsetRect: self.sectionHeaderFrame, isLastRow: isLastRow);
         cell.layoutIfNeeded()
-        DispatchQueue.main.async {
-            
-        }
         
         return cell;
         
@@ -454,7 +451,8 @@ extension SongPickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         //If iPad show 4 per row, otherwise only 2
-        let sizeWidth = UIDevice.current.userInterfaceIdiom == .pad ? collectionView.frame.width/4 : collectionView.frame.width/2
+        cellsPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2
+        let sizeWidth = collectionView.frame.width/cellsPerRow
         if let window = UIApplication.shared.keyWindow {
             return CGSize(width: sizeWidth, height: window.frame.height/10);
         } else {

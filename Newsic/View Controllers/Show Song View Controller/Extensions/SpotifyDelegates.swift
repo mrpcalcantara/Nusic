@@ -220,6 +220,7 @@ extension ShowSongViewController {
             nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
             nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.playbackState.position
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            self.isPlaying = false
             spotifyPausePlay()
         }
     }
@@ -231,6 +232,7 @@ extension ShowSongViewController {
             nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 0
             nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.playbackState.position
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            self.isPlaying = true
             spotifyPausePlay()
         }
     }

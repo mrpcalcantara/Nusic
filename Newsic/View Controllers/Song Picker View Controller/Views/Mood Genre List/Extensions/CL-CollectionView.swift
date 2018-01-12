@@ -15,7 +15,6 @@ extension ChoiceListView {
         let y = toggleView.bounds.height
         let width = self.bounds.width
         let height:CGFloat = self.bounds.height - y - fetchSongsButton.bounds.height
-        //        choiceCollectionView.frame = CGRect(x: x, y: y, width: width, height: height)
         choiceCollectionView.delegate = self
         choiceCollectionView.dataSource = self
         choiceCollectionView.isScrollEnabled = true

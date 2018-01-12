@@ -132,7 +132,10 @@ extension ShowSongViewController: UITableViewDelegate {
         
         isSongLiked = true; toggleLikeButtons();
         addSongToPosition(at: indexPath.row, position: frontPosition);
-        closeMenu();
+        if UIApplication.shared.statusBarOrientation.isPortrait {
+            closeMenu();
+        }
+        
         if preferredPlayer == NusicPreferredPlayer.spotify {
             actionPlaySpotifyTrack(spotifyTrackId: cardList[frontPosition].trackInfo.trackUri);
         }
@@ -211,10 +214,62 @@ extension ShowSongViewController: UITableViewDataSource {
         gradient.locations = [0.0,0.4]
         headerCell.layer.addSublayer(gradient)
         
+        if UIApplication.shared.statusBarOrientation.isLandscape {
+            removeHeaderGestureRecognizer(for: headerCell)
+            removeMenuSwipeGestureRecognizer()
+        } else {
+            addHeaderGestureRecognizer(for: headerCell)
+            addMenuSwipeGestureRecognizer()
+        }
+        
+    }
+    
+    func addHeaderGestureRecognizer(for headerCell: SongTableViewHeader) {
         let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
         screenEdgeRecognizer.cancelsTouchesInView = false
         screenEdgeRecognizer.delegate = self
+        screenEdgeRecognizer.name = "panHeader"
         headerCell.addGestureRecognizer(screenEdgeRecognizer);
+    }
+    
+    func removeHeaderGestureRecognizer(for headerCell: SongTableViewHeader) {
+        if let index = headerCell.gestureRecognizers?.index(where: { (gestureRecognizer) -> Bool in
+            return gestureRecognizer.name == "panHeader"
+        }) {
+            headerCell.gestureRecognizers?.remove(at: index)
+        }
+    }
+    
+    func disableHeaderGestureRecognizer(for headerCell: SongTableViewHeader) {
+        if let index = headerCell.gestureRecognizers?.index(where: { (gestureRecognizer) -> Bool in
+            return gestureRecognizer.name == "panHeader"
+        }) {
+            let gestureRecognizer = headerCell.gestureRecognizers![index]
+            gestureRecognizer.isEnabled = false
+        }
+    }
+    
+    func enableHeaderGestureRecognizer(for headerCell: SongTableViewHeader) {
+        if let index = headerCell.gestureRecognizers?.index(where: { (gestureRecognizer) -> Bool in
+            return gestureRecognizer.name == "panHeader"
+        }) {
+            let gestureRecognizer = headerCell.gestureRecognizers![index]
+            gestureRecognizer.isEnabled = true
+        }
+    }
+    
+    func addMenuSwipeGestureRecognizer() {
+        menuEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
+        menuEdgePanGestureRecognizer.edges = .right
+        self.view.addGestureRecognizer(menuEdgePanGestureRecognizer);
+    }
+    
+    func removeMenuSwipeGestureRecognizer() {
+        if let index = self.view.gestureRecognizers?.index(where: { (gestureRecognizer) -> Bool in
+            return gestureRecognizer == menuEdgePanGestureRecognizer
+        }) {
+            self.view.gestureRecognizers?.remove(at: index)
+        }
     }
     
 }

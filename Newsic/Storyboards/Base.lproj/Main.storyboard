@@ -389,6 +389,7 @@
                         <outlet property="showMore" destination="alX-vn-cgC" id="mtA-kE-ekt"/>
                         <outlet property="songCardBottomConstraint" destination="HDx-N2-1Fw" id="fWk-GL-QLI"/>
                         <outlet property="songCardLeadingConstraint" destination="uCK-lc-dd6" id="Bel-A6-3aK"/>
+                        <outlet property="songCardTrailingConstraint" destination="jRq-Q6-LzD" id="fv8-xg-Wuo"/>
                         <outlet property="songCardView" destination="lxK-RZ-2XL" id="DTA-id-vZl"/>
                         <outlet property="songDurationLabel" destination="h7B-Kq-TRB" id="Wu8-ub-Rem"/>
                         <outlet property="songElapsedTime" destination="dXd-ii-e2J" id="cKE-qX-ye9"/>

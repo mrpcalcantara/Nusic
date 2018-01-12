@@ -119,6 +119,8 @@ class SongPickerViewController: NusicDefaultViewController {
     }
     var spinner: SwiftSpinner! = nil
     var listMenuView: ChoiceListView! = nil
+    var viewRotated:Bool = false
+    var cellsPerRow: CGFloat = 0
     
     //Segues
     let sideMenuSegue = "showSideMenuSegue"
@@ -156,13 +158,6 @@ class SongPickerViewController: NusicDefaultViewController {
     
     //Actions
     
-    @IBAction func logoutClicked(_ sender: UIButton) {
-        UserDefaults.standard.removeObject(forKey: "SpotifySession");
-        UserDefaults.standard.synchronize();
-        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "SpotifyLogin") as! SpotifyLoginViewController
-        self.present(viewController, animated: true, completion: nil);
-    }
-    
     @IBAction func getNewSong(_ sender: Any) {
         if !isMoodSelected {
             var nusicMood = NusicMood();
@@ -179,25 +174,64 @@ class SongPickerViewController: NusicDefaultViewController {
         }
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        if viewRotated {
+            genreCollectionView.collectionViewLayout.invalidateLayout()
+            moodCollectionView.collectionViewLayout.invalidateLayout()
+        }
+        
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        if listMenuView.maxY != self.view.safeAreaLayoutGuide.layoutFrame.maxY {
-//            listMenuView.maxY = self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
-//        }
-        setupNavigationBar()
+        if viewRotated {
+            
+            genreCollectionView.reloadData()
+            moodCollectionView.reloadData()
+            print("viewDidLayoutSubviews size = \(self.view.frame.size)")
+            print("viewDidLayoutSubviews safeAreaLayout size = \(self.view.safeAreaLayoutGuide.layoutFrame.size)")
+            var newY:CGFloat = 0
+            if !listMenuView.isShowing {
+                newY = self.view.frame.height
+            } else {
+                if listMenuView.isOpen {
+                    newY = self.view.frame.height/2
+                } else {
+                    newY = self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
+                }
+            }
+            listMenuView.maxY = self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
+            listMenuView.frame = CGRect(x: listMenuView.frame.origin.x, y: newY, width: self.view.frame.width, height: listMenuView.frame.height)
+            listMenuView.reloadView()
+            self.view.layoutIfNeeded()
+            viewRotated = false
+            
+        }
+        
+        if navbar.frame.origin.y != self.view.safeAreaLayoutGuide.layoutFrame.origin.y {
+            setupNavigationBar()
+        }
         print("viewDidLayoutSubviews = \(self.view.frame.width)")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        genreCollectionView.layoutIfNeeded()
-        moodCollectionView.layoutIfNeeded()
+//        genreCollectionView.layoutIfNeeded()
+//        moodCollectionView.layoutIfNeeded()
         
-        print("viewDidAppear = \(self.view.safeAreaLayoutGuide.layoutFrame.maxY)")
+//        print("viewDidAppear = \(self.view.safeAreaLayoutGuide.layoutFrame.maxY)")
         
     }
     
-    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        genreCollectionView.collectionViewLayout.invalidateLayout()
+//        moodCollectionView.collectionViewLayout.invalidateLayout()
+        print("transitioning to size = \(size)")
+//        let newY = listMenuView.isOpen ? listMenuView.frame.origin.y : size.height
+//        listMenuView.frame = CGRect(x: listMenuView.frame.origin.x, y: newY, width: size.width, height: listMenuView.frame.height)
+        viewRotated = true
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

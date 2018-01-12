@@ -99,30 +99,30 @@ extension SongPickerViewController : ChoiceListDelegate {
         let point = CGPoint(x: listMenuView.frame.origin.x, y: self.view.safeAreaLayoutGuide.layoutFrame.height/2)
         willMove(to: point, animated: true)
         listMenuView.animateMove(to: point)
+        listMenuView.isShowing = true
     }
     
     func hideChoiceMenu() {
         self.listViewBottomConstraint.constant = listMenuView.toggleViewHeight
-        print(self.view.safeAreaLayoutGuide.layoutFrame.maxY)
         let point = CGPoint(x: listMenuView.frame.origin.x, y: self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight)
         willMove(to: point, animated: true)
         listMenuView.animateMove(to: point)
+        listMenuView.isShowing = true
     }
     
     func openChoiceMenu() {
-//        listMenuView.setupArrow()
         self.listViewBottomConstraint.constant = listMenuView.toggleViewHeight
-        print(self.view.safeAreaLayoutGuide.layoutFrame.maxY)
-        let point = CGPoint(x: listMenuView.frame.origin.x, y: self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight) 
+//        print(self.view.safeAreaLayoutGuide.layoutFrame.maxY)
+        let point = CGPoint(x: listMenuView.frame.origin.x, y: self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight)
         willMove(to: point, animated: true)
         listMenuView.animateMove(to: point)
-        
+        listMenuView.isShowing = true
     }
     
     func closeChoiceMenu() {
         self.listViewBottomConstraint.constant = 0
         willMove(to: CGPoint(x: listMenuView.frame.origin.x, y: self.view.frame.height), animated: true)
-        
+        listMenuView.isShowing = false
     }
     
     func toggleChoiceMenu(willOpen: Bool) {
