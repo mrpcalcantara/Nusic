@@ -46,7 +46,7 @@ extension ShowSongViewController: KolodaViewDelegate {
         doubleTapRecognizer.numberOfTapsRequired = 2
         songCardView.addGestureRecognizer(doubleTapRecognizer);
         
-        
+        currentSongCardFrame = songCardView.frame
         
     }
     

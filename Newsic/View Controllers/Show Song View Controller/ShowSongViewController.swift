@@ -60,6 +60,9 @@ class ShowSongViewController: NusicDefaultViewController {
     var cardCount = 10;
     var initialSongListCenter: CGPoint? = nil
     var initialPlayerMenuIconCenter: CGRect? = nil
+    var currentSongCardFrame: CGRect? = nil
+    var showMoreOpenPosition: CGPoint? = nil
+    var showMoreClosePosition: CGPoint? = nil
     var songListMenuProgress: CGFloat! = 0;
     var initialSwipeLocation: CGPoint! = CGPoint.zero
     var dismissProgress: CGFloat! = 0
@@ -121,38 +124,55 @@ class ShowSongViewController: NusicDefaultViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        
+//        print("viewWillLayoutSubviews() called, songCardView.frame = \(songCardView.frame)")
+//        if let headerCell = songListTableView.headerView(forSection: 0) as? SongTableViewHeader {
+//            if UIApplication.shared.statusBarOrientation.isLandscape {
+//                removeHeaderGestureRecognizer(for: headerCell)
+//                removeMenuSwipeGestureRecognizer()
+//            } else {
+//                addHeaderGestureRecognizer(for: headerCell)
+//                addMenuSwipeGestureRecognizer()
+//            }
+//        }
+        setShowMoreOrigin()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews();
+//        print("viewDidLayoutSubviews() called, songCardView.frame = \(songCardView.frame)")
+//         showMore.frame.origin = CGPoint(x: songCardView.frame.origin.x + songCardView.frame.size.width/2, y: songCardView.frame.height + songCardBottomConstraint.constant)
         if navbar.frame.origin.y != self.view.safeAreaLayoutGuide.layoutFrame.origin.y || navbar.frame.width != self.view.safeAreaLayoutGuide.layoutFrame.width {
-//
             setupNavigationBar()
         }
         
         if screenRotated {
-            if UIApplication.shared.statusBarOrientation.isLandscape {
-                removeHeaderGestureRecognizer(for: songListTableView.headerView(forSection: 0) as! SongTableViewHeader)
-                removeMenuSwipeGestureRecognizer()
-            } else {
-                addHeaderGestureRecognizer(for: songListTableView.headerView(forSection: 0) as! SongTableViewHeader)
-                addMenuSwipeGestureRecognizer()
-            }
-            self.songCardView.layoutDeck()
-            showMore.frame.origin = CGPoint(x: songCardView.frame.origin.x + songCardView.frame.size.width/2, y: songCardView.frame.height + songCardBottomConstraint.constant/2)
-            setupPlayerMenu()
-            self.view.layoutIfNeeded()
+            
+//            self.songCardView.reloadData()
+            self.setupPlayerMenu()
+//            self.view.layoutIfNeeded()
+            screenRotated = false
+            print("screen stop rotating")
         }
         
-        screenRotated = false
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        if let headerCell = songListTableView.headerView(forSection: 0) as? SongTableViewHeader {
+            if size.width > size.height {
+                removeHeaderGestureRecognizer(for: headerCell)
+                removeMenuSwipeGestureRecognizer()
+            } else {
+                addHeaderGestureRecognizer(for: headerCell)
+                addMenuSwipeGestureRecognizer()
+            }
+        }
         setupConstraints(for: size)
+        self.songCardView.layoutSubviews()
+        closePlayerMenu(animated: true)
         closeMenu()
         screenRotated = true
+        print("screen rotated")
     }
     
     func setupConstraints(for size: CGSize) {
@@ -284,12 +304,7 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     
     @IBAction func songSeek(_ sender: UISlider) {
-        updateElapsedTime(elapsedTime: sender.value)
-        if sender.isTracking {
-            
-        } else {
-            
-        }
+        updateElapsedTime(elapsedTime: sender.value, duration: Float((currentPlayingTrack?.audioFeatures?.durationMs)!))
     }
     
     @IBAction func finishSeek(_ sender: UISlider) {
@@ -389,6 +404,25 @@ class ShowSongViewController: NusicDefaultViewController {
         }
     }
 
+    func setShowMoreOrigin() {
+        if currentSongCardFrame != songCardView.frame {
+            currentSongCardFrame = songCardView.frame
+            showMoreOpenPosition = CGPoint(x: songCardView.frame.origin.x + songCardView.frame.size.width/2, y: songCardView.frame.height + songCardBottomConstraint.constant)
+            showMoreOpenPosition?.x = songCardView.frame.origin.x + songCardView.frame.size.width/2 - songCardLeadingConstraint.constant 
+            
+            showMoreOpenPosition?.y = self.preferredPlayer == NusicPreferredPlayer.spotify ? self.view.safeAreaLayoutGuide.layoutFrame.height * 0.84 - showMore.frame.width : self.view.safeAreaLayoutGuide.layoutFrame.height * 0.9 - showMore.frame.width
+            showMoreClosePosition = CGPoint(x: songCardView.frame.origin.x + songCardView.frame.size.width/2, y: songCardView.frame.height + songCardBottomConstraint.constant)
+            showMoreClosePosition?.x = (showMoreOpenPosition?.x)!
+            showMoreClosePosition?.y = songCardView.frame.height + songCardBottomConstraint.constant
+            initialPlayerMenuIconCenter = CGRect(origin: showMoreClosePosition!, size: showMore.frame.size)
+            if isPlayerMenuOpen {
+                self.showMore.frame.origin = self.showMoreOpenPosition!
+            } else {
+                self.showMore.frame.origin = self.showMoreClosePosition!
+            }
+            
+        }
+    }
 }
 
 extension ShowSongViewController: UIGestureRecognizerDelegate {
