@@ -225,11 +225,23 @@ extension ShowSongViewController: UITableViewDataSource {
     }
     
     func addHeaderGestureRecognizer(for headerCell: SongTableViewHeader) {
-        let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
-        screenEdgeRecognizer.cancelsTouchesInView = false
-        screenEdgeRecognizer.delegate = self
-        screenEdgeRecognizer.name = "panHeader"
-        headerCell.addGestureRecognizer(screenEdgeRecognizer);
+        if let gestureRecognizers = headerCell.gestureRecognizers {
+            if !gestureRecognizers.contains(where: { (gestureRecognizer) -> Bool in
+                return gestureRecognizer.name == "panHeader"
+            }) {
+                let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
+                screenEdgeRecognizer.cancelsTouchesInView = false
+                screenEdgeRecognizer.delegate = self
+                screenEdgeRecognizer.name = "panHeader"
+                headerCell.addGestureRecognizer(screenEdgeRecognizer);
+            }
+        } else {
+            let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
+            screenEdgeRecognizer.cancelsTouchesInView = false
+            screenEdgeRecognizer.delegate = self
+            screenEdgeRecognizer.name = "panHeader"
+            headerCell.addGestureRecognizer(screenEdgeRecognizer);
+        }
     }
     
     func removeHeaderGestureRecognizer(for headerCell: SongTableViewHeader) {

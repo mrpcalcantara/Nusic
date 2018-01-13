@@ -27,7 +27,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         if let currentTrack = currentTrack, let currentPlayingTrack = currentPlayingTrack {
             let currentPosition = Float(position)
             songProgressSlider.value = currentPosition
-            updateElapsedTime(elapsedTime: currentPosition)
+            updateElapsedTime(elapsedTime: currentPosition, duration: Float(currentTrack.duration))
             let thumbNail = currentPlayingTrack.thumbNail != nil ? currentPlayingTrack.thumbNail : nil
             self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: thumbNail, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
         }
@@ -62,6 +62,11 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             print("track started");
             if let currentTrack = currentTrack {
                 let currentPlayingTrack = self.cardList[self.songCardView.currentCardIndex].trackInfo
+                
+                if currentPlayingTrack.audioFeatures == nil {
+                    currentPlayingTrack.audioFeatures = SpotifyTrackFeature()
+                }
+                currentPlayingTrack.audioFeatures?.durationMs = currentTrack.duration
                 self.currentPlayingTrack = currentPlayingTrack;
                 
                 if let imageURL = currentTrack.albumCoverArtURL {
@@ -157,7 +162,6 @@ extension ShowSongViewController {
         formatter.unitsStyle = .positional
         
         let formattedString = formatter.string(from: TimeInterval(interval))!
-        //print(formattedString)
         return formattedString
     }
     
@@ -282,7 +286,6 @@ extension ShowSongViewController {
         
     }
     
-    
     @objc func actionSeekBackward() {
         let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
         if let nowPlayingInfo = nowPlayingInfo {
@@ -326,7 +329,6 @@ extension ShowSongViewController {
         
         
     }
-    
     
     // MARK: Activate audio session
     

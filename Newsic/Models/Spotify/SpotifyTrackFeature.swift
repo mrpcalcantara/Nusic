@@ -31,12 +31,12 @@ struct SpotifyTrackFeature: Hashable {
     var uri: String? = "";
     var trackHref: String? = "";
     var analysisUrl: String? = "";
-    var durationMs: Int? = 0;
+    var durationMs: Double? = 0;
     var timeSignature: Int? = 0;
     var genre: String? = ""
     var youtubeId: String? = ""
     
-    init(acousticness: Double? = nil, analysisUrl: String? = nil, danceability: Double? = nil, durationMs: Int? = nil, energy: Double? = nil, id: String? = nil, instrumentalness: Double? = nil, key: Int? = nil, liveness: Double? = nil, loudness: Double? = nil, mode: Int? = nil, speechiness: Double? = nil, tempo: Double? = nil, timeSignature: Int? = nil, trackHref: String? = nil, type: String? = nil, uri: String? = nil, valence: Double? = nil, genre: String? = nil, youtubeId: String? = nil) {
+    init(acousticness: Double? = nil, analysisUrl: String? = nil, danceability: Double? = nil, durationMs: Double? = nil, energy: Double? = nil, id: String? = nil, instrumentalness: Double? = nil, key: Int? = nil, liveness: Double? = nil, loudness: Double? = nil, mode: Int? = nil, speechiness: Double? = nil, tempo: Double? = nil, timeSignature: Int? = nil, trackHref: String? = nil, type: String? = nil, uri: String? = nil, valence: Double? = nil, genre: String? = nil, youtubeId: String? = nil) {
         
         self.acousticness      = acousticness
         self.analysisUrl       = analysisUrl
@@ -116,7 +116,7 @@ struct SpotifyTrackFeature: Hashable {
         self.acousticness      = featureDictionary["acousticness"] as? Double
         self.analysisUrl       = featureDictionary["analysis_url"] as? String
         self.danceability      = featureDictionary["danceability"] as? Double
-        self.durationMs        = featureDictionary["duration_ms"] as? Int
+        self.durationMs        = featureDictionary["duration_ms"] as? Double
         self.energy            = featureDictionary["energy"] as? Double
         self.id                = featureDictionary["id"] as? String
         self.instrumentalness  = featureDictionary["instrumentalness"] as? Double

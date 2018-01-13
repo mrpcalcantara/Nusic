@@ -177,20 +177,23 @@ class SongPickerViewController: NusicDefaultViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         if viewRotated {
-            genreCollectionView.collectionViewLayout.invalidateLayout()
-            moodCollectionView.collectionViewLayout.invalidateLayout()
+//            genreCollectionView.collectionViewLayout.invalidateLayout()
+//            moodCollectionView.collectionViewLayout.invalidateLayout()
         }
+        genreCollectionView.collectionViewLayout.invalidateLayout()
+        moodCollectionView.collectionViewLayout.invalidateLayout()
         
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        if navbar.frame.origin.y != self.view.safeAreaLayoutGuide.layoutFrame.origin.y {
+            setupNavigationBar()
+        }
+        
         if viewRotated {
-            
             genreCollectionView.reloadData()
             moodCollectionView.reloadData()
-            print("viewDidLayoutSubviews size = \(self.view.frame.size)")
-            print("viewDidLayoutSubviews safeAreaLayout size = \(self.view.safeAreaLayoutGuide.layoutFrame.size)")
             var newY:CGFloat = 0
             if !listMenuView.isShowing {
                 newY = self.view.frame.height
@@ -206,30 +209,20 @@ class SongPickerViewController: NusicDefaultViewController {
             listMenuView.reloadView()
             self.view.layoutIfNeeded()
             viewRotated = false
-            
         }
         
-        if navbar.frame.origin.y != self.view.safeAreaLayoutGuide.layoutFrame.origin.y {
-            setupNavigationBar()
-        }
+        
         print("viewDidLayoutSubviews = \(self.view.frame.width)")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        genreCollectionView.layoutIfNeeded()
-//        moodCollectionView.layoutIfNeeded()
         
-//        print("viewDidAppear = \(self.view.safeAreaLayoutGuide.layoutFrame.maxY)")
-        
+//        self.view.layoutIfNeeded()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        genreCollectionView.collectionViewLayout.invalidateLayout()
-//        moodCollectionView.collectionViewLayout.invalidateLayout()
         print("transitioning to size = \(size)")
-//        let newY = listMenuView.isOpen ? listMenuView.frame.origin.y : size.height
-//        listMenuView.frame = CGRect(x: listMenuView.frame.origin.x, y: newY, width: size.width, height: listMenuView.frame.height)
         viewRotated = true
     }
     
@@ -237,7 +230,8 @@ class SongPickerViewController: NusicDefaultViewController {
         super.viewWillAppear(animated)
         genreCollectionView.reloadData()
         moodCollectionView.reloadData()
-        
+        listMenuView.reloadView()
+        self.view.layoutIfNeeded()
     }
  
     override func viewDidLoad() {
