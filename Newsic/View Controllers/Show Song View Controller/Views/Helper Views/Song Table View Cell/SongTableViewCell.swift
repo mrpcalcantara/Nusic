@@ -14,7 +14,7 @@ class SongTableViewCell: UITableViewCell {
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var albumImage: UIImageView!
     
-    //let override var reuseIdentifier: String? = "songCell"
+    static let reuseIdentifier: String = "songCell"
     
     
     override func awakeFromNib() {

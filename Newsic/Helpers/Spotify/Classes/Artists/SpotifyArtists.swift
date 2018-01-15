@@ -70,7 +70,6 @@ extension Spotify {
         
     }
     
-    
     func getAllArtistsForPlaylist(userId: String, playlistId: String, nextTrackPageRequest: URLRequest? = nil, currentArtistList: [String]? = nil, fetchedPlaylistArtists: @escaping([String], NusicError?) -> ()) {
         
         var currentList: [String] = currentArtistList != nil ? currentArtistList! : [];
@@ -211,7 +210,6 @@ extension Spotify {
         }
         
     }
-    
     
     func getGenresForArtist(artistId: String, fetchedArtistGenresHandler: @escaping ([String]?, NusicError?) -> () ) {
         do {

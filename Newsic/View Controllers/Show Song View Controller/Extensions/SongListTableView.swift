@@ -14,12 +14,15 @@ extension ShowSongViewController {
         songListTableView.delegate = self;
         songListTableView.dataSource = self;
         
-        let view = UINib(nibName: "SongTableViewCell", bundle: nil);
-        songListTableView.register(view, forCellReuseIdentifier: "songCell");
+        let view = UINib(nibName: SongTableViewCell.className, bundle: nil);
+        songListTableView.register(view, forCellReuseIdentifier: SongTableViewCell.reuseIdentifier);
         
-        let headerView = UINib(nibName: "SongTableViewHeader", bundle: nil);
-        songListTableView.register(headerView, forHeaderFooterViewReuseIdentifier: "SongTableViewHeader")
+        let headerView = UINib(nibName: SongTableViewSectionHeader.className, bundle: nil);
+        songListTableView.register(headerView, forHeaderFooterViewReuseIdentifier: SongTableViewSectionHeader.reuseIdentifier)
         
+        songListTableViewHeader.setupView()
+        songListTableViewHeader.delegate = self
+//        songListTableViewHeader.displayName.text = "TEST"
         setupView();
     }
     
@@ -49,6 +52,7 @@ extension ShowSongViewController {
         nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
         
         initialSongListCenter = songListTableView.center;
+        configure(headerCell: songListTableViewHeader)
     }
     
     func containsTrack(trackId: String) -> Bool {
@@ -107,31 +111,89 @@ extension ShowSongViewController {
         
     }
     
+    func addHeaderGestureRecognizer(for headerCell: UIView) {
+        if let gestureRecognizers = headerCell.gestureRecognizers {
+            if !gestureRecognizers.contains(where: { (gestureRecognizer) -> Bool in
+                return gestureRecognizer.name == "panHeader"
+            }) {
+                let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
+                screenEdgeRecognizer.cancelsTouchesInView = false
+                screenEdgeRecognizer.delegate = self
+                screenEdgeRecognizer.name = "panHeader"
+                headerCell.addGestureRecognizer(screenEdgeRecognizer);
+            }
+        } else {
+            let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
+            screenEdgeRecognizer.cancelsTouchesInView = false
+            screenEdgeRecognizer.delegate = self
+            screenEdgeRecognizer.name = "panHeader"
+            headerCell.addGestureRecognizer(screenEdgeRecognizer);
+        }
+    }
+    
+    func removeHeaderGestureRecognizer(for headerCell: UIView) {
+        if let index = headerCell.gestureRecognizers?.index(where: { (gestureRecognizer) -> Bool in
+            return gestureRecognizer.name == "panHeader"
+        }) {
+            headerCell.gestureRecognizers?.remove(at: index)
+        }
+    }
+    
+    func disableHeaderGestureRecognizer(for headerCell: UIView) {
+        if let index = headerCell.gestureRecognizers?.index(where: { (gestureRecognizer) -> Bool in
+            return gestureRecognizer.name == "panHeader"
+        }) {
+            let gestureRecognizer = headerCell.gestureRecognizers![index]
+            gestureRecognizer.isEnabled = false
+        }
+    }
+    
+    func enableHeaderGestureRecognizer(for headerCell: UIView) {
+        if let index = headerCell.gestureRecognizers?.index(where: { (gestureRecognizer) -> Bool in
+            return gestureRecognizer.name == "panHeader"
+        }) {
+            let gestureRecognizer = headerCell.gestureRecognizers![index]
+            gestureRecognizer.isEnabled = true
+        }
+    }
+    
+    func addMenuSwipeGestureRecognizer() {
+        menuEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
+        menuEdgePanGestureRecognizer.edges = .right
+        self.view.addGestureRecognizer(menuEdgePanGestureRecognizer);
+    }
+    
+    func removeMenuSwipeGestureRecognizer() {
+        if let index = self.view.gestureRecognizers?.index(where: { (gestureRecognizer) -> Bool in
+            return gestureRecognizer == menuEdgePanGestureRecognizer
+        }) {
+            self.view.gestureRecognizers?.remove(at: index)
+        }
+    }
+    
 }
 
 extension ShowSongViewController: UITableViewDelegate {
 
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90;
     }
     
-    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 100;
+        return 50;
     }
  
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerCell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SongTableViewHeader") as! SongTableViewHeader
-        configure(headerCell: headerCell, at: section);
-        return headerCell;
-    }
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let headerCell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SongTableViewHeader") as! SongTableViewHeader
+//        configure(headerCell: headerCell, at: section);
+//        return headerCell;
+//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let frontPosition = songCardView.currentCardIndex;
         
         isSongLiked = true; toggleLikeButtons();
-        addSongToPosition(at: indexPath.row, position: frontPosition);
+        addSongToPosition(at: indexPath, position: frontPosition);
         if UIApplication.shared.statusBarOrientation.isPortrait {
             closeMenu();
         }
@@ -146,7 +208,7 @@ extension ShowSongViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "\u{267A}") { (action, indexPath) in
             // delete item at indexPath
-            print("removing track from indexpath = \(indexPath.row)")
+            print("removing track from indexpath = \(indexPath)")
             self.removeTrackFromLikedTracks(indexPath: indexPath, removeTrackHandler: { (didRemove) in
                 self.isSongLiked = false;
                 self.toggleLikeButtons();
@@ -158,16 +220,17 @@ extension ShowSongViewController: UITableViewDelegate {
         
         return [delete]
     }
+
 }
 
 extension ShowSongViewController: UITableViewDataSource {
     
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return 1;
+        return sectionTitles.count;
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return likedTrackList.count
+        return sectionSongs[section].count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -180,9 +243,14 @@ extension ShowSongViewController: UITableViewDataSource {
         return regCell;
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitles[section]
+    }
+    
     func configure(cell: SongTableViewCell, at indexPath: IndexPath) {
         
-        let element = likedTrackList[indexPath.row];
+        let element = sectionSongs[indexPath.section][indexPath.row]
+//        let element = likedTrackList[indexPath.row];
         //cell.albumImage.bounds = CGRect(x: 0, y: 0, width: cell.bounds.height, height: cell.bounds.height);
         cell.albumImage.contentMode = .scaleAspectFit
         cell.albumImage.image = element.trackInfo.thumbNail;
@@ -192,7 +260,21 @@ extension ShowSongViewController: UITableViewDataSource {
         cell.layoutIfNeeded()
     }
     
-    func configure(headerCell: SongTableViewHeader, at section: Int) {
+    func configure(sectionHeaderCell: SongTableViewSectionHeader, at section: Int) {
+        
+        sectionHeaderCell.displayName.text = sectionTitles[section]
+        
+        if UIApplication.shared.statusBarOrientation.isLandscape {
+            removeHeaderGestureRecognizer(for: sectionHeaderCell)
+            removeMenuSwipeGestureRecognizer()
+        } else {
+            addHeaderGestureRecognizer(for: sectionHeaderCell)
+            addMenuSwipeGestureRecognizer()
+        }
+        
+    }
+    
+    func configure(headerCell: SongTableViewHeader) {
         if isMoodSelected {
             let emotion = moodObject?.emotions.first?.basicGroup.rawValue
             headerCell.displayName.text = "Mood: \(emotion!)"
@@ -224,67 +306,61 @@ extension ShowSongViewController: UITableViewDataSource {
         
     }
     
-    func addHeaderGestureRecognizer(for headerCell: SongTableViewHeader) {
-        if let gestureRecognizers = headerCell.gestureRecognizers {
-            if !gestureRecognizers.contains(where: { (gestureRecognizer) -> Bool in
-                return gestureRecognizer.name == "panHeader"
-            }) {
-                let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
-                screenEdgeRecognizer.cancelsTouchesInView = false
-                screenEdgeRecognizer.delegate = self
-                screenEdgeRecognizer.name = "panHeader"
-                headerCell.addGestureRecognizer(screenEdgeRecognizer);
-            }
-        } else {
-            let screenEdgeRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
-            screenEdgeRecognizer.cancelsTouchesInView = false
-            screenEdgeRecognizer.delegate = self
-            screenEdgeRecognizer.name = "panHeader"
-            headerCell.addGestureRecognizer(screenEdgeRecognizer);
+    func sortTableView(by type: SpotifyType) {
+        switch type {
+        case .artist:
+            sectionTitles = likedTrackList.map { $0.trackInfo.artist.artistName.capitalizingFirstLetter().first?.description as! String }.getFirstLetterArray(removeDuplicates: true).sorted()
+            sectionSongs = sectionTitles.map({ (firstLetter) in
+                return likedTrackList.filter({ (track) -> Bool in
+                    return track.trackInfo.artist.artistName.first?.description == firstLetter
+                })
+            })
+        case .track:
+            sectionTitles = likedTrackList.map { $0.trackInfo.songName.capitalizingFirstLetter().first?.description as! String }.getFirstLetterArray(removeDuplicates: true).sorted()
+            sectionSongs = sectionTitles.map({ (firstLetter) in
+                return likedTrackList.filter({ (track) -> Bool in
+                    return track.trackInfo.songName.first?.description == firstLetter
+                })
+            })
+            
+            let test = sectionSongs
+        case .genre:
+            let list = likedTrackList.map({ (track) -> String in
+                if let subGenres = track.trackInfo.artist.subGenres {
+                    return subGenres.first!.capitalizingFirstLetter()
+                }
+                return ""
+            })
+            
+            let sortedList = list.filter({ (str) -> Bool in
+                return str != "" || !list.contains(str)
+            }).removeDuplicates().sorted()
+            sectionTitles = sortedList
+            
+            sectionSongs = sortedList.map({ (genre) in
+                return likedTrackList.filter({ (track) -> Bool in
+                    if let subGenres = track.trackInfo.artist.subGenres {
+                        return subGenres.contains(genre.lowercased())
+                    }
+                    return false
+                })
+            })
+        default:
+            break;
         }
+        
     }
     
-    func removeHeaderGestureRecognizer(for headerCell: SongTableViewHeader) {
-        if let index = headerCell.gestureRecognizers?.index(where: { (gestureRecognizer) -> Bool in
-            return gestureRecognizer.name == "panHeader"
-        }) {
-            headerCell.gestureRecognizers?.remove(at: index)
-        }
-    }
-    
-    func disableHeaderGestureRecognizer(for headerCell: SongTableViewHeader) {
-        if let index = headerCell.gestureRecognizers?.index(where: { (gestureRecognizer) -> Bool in
-            return gestureRecognizer.name == "panHeader"
-        }) {
-            let gestureRecognizer = headerCell.gestureRecognizers![index]
-            gestureRecognizer.isEnabled = false
-        }
-    }
-    
-    func enableHeaderGestureRecognizer(for headerCell: SongTableViewHeader) {
-        if let index = headerCell.gestureRecognizers?.index(where: { (gestureRecognizer) -> Bool in
-            return gestureRecognizer.name == "panHeader"
-        }) {
-            let gestureRecognizer = headerCell.gestureRecognizers![index]
-            gestureRecognizer.isEnabled = true
-        }
-    }
-    
-    func addMenuSwipeGestureRecognizer() {
-        menuEdgePanGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleMenuScreenGesture(_:)))
-        menuEdgePanGestureRecognizer.edges = .right
-        self.view.addGestureRecognizer(menuEdgePanGestureRecognizer);
-    }
-    
-    func removeMenuSwipeGestureRecognizer() {
-        if let index = self.view.gestureRecognizers?.index(where: { (gestureRecognizer) -> Bool in
-            return gestureRecognizer == menuEdgePanGestureRecognizer
-        }) {
-            self.view.gestureRecognizers?.remove(at: index)
-        }
-    }
     
 }
 
+extension ShowSongViewController : SongTableViewHeaderDelegate {
+    func touchedHeader() {
+        sortTableView(by: songListTableViewHeader.currentSortElement)
+        DispatchQueue.main.async {
+            self.songListTableView.reloadData()
+        }
+    }
+}
 
 

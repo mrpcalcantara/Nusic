@@ -11,7 +11,6 @@ import UIKit
 
 extension UIButton {
     
-    
     func animateClick() {
         let trans = self.transform
         UIView.animate(withDuration: 0.1, animations: {

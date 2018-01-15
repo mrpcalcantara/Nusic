@@ -229,12 +229,17 @@
                                     </view>
                                 </subviews>
                             </stackView>
-                            <tableView hidden="YES" autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Any-Pf-dnV">
+                            <tableView hidden="YES" autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Any-Pf-dnV">
                                 <rect key="frame" x="60" y="64" width="315" height="551"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" id="d2P-wG-N1U" customClass="SongTableViewHeader" customModule="Newsic" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="315" height="100"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="songCell" id="HjI-zr-tDV">
-                                        <rect key="frame" x="0.0" y="1" width="315" height="44"/>
+                                        <rect key="frame" x="0.0" y="128" width="315" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HjI-zr-tDV" id="1Xs-og-G1L">
                                             <rect key="frame" x="0.0" y="0.0" width="315" height="43.5"/>
@@ -242,6 +247,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <sections/>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="alX-vn-cgC">
                                 <rect key="frame" x="155.5" y="551" width="64" height="64"/>
@@ -381,12 +387,29 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="dislikeSongBottomConstraint" destination="c9f-1V-cd7" id="JMP-pX-sKJ"/>
+                        <outlet property="dislikeSongCenterXConstraint" destination="hrT-wC-tiN" id="OBb-IU-ALa"/>
+                        <outlet property="dislikeSongTopConstraint" destination="qAN-XT-z87" id="RNh-gD-4Z7"/>
+                        <outlet property="likeSongBottomConstraint" destination="ltS-uG-JhY" id="Epj-yi-OyE"/>
+                        <outlet property="likeSongCenterXConstraint" destination="gkI-as-pns" id="q9A-bQ-Yne"/>
+                        <outlet property="likeSongTopConstraint" destination="zbc-Wm-RlZ" id="ZSV-cO-6JZ"/>
                         <outlet property="nextSong" destination="V03-pk-egn" id="BWF-BK-jX9"/>
                         <outlet property="nextTrack" destination="Iig-1D-otX" id="JZq-hK-ruY"/>
+                        <outlet property="nextTrackBottomConstraint" destination="3eq-9V-kik" id="y0O-jN-vWD"/>
+                        <outlet property="nextTrackCenterXConstraint" destination="lTg-3Y-Eq7" id="MZy-gf-kCg"/>
+                        <outlet property="nextTrackTopConstraint" destination="c8r-0N-0Ki" id="PbW-tk-OX2"/>
                         <outlet property="pausePlay" destination="Qgp-ff-fLa" id="TDb-PQ-zhg"/>
+                        <outlet property="pausePlayBottomConstraint" destination="YpW-ge-llq" id="gCs-xF-IbG"/>
+                        <outlet property="pausePlayCenterXConstraint" destination="lfI-i2-93n" id="LKb-Ui-Haf"/>
+                        <outlet property="pausePlayTopConstraint" destination="lzU-fL-98Z" id="skc-Kq-A8W"/>
                         <outlet property="previousSong" destination="HQy-9W-NO5" id="UXb-dN-Qzf"/>
                         <outlet property="previousTrack" destination="k6E-Yi-lJS" id="ka1-MA-DHN"/>
+                        <outlet property="previousTrackBottomConstraint" destination="KtE-le-FYf" id="Uhn-XA-ofy"/>
+                        <outlet property="previousTrackCenterXConstraint" destination="hbC-F6-Ape" id="NAH-oK-45y"/>
                         <outlet property="showMore" destination="alX-vn-cgC" id="mtA-kE-ekt"/>
+                        <outlet property="showMoreBottomConstraint" destination="pKv-yj-mlX" id="Avk-0Y-44t"/>
+                        <outlet property="showMoreCenterXConstraint" destination="XQo-Fy-Buo" id="EvC-dH-LC2"/>
+                        <outlet property="showMoreTopConstraint" destination="Yzb-nM-FQD" id="c4G-ys-9Te"/>
                         <outlet property="songCardBottomConstraint" destination="HDx-N2-1Fw" id="fWk-GL-QLI"/>
                         <outlet property="songCardLeadingConstraint" destination="uCK-lc-dd6" id="Bel-A6-3aK"/>
                         <outlet property="songCardTrailingConstraint" destination="jRq-Q6-LzD" id="fv8-xg-Wuo"/>
@@ -394,7 +417,12 @@
                         <outlet property="songDurationLabel" destination="h7B-Kq-TRB" id="Wu8-ub-Rem"/>
                         <outlet property="songElapsedTime" destination="dXd-ii-e2J" id="cKE-qX-ye9"/>
                         <outlet property="songListTableView" destination="Any-Pf-dnV" id="yDZ-zb-XkH"/>
+                        <outlet property="songListTableViewHeader" destination="d2P-wG-N1U" id="B6y-IJ-djP"/>
+                        <outlet property="songProgressBottomConstraint" destination="siZ-64-5RR" id="Kdu-N9-k3R"/>
+                        <outlet property="songProgressLeadingConstraint" destination="Lpd-zq-eJ8" id="5qo-c4-dhe"/>
                         <outlet property="songProgressSlider" destination="8qg-KD-JNS" id="3og-L8-PAf"/>
+                        <outlet property="songProgressTopConstraint" destination="05z-3e-b3v" id="Eum-r3-UZN"/>
+                        <outlet property="songProgressTrailingConstraint" destination="Ill-Y3-Qti" id="2rs-38-PfT"/>
                         <outlet property="songProgressView" destination="uVu-im-pgF" id="sDt-Tc-bYK"/>
                         <outlet property="tableViewLeadingConstraint" destination="9Ib-eq-uoR" id="kRi-di-p5Z"/>
                         <outlet property="tableViewTrailingConstraint" destination="s2Z-aW-ZFo" id="jaR-LL-OkO"/>

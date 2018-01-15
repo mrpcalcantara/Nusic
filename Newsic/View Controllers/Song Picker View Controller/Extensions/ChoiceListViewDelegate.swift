@@ -26,32 +26,6 @@ extension SongPickerViewController {
 
 extension SongPickerViewController : ChoiceListDelegate {
     
-    func getSongs() {
-        getNewSong(NusicButton(type: .system))
-    }
-    func didRemoveGenres() {
-        selectedGenres.removeAll()
-        resetGenresPerSection()
-    }
-    
-    func isEmpty() {
-        manageButton(for: genreCollectionView);
-        closeChoiceMenu()
-        self.listMenuView.arrowImageView.alpha = 1
-    }
-    
-    func isNotEmpty() {
-        manageButton(for: genreCollectionView);
-        openChoiceMenu()
-        UIView.animate(withDuration: 1, delay: 0, options: [.curveEaseInOut, .autoreverse, .repeat], animations: {
-            self.listMenuView.arrowImageView.alpha = 0.2
-        }, completion: nil)
-    }
-    
-    func willMove(to point: CGPoint, animated: Bool) {
-        animateMove(to: point)
-    }
-    
     func didTapGenre(value: String) {
         if var indexPath = getIndexPathForGenre(value) {
             if let genre = SpotifyGenres(rawValue: value) {
@@ -78,6 +52,11 @@ extension SongPickerViewController : ChoiceListDelegate {
         }
     }
     
+    func didRemoveGenres() {
+        selectedGenres.removeAll()
+        resetGenresPerSection()
+    }
+    
     func didTapMood(value: String) {
         
     }
@@ -93,6 +72,32 @@ extension SongPickerViewController : ChoiceListDelegate {
         self.view.layoutIfNeeded()
         self.view.sizeToFit()
     }
+    
+    func willMove(to point: CGPoint, animated: Bool) {
+        animateMove(to: point)
+    }
+    
+    func getSongs() {
+        getNewSong(NusicButton(type: .system))
+    }
+   
+    func isEmpty() {
+        manageButton(for: genreCollectionView);
+        closeChoiceMenu()
+        self.listMenuView.arrowImageView.alpha = 1
+    }
+    
+    func isNotEmpty() {
+        manageButton(for: genreCollectionView);
+        openChoiceMenu()
+        UIView.animate(withDuration: 1, delay: 0, options: [.curveEaseInOut, .autoreverse, .repeat], animations: {
+            self.listMenuView.arrowImageView.alpha = 0.2
+        }, completion: nil)
+    }
+    
+}
+
+extension SongPickerViewController {
     
     func showChoiceMenu() {
         self.listViewBottomConstraint.constant = self.view.frame.height/2
@@ -112,7 +117,7 @@ extension SongPickerViewController : ChoiceListDelegate {
     
     func openChoiceMenu() {
         self.listViewBottomConstraint.constant = listMenuView.toggleViewHeight
-//        print(self.view.safeAreaLayoutGuide.layoutFrame.maxY)
+        //        print(self.view.safeAreaLayoutGuide.layoutFrame.maxY)
         let point = CGPoint(x: listMenuView.frame.origin.x, y: self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight)
         willMove(to: point, animated: true)
         listMenuView.animateMove(to: point)
@@ -140,8 +145,9 @@ extension SongPickerViewController : ChoiceListDelegate {
             self.listMenuView.frame.origin.y = point.y
             self.view.layoutIfNeeded()
         }, completion: { (isCompleted) in
-//            self.listMenuView.animateMove(to: point)
+            //            self.listMenuView.animateMove(to: point)
         })
         
     }
+    
 }

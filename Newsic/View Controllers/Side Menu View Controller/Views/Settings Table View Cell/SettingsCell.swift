@@ -17,12 +17,10 @@ class SettingsCell: UITableViewCell {
     //Image View Constraints
     @IBOutlet weak var itemDescriptionLeadingConstraint: NSLayoutConstraint!
     
-    
     static let reuseIdentifier = "settingsCell"
     static let rowHeight:CGFloat = 45
     var initialDescriptionConstraintConstant: CGFloat? = nil
     var alertController: NusicAlertController?
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()

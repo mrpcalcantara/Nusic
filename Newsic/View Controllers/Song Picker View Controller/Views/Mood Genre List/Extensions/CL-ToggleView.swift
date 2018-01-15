@@ -31,6 +31,11 @@ extension ChoiceListView {
         setupOpenBezierPaths()
     }
     
+    func manageToggleView() {
+        toggleArrow()
+        toggleBezierPaths()
+    }
+    
     func setupArrow() {
         if toggleView.subviews.contains(arrowImageView) {
             arrowImageView.removeFromSuperview()
@@ -151,11 +156,6 @@ extension ChoiceListView {
         rightLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(rightLayer)
-    }
-    
-    func manageToggleView() {
-        toggleArrow()
-        toggleBezierPaths()
     }
     
 }

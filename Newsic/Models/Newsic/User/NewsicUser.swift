@@ -206,6 +206,38 @@ extension NusicUser: FirebaseModel {
         }
     }
     
+    func updateGenreCount(for genre: String, updateGenreHandler: @escaping (Bool?, NusicError?) -> ()) {
+        if favoriteGenres == nil {
+            self.favoriteGenres = []
+        }
+        if var favoriteGenres = favoriteGenres {
+            let key = reference.child("genres").child(userName)
+            var localGenre: NusicGenre
+            var updatedValue: [String: Int]
+            if let genreIndex = favoriteGenres.index(where: { (localGenre) -> Bool in
+                return localGenre.mainGenre == genre
+            }) {
+                //                favoriteGenres[genreIndex].count += 1
+                localGenre = favoriteGenres[genreIndex]
+                localGenre.count += 1
+                self.favoriteGenres![genreIndex] = localGenre
+            } else {
+                localGenre = NusicGenre(mainGenre: genre, count: 1, userName: userName)
+                self.favoriteGenres?.append(localGenre)
+            }
+            
+            updatedValue = [localGenre.mainGenre:localGenre.count];
+            
+            key.updateChildValues(updatedValue, withCompletionBlock: { (error, reference) in
+                if let error = error {
+                    updateGenreHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.updateGenreCount.rawValue, systemError: error))
+                } else {
+                    updateGenreHandler(true, nil)
+                }
+            })
+        }
+    }
+    
     //Settings
     //----------------
     
@@ -256,39 +288,6 @@ extension NusicUser: FirebaseModel {
                 saveSettingsHandler(true, nil);
             }
             
-        }
-    }
-    
-    
-    func updateGenreCount(for genre: String, updateGenreHandler: @escaping (Bool?, NusicError?) -> ()) {
-        if favoriteGenres == nil {
-            self.favoriteGenres = []
-        }
-        if var favoriteGenres = favoriteGenres {
-            let key = reference.child("genres").child(userName)
-            var localGenre: NusicGenre
-            var updatedValue: [String: Int]
-            if let genreIndex = favoriteGenres.index(where: { (localGenre) -> Bool in
-                return localGenre.mainGenre == genre
-            }) {
-//                favoriteGenres[genreIndex].count += 1
-                localGenre = favoriteGenres[genreIndex]
-                localGenre.count += 1
-                self.favoriteGenres![genreIndex] = localGenre
-            } else {
-                localGenre = NusicGenre(mainGenre: genre, count: 1, userName: userName)
-                self.favoriteGenres?.append(localGenre)
-            }
-            
-            updatedValue = [localGenre.mainGenre:localGenre.count];
-            
-            key.updateChildValues(updatedValue, withCompletionBlock: { (error, reference) in
-                if let error = error {
-                    updateGenreHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.updateGenreCount.rawValue, systemError: error))
-                } else {
-                    updateGenreHandler(true, nil)
-                }
-            })
         }
     }
     

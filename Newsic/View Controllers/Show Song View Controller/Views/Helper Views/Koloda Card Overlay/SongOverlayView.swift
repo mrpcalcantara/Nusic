@@ -70,6 +70,25 @@ class SongOverlayView: OverlayView {
         return imageView
     }()
     
+    override var overlayState: SwipeResultDirection?  {
+        didSet {
+            switch overlayState {
+                
+            case .left? :
+                albumImage.image = UIImage(named: songOverlaySwipedLeftImage)
+                albumImage.contentMode = .scaleToFill
+                albumImage.alpha = 1
+            case .right? :
+                albumImage.image = UIImage(named: songOverlaySwipedRightImage)
+                albumImage.contentMode = .scaleToFill
+                albumImage.alpha = 1
+            default:
+                albumImage.image = nil
+            }
+            
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView();
@@ -110,25 +129,6 @@ class SongOverlayView: OverlayView {
     func loadViewFromNib() -> UIView {
         let view: UIView = UINib(nibName: "OverlayView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! UIView
         return view
-    }
-    
-    override var overlayState: SwipeResultDirection?  {
-        didSet {
-            switch overlayState {
-                
-            case .left? :
-                albumImage.image = UIImage(named: songOverlaySwipedLeftImage)
-                albumImage.contentMode = .scaleToFill
-                albumImage.alpha = 1
-            case .right? :
-                albumImage.image = UIImage(named: songOverlaySwipedRightImage)
-                albumImage.contentMode = .scaleToFill
-                albumImage.alpha = 1
-            default:
-                albumImage.image = nil
-            }
-
-        }
     }
     
     override func update(progress: CGFloat) {

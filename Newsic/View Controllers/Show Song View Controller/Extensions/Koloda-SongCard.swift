@@ -50,8 +50,9 @@ extension ShowSongViewController: KolodaViewDelegate {
         
     }
     
-    func addSongToPosition(at index: Int, position: Int) {
-        let nusicTrack = likedTrackList[index]
+    func addSongToPosition(at indexPath: IndexPath, position: Int) {
+//        let nusicTrack = likedTrackList[index]
+        let nusicTrack = sectionSongs[indexPath.section][indexPath.row]
         cardList.insert(nusicTrack, at: position);
         
         songCardView.insertCardAtIndexRange(position..<position+1, animated: false);

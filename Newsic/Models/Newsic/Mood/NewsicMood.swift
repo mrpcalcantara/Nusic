@@ -114,7 +114,6 @@ struct NusicMood: FirebaseModel, Iterable {
         
     }
     
-    
     func getTrackIdListForEmotionGenre(getAssociatedTrackHandler: @escaping ([String]?, NusicError?) -> ()) {
         let count = emotions.count;
         var index = 0;
@@ -210,110 +209,6 @@ struct NusicMood: FirebaseModel, Iterable {
             }
         }
     }
-    /*
-    func getEmotionDyad() -> EmotionDyad {
-        let emotions = self.emotions.sorted { (em1, em2) -> Bool in
-            em1.basicGroup.rawValue < em2.basicGroup.rawValue
-        }
-        
-        if emotions.count == 2 {
-            return getEmotionCombination(emotion1: emotions[0].basicGroup, emotion2: emotions[1].basicGroup);
-        }
-        return .none
-        
-    }
     
-    func getEmotionCombination(emotion1: EmotionDyad, emotion2: EmotionDyad) -> EmotionDyad {
-        switch emotion1 {
-        case EmotionValue.anger.description():
-            switch emotion2 {
-            case EmotionValue.anticipation.description():
-                return .aggressiveness
-            case EmotionValue.disgust.description():
-                return .contempt
-            case EmotionValue.joy.description():
-                return .pride
-            case EmotionValue.sadness.description():
-                return .envy
-            case EmotionValue.surprise.description():
-                return .outrage
-            case EmotionValue.trust.description():
-                return .dominance
-            default:
-                return .none
-            }
-        case EmotionValue.anticipation.description():
-            switch emotion2 {
-            case EmotionValue.disgust.description():
-                return .cynicism
-            case EmotionValue.joy.description():
-                return .optimism
-            case EmotionValue.sadness.description():
-                return .pessimism
-            case EmotionValue.trust.description():
-                return .hope
-            case EmotionValue.fear.description():
-                return .anxiety
-            default:
-                return .none
-            }
-        case EmotionValue.disgust.description():
-            switch emotion2 {
-            case EmotionValue.joy.description():
-                return .morbidness
-            case EmotionValue.sadness.description():
-                return .remorse
-            case EmotionValue.surprise.description():
-                return .unbelief
-            case EmotionValue.fear.description():
-                return .shame
-            default:
-                return .none
-            }
-        case EmotionValue.fear.description():
-            switch emotion2 {
-            case EmotionValue.joy.description():
-                return .guilt
-            case EmotionValue.sadness.description():
-                return .despair
-            case EmotionValue.surprise.description():
-                return .awe
-            case EmotionValue.trust.description():
-                return .submission
-            default:
-                return .none
-            }
-        case EmotionValue.joy.description():
-            switch emotion2 {
-            case EmotionValue.surprise.description():
-                return .love
-            case EmotionValue.trust.description():
-                return .delight
-            default:
-                return .none
-            }
-        case EmotionValue.sadness.description():
-            switch emotion2 {
-            case EmotionValue.surprise.description():
-                return .disapproval
-            case EmotionValue.trust.description():
-                return .sentimentality
-            default:
-                return .none
-            }
-        case EmotionValue.surprise.description():
-            switch emotion2 {
-            case EmotionValue.sadness.description():
-                return .curiosity
-            default:
-                return .none
-            }
-        case EmotionValue.trust.description():
-            return .none
-        default:
-            return .none
-        }
-    }
-    */
 }
 

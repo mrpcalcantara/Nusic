@@ -28,11 +28,15 @@ struct SpotifyArtist: Hashable {
     }
     
     static func ==(lhs: SpotifyArtist, rhs: SpotifyArtist) -> Bool {
-        return lhs.artistName == rhs.artistName &&
-            lhs.subGenres! == rhs.subGenres! &&
+        var isEqual = lhs.artistName == rhs.artistName &&
             lhs.popularity == rhs.popularity &&
             lhs.uri == rhs.uri &&
             lhs.id == rhs.id
+        
+        if let lhsSubgenres = lhs.subGenres, let rhsSubgenres = rhs.subGenres {
+            isEqual = isEqual && lhsSubgenres == rhsSubgenres
+        }
+        return isEqual
     }
     
     func listGenres(showPrefix: Bool? = true) -> String {

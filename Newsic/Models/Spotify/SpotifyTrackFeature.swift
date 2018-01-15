@@ -13,8 +13,6 @@ struct SpotifyTrackFeature: Hashable {
         return (youtubeId?.hashValue)!
     }
     
-    
-    
     var danceability: Double? = 0;
     var energy: Double? = 0;
     var key: Int? = 0;

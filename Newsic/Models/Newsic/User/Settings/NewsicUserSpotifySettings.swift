@@ -22,8 +22,4 @@ struct NusicUserSpotifySettings {
         return dict
     }
     
-//    mutating func fromDictionary(dict: [String: Any]) {
-//        let json = JSONSerialization.jsonObject(with: dict, options: .allowFragments) as! [String:Any]
-//        print(json)
-//    }
 }

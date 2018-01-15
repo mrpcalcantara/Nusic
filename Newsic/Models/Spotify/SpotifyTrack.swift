@@ -14,9 +14,6 @@ class SpotifyTrack: Hashable {
         return trackId.hashValue
     }
     
-    
-    
-    
     var title: String!;
     var thumbNail: UIImage?;
     var thumbNailUrl: String!;
@@ -70,13 +67,6 @@ class SpotifyTrack: Hashable {
         image.downloadImage(from: URL(string: thumbNailUrl)!) { (image) in
             self.thumbNail = image;
         }
-    }
-    
-    func getDataFromUrl(url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {
-        URLSession.shared.dataTask(with: url) {
-            (data, response, error) in
-            completion(data, response, error)
-            }.resume()
     }
 
 }

@@ -222,7 +222,6 @@ class SongPickerViewController: NusicDefaultViewController {
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        print("transitioning to size = \(size)")
         viewRotated = true
     }
     

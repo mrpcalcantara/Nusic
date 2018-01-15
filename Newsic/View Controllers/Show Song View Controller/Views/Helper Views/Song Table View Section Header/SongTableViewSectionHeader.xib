@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,35 +12,26 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SongTableViewHeader" customModule="Newsic" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SongTableViewSectionHeader" customModule="Newsic" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="888" height="361"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bdc-7d-Hjf">
                     <rect key="frame" x="0.0" y="0.0" width="888" height="361"/>
                     <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="UF8-01-iuK">
-                            <rect key="frame" x="66" y="24" width="806" height="313"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="UF8-01-iuK">
+                            <rect key="frame" x="16" y="24" width="856" height="313"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4iZ-h1-YiL" userLabel="Sort Element Image View">
-                            <rect key="frame" x="8" y="155" width="50" height="50"/>
-                            <constraints>
-                                <constraint firstAttribute="width" secondItem="4iZ-h1-YiL" secondAttribute="height" multiplier="1:1" id="GDf-dQ-O3W"/>
-                                <constraint firstAttribute="height" constant="50" id="RIT-1r-Mo0"/>
-                            </constraints>
-                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="UF8-01-iuK" firstAttribute="leading" secondItem="4iZ-h1-YiL" secondAttribute="trailing" constant="8" id="4QU-jK-crD"/>
-                        <constraint firstItem="4iZ-h1-YiL" firstAttribute="centerY" secondItem="bdc-7d-Hjf" secondAttribute="centerY" id="9Ju-uI-B1o"/>
-                        <constraint firstAttribute="trailingMargin" secondItem="UF8-01-iuK" secondAttribute="trailing" constant="8" id="N4T-Tt-HTZ"/>
-                        <constraint firstItem="UF8-01-iuK" firstAttribute="top" secondItem="bdc-7d-Hjf" secondAttribute="topMargin" constant="16" id="VSR-Ng-xTZ"/>
-                        <constraint firstItem="4iZ-h1-YiL" firstAttribute="leading" secondItem="bdc-7d-Hjf" secondAttribute="leading" constant="8" id="XHi-Sq-hWK"/>
-                        <constraint firstAttribute="bottomMargin" secondItem="UF8-01-iuK" secondAttribute="bottom" constant="16" id="mlk-aj-eaZ"/>
+                        <constraint firstItem="UF8-01-iuK" firstAttribute="top" secondItem="bdc-7d-Hjf" secondAttribute="topMargin" constant="16" id="3wM-gG-uTG"/>
+                        <constraint firstAttribute="bottomMargin" secondItem="UF8-01-iuK" secondAttribute="bottom" constant="16" id="9pc-PE-Q10"/>
+                        <constraint firstAttribute="trailingMargin" secondItem="UF8-01-iuK" secondAttribute="trailing" constant="8" id="QfH-96-rGX"/>
+                        <constraint firstItem="UF8-01-iuK" firstAttribute="leading" secondItem="bdc-7d-Hjf" secondAttribute="leadingMargin" constant="8" id="top-Ws-TVi"/>
                     </constraints>
                 </view>
             </subviews>
@@ -55,8 +45,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
-                <outlet property="displayName" destination="UF8-01-iuK" id="8AI-AH-eIf"/>
-                <outlet property="sortElementImageView" destination="4iZ-h1-YiL" id="hGu-jx-oOz"/>
+                <outlet property="displayName" destination="UF8-01-iuK" id="nKB-IS-V1T"/>
             </connections>
             <point key="canvasLocation" x="274" y="-209.5"/>
         </view>
