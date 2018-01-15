@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ChoiceListViewHeaderDelegate: class {
-    func buttonClicked()
+    func clearButtonClicked()
 }
 
 class ChoiceListViewHeader: UICollectionReusableView {
@@ -35,7 +35,7 @@ class ChoiceListViewHeader: UICollectionReusableView {
     }
     
     @IBAction func clearButtonClicked(_ sender: UIButton) {
-        delegate?.buttonClicked()
+        delegate?.clearButtonClicked()
     }
     
     func setupLabel(label: String) {

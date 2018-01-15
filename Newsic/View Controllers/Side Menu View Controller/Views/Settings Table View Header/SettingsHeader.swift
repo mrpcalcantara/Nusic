@@ -69,10 +69,8 @@ class SettingsHeader: NusicView {
                     }
                 })
             }
-            
-//            profileImageView.downloadedFrom(link: imageURL, contentMode: .scaleAspectFit, roundImage: true);
-        }
-        
+
+        }        
         usernameLabel.text = username
     }
     

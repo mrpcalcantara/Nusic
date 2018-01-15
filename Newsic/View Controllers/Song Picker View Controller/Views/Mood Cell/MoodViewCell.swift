@@ -86,7 +86,6 @@ class MoodViewCell: UICollectionViewCell {
         
     }
     
-    
     func setConstraints(for index: Int) {
         if associatedIndex % 2 == 0 {
             labelTrailingConstraint.constant = 0
@@ -175,19 +174,7 @@ class MoodViewCell: UICollectionViewCell {
         pointerPathLayer = layer
         self.layer.insertSublayer(layer, at: 0)
     }
-    
-    private func configureLabel() {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.firstLineHeadIndent = offsetSelectedPoint.x + leftOffset
-        let attributes = [NSAttributedStringKey.paragraphStyle: paragraphStyle]
-        
-        let myMutableString = NSMutableAttributedString(
-            string: self.moodLabel.text!,
-            attributes: attributes)
-        
-        self.moodLabel.attributedText = myMutableString
-    }
-    
+
     private func addPath(for index: Int) {
         let path = drawPath(for: index);
         let layer = CAShapeLayer()
@@ -203,8 +190,6 @@ class MoodViewCell: UICollectionViewCell {
         borderPathLayer = layer
         
     }
-    
-    
     
     private func drawPath(for index: Int) -> UIBezierPath {
         
@@ -319,6 +304,18 @@ class MoodViewCell: UICollectionViewCell {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
             self.borderPathLayer!.removeFromSuperlayer()
         }
+    }
+    
+    private func configureLabel() {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.firstLineHeadIndent = offsetSelectedPoint.x + leftOffset
+        let attributes = [NSAttributedStringKey.paragraphStyle: paragraphStyle]
+        
+        let myMutableString = NSMutableAttributedString(
+            string: self.moodLabel.text!,
+            attributes: attributes)
+        
+        self.moodLabel.attributedText = myMutableString
     }
     
     func selectCell() {

@@ -160,13 +160,13 @@ extension Spotify {
     }
     
     
-    func getAllTracksForPlaylist(playlistId: String, nextTrackPageRequest: URLRequest? = nil, currentTrackList: [SpotifyTrack]? = nil, fetchedPlaylistTracks: @escaping([SpotifyTrack]?, NusicError?) -> ()) {
+    func getAllTracksForPlaylist(playlistId: String, fetchGenres: Bool? = true, nextTrackPageRequest: URLRequest? = nil, currentTrackList: [SpotifyTrack]? = nil, fetchedPlaylistTracks: @escaping([SpotifyTrack]?, NusicError?) -> ()) {
         
         let userId = auth.session.canonicalUsername;
         var currentList: [SpotifyTrack] = currentTrackList != nil ? currentTrackList! : [];
         var pageRequest = nextTrackPageRequest;
         if pageRequest == nil {
-            let url = "https://api.spotify.com/v1/users/\(userId!)/playlists/\(playlistId)/tracks?fields=next,items(added_at,track(id,uri,name,artists(name),album(images(url))))"
+            let url = "https://api.spotify.com/v1/users/\(userId!)/playlists/\(playlistId)/tracks?fields=next,items(added_at,track(id,uri,name,artists(name,id,uri),album(images(url))))"
             pageRequest = URLRequest(url: URL(string: url)!);
         }
         
@@ -191,16 +191,23 @@ extension Spotify {
                         let dateAdded = dateFormatter.date(from: addedAt)
                         
                         var artists = ""
+                        var artistId = ""
+                        var artistUri = ""
                         let index = 0
                         let artistCount = artistInfo.count
                         for artist in artistInfo {
-                            if let artistName = artist["name"] as? String {
+                            if let artistName = artist["name"] as? String, let id = artist["id"] as? String, let uri = artist["uri"] as? String {
                                 artists += "\(artistName)"
                                 if index <= artistCount - 1 {
                                     artists += ", ";
                                 }
+                                artistId = id
+                                artistUri = uri
+                                
                             }
+                            
                         }
+                        
                         
                         artists.removeLast(); artists.removeLast();
                         //print(artists)
@@ -209,7 +216,7 @@ extension Spotify {
                             let trackId = trackInfo["id"] as? String,
                             let trackUri = trackInfo["uri"] as? String,
                             let albumImage = albumImage {
-                            let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, artist: SpotifyArtist(artistName: artists), addedAt: dateAdded, audioFeatures: nil);
+                            let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, artist: SpotifyArtist(artistName: artists, uri: artistUri, id: artistId), addedAt: dateAdded, audioFeatures: nil);
                             currentList.append(track);
                         }
                     }
@@ -218,7 +225,7 @@ extension Spotify {
                     if let nextPage = nextPage {
                         let nextPageUrl = URL(string: nextPage)
                         let nextPageUrlRequest = URLRequest(url: nextPageUrl!)
-                        self.getAllTracksForPlaylist(playlistId: playlistId, nextTrackPageRequest: nextPageUrlRequest, currentTrackList: currentTrackList, fetchedPlaylistTracks: { (currentTrackList, error) in
+                        self.getAllTracksForPlaylist(playlistId: playlistId, fetchGenres: fetchGenres, nextTrackPageRequest: nextPageUrlRequest, currentTrackList: currentTrackList, fetchedPlaylistTracks: { (currentTrackList, error) in
                             fetchedPlaylistTracks(currentList, error);
                         })
                     } else {
@@ -226,7 +233,32 @@ extension Spotify {
                         let sortedList = currentList.sorted(by: { (track1, track2) -> Bool in
                             track1.addedAt!! > track2.addedAt!!
                         })
-                        fetchedPlaylistTracks(sortedList, nil);
+                        
+                        
+                        
+                        if fetchGenres! {
+                            let spotifyArtistList = sortedList.map({ $0.artist.uri }) as! [String]
+                            self.getAllGenresForArtists(spotifyArtistList, offset: 0, artistGenresHandler: { (fetchedArtistList, error) in
+                                if let error = error {
+                                    fetchedPlaylistTracks(nil, error)
+                                } else {
+                                    if let fetchedArtistList = fetchedArtistList {
+                                        for artist in fetchedArtistList {
+                                            if let index = sortedList.index(where: { (track) -> Bool in
+                                                return track.artist.uri == artist.uri
+                                            }) {
+                                                sortedList[index].artist = artist
+                                            }
+                                        }
+                                    }
+                                    fetchedPlaylistTracks(sortedList, nil)
+                                }
+                            })
+                        } else {
+                            fetchedPlaylistTracks(sortedList, nil);
+                        }
+                        
+                        
                     }
                 } catch { }
                 

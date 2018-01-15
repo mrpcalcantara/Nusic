@@ -79,8 +79,6 @@ extension ChoiceListView: UICollectionViewDelegate {
 
 extension ChoiceListView: UICollectionViewDataSource {
     
-    
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return Section.genreSection.rawValue + 1
     }
@@ -144,9 +142,8 @@ extension ChoiceListView: UICollectionViewDelegateFlowLayout {
 
 extension ChoiceListView: ChoiceListViewHeaderDelegate {
     
-    func buttonClicked() {
+    func clearButtonClicked() {
         emptyGenres()
     }
-    
     
 }

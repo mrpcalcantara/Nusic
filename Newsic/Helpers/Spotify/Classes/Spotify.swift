@@ -228,8 +228,10 @@ class Spotify {
         
         var filteredList: [String] = []
         for genre in genres {
-            if genreList.contains(genre) {
-                filteredList.append(genre)
+            for listedGenre in genreList {
+                if genre.lowercased().range(of: listedGenre.lowercased()) != nil && !filteredList.contains(listedGenre) {
+                    filteredList.append(listedGenre)
+                }
             }
         }
         return filteredList;

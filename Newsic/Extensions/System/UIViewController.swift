@@ -22,7 +22,6 @@ extension UIViewController {
         self.view.resignFirstResponder()
     }
     
-    
     func addSwipeGestureRecognizers(){
         let leftGesture = UISwipeGestureRecognizer(target: self, action: #selector(swipeBack(sender:)))
         leftGesture.direction = .left

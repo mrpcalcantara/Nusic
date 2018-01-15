@@ -12,4 +12,5 @@ enum SpotifyType: String {
     case track = "spotify:track:"
     case artist = "spotify:artist:"
     case playlist = "spotify:playlist:"
+    case genre = ""
 }

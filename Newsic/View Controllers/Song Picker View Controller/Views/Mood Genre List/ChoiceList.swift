@@ -45,23 +45,18 @@ class ChoiceListView: NusicView {
     @IBOutlet weak var choiceCollectionView: UICollectionView!
     @IBOutlet weak var fetchSongsButton: NusicButton!
     
-    //Animator
-    let viewAnimator = UIViewPropertyAnimator()
-    
-    //Bottom part: Collection View
-//    let choiceCollectionView: UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
-    
+    //View helper parameters
     var startY: CGFloat = 0
     var maxY: CGFloat = 0 {
         didSet {
             midY = maxY/2
-            print("set midY = \(midY)")
         }
     }
     var midY: CGFloat = 0
     var closeThreshold: CGFloat = 0.3
     var panProgress: CGFloat = 0
-    
+    var isOpen: Bool = false
+    var isShowing: Bool = false
     
     //Data
     var chosenMoods: [String] = []
@@ -76,8 +71,7 @@ class ChoiceListView: NusicView {
         }
     }
     var hasGenres: Bool = false
-    var isOpen: Bool = false
-    var isShowing: Bool = false
+    
     
     enum Section: Int {
 //        case moodSection

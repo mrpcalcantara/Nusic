@@ -13,13 +13,6 @@ class MusicChoiceCell: UICollectionViewCell {
     @IBOutlet weak var choiceLabel: UILabel!
     static let reuseIdentifier = "choiceCell"
     
-//    override var bounds: CGRect {
-//        didSet {
-//            print("DID SET BOUNDS")
-//            contentView.frame = bounds
-//        }
-//    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -30,16 +23,6 @@ class MusicChoiceCell: UICollectionViewCell {
         self.layer.shouldRasterize = true;
         self.layer.rasterizationScale = UIScreen.main.scale
     }
-    
-//    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes)
-//        -> UICollectionViewLayoutAttributes {
-//            print(layoutAttributes)
-//
-//            var attrs = layoutAttributes
-//            attrs.size = CGSize(width: <#T##CGFloat#>, height: <#T##CGFloat#>)
-//            return layoutAttributes
-//    }
-    
     
     func setupView() {
 
