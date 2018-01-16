@@ -47,13 +47,28 @@ extension Spotify {
                         var artists = ""
                         let index = 0
                         let artistCount = artistInfo.count
+                        var artistId = ""
+                        var artistUri = ""
+//                        for artist in artistInfo {
+//                            if let artistName = artist["name"] as? String {
+//                                artists += "\(artistName)"
+//                                if index <= artistCount - 1 {
+//                                    artists += ", ";
+//                                }
+//                            }
+//                        }
+                        
                         for artist in artistInfo {
-                            if let artistName = artist["name"] as? String {
+                            if let artistName = artist["name"] as? String, let id = artist["id"] as? String, let uri = artist["uri"] as? String {
                                 artists += "\(artistName)"
                                 if index <= artistCount - 1 {
                                     artists += ", ";
                                 }
+                                artistId = id
+                                artistUri = uri
+                                
                             }
+                            
                         }
                         artists.removeLast(); artists.removeLast();
                         let albumImage = imageInfo[0]["url"] as? String;
@@ -61,7 +76,7 @@ extension Spotify {
                             let trackId = track["id"] as? String,
                             let trackUri = track["uri"] as? String,
                             let albumImage = albumImage {
-                            let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, artist: SpotifyArtist(artistName: artists), audioFeatures: nil);
+                            let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, artist: SpotifyArtist(artistName: artists, uri: artistUri, id: artistId), audioFeatures: nil);
                             spotifyTrackList.append(track);
                         }
                     }

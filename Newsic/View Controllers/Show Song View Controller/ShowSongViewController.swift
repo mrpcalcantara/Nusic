@@ -584,9 +584,27 @@ extension ShowSongViewController {
                             error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue)
                         } else {
                             if let spotifyTracks = spotifyTracks {
-                                self.getYouTubeResults(tracks: spotifyTracks, youtubeSearchHandler: { (nusicTracks) in
-                                    self.likedTrackList = nusicTracks
+                                
+                                let spotifyArtistList = spotifyTracks.map({ $0.artist.uri }) as! [String]
+                                self.spotifyHandler.getAllGenresForArtists(spotifyArtistList, offset: 0, artistGenresHandler: { (fetchedArtistList, error) in
+                                    if let error = error {
+                                        error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getGenresForTrackList.rawValue)
+                                    } else {
+                                        if let fetchedArtistList = fetchedArtistList {
+                                            for artist in fetchedArtistList {
+                                                if let index = spotifyTracks.index(where: { (track) -> Bool in
+                                                    return track.artist.uri == artist.uri
+                                                }) {
+                                                    spotifyTracks[index].artist = artist
+                                                }
+                                            }
+                                        }
+                                        self.getYouTubeResults(tracks: spotifyTracks, youtubeSearchHandler: { (nusicTracks) in
+                                            self.likedTrackList = nusicTracks
+                                        })
+                                    }
                                 })
+                                
                             }
                         }
                     })
