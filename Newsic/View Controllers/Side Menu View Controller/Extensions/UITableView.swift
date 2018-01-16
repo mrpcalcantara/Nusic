@@ -130,6 +130,12 @@ extension SideMenuViewController {
                 let actionSpotify = { () -> Void in
                     self.settings?.preferredPlayer = NusicPreferredPlayer.spotify
                     cell.itemValue.text = buttonSpotify.textLabel.text
+                    if !self.settingsValues.contains(where: { (array) -> Bool in
+                        return array.contains(NusicSettingsLabel.spotifyQuality.rawValue)
+                    }) {
+                        self.settingsValues.insert([NusicSettingsLabel.spotifyQuality.rawValue], at: 1)
+                        self.settingsTableView.reloadData()
+                    }
                 }
                 buttonSpotify.action = actionSpotify
                 
@@ -137,6 +143,13 @@ extension SideMenuViewController {
                 let actionYoutube = { () -> Void in
                     self.settings?.preferredPlayer = NusicPreferredPlayer.youtube
                     cell.itemValue.text = buttonYoutube.textLabel.text
+                    if let index = self.settingsValues.index(where: { (array) -> Bool in
+                        return array.contains(NusicSettingsLabel.spotifyQuality.rawValue)
+                    }) {
+                        self.settingsValues.remove(at: index)
+                        self.settingsTableView.reloadData()
+                    }
+                    
                 }
                 buttonYoutube.action = actionYoutube
                 

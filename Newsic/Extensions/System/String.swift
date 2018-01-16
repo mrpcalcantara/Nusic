@@ -32,5 +32,15 @@ extension String {
         
         return ceil(boundingBox.width)
     }
+    
+    mutating func replace(symbol: String, with replaceSymbol: String) {
+        let strToReplace = self.replaceSymbols(symbol: symbol, with: replaceSymbol)
+        self = strToReplace
+    }
+    
+    func replaceSymbols(symbol: String, with replaceSymbol: String) -> String {
+        let replace = self.replacingOccurrences(of: symbol, with: replaceSymbol)
+        return replace
+    }
 
 }

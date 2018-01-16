@@ -29,12 +29,6 @@ class ShowSongViewController: NusicDefaultViewController {
     var user: NusicUser! = nil;
     var likedTrackList:[NusicTrack] = [] {
         didSet {
-            
-//            let tableHeaderView = SongTableViewHeader(reuseIdentifier: SongTableViewHeader.reuseIdentifier)
-//            tableHeaderView.autoresizingMask = []
-//            songListTableView.tableHeaderView = tableHeaderView
-//            configure(headerCell: tableHeaderView, at: 0)
-//            songListTableView.bringSubview(toFront: tableHeaderView)
             sortTableView(by: songListTableViewHeader.currentSortElement)
             DispatchQueue.main.async {
                 self.songListTableView.reloadData()
@@ -88,6 +82,43 @@ class ShowSongViewController: NusicDefaultViewController {
     @IBOutlet weak var songCardTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var songCardBottomConstraint: NSLayoutConstraint!
     
+    //Show More
+    @IBOutlet weak var showMoreCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var showMoreTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var showMoreBottomConstraint: NSLayoutConstraint!
+
+    //Next Track
+    @IBOutlet weak var nextTrackCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nextTrackTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nextTrackBottomConstraint: NSLayoutConstraint!
+
+    //Previous Track
+    @IBOutlet weak var previousTrackCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var previousTrackTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var previousTrackBottomConstraint: NSLayoutConstraint!
+
+    //Pause/Play Track
+    @IBOutlet weak var pausePlayCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var pausePlayTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var pausePlayBottomConstraint: NSLayoutConstraint!
+
+    //Like Song
+    @IBOutlet weak var likeSongCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var likeSongTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var likeSongBottomConstraint: NSLayoutConstraint!
+
+    //Dislike Song
+    @IBOutlet weak var dislikeSongCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var dislikeSongTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var dislikeSongBottomConstraint: NSLayoutConstraint!
+
+    //Song Progress View
+    @IBOutlet weak var songProgressTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var songProgressBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var songProgressTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var songProgressLeadingConstraint: NSLayoutConstraint!
+
+    
     
     
     @IBOutlet weak var songCardView: SongKolodaView!
@@ -131,12 +162,10 @@ class ShowSongViewController: NusicDefaultViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        closePlayerMenu(animated: true)
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        setShowMoreOrigin()
     }
     
     override func viewDidLayoutSubviews() {
@@ -146,7 +175,7 @@ class ShowSongViewController: NusicDefaultViewController {
         }
         
         if screenRotated {
-            self.setupPlayerMenu()
+            reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
             screenRotated = false
         }
         
@@ -157,26 +186,42 @@ class ShowSongViewController: NusicDefaultViewController {
         if size.width > size.height {
             removeHeaderGestureRecognizer(for: songListTableViewHeader)
             removeMenuSwipeGestureRecognizer()
+            
         } else {
             addHeaderGestureRecognizer(for: songListTableViewHeader)
             addMenuSwipeGestureRecognizer()
         }
-        setupConstraints(for: size)
-        self.songCardView.layoutSubviews()
-        closePlayerMenu(animated: true)
+        
         closeMenu()
+        if isPlayerMenuOpen {
+            closePlayerMenu(animated: true)
+        }
         screenRotated = true
     }
     
     func setupConstraints(for size: CGSize) {
         //Landscape
-        print("songCardView.frame on setupConstraints \(songCardView.frame)")
+//        print("songCardView.frame on setupConstraints \(songCardView.frame)")
         if size.width > size.height {
             self.songCardTrailingConstraint.constant = -size.width*(1/3)
+            self.dislikeSongCenterXConstraint.constant = -size.width*(1/6)
+            self.previousTrackCenterXConstraint.constant = -size.width*(1/6)
+            self.pausePlayCenterXConstraint.constant = -size.width*(1/6)
+            self.likeSongCenterXConstraint.constant = -size.width*(1/6)
+            self.showMoreCenterXConstraint.constant = -size.width*(1/6)
+            self.nextTrackCenterXConstraint.constant = -size.width*(1/6)
+            self.songProgressTrailingConstraint.constant = -size.width*(1/3)
             self.tableViewLeadingConstraint.constant = size.width*(2/3)
             self.tableViewTrailingConstraint.constant = 0
             songListTableView.isUserInteractionEnabled = true
         } else {
+            self.dislikeSongCenterXConstraint.constant = 0
+            self.previousTrackCenterXConstraint.constant = 0
+            self.pausePlayCenterXConstraint.constant = 0
+            self.likeSongCenterXConstraint.constant = 0
+            self.showMoreCenterXConstraint.constant = 0
+            self.nextTrackCenterXConstraint.constant = 0
+            self.songProgressTrailingConstraint.constant = 0
             self.songCardTrailingConstraint.constant = -8
             
         }
@@ -193,7 +238,7 @@ class ShowSongViewController: NusicDefaultViewController {
             setupTableView()
             setupSongs()
             setupPlayerMenu()
-            
+            setupNavigationBar()
             if preferredPlayer == NusicPreferredPlayer.spotify {
                 setupSpotify()
                 setupCommandCenter()
@@ -384,6 +429,9 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     
     func resetView() {
+        if isPlayerMenuOpen {
+            closePlayerMenu(animated: false)
+        }
         self.cardList.removeAll();
         self.songCardView.resetCurrentCardIndex()
         self.songCardView.reloadData();
@@ -453,8 +501,10 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
             if shouldCompleteTransition {
                 closeMenu()
             } else {
-                openMenu()
-                closePlayerMenu(animated: true)
+                isMenuOpen = false;
+                toggleSongMenu()
+//                openMenu()
+//                closePlayerMenu(animated: true)
             }
             songListMenuProgress = 0
         }
@@ -489,8 +539,9 @@ extension ShowSongViewController {
     @objc func toggleSongMenu() {
         if !isMenuOpen {
             openMenu();
-            
-            closePlayerMenu(animated: true)
+            if isPlayerMenuOpen {
+                closePlayerMenu(animated: true)
+            }
         } else {
             closeMenu();
         }
@@ -728,7 +779,7 @@ extension ShowSongViewController {
                     return currentTrack.trackId == track.trackId
                 }) {
                     
-                    let nusicTrack = NusicTrack(trackInfo: tracks[currentIndex], moodInfo: self.moodObject, userName: self.auth.session.canonicalUsername, youtubeInfo: youtubeInfo);
+                    let nusicTrack = NusicTrack(trackInfo: tracks[currentIndex], moodInfo: self.moodObject, userName: self.user.userName, youtubeInfo: youtubeInfo);
                     
                     ytTracks.append(nusicTrack);
                 }

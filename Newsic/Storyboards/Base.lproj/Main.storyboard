@@ -260,23 +260,29 @@
                                 </connections>
                             </button>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uVu-im-pgF" userLabel="Song Progress View">
-                                <rect key="frame" x="32" y="551" width="311" height="64"/>
+                                <rect key="frame" x="24" y="551" width="327" height="64"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.14999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="dXd-ii-e2J" userLabel="Elapsed Time Label">
-                                        <rect key="frame" x="4" y="42" width="0.0" height="0.0"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.14999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="dXd-ii-e2J" userLabel="Elapsed Time Label">
+                                        <rect key="frame" x="0.0" y="30" width="50" height="0.0"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="g1G-jf-lfI"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="8qg-KD-JNS">
-                                        <rect key="frame" x="-2" y="34" width="315" height="31"/>
+                                        <rect key="frame" x="-2" y="30" width="331" height="35"/>
                                         <connections>
                                             <action selector="finishSeek:" destination="eJS-am-Jyf" eventType="touchUpInside" id="b0S-E2-gbf"/>
                                             <action selector="songSeek:" destination="eJS-am-Jyf" eventType="valueChanged" id="SPl-QY-bUM"/>
                                         </connections>
                                     </slider>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.14999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="h7B-Kq-TRB" userLabel="Progress Label">
-                                        <rect key="frame" x="307" y="42" width="0.0" height="0.0"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.14999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="h7B-Kq-TRB" userLabel="Progress Label">
+                                        <rect key="frame" x="277" y="30" width="50" height="0.0"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="ltR-HW-sNz"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -284,14 +290,14 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="dXd-ii-e2J" firstAttribute="leading" secondItem="uVu-im-pgF" secondAttribute="leading" constant="4" id="4iW-T8-Bgj"/>
                                     <constraint firstAttribute="bottom" secondItem="8qg-KD-JNS" secondAttribute="bottom" id="5OT-mi-OMb"/>
                                     <constraint firstItem="8qg-KD-JNS" firstAttribute="leading" secondItem="uVu-im-pgF" secondAttribute="leading" id="8H5-Pt-Db1"/>
+                                    <constraint firstItem="dXd-ii-e2J" firstAttribute="leading" secondItem="uVu-im-pgF" secondAttribute="leading" id="Asc-Ku-7Ej"/>
                                     <constraint firstAttribute="trailing" secondItem="8qg-KD-JNS" secondAttribute="trailing" id="Axo-iC-Omf"/>
-                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="top" secondItem="h7B-Kq-TRB" secondAttribute="bottom" constant="-8" id="ID3-6Z-ZZk"/>
-                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="top" secondItem="uVu-im-pgF" secondAttribute="top" constant="34" id="LWG-xJ-N6A"/>
-                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="top" secondItem="dXd-ii-e2J" secondAttribute="bottom" constant="-8" id="M3T-BC-JGh"/>
-                                    <constraint firstAttribute="trailing" secondItem="h7B-Kq-TRB" secondAttribute="trailing" constant="4" id="hNX-re-tNq"/>
+                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="top" secondItem="h7B-Kq-TRB" secondAttribute="bottom" id="Ecm-jU-q8r"/>
+                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="top" secondItem="dXd-ii-e2J" secondAttribute="bottom" id="JSO-TL-ZK5"/>
+                                    <constraint firstItem="8qg-KD-JNS" firstAttribute="top" secondItem="uVu-im-pgF" secondAttribute="top" constant="30" id="LWG-xJ-N6A"/>
+                                    <constraint firstAttribute="trailing" secondItem="h7B-Kq-TRB" secondAttribute="trailing" id="Z7e-JW-YSg"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k6E-Yi-lJS">
@@ -356,9 +362,9 @@
                             <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="Iig-1D-otX" secondAttribute="bottom" constant="8" id="3eq-9V-kik"/>
                             <constraint firstItem="Any-Pf-dnV" firstAttribute="leading" secondItem="WhN-EJ-UOd" secondAttribute="leading" constant="60" id="9Ib-eq-uoR"/>
                             <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="80" id="HDx-N2-1Fw"/>
-                            <constraint firstItem="uVu-im-pgF" firstAttribute="trailing" secondItem="Yet-46-QVi" secondAttribute="trailingMargin" constant="-16" id="Ill-Y3-Qti"/>
+                            <constraint firstItem="uVu-im-pgF" firstAttribute="trailing" secondItem="Yet-46-QVi" secondAttribute="trailingMargin" constant="-8" id="Ill-Y3-Qti"/>
                             <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="k6E-Yi-lJS" secondAttribute="bottom" constant="8" id="KtE-le-FYf"/>
-                            <constraint firstItem="uVu-im-pgF" firstAttribute="leading" secondItem="Yet-46-QVi" secondAttribute="leadingMargin" constant="16" id="Lpd-zq-eJ8"/>
+                            <constraint firstItem="uVu-im-pgF" firstAttribute="leading" secondItem="Yet-46-QVi" secondAttribute="leadingMargin" constant="8" id="Lpd-zq-eJ8"/>
                             <constraint firstItem="alX-vn-cgC" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="XQo-Fy-Buo"/>
                             <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="Qgp-ff-fLa" secondAttribute="bottom" constant="8" id="YpW-ge-llq"/>
                             <constraint firstItem="alX-vn-cgC" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="Yzb-nM-FQD"/>
@@ -389,7 +395,7 @@
                     <connections>
                         <outlet property="dislikeSongBottomConstraint" destination="c9f-1V-cd7" id="JMP-pX-sKJ"/>
                         <outlet property="dislikeSongCenterXConstraint" destination="hrT-wC-tiN" id="OBb-IU-ALa"/>
-                        <outlet property="dislikeSongTopConstraint" destination="qAN-XT-z87" id="RNh-gD-4Z7"/>
+                        <outlet property="dislikeSongTopConstraint" destination="vwZ-oO-l4k" id="we8-lr-xKO"/>
                         <outlet property="likeSongBottomConstraint" destination="ltS-uG-JhY" id="Epj-yi-OyE"/>
                         <outlet property="likeSongCenterXConstraint" destination="gkI-as-pns" id="q9A-bQ-Yne"/>
                         <outlet property="likeSongTopConstraint" destination="zbc-Wm-RlZ" id="ZSV-cO-6JZ"/>
@@ -406,6 +412,7 @@
                         <outlet property="previousTrack" destination="k6E-Yi-lJS" id="ka1-MA-DHN"/>
                         <outlet property="previousTrackBottomConstraint" destination="KtE-le-FYf" id="Uhn-XA-ofy"/>
                         <outlet property="previousTrackCenterXConstraint" destination="hbC-F6-Ape" id="NAH-oK-45y"/>
+                        <outlet property="previousTrackTopConstraint" destination="qAN-XT-z87" id="kAB-gI-PpN"/>
                         <outlet property="showMore" destination="alX-vn-cgC" id="mtA-kE-ekt"/>
                         <outlet property="showMoreBottomConstraint" destination="pKv-yj-mlX" id="Avk-0Y-44t"/>
                         <outlet property="showMoreCenterXConstraint" destination="XQo-Fy-Buo" id="EvC-dH-LC2"/>

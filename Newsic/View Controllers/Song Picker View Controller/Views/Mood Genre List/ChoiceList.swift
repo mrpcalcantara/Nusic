@@ -125,10 +125,13 @@ class ChoiceListView: NusicView {
         removeBezierPaths()
         toggleBezierPaths()
         
+        
         startY = self.frame.origin.y
         self.fetchSongsButton.layoutIfNeeded()
         if self.isShowing {
+            self.reloadBlurEffect()
             self.layoutChoiceView()
+            self.layoutIfNeeded()
         }
         
     }

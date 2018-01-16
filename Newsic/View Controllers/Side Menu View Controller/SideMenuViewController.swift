@@ -58,7 +58,9 @@ class SideMenuViewController: NusicDefaultViewController {
    
     func setupSettingsArray() {
         settingsValues = [[NusicSettingsLabel.preferredPlayer.rawValue]]
-        settingsValues.append([NusicSettingsLabel.spotifyQuality.rawValue])
+        if let preferredPlayer = preferredPlayer, preferredPlayer == .spotify {
+            settingsValues.append([NusicSettingsLabel.spotifyQuality.rawValue])
+        }
         settingsValues.append([NusicSettingsLabel.useMobileData.rawValue])
         settingsValues.append([NusicSettingsLabel.logout.rawValue])
         
