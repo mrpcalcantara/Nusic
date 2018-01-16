@@ -13,14 +13,19 @@ import Firebase
 struct NusicGenre {
     
     var reference: DatabaseReference!
-    var userName: String;
+    var userName: String {
+        didSet {
+            userName.replace(symbol: ".", with: "-")
+        }
+    }
     var mainGenre: String;
     var count: Int;
     
     init(mainGenre: String, count: Int, userName: String) {
         self.mainGenre = mainGenre;
         self.count = count;
-        self.userName = userName;
+        let firebaseUsername = userName.replaceSymbols(symbol: ".", with: "-")
+        self.userName = firebaseUsername
         self.reference = Database.database().reference().child("genres")
     }
     

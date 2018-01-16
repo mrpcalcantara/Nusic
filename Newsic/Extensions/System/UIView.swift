@@ -34,6 +34,15 @@ extension UIView {
         }
     }
     
+    func reloadBlurEffect() {
+        for view in subviews {
+            if view.tag == 1 {
+                view.frame.size = self.bounds.size
+                break;
+            }
+        }
+    }
+    
     func addShadow(cornerRadius: CGFloat? = 3, shadowColor: CGColor? = UIColor.clear.cgColor, shadowOpacity: Float? = 0.5, shadowOffset: CGSize? = CGSize(width: -2, height: -7), shadowRadius: CGFloat? = 2) {
         self.layer.cornerRadius = cornerRadius!
         self.layer.masksToBounds = false

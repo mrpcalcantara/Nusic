@@ -12,12 +12,17 @@ import FirebaseDatabase
 struct NusicArtist {
     
     let spotifyArtist: SpotifyArtist;
-    let userName: String
+    var userName: String {
+        didSet {
+            userName.replace(symbol: ".", with: "-")
+        }
+    }
     var reference: DatabaseReference!
     
     init(artist: SpotifyArtist, userName: String) {
         self.spotifyArtist = artist;
-        self.userName = userName;
+        let firebaseUsername = userName.replaceSymbols(symbol: ".", with: "-")
+        self.userName = firebaseUsername
         self.reference = Database.database().reference().child("users");
     }
     

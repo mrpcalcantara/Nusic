@@ -54,9 +54,10 @@ class SettingsHeader: NusicView {
         let customBounds = CGRect(x: self.bounds.origin.x, y: self.bounds.origin.y + self.bounds.height * 0.25, width: self.bounds.width, height: self.bounds.height * 0.75)
         self.addBlurEffect(style: .dark, alpha: 0.8, customBounds: customBounds)
         self.usernameLabel.textColor = UIColor.lightText
-        
+        profileImageView.contentMode = .scaleAspectFit
         if image == nil && imageURL == nil {
-            return;
+            profileImageView.image = UIImage(named: "AppIcon")
+            profileImageView.image = UIImage(named: "AppIcon")
         } else if let image = image {
             profileImageView.image = image
         } else if let imageURL = imageURL {
@@ -70,7 +71,7 @@ class SettingsHeader: NusicView {
                 })
             }
 
-        }        
+        }
         usernameLabel.text = username
     }
     

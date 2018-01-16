@@ -22,6 +22,14 @@ class SettingsCell: UITableViewCell {
     var initialDescriptionConstraintConstant: CGFloat? = nil
     var alertController: NusicAlertController?
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.accessoryType = .disclosureIndicator
+        descriptionImage.image = nil
+        itemDescription.text = ""
+        itemValue.text = ""
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

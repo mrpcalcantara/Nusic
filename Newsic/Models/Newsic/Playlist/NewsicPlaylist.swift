@@ -13,12 +13,17 @@ class NusicPlaylist {
     var reference: DatabaseReference!
     var name: String?;
     var id: String?;
-    var userName: String;
+    var userName: String {
+        didSet {
+            userName.replace(symbol: ".", with: "-")
+        }
+    }
     
     init(name: String? = nil, id: String? = nil, userName: String) {
         self.name = name;
         self.id = id;
-        self.userName = userName;
+        let firebaseUsername = userName.replaceSymbols(symbol: ".", with: "-")
+        self.userName = firebaseUsername
         self.reference = Database.database().reference().child("playlists")
     }
 

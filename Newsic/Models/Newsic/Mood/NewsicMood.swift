@@ -14,7 +14,11 @@ struct NusicMood: FirebaseModel, Iterable {
     var emotions: [Emotion];
     var sentiment: Double;
     var isAmbiguous: Bool;
-    var userName: String;
+    var userName: String {
+        didSet {
+            userName.replace(symbol: ".", with: "-")
+        }
+    }
     var date: Date!
     var associatedGenres: [String];
     var associatedTracks: [NusicTrack];
@@ -36,7 +40,8 @@ struct NusicMood: FirebaseModel, Iterable {
         self.isAmbiguous = isAmbiguous;
         self.sentiment = sentiment;
         self.date = date;
-        self.userName = userName!
+        let firebaseUsername = userName!.replaceSymbols(symbol: ".", with: "-")
+        self.userName = firebaseUsername
         self.associatedGenres = associatedGenres
         self.associatedTracks = associatedTracks
         self.reference = Database.database().reference();

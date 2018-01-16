@@ -13,14 +13,19 @@ struct NusicTrack {
     
     var youtubeInfo: YouTubeResult?
     var trackInfo: SpotifyTrack
-    var userName: String
+    var userName: String {
+        didSet {
+            userName.replace(symbol: ".", with: "-")
+        }
+    }
     var moodInfo: NusicMood?;
     var reference: DatabaseReference! = Database.database().reference()
     
     init(trackInfo: SpotifyTrack, moodInfo: NusicMood?, userName: String, youtubeInfo: YouTubeResult? = nil) {
         self.trackInfo = trackInfo;
         self.moodInfo = moodInfo;
-        self.userName = userName;
+        let firebaseUsername = userName.replaceSymbols(symbol: ".", with: "-")
+        self.userName = firebaseUsername
         self.youtubeInfo = youtubeInfo;
         self.reference = Database.database().reference().child("likedTracks");
     }

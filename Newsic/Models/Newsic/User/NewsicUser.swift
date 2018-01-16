@@ -11,7 +11,11 @@ import FirebaseDatabase
 
 class NusicUser: Iterable {
     
-    var userName: String
+    var userName: String {
+        didSet {
+            userName.replace(symbol: ".", with: "-")
+        }
+    }
     var displayName: String
     var emailAddress: String
     var territory: String
@@ -22,13 +26,15 @@ class NusicUser: Iterable {
     var reference: DatabaseReference!
     
     init(userName: String, displayName: String? = "", emailAddress: String? = "", imageURL: String? = "", territory: String? = "", favoriteGenres: [NusicGenre]? = nil, isPremium: Bool? = false, settingValues: NusicUserSettings? = NusicUserSettings()) {
-        self.userName = userName;
+        let firebaseUsername = userName.replaceSymbols(symbol: ".", with: "-")
+        self.userName = firebaseUsername
         self.displayName = displayName!;
         self.emailAddress = emailAddress!
         self.territory = territory!;
         self.favoriteGenres = favoriteGenres;
         self.isPremium = isPremium
         self.settingValues = settingValues!;
+        self.settingValues.preferredPlayer = isPremium! ? NusicPreferredPlayer.spotify : NusicPreferredPlayer.youtube
         
         self.getImage(imageURL: imageURL!);
         self.reference = Database.database().reference();

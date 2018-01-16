@@ -9,196 +9,78 @@ import Foundation
 import UIKit
 
 extension ShowSongViewController {
-    
-    func setupPlayerMenuPortrait() {
         
-        playerMenuMaxWidth = self.view.safeAreaLayoutGuide.layoutFrame.width
-        let buttonsInitFrame = self.showMore.frame
-        initialPlayerMenuIconCenter = self.showMore.frame
-        
-        showMore.setImage(UIImage(named: "ShowMore"), for: .normal)
-        showMore.frame = buttonsInitFrame;
-        showMore.alpha = 1
-        showMore.layer.zPosition = -1
-        showMore.translatesAutoresizingMaskIntoConstraints = true;
-        
-        previousSong.setImage(UIImage(named: "ThumbsDown"), for: .normal)
-        previousSong.frame = buttonsInitFrame;
-        previousSong.isHidden = true
-        previousSong.layer.zPosition = 1;
-        previousSong.translatesAutoresizingMaskIntoConstraints = true;
-        previousSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
-        
-        if pausePlay.image(for: .normal) == nil {
-            pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
-        }
-        
-        pausePlay.frame = buttonsInitFrame;
-        pausePlay.isHidden = true
-        pausePlay.layer.zPosition = -1;
-        pausePlay.translatesAutoresizingMaskIntoConstraints = true;
-        pausePlay.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
-        
-        nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
-        nextSong.frame = buttonsInitFrame;
-        nextSong.isHidden = true
-        nextSong.layer.zPosition = 1;
-        nextSong.translatesAutoresizingMaskIntoConstraints = true;
-        nextSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
-        
-        previousTrack.setImage(UIImage(named: "Rewind"), for: .normal)
-        previousTrack.frame = buttonsInitFrame;
-        previousTrack.isHidden = true
-        previousTrack.layer.zPosition = -1;
-        previousTrack.translatesAutoresizingMaskIntoConstraints = true;
-        previousTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
-        
-        nextTrack.setImage(UIImage(named: "FastForward"), for: .normal)
-        nextTrack.frame = buttonsInitFrame;
-        nextTrack.isHidden = true
-        nextTrack.layer.zPosition = -1;
-        nextTrack.translatesAutoresizingMaskIntoConstraints = true;
-        nextTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
-        
-        if preferredPlayer == NusicPreferredPlayer.spotify {
-            songProgressSlider.isHidden = false
-            
-            songProgressView.frame = buttonsInitFrame;
-            songProgressView.isHidden = true
-            songProgressView.layer.zPosition = 1;
-            songProgressView.translatesAutoresizingMaskIntoConstraints = true;
-            songProgressView.backgroundColor = UIColor.clear
-            
-            songProgressSlider.layer.zPosition = 1;
-            songProgressSlider.tintColor = UIColor.green
-            
-            songDurationLabel.layer.zPosition = 1;
-            songDurationLabel.textColor = UIColor.lightText
-            songDurationLabel.text = songDurationLabel.text == "" ? convertElapsedSecondsToTime(interval: 0) : songDurationLabel.text
-            
-            songElapsedTime.layer.zPosition = 1;
-            songElapsedTime.textColor = UIColor.lightText
-            songElapsedTime.text = songElapsedTime.text == "" ? convertElapsedSecondsToTime(interval: 0) : songElapsedTime.text
-        }
-        
-        self.view.layoutIfNeeded()
-        
-    }
-    
-    func setupPlayerMenuLandscape() {
-        
-        playerMenuMaxWidth = self.view.safeAreaLayoutGuide.layoutFrame.width*(2/3)
-        let buttonsInitFrame = self.showMore.frame
-        initialPlayerMenuIconCenter = self.showMore.frame
-        
-        showMore.setImage(UIImage(named: "ShowMore"), for: .normal)
-        showMore.frame = buttonsInitFrame;
-        showMore.alpha = 1
-        showMore.layer.zPosition = -1
-        showMore.translatesAutoresizingMaskIntoConstraints = true;
-        
-        previousSong.setImage(UIImage(named: "ThumbsDown"), for: .normal)
-        previousSong.frame = buttonsInitFrame;
-        previousSong.isHidden = true
-        previousSong.layer.zPosition = 1;
-        previousSong.translatesAutoresizingMaskIntoConstraints = true;
-        previousSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
-        
-        
-        if pausePlay.image(for: .normal) == nil {
-            pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
-        }
-        pausePlay.frame = buttonsInitFrame;
-        pausePlay.isHidden = true
-        pausePlay.layer.zPosition = -1;
-        pausePlay.translatesAutoresizingMaskIntoConstraints = true;
-        pausePlay.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
-        
-        nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
-        nextSong.frame = buttonsInitFrame;
-        nextSong.isHidden = true
-        nextSong.layer.zPosition = 1;
-        nextSong.translatesAutoresizingMaskIntoConstraints = true;
-        nextSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
-        
-        previousTrack.setImage(UIImage(named: "Rewind"), for: .normal)
-        previousTrack.frame = buttonsInitFrame;
-        previousTrack.isHidden = true
-        previousTrack.layer.zPosition = -1;
-        previousTrack.translatesAutoresizingMaskIntoConstraints = true;
-        previousTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
-        
-        nextTrack.setImage(UIImage(named: "FastForward"), for: .normal)
-        nextTrack.frame = buttonsInitFrame;
-        nextTrack.isHidden = true
-        nextTrack.layer.zPosition = -1;
-        nextTrack.translatesAutoresizingMaskIntoConstraints = true;
-        nextTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
-        
-        if preferredPlayer == NusicPreferredPlayer.spotify {
-            songProgressSlider.isHidden = false
-            
-            songProgressView.frame = buttonsInitFrame;
-            songProgressView.isHidden = true
-            songProgressView.layer.zPosition = 1;
-            songProgressView.translatesAutoresizingMaskIntoConstraints = true;
-            songProgressView.backgroundColor = UIColor.clear
-            
-            songProgressSlider.layer.zPosition = 1;
-            songProgressSlider.tintColor = UIColor.green
-            
-            songDurationLabel.layer.zPosition = 1;
-            songDurationLabel.textColor = UIColor.lightText
-            songDurationLabel.text = songDurationLabel.text == "" ? convertElapsedSecondsToTime(interval: 0) : songDurationLabel.text
-            
-            songElapsedTime.layer.zPosition = 1;
-            songElapsedTime.textColor = UIColor.lightText
-            songElapsedTime.text = songElapsedTime.text == "" ? convertElapsedSecondsToTime(interval: 0) : songElapsedTime.text
-        }
-        
-        self.view.layoutIfNeeded()
-        
-    }
-    
     func setupPlayerMenu() {
-        setupConstraints(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
-        if UIApplication.shared.statusBarOrientation.isPortrait {
-            setupPlayerMenuPortrait()
-        } else {
-            setupPlayerMenuLandscape()
+        setupConstraints(for: self.view.frame.size)
+        
+        showMore.setImage(UIImage(named: "ShowMore"), for: .normal)
+        showMore.alpha = 1
+        showMore.layer.zPosition = -1
+        showMore.translatesAutoresizingMaskIntoConstraints = false;
+        
+        previousSong.setImage(UIImage(named: "ThumbsDown"), for: .normal)
+        previousSong.isHidden = true
+        previousSong.layer.zPosition = 1;
+        previousSong.translatesAutoresizingMaskIntoConstraints = false;
+        previousSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
+        
+        if pausePlay.image(for: .normal) == nil {
+            pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
         }
+        
+        pausePlay.isHidden = true
+        pausePlay.layer.zPosition = -1;
+        pausePlay.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
+        
+        nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
+        nextSong.isHidden = true
+        nextSong.layer.zPosition = 1;
+        nextSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
+        
+        previousTrack.setImage(UIImage(named: "Rewind"), for: .normal)
+        previousTrack.isHidden = true
+        previousTrack.layer.zPosition = -1;
+        previousTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
+        
+        nextTrack.setImage(UIImage(named: "FastForward"), for: .normal)
+        nextTrack.isHidden = true
+        nextTrack.layer.zPosition = -1;
+        nextTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
+        
+        if preferredPlayer == NusicPreferredPlayer.spotify {
+            songProgressSlider.isHidden = false
+            
+            songProgressView.isHidden = true
+            songProgressView.layer.zPosition = 1;
+            songProgressView.backgroundColor = UIColor.clear
+            
+            songProgressSlider.layer.zPosition = 1;
+            songProgressSlider.tintColor = UIColor.green
+            songProgressSlider.thumbTintColor = UIColor.lightGray
+//            let image = UIImage(named: "SongProgressThumb")?.withRenderingMode(.alwaysTemplate)
+//            songProgressSlider.setThumbImage(image, for: .normal)
+//            songProgressSlider.setThumbImage(image, for: .focused)
+//            songProgressSlider.setThumbImage(image, for: .highlighted)
+            
+            songDurationLabel.layer.zPosition = 1;
+            songDurationLabel.textColor = UIColor.lightText
+            songDurationLabel.text = songDurationLabel.text == "" ? convertElapsedSecondsToTime(interval: 0) : songDurationLabel.text
+            
+            songElapsedTime.layer.zPosition = 1;
+            songElapsedTime.textColor = UIColor.lightText
+            songElapsedTime.text = songElapsedTime.text == "" ? convertElapsedSecondsToTime(interval: 0) : songElapsedTime.text
+        }
+        
+        self.view.layoutIfNeeded()
     }
     
-    func setupSongProgress(duration: Float) {
-        let currentDuration = Int(duration)
-        setupSlider(duration: duration)
-        updateElapsedTime(elapsedTime: 0, duration: duration)
-        songDurationLabel.text = convertElapsedSecondsToTime(interval: currentDuration);
-    }
-    
-    func updateElapsedTime(elapsedTime: Float, duration: Float ) {
-        songElapsedTime.text = convertElapsedSecondsToTime(interval: Int(elapsedTime))
-        songDurationLabel.text = convertElapsedSecondsToTime(interval: Int(elapsedTime-duration))
-    }
-    
-    func setupSlider(duration: Float) {
-        songProgressSlider.maximumValue = duration
-        songProgressSlider.minimumValue = 0
-        songProgressSlider.setValue(0, animated: true)
+    func reloadPlayerMenu(for size: CGSize) {
+        setupConstraints(for: size)
+        self.view.layoutIfNeeded()
     }
     
     func openPlayerMenu() {
         UIView.animate(withDuration: 0.3) {
-            if let buttonsInitFrame = self.initialPlayerMenuIconCenter {
-                self.previousSong.frame = buttonsInitFrame;
-                self.pausePlay.frame = buttonsInitFrame;
-                self.nextSong.frame = buttonsInitFrame;
-                self.previousTrack.frame = buttonsInitFrame;
-                self.nextTrack.frame = buttonsInitFrame;
-                self.songProgressView.frame = buttonsInitFrame
-                self.showMore.frame = buttonsInitFrame
-            }
-            
             self.pausePlay.alpha = 1
             self.pausePlay.isHidden = false
             self.previousTrack.alpha = 1
@@ -221,31 +103,30 @@ extension ShowSongViewController {
             }
             
         }
-        if UIApplication.shared.statusBarOrientation.isPortrait {
-            openPlayerMenuPortrait()
-        } else {
-            openPlayerMenuLandscape()
-        }
-    }
-    
-    func openPlayerMenuPortrait() {
+        
         UIView.animate(withDuration: 0.3) {
-            let buttonWidth = self.pausePlay.frame.width
-            self.pausePlay.frame.origin.x = self.playerMenuMaxWidth * 0.5 - buttonWidth/2
-            self.previousTrack.frame.origin.x = self.playerMenuMaxWidth * 0.25 - buttonWidth/2
-            self.nextTrack.frame.origin.x = self.playerMenuMaxWidth * 0.75 - buttonWidth/2
-            self.previousSong.frame.origin.x = 0;
-            self.nextSong.frame.origin.x = self.playerMenuMaxWidth - buttonWidth
+            
+            
+//            self.pausePlayCenterXConstraint.constant = 0
+            self.songProgressBottomConstraint.constant += self.view.frame.height * 0.10
+            self.songProgressTopConstraint.constant += self.view.frame.height * 0.10
             if self.preferredPlayer == NusicPreferredPlayer.spotify {
-                self.songProgressView.frame.origin.x = self.trackStackView.frame.origin.x
-                self.songProgressView.frame.origin.y = self.view.safeAreaLayoutGuide.layoutFrame.height * 0.9 - buttonWidth
-                self.songProgressView.frame.size = CGSize(width: self.trackStackView.frame.width, height: self.songProgressView.safeAreaLayoutGuide.layoutFrame.height)
-            }
-//             self.showMore.frame.origin.y = self.preferredPlayer == NusicPreferredPlayer.spotify ? self.view.frame.height * 0.84 - buttonWidth : self.view.frame.height * 0.9 - buttonWidth
-            self.showMore.frame.origin = self.showMoreOpenPosition!
-             if !self.isPlayerMenuOpen {
+                
                 self.songCardBottomConstraint.constant += self.view.frame.height * 0.20
+                self.showMoreBottomConstraint.constant += self.view.frame.height * 0.15
+            } else {
+                self.songCardBottomConstraint.constant += self.view.frame.height * 0.15
+                self.showMoreBottomConstraint.constant += self.view.frame.height * 0.10
             }
+            self.pausePlayTopConstraint.constant += self.view.frame.height * 0.20
+            self.previousTrackCenterXConstraint.constant += -self.trackStackView.bounds.width/4
+            self.previousTrackTopConstraint.constant += self.view.frame.height * 0.20
+            self.nextTrackCenterXConstraint.constant += self.trackStackView.bounds.width/4
+            self.nextTrackTopConstraint.constant += self.view.frame.height * 0.20
+            self.dislikeSongCenterXConstraint.constant += -self.trackStackView.bounds.width/2
+            self.dislikeSongTopConstraint.constant += self.view.frame.height * 0.20
+            self.likeSongCenterXConstraint.constant += self.trackStackView.bounds.width/2
+            self.likeSongTopConstraint.constant += self.view.frame.height * 0.20
             self.view.layoutIfNeeded();
         }
         self.showMore.transform = CGAffineTransform.identity;
@@ -257,60 +138,22 @@ extension ShowSongViewController {
         
     }
     
-    func openPlayerMenuLandscape() {
-        UIView.animate(withDuration: 0.3) {
-            let buttonWidth = self.pausePlay.frame.width
-            self.pausePlay.frame.origin.x = self.playerMenuMaxWidth * 0.5 - buttonWidth/2
-            self.previousTrack.frame.origin.x = self.playerMenuMaxWidth * 0.25 - buttonWidth/2
-            self.nextTrack.frame.origin.x = self.playerMenuMaxWidth * 0.75 - buttonWidth/2
-            self.previousSong.frame.origin.x = 0;
-            self.nextSong.frame.origin.x = self.playerMenuMaxWidth - buttonWidth
-            if self.preferredPlayer == NusicPreferredPlayer.spotify {
-                self.songProgressView.frame.origin.x = self.trackStackView.frame.origin.x
-                self.songProgressView.frame.origin.y = self.view.frame.height * 0.9 - buttonWidth
-                self.songProgressView.frame.size = CGSize(width: self.trackStackView.frame.width, height: self.songProgressView.frame.height)
-            }
-//            self.showMore.frame.origin.y = self.preferredPlayer == NusicPreferredPlayer.spotify ? self.view.frame.height * 0.84 - buttonWidth : self.view.frame.height * 0.9 - buttonWidth
-            self.showMore.frame.origin = self.showMoreOpenPosition!
-            if !self.isPlayerMenuOpen {
-                self.songCardBottomConstraint.constant += self.view.frame.height * 0.20
-            }
-            self.view.layoutIfNeeded();
-        }
-        self.showMore.transform = CGAffineTransform.identity;
-        UIView.animate(withDuration: 0.2, animations: {
-            let rotateTransform = CGAffineTransform(rotationAngle: CGFloat.pi*4.5);
-            self.showMore.transform = rotateTransform
-        }, completion: nil)
-        isPlayerMenuOpen = true
-    }
-    
     func closePlayerMenu(animated: Bool) {
         if animated {
             UIView.animate(withDuration: 0.3, animations: {
-                if let buttonsInitFrame = self.initialPlayerMenuIconCenter {
-                    self.previousSong.alpha = 0
-                    self.pausePlay.alpha = 0
-                    self.nextSong.alpha = 0
-                    self.previousTrack.alpha = 0
-                    self.nextTrack.alpha = 0
-                    
-                    if self.preferredPlayer == NusicPreferredPlayer.spotify {
-                        self.songProgressView.alpha = 0
-                    }
-                    
-                    self.showMore.frame = buttonsInitFrame
-                    
-                    if let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as? SongOverlayView {
-                        cardView.genreLabel.alpha = 1
-                        cardView.songArtist.alpha = 1
-                    }
-                    
+                self.previousSong.alpha = 0
+                self.pausePlay.alpha = 0
+                self.nextSong.alpha = 0
+                self.previousTrack.alpha = 0
+                self.nextTrack.alpha = 0
+                
+                if self.preferredPlayer == NusicPreferredPlayer.spotify {
+                    self.songProgressView.alpha = 0
                 }
-                
-                
-                
-                
+                if let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as? SongOverlayView {
+                    cardView.genreLabel.alpha = 1
+                    cardView.songArtist.alpha = 1
+                }
             }, completion: { (isCompleted) in
                 self.previousSong.isHidden = true
                 self.pausePlay.isHidden = true
@@ -325,20 +168,27 @@ extension ShowSongViewController {
             
             UIView.animate(withDuration: 0.3) {
                 
-                //self.hideButtons()
-                let buttonsInitFrame = self.showMore.frame
-                self.previousSong.frame = buttonsInitFrame;
-                self.pausePlay.frame = buttonsInitFrame;
-                self.nextSong.frame = buttonsInitFrame;
-                self.previousTrack.frame = buttonsInitFrame;
-                self.nextTrack.frame = buttonsInitFrame;
+//                self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.15
+//                self.songCardBottomConstraint.constant -= self.view.frame.height * 0.20
+                self.pausePlayTopConstraint.constant -= self.view.frame.height * 0.20
+                self.previousTrackCenterXConstraint.constant -= -self.trackStackView.bounds.width/4
+                self.previousTrackTopConstraint.constant -= self.view.frame.height * 0.20
+                self.nextTrackCenterXConstraint.constant -= self.trackStackView.bounds.width/4
+                self.nextTrackTopConstraint.constant -= self.view.frame.height * 0.20
+                self.dislikeSongCenterXConstraint.constant -= -self.trackStackView.bounds.width/2
+                self.dislikeSongTopConstraint.constant -= self.view.frame.height * 0.20
+                self.likeSongCenterXConstraint.constant -= self.trackStackView.bounds.width/2
+                self.likeSongTopConstraint.constant -= self.view.frame.height * 0.20
+                self.songProgressBottomConstraint.constant -= self.view.frame.height * 0.10
+                self.songProgressTopConstraint.constant -= self.view.frame.height * 0.10
                 if self.preferredPlayer == NusicPreferredPlayer.spotify {
-                    self.songProgressView.frame = buttonsInitFrame
-                }
-                if self.isPlayerMenuOpen {
+                    
                     self.songCardBottomConstraint.constant -= self.view.frame.height * 0.20
+                    self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.15
+                } else {
+                    self.songCardBottomConstraint.constant -= self.view.frame.height * 0.15
+                    self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.10
                 }
-                
                 self.view.layoutIfNeeded();
                 
             }
@@ -351,19 +201,6 @@ extension ShowSongViewController {
             hideButtons();
         }
         isPlayerMenuOpen = false
-        if UIApplication.shared.statusBarOrientation.isPortrait {
-            closePlayerMenuPortrait(animated: animated)
-        } else {
-            closePlayerMenuLandscape(animated: animated)
-        }
-    }
-    
-    func closePlayerMenuPortrait(animated: Bool) {
-        
-    }
-    
-    func closePlayerMenuLandscape(animated: Bool) {
-        
     }
     
     func togglePlayerMenu() {
@@ -376,23 +213,34 @@ extension ShowSongViewController {
     }
     
     func hideButtons() {
-        let buttonsInitFrame = self.showMore.frame
-        self.previousSong.frame = buttonsInitFrame;
+        
         self.previousSong.isHidden = true
-        self.pausePlay.frame = buttonsInitFrame;
         self.pausePlay.isHidden = true
-        self.nextSong.frame = buttonsInitFrame;
         self.nextSong.isHidden = true
-        self.previousTrack.frame = buttonsInitFrame;
         self.previousTrack.isHidden = true
-        self.nextTrack.frame = buttonsInitFrame;
         self.nextTrack.isHidden = true
-        if preferredPlayer == NusicPreferredPlayer.spotify {
-            self.songProgressView.frame = buttonsInitFrame;
+        if self.preferredPlayer == NusicPreferredPlayer.spotify {
             self.songProgressView.isHidden = true
         }
-        //self.trackStackView.alpha = 1
-        //self.trackStackView.isUserInteractionEnabled = true
+        
+        self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.15
+        self.songCardBottomConstraint.constant -= self.view.frame.height * 0.20
+        self.pausePlayTopConstraint.constant -= self.view.frame.height * 0.20
+        self.previousTrackTopConstraint.constant -= self.view.frame.height * 0.20
+        self.previousTrackCenterXConstraint.constant = 0
+        self.nextTrackTopConstraint.constant -= self.view.frame.height * 0.20
+        self.nextTrackCenterXConstraint.constant = 0
+        self.dislikeSongTopConstraint.constant -= self.view.frame.height * 0.20
+        self.dislikeSongCenterXConstraint.constant = 0
+        self.likeSongTopConstraint.constant -= self.view.frame.height * 0.20
+        self.likeSongCenterXConstraint.constant = 0
+        
+        if self.preferredPlayer == NusicPreferredPlayer.spotify {
+            self.songProgressBottomConstraint.constant -= self.view.frame.height * 0.10
+            self.songProgressTopConstraint.constant -= self.view.frame.height * 0.10
+        }
+        
+        self.view.layoutIfNeeded();
     }
     
     func toggleLikeButtons() {
@@ -420,6 +268,25 @@ extension ShowSongViewController {
             self.nextSong.alpha = 0.25
             self.nextSong.isUserInteractionEnabled = false
         }
+    }
+    
+    func setupSongProgress(duration: Float) {
+        let currentDuration = Int(duration)
+        setupSlider(duration: duration)
+        updateElapsedTime(elapsedTime: 0, duration: duration)
+        songDurationLabel.text = convertElapsedSecondsToTime(interval: currentDuration);
+    }
+    
+    func updateElapsedTime(elapsedTime: Float, duration: Float ) {
+        songElapsedTime.text = convertElapsedSecondsToTime(interval: Int(elapsedTime))
+        let durationLeft = convertElapsedSecondsToTime(interval: Int(elapsedTime-duration))
+        songDurationLabel.text = !durationLeft.contains("-") ? "-\(durationLeft)" : durationLeft
+    }
+    
+    func setupSlider(duration: Float) {
+        songProgressSlider.maximumValue = duration
+        songProgressSlider.minimumValue = 0
+        songProgressSlider.setValue(0, animated: true)
     }
     
 }

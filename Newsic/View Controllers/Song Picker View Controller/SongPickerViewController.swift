@@ -11,9 +11,6 @@
 import PopupDialog
 import UIKit
 import SwiftSpinner
-
-
-//TEST FIREBASE
 import FirebaseDatabase
 
 class SongPickerViewController: NusicDefaultViewController {
@@ -29,12 +26,7 @@ class SongPickerViewController: NusicDefaultViewController {
     let password = "Ibls3Rzrbuy0"
     var spotifyHandler = Spotify();
     var moodObject: NusicMood? = nil;
-    var genres:[NusicGenre]! = nil {
-        //TEST
-        didSet {
-            
-        }
-    }
+    var genres:[NusicGenre]! = nil;
     var moods:[EmotionDyad]! = [] {
         didSet {
             moodCollectionView.reloadData();
@@ -207,18 +199,17 @@ class SongPickerViewController: NusicDefaultViewController {
             listMenuView.maxY = self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
             listMenuView.frame = CGRect(x: listMenuView.frame.origin.x, y: newY, width: self.view.frame.width, height: listMenuView.frame.height)
             listMenuView.reloadView()
+            searchButton.reloadBlurEffect()
+//            searchButton.removeBlurEffect();
+//            searchButton.addBlurEffect(style: .dark, alpha: 1)
             self.view.layoutIfNeeded()
             viewRotated = false
         }
         
-        
-        print("viewDidLayoutSubviews = \(self.view.frame.width)")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-//        self.view.layoutIfNeeded()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -235,17 +226,14 @@ class SongPickerViewController: NusicDefaultViewController {
  
     override func viewDidLoad() {
         super.viewDidLoad()        
-        
-        self.setupCollectionCellViews();
-        self.setupView()
-        self.setupNavigationBar()
-        self.setupListMenu()
-        self.setupSegmentedControl()
-        
-        moodHacker = MoodHacker()
         extractInformationFromUser { (isFinished) in
             print(isFinished)
         }
+        self.setupCollectionCellViews();
+        self.setupView()
+//        self.setupNavigationBar()
+        self.setupListMenu()
+        self.setupSegmentedControl()
         
     }
     
@@ -336,7 +324,6 @@ class SongPickerViewController: NusicDefaultViewController {
                         self.moods = dyadList
                     }
                     let username = user.canonicalUserName!
-                    
                     let displayName = user.displayName != nil ? user.displayName : ""
                     let emailAddress = user.emailAddress != nil ? user.emailAddress : ""
                     let profileImage = user.smallestImage != nil ? user.smallestImage.imageURL.absoluteString : ""
@@ -412,7 +399,6 @@ class SongPickerViewController: NusicDefaultViewController {
                 }
                 self.fullPlaylistList = playlistList
                 //Get All Artists for each playlist
-//                print(self.fullPlaylistList.count)
                 self.currentPlaylistIndex = 0;
                 DispatchQueue.main.async {
                     SwiftSpinner.show("Extracting Artists from Playlists..", animated: true)
@@ -461,7 +447,7 @@ class SongPickerViewController: NusicDefaultViewController {
     }
     
     func spotifyPlaylistCheck() {
-        nusicPlaylist = NusicPlaylist(userName: SPTAuth.defaultInstance().session.canonicalUsername);
+        nusicPlaylist = NusicPlaylist(userName: self.spotifyHandler.user.canonicalUserName);
         nusicPlaylist.getPlaylist { (playlist, error) in
             if let error = error {
                 error.presentPopup(for: self)
