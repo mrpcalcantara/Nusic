@@ -9,7 +9,7 @@
 import Foundation
 import FirebaseDatabase
 
-class FirebaseHelper {
+class FirebaseDatabaseHelper {
     
     class func detectFirebaseConnectivity(connectivityHandler: @escaping (Bool) -> ()) {
         let connectedRef = Database.database().reference(withPath: ".info/connected")

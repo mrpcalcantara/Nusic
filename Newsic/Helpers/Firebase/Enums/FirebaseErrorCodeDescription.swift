@@ -1,5 +1,8 @@
 enum FirebaseErrorCodeDescription : String {
     
+    //Login
+    case getCustomToken = "An error occurred while trying to login to the database."
+    
     //User
     case getUser = "An error occurred while getting the user information."
     case saveUser = "An error occurred while saving the user information."
