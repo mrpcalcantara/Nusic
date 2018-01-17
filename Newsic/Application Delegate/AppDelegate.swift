@@ -51,17 +51,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             auth.handleAuthCallback(withTriggeredAuthURL: url, callback: { (error, session) in
                 // 4- handle error
                 
+//                let session = URLSession.shared.
                 if error != nil || session == nil {
                     print("error!: \(String(describing: error?.localizedDescription))")
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "loginUnsuccessful"), object: false)
                 } else {
                     // 5- Add session to User Defaults
-                    
                     let userDefaults = UserDefaults.standard
                     let sessionData = NSKeyedArchiver.archivedData(withRootObject: session!)
                     userDefaults.set(sessionData, forKey: "SpotifySession")
                     userDefaults.synchronize()
-                    
+//
+                    //TEST
                     // 6 - Tell notification center login is successful
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "loginSuccessful"), object: true)
                 }

@@ -10,6 +10,7 @@ import UIKit
 import SwiftSpinner
 import SafariServices
 import PopupDialog
+import FirebaseAuth
 
 class SpotifyLoginViewController: NusicDefaultViewController {
     
@@ -82,7 +83,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     }
     
     func checkFirebaseConnectivity() {
-        FirebaseHelper.detectFirebaseConnectivity { (isConnected) in
+        FirebaseDatabaseHelper.detectFirebaseConnectivity { (isConnected) in
             if isConnected {
                 if !self.gotToken {
                     self.setupSpotify()
@@ -109,7 +110,8 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         gotToken = false
         auth.clientID = Spotify.clientId;
         auth.redirectURL = URL(string: Spotify.redirectURI!);
-        auth.requestedScopes = [SPTAuthStreamingScope, SPTAuthPlaylistReadPrivateScope, SPTAuthPlaylistModifyPrivateScope, SPTAuthPlaylistModifyPublicScope, SPTAuthUserFollowReadScope, SPTAuthUserReadPrivateScope];
+        auth.requestedScopes = [SPTAuthStreamingScope, SPTAuthPlaylistReadPrivateScope, SPTAuthPlaylistModifyPrivateScope, SPTAuthPlaylistModifyPublicScope, SPTAuthUserFollowReadScope, SPTAuthUserReadPrivateScope, SPTAuthUserReadEmailScope];
+//        auth.requestedScopes = ["user-read-email","user-follow-read", "user-read-private"]
         //
         
         auth.tokenSwapURL = URL(string: Spotify.swapURL)!
@@ -148,7 +150,14 @@ class SpotifyLoginViewController: NusicDefaultViewController {
             animateLogo()
             if !firstTimeSession.isValid() {
                 self.getRefreshToken(currentSession: firstTimeSession, refreshTokenCompletionHandler: { (isRefreshed) in
-                    _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
+                    FirebaseAuthHelper.handleSpotifyLogin(accessToken: self.auth.session.accessToken!, uid: self.auth.session.canonicalUsername!, loginCompletionHandler: { (user, error) in
+                        if let error = error {
+                            error.presentPopup(for: self)
+                        } else {
+                            _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
+                        }
+                    })
+//                    _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
                 });
             } else {
                 self.session = firstTimeSession
@@ -156,7 +165,13 @@ class SpotifyLoginViewController: NusicDefaultViewController {
                 
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate;
                 appDelegate.auth = self.auth;
-                _ = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
+                FirebaseAuthHelper.handleSpotifyLogin(accessToken: auth.session.accessToken!, uid: auth.session.canonicalUsername!, loginCompletionHandler: { (user, error) in
+                    if let error = error {
+                        error.presentPopup(for: self)
+                    } else {
+                        _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
+                    }
+                })
                 
             }
             
@@ -183,7 +198,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
                 self.loginButton.isHidden = false;
                 self.loginUrl = self.auth.spotifyWebAuthenticationURL();
                 self.resetLogin()
-//                self.setViewResetLogin()
                 refreshTokenCompletionHandler(false)
             }
         })

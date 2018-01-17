@@ -320,7 +320,7 @@ class SongPickerViewController: NusicDefaultViewController {
                 
                 if let user = user {
                     self.spotifyHandler.user = user;
-                    FirebaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
+                    FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
                         self.moods = dyadList
                     }
                     let username = user.canonicalUserName!
@@ -462,7 +462,7 @@ class SongPickerViewController: NusicDefaultViewController {
                         } else {
                             if let isExisting = isExisting, !isExisting {
                                 self.createPlaylistSpotify()
-                                FirebaseHelper.deleteAllTracks(user: self.nusicUser.userName, deleteTracksCompleteHandler: { (reference, error) in
+                                FirebaseDatabaseHelper.deleteAllTracks(user: self.nusicUser.userName, deleteTracksCompleteHandler: { (reference, error) in
                                     
                                 })
                             }

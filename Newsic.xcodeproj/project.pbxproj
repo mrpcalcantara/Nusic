@@ -37,7 +37,7 @@
 		8C26C35A1FE517F600365142 /* NewsicUserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C26C3591FE517F600365142 /* NewsicUserSettings.swift */; };
 		8C2701171FDA45150044D10F /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2701161FDA45150044D10F /* Connectivity.swift */; };
 		8C27011B1FDA46090044D10F /* ConnectivityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27011A1FDA46090044D10F /* ConnectivityStatus.swift */; };
-		8C27011D1FDA55E10044D10F /* FirebaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27011C1FDA55E10044D10F /* FirebaseHelper.swift */; };
+		8C27011D1FDA55E10044D10F /* FirebaseDatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27011C1FDA55E10044D10F /* FirebaseDatabaseHelper.swift */; };
 		8C2877451FDE4CC200772269 /* YoutubeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2877441FDE4CC200772269 /* YoutubeResult.swift */; };
 		8C2911AE1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */; };
 		8C291A7B1FD6561800E568EF /* FirebaseErrorCodeDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C291A7A1FD6561800E568EF /* FirebaseErrorCodeDescription.swift */; };
@@ -107,6 +107,8 @@
 		8C90E8691F53D838002B135F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C90E8681F53D838002B135F /* Assets.xcassets */; };
 		8C90E86C1F53D838002B135F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C90E86A1F53D838002B135F /* LaunchScreen.storyboard */; };
 		8C90E88B1F53EE87002B135F /* MusicGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E88A1F53EE87002B135F /* MusicGraph.swift */; };
+		8C936DEC200F63A200A96B10 /* FirebaseAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C936DEB200F63A200A96B10 /* FirebaseAuth.swift */; };
+		8C936DF0200F659900A96B10 /* FirebaseAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C936DEF200F659900A96B10 /* FirebaseAuthHelper.swift */; };
 		8C9C9E911F67C7E10093C14A /* NewsicActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C9E901F67C7E10093C14A /* NewsicActivityIndicator.swift */; };
 		8C9DB4F71F6B840400F35268 /* NewsicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9DB4F61F6B840400F35268 /* NewsicButton.swift */; };
 		8C9DB4F91F6B8FF900F35268 /* SongListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9DB4F81F6B8FF900F35268 /* SongListTableView.swift */; };
@@ -187,7 +189,7 @@
 		8C26C3591FE517F600365142 /* NewsicUserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicUserSettings.swift; sourceTree = "<group>"; };
 		8C2701161FDA45150044D10F /* Connectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
 		8C27011A1FDA46090044D10F /* ConnectivityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityStatus.swift; sourceTree = "<group>"; };
-		8C27011C1FDA55E10044D10F /* FirebaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseHelper.swift; sourceTree = "<group>"; };
+		8C27011C1FDA55E10044D10F /* FirebaseDatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseHelper.swift; sourceTree = "<group>"; };
 		8C2877441FDE4CC200772269 /* YoutubeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeResult.swift; sourceTree = "<group>"; };
 		8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControlDelegate.swift; sourceTree = "<group>"; };
 		8C291A7A1FD6561800E568EF /* FirebaseErrorCodeDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseErrorCodeDescription.swift; sourceTree = "<group>"; };
@@ -221,7 +223,6 @@
 		8C5E89281FBD7B2E00FF75AC /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		8C5E892C1FBD930600FF75AC /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControl.swift; sourceTree = "<group>"; };
-		8C617F112005E93100235FA7 /* Newsic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Newsic.entitlements; sourceTree = "<group>"; };
 		8C626E971FE77F7F00BF0E08 /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		8C626E991FE77F9900BF0E08 /* NewsicScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicScrollView.swift; sourceTree = "<group>"; };
 		8C626E9F1FE7A27000BF0E08 /* ChoiceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceList.swift; sourceTree = "<group>"; };
@@ -261,6 +262,8 @@
 		8C90E86D1F53D838002B135F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C90E8721F53D838002B135F /* NewsicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NewsicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C90E88A1F53EE87002B135F /* MusicGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicGraph.swift; sourceTree = "<group>"; };
+		8C936DEB200F63A200A96B10 /* FirebaseAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuth.swift; sourceTree = "<group>"; };
+		8C936DEF200F659900A96B10 /* FirebaseAuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthHelper.swift; sourceTree = "<group>"; };
 		8C9C9E901F67C7E10093C14A /* NewsicActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicActivityIndicator.swift; sourceTree = "<group>"; };
 		8C9DB4F61F6B840400F35268 /* NewsicButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicButton.swift; sourceTree = "<group>"; };
 		8C9DB4F81F6B8FF900F35268 /* SongListTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongListTableView.swift; sourceTree = "<group>"; };
@@ -552,8 +555,9 @@
 		8C291A781FD655F900E568EF /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
+				8C936DEE200F658700A96B10 /* Auth */,
+				8C936DED200F658300A96B10 /* Database */,
 				8C291A791FD6560C00E568EF /* Enums */,
-				8C27011C1FDA55E10044D10F /* FirebaseHelper.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -814,7 +818,6 @@
 		8C90E8601F53D838002B135F /* Newsic */ = {
 			isa = PBXGroup;
 			children = (
-				8C617F112005E93100235FA7 /* Newsic.entitlements */,
 				8C21E70E1FC6AB270033B477 /* Page View Controller */,
 				8CF8D3FC1FBA9C6400E130BC /* Interaction Controllers */,
 				8C9C9E8F1F67C2CF0093C14A /* Views */,
@@ -897,6 +900,7 @@
 		8C90E8871F53D8E5002B135F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8C936DEA200F638500A96B10 /* Firebase */,
 				8C291A7D1FD6669F00E568EF /* Spotify */,
 				8C291A7C1FD6661A00E568EF /* System */,
 			);
@@ -923,6 +927,30 @@
 				8C4FBD771F5940A500712873 /* MoodHacker.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		8C936DEA200F638500A96B10 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				8C936DEB200F63A200A96B10 /* FirebaseAuth.swift */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		8C936DED200F658300A96B10 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				8C27011C1FDA55E10044D10F /* FirebaseDatabaseHelper.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		8C936DEE200F658700A96B10 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				8C936DEF200F659900A96B10 /* FirebaseAuthHelper.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		8C9C9E8F1F67C2CF0093C14A /* Views */ = {
@@ -1339,6 +1367,7 @@
 				8C0C1E9F1F61343900CF8516 /* Date.swift in Sources */,
 				8C2B05F5200C7C4D00BA525C /* SongTableViewHeader.swift in Sources */,
 				8C27011B1FDA46090044D10F /* ConnectivityStatus.swift in Sources */,
+				8C936DEC200F63A200A96B10 /* FirebaseAuth.swift in Sources */,
 				8CA40DF71F8B7C8700C95B9D /* SpotifyPlaylists.swift in Sources */,
 				8C4FBD7A1F59456200712873 /* Emotion.swift in Sources */,
 				8C5B18F21FCBBEF400EBFAE1 /* CollectionViewHeader.swift in Sources */,
@@ -1365,7 +1394,7 @@
 				8C0C1E9D1F6114C200CF8516 /* NewsicTrack.swift in Sources */,
 				8CCC55341F66587A005090A4 /* UIImage.swift in Sources */,
 				8C18E0BC1F55306B002C4A07 /* YouTubeSearch.swift in Sources */,
-				8C27011D1FDA55E10044D10F /* FirebaseHelper.swift in Sources */,
+				8C27011D1FDA55E10044D10F /* FirebaseDatabaseHelper.swift in Sources */,
 				8CB529E11F8375D900C8050F /* MoodCollectionView.swift in Sources */,
 				8C7989391FEA17050079A99D /* NewsicDefaults.swift in Sources */,
 				8CA40DFE1F8C99B500C95B9D /* UIButton.swift in Sources */,
@@ -1383,6 +1412,7 @@
 				8C626EA01FE7A27000BF0E08 /* ChoiceList.swift in Sources */,
 				8C0C1E911F5FF3B700CF8516 /* SpotifyTrackFeature.swift in Sources */,
 				8C7C41E21FFC8F3D0051845D /* SettingsHeader.swift in Sources */,
+				8C936DF0200F659900A96B10 /* FirebaseAuthHelper.swift in Sources */,
 				8C2605F31FEB61740025DD1E /* ChoiceListViewHeader.swift in Sources */,
 				8C90E88B1F53EE87002B135F /* MusicGraph.swift in Sources */,
 				8C21E7121FC6B2730033B477 /* NewsicViewController.swift in Sources */,
