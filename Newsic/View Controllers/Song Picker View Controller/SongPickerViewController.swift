@@ -210,6 +210,7 @@ class SongPickerViewController: NusicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -225,13 +226,16 @@ class SongPickerViewController: NusicDefaultViewController {
     }
  
     override func viewDidLoad() {
-        super.viewDidLoad()        
+        super.viewDidLoad()
+        DispatchQueue.main.async {
+            SwiftSpinner.show("Getting User..", animated: true)
+        }
+        
         extractInformationFromUser { (isFinished) in
             print(isFinished)
         }
         self.setupCollectionCellViews();
         self.setupView()
-//        self.setupNavigationBar()
         self.setupListMenu()
         self.setupSegmentedControl()
         
@@ -305,73 +309,79 @@ class SongPickerViewController: NusicDefaultViewController {
     func extractInformationFromUser(extractionHandler: @escaping (Bool) -> ()) {
         
         fullArtistList = [];
-        //Get User Info
-        DispatchQueue.main.async {
-            
-            SwiftSpinner.show("Getting User..", animated: true)
-            
-        }
         
+        
+        //Get User Info
         self.spotifyHandler.getUser { (user, error) in
             if error != nil {
                 self.showLoginErrorPopup()
                 self.loadingFinished = true
             } else {
-                
                 if let user = user {
                     self.spotifyHandler.user = user;
-                    FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
-                        self.moods = dyadList
-                    }
-                    let username = user.canonicalUserName!
-                    let displayName = user.displayName != nil ? user.displayName : ""
-                    let emailAddress = user.emailAddress != nil ? user.emailAddress : ""
-                    let profileImage = user.smallestImage != nil ? user.smallestImage.imageURL.absoluteString : ""
-                    let territory = user.territory != nil ? user.territory! : "";
-                    let isPremium = user.product == SPTProduct.premium ? true : false
-                    let user = NusicUser(userName: username, displayName: displayName!, emailAddress: emailAddress!, imageURL: profileImage, territory: territory, isPremium: isPremium)
-                    self.moodObject?.userName = username;
-                    self.spotifyPlaylistCheck();
-                    user.getUser(getUserHandler: { (fbUser, error) in
-                        if let error = error {
-                            error.presentPopup(for: self)
-                        }
-                        if fbUser == nil || fbUser?.userName == "" {
-                            self.nusicUser = user
-                            self.extractGenresFromSpotify(genreExtractionHandler: { (isSuccessful) in
-                                if !isSuccessful {
+                    FirebaseAuthHelper.handleSpotifyLogin(
+                        accessToken: self.spotifyHandler.auth.session.accessToken,
+                        user: self.spotifyHandler.user,
+                        loginCompletionHandler: { (user, error) in
+                            if let error = error {
+                                self.showLoginErrorPopup()
+                                self.loadingFinished = true
+                            } else {
+                                FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
+                                    self.moods = dyadList
+                                }
+                                let username = self.spotifyHandler.user.canonicalUserName!
+                                let displayName = self.spotifyHandler.user.displayName != nil ? self.spotifyHandler.user.displayName : ""
+                                let emailAddress = self.spotifyHandler.user.emailAddress != nil ? self.spotifyHandler.user.emailAddress : ""
+                                let profileImage = self.spotifyHandler.user.smallestImage != nil ? self.spotifyHandler.user.smallestImage.imageURL.absoluteString : ""
+                                let territory = self.spotifyHandler.user.territory != nil ? self.spotifyHandler.user.territory! : "";
+                                let isPremium = self.spotifyHandler.user.product == SPTProduct.premium ? true : false
+                                let user = NusicUser(userName: username, displayName: displayName!, emailAddress: emailAddress!, imageURL: profileImage, territory: territory, isPremium: isPremium)
+                                self.moodObject?.userName = username;
+                                self.spotifyPlaylistCheck();
+                                user.getUser(getUserHandler: { (fbUser, error) in
                                     if let error = error {
-                                        error.presentPopup(for: self, description: SpotifyErrorCodeDescription.extractGenresFromUser.rawValue)
+                                        error.presentPopup(for: self)
                                     }
-                                }
-                            })
-                        } else {
-                            self.nusicUser = fbUser!
-                            
-                            DispatchQueue.main.async {
-                                SwiftSpinner.show("Getting Favorite Genres..", animated: true);
-                            }
-                            self.nusicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount, error) in
-                                if let error = error {
-                                    error.presentPopup(for: self)
-                                }
-                                if let dbGenreCount = dbGenreCount {
-                                    if dbGenreCount.count > 0 {
-                                        self.spotifyHandler.genreCount = dbGenreCount;
-                                        self.nusicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
+                                    if fbUser == nil || fbUser?.userName == "" {
+                                        self.nusicUser = user
+                                        self.extractGenresFromSpotify(genreExtractionHandler: { (isSuccessful) in
+                                            if !isSuccessful {
+                                                if let error = error {
+                                                    error.presentPopup(for: self, description: SpotifyErrorCodeDescription.extractGenresFromUser.rawValue)
+                                                }
+                                            }
+                                        })
+                                    } else {
+                                        self.nusicUser = fbUser!
+                                        
+                                        DispatchQueue.main.async {
+                                            SwiftSpinner.show("Getting Favorite Genres..", animated: true);
+                                        }
+                                        self.nusicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount, error) in
                                             if let error = error {
                                                 error.presentPopup(for: self)
                                             }
-                                        });
-                                    } else {
-                                        self.spotifyHandler.genreCount = Spotify.getAllValuesDict()
+                                            if let dbGenreCount = dbGenreCount {
+                                                if dbGenreCount.count > 0 {
+                                                    self.spotifyHandler.genreCount = dbGenreCount;
+                                                    self.nusicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
+                                                        if let error = error {
+                                                            error.presentPopup(for: self)
+                                                        }
+                                                    });
+                                                } else {
+                                                    self.spotifyHandler.genreCount = Spotify.getAllValuesDict()
+                                                }
+                                                
+                                                self.loadingFinished = true;
+                                            }
+                                        })
                                     }
-                                    
-                                    self.loadingFinished = true;
-                                }
-                            })
-                        }
+                                })
+                            }
                     })
+                    
                 }
             }
         }

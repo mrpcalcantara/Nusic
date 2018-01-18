@@ -34,11 +34,13 @@ class NusicDefaultViewController: UIViewController {
         
         let okButton = DefaultButton(title: "OK", action: {
 //            print("Back to Login menu");
-            self.dismiss(animated: true, completion: nil);
+            self.dismiss(animated: true, completion: {
+                SPTAuth.defaultInstance().resetCurrentLogin()
+            })
+//            self.dismiss(animated: true, completion: nil);
         })
         
         popupDialog.addButton(okButton);
-        SPTAuth.defaultInstance().resetCurrentLogin()
         self.present(popupDialog, animated: true, completion: nil)
     }
     

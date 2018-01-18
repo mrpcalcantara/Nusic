@@ -16,11 +16,21 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     var auth = SPTAuth.defaultInstance()!
     var session:SPTSession!
-    var loginUrl: URL?
+    var loginUrl: URL? = SPTAuth.defaultInstance().spotifyWebAuthenticationURL();
     var loading: SwiftSpinner!;
     var safariViewController: SFSafariViewController!
     var timer: Timer! = Timer();
     var gotToken: Bool = false;
+    
+    //Constraints
+    
+    //Login Button
+    @IBOutlet weak var loginButtonCenterYConstraint: NSLayoutConstraint!
+    @IBOutlet weak var loginButtonCenterXConstraint: NSLayoutConstraint!
+    
+    //Nusic Label
+    @IBOutlet weak var nusicLabelCenterYConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nusicLabelCenterXConstraint: NSLayoutConstraint!
     
     //Objects for extracting User and Genres
     
@@ -103,7 +113,9 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
         let pageViewController = NusicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
 //        self.present(pageViewController, animated: false, completion: nil);
-        self.present(pageViewController, animated: true, completion: nil)
+        self.present(pageViewController, animated: true, completion: {
+            self.removeFromParentViewController()
+        })
     }
 
     @objc fileprivate func setupSpotify() {
@@ -150,14 +162,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
             animateLogo()
             if !firstTimeSession.isValid() {
                 self.getRefreshToken(currentSession: firstTimeSession, refreshTokenCompletionHandler: { (isRefreshed) in
-                    FirebaseAuthHelper.handleSpotifyLogin(accessToken: self.auth.session.accessToken!, uid: self.auth.session.canonicalUsername!, loginCompletionHandler: { (user, error) in
-                        if let error = error {
-                            error.presentPopup(for: self)
-                        } else {
-                            _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
-                        }
-                    })
-//                    _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
+                    _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
                 });
             } else {
                 self.session = firstTimeSession
@@ -165,14 +170,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
                 
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate;
                 appDelegate.auth = self.auth;
-                FirebaseAuthHelper.handleSpotifyLogin(accessToken: auth.session.accessToken!, uid: auth.session.canonicalUsername!, loginCompletionHandler: { (user, error) in
-                    if let error = error {
-                        error.presentPopup(for: self)
-                    } else {
-                        _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
-                    }
-                })
-                
+                _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
             }
             
         } else {
@@ -222,8 +220,10 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     }
     
     func resetViewLogin() {
+        
         UIView.animate(withDuration: 1, animations: {
-            self.nusicLabl.center.y = self.view.bounds.height / 4
+            self.nusicLabelCenterYConstraint.constant = -self.view.safeAreaLayoutGuide.layoutFrame.height/4
+            self.view.layoutIfNeeded()
         })
         UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
             self.loginButton.alpha = 1;

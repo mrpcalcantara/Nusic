@@ -208,11 +208,18 @@ extension ShowSongViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "\u{267A}") { (action, indexPath) in
             // delete item at indexPath
-            print("removing track from indexpath = \(indexPath)")
             self.removeTrackFromLikedTracks(indexPath: indexPath, removeTrackHandler: { (didRemove) in
                 self.isSongLiked = false;
                 self.toggleLikeButtons();
-                self.updateTableView();
+                DispatchQueue.main.async {
+                    var indexSet = IndexSet()
+                    indexSet.insert(indexPath.section)
+                    tableView.performBatchUpdates({
+                        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                        tableView.reloadSections(indexSet, with: UITableViewRowAnimation.fade)
+                    }, completion: nil)
+                }
+//                self.updateTableView();
             })
             
             
