@@ -50,6 +50,10 @@ class ShowSongViewController: NusicDefaultViewController {
     var currentPlayingTrack: SpotifyTrack?
     var playedSongsHistory: [SpotifyTrack]? = []
     var trackFeatures: [SpotifyTrackFeature]? = nil
+    var searchBasedOnArtist: SpotifyArtist?
+    var searchBasedOnTrack: SpotifyTrack?
+    var searchBasedOnGenres: [String: Int]?
+    
     
     //Koloda Cards
     var isSongLiked: Bool = false;
@@ -670,22 +674,31 @@ extension ShowSongViewController {
                 fetchedCardsHandler(tracks)
             })
         case NusicSearch.genre:
-            fetchNewCardGenre(numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
+            fetchNewCardGenre(basedOnGenres: searchBasedOnGenres, numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
                 fetchedCardsHandler(tracks)
             })
         case NusicSearch.artist:
-            fetchNewCardArtist(numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
+            fetchNewCardArtist(basedOnArtist: searchBasedOnArtist, numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
                 fetchedCardsHandler(tracks)
             })
         case NusicSearch.track:
-            fetchNewCardTrack(numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
+            fetchNewCardTrack(basedOnTrack: searchBasedOnTrack, numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
                 fetchedCardsHandler(tracks)
             })
         }
     }
     
-    func fetchNewCardArtist(numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
-        if let artist = currentPlayingTrack?.artist {
+    func fetchNewCardArtist(basedOnArtist: SpotifyArtist? = nil, numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
+        var artist: SpotifyArtist = SpotifyArtist()
+        if basedOnArtist != nil {
+            artist = basedOnArtist!
+        } else {
+            if let currentArtist = currentPlayingTrack?.artist {
+                artist = currentArtist
+            }
+        }
+        
+        if artist.id != nil {
             self.spotifyHandler.fetchRecommendations(for: .artist, numberOfSongs: numberOfSongs, artists: [artist]) { (results, error) in
                 if let error = error {
                     error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
@@ -702,11 +715,21 @@ extension ShowSongViewController {
             cardFetchingHandler!([])
         }
         
+        
     }
     
-    func fetchNewCardTrack(numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
+    func fetchNewCardTrack(basedOnTrack: SpotifyTrack? = nil, numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
+        var track: SpotifyTrack = SpotifyTrack()
+        if basedOnTrack != nil {
+            track = basedOnTrack!
+        } else {
+            if let currentTrack = currentPlayingTrack {
+                track = currentTrack
+            }
+            track = currentPlayingTrack!
+        }
         
-        if let track = currentPlayingTrack {
+        if track.trackId != nil {
             self.spotifyHandler.fetchRecommendations(for: .track, numberOfSongs: numberOfSongs, tracks: [track]) { (results, error) in
                 if let error = error {
                     error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
@@ -723,12 +746,20 @@ extension ShowSongViewController {
         } else {
             cardFetchingHandler!([])
         }
+        
     }
     
-    func fetchNewCardGenre(numberOfSongs: Int, insert inIndex: Int? = nil, cardFetchingHandler: (([NusicTrack]) -> ())?) {
+    func fetchNewCardGenre(basedOnGenres: [String : Int]? = nil, numberOfSongs: Int, insert inIndex: Int? = nil, cardFetchingHandler: (([NusicTrack]) -> ())?) {
+        var genres: [String: Int]
+        if basedOnGenres != nil {
+            genres = basedOnGenres!
+        } else {
+            genres = selectedGenreList!
+        }
+        
         if currentPlayingTrack != nil {
             
-            self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, moodObject: moodObject, selectedGenreList: selectedGenreList) { (results, error) in
+            self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, moodObject: moodObject, selectedGenreList: genres) { (results, error) in
                 if let error = error {
                     error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
                 }

@@ -25,7 +25,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tgc-jo-MXh">
-                                <rect key="frame" x="67" y="311.5" width="241" height="44"/>
+                                <rect key="frame" x="67" y="321.5" width="241" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="241" id="EvN-B0-Np6"/>
                                 </constraints>
@@ -35,7 +35,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nusic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNX-a4-ASH">
-                                <rect key="frame" x="122" y="303.5" width="131.5" height="60"/>
+                                <rect key="frame" x="122" y="313.5" width="131.5" height="60"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="50"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -44,15 +44,19 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="bNX-a4-ASH" firstAttribute="centerX" secondItem="nfP-bc-mRV" secondAttribute="centerX" id="9Ly-Oi-IfI"/>
-                            <constraint firstItem="Tgc-jo-MXh" firstAttribute="centerY" secondItem="ckI-yp-Fw4" secondAttribute="centerY" id="CGc-a8-FOW"/>
+                            <constraint firstItem="Tgc-jo-MXh" firstAttribute="centerY" secondItem="nfP-bc-mRV" secondAttribute="centerY" id="CGc-a8-FOW"/>
                             <constraint firstItem="Tgc-jo-MXh" firstAttribute="centerX" secondItem="nfP-bc-mRV" secondAttribute="centerX" id="cVr-Bg-WjL"/>
-                            <constraint firstItem="bNX-a4-ASH" firstAttribute="centerY" secondItem="ckI-yp-Fw4" secondAttribute="centerY" id="e8w-G8-lio"/>
+                            <constraint firstItem="bNX-a4-ASH" firstAttribute="centerY" secondItem="nfP-bc-mRV" secondAttribute="centerY" id="e8w-G8-lio"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nfP-bc-mRV"/>
                     </view>
                     <navigationItem key="navigationItem" id="thj-kJ-QZb"/>
                     <connections>
                         <outlet property="loginButton" destination="Tgc-jo-MXh" id="dpa-Gz-hAG"/>
+                        <outlet property="loginButtonCenterXConstraint" destination="cVr-Bg-WjL" id="QRc-hb-AxN"/>
+                        <outlet property="loginButtonCenterYConstraint" destination="CGc-a8-FOW" id="VhP-Me-Qhe"/>
+                        <outlet property="nusicLabelCenterXConstraint" destination="9Ly-Oi-IfI" id="Sas-9b-S94"/>
+                        <outlet property="nusicLabelCenterYConstraint" destination="e8w-G8-lio" id="giE-mo-ImV"/>
                         <outlet property="nusicLabl" destination="bNX-a4-ASH" id="bWV-4z-91Q"/>
                     </connections>
                 </viewController>

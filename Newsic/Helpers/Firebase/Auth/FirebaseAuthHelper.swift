@@ -13,7 +13,7 @@ class FirebaseAuthHelper {
     
     static let generateCustomTokenUrl = "https://us-central1-newsic-54b6e.cloudfunctions.net/generateCustomToken"
     
-    class func handleSpotifyLogin(accessToken: String, uid: String, loginCompletionHandler: @escaping (User?, NusicError?) -> ()) {
+    class func handleSpotifyLogin(accessToken: String, user: SPTUser, loginCompletionHandler: @escaping (User?, NusicError?) -> ()) {
         
         let firebaseCustomTokenURL = generateCustomTokenUrl
         
@@ -22,7 +22,16 @@ class FirebaseAuthHelper {
             //
             urlComponents?.queryItems = []
             urlComponents?.queryItems?.insert(URLQueryItem(name: "accessToken", value: accessToken), at: 0)
-            urlComponents?.queryItems?.insert(URLQueryItem(name: "uid", value: uid), at: 0)
+            urlComponents?.queryItems?.insert(URLQueryItem(name: "uid", value: user.canonicalUserName), at: 0)
+            if user.largestImage != nil {
+                urlComponents?.queryItems?.insert(URLQueryItem(name: "photoURL", value: user.largestImage.imageURL.absoluteString), at: 0)
+            }
+            
+            urlComponents?.queryItems?.insert(URLQueryItem(name: "displayName", value: user.displayName), at: 0)
+            if user.emailAddress != nil && user.emailAddress != "" {
+                urlComponents?.queryItems?.insert(URLQueryItem(name: "emailAddress", value: user.emailAddress), at: 0)
+            }
+
             let urlRequest = URLRequest(url: (urlComponents?.url)!)
             
             URLSession.shared.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
@@ -40,7 +49,7 @@ class FirebaseAuthHelper {
                             loginCompletionHandler(user, nusicError)
                         })
                     } catch {
-                        
+                        loginCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error))
                     }
                     
                 }

@@ -10,32 +10,6 @@ import UIKit
 import Koloda
 import SwiftSpinner
 
-//class CardOperation: Operation {
-//    
-//    let songCardView: SongKolodaView
-//    init(songCardView: SongKolodaView) {
-//        self.songCardView = songCardView
-//    }
-//    
-//    override func main() {
-//        DispatchQueue.main.async {
-//            self.songCardView.reloadData();
-//        }
-//    }
-//}
-//
-//class CardOperationQueue: OperationQueue {
-//    
-//    lazy var reloadsInProgress = [String:Operation]()
-//    lazy var reloadQueue:OperationQueue = {
-//        var queue = OperationQueue()
-//        queue.name = "Card reload queue"
-//        queue.maxConcurrentOperationCount = 1
-//        return queue
-//    }()
-//
-//}
-
 extension ShowSongViewController: KolodaViewDelegate {
     
     func setupCards() {
@@ -68,6 +42,7 @@ extension ShowSongViewController: KolodaViewDelegate {
         
         let actionArtist: () -> Void = {
             self.musicSearchType = .artist
+            self.searchBasedOnArtist = self.currentPlayingTrack?.artist != nil ? self.currentPlayingTrack?.artist : nil
             self.showSwiftSpinner(text: "Fetching tracks..")
             self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
             self.showMore.transform = CGAffineTransform.identity;
@@ -77,6 +52,7 @@ extension ShowSongViewController: KolodaViewDelegate {
         
         let actionTrack: () -> Void = {
             self.musicSearchType = .track
+            self.searchBasedOnTrack = self.currentPlayingTrack != nil ? self.currentPlayingTrack! : nil
             self.showSwiftSpinner(text: "Fetching tracks..")
             self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
             self.handleFetchNewTracks(numberOfSongs: 9, completionHandler: nil)
@@ -86,7 +62,7 @@ extension ShowSongViewController: KolodaViewDelegate {
             let dict = self.currentPlayingTrack?.artist.listDictionary()
             let count: Int? = dict?.count
             if let count = count, count > 0 {
-                self.selectedGenreList = dict!
+                self.searchBasedOnGenres = dict!
             }
             
             self.showSwiftSpinner(text: "Fetching tracks..")

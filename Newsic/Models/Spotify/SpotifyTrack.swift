@@ -50,6 +50,10 @@ class SpotifyTrack: Hashable {
         
     }
     
+    convenience init() {
+        self.init(trackId: "", artist: SpotifyArtist(), audioFeatures: nil)
+    }
+    
     static func ==(lhs: SpotifyTrack, rhs: SpotifyTrack) -> Bool {
         return lhs.title == rhs.title &&
             lhs.thumbNail == rhs.thumbNail &&
