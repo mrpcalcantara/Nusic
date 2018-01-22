@@ -67,7 +67,7 @@ class ShowSongViewController: NusicDefaultViewController {
     var initialPlayerMenuIconCenter: CGRect? = nil
     var currentSongCardFrame: CGRect? = nil {
         didSet {
-            
+            addCardBorderLayer()
         }
     }
     var showMoreOpenPosition: CGPoint? = nil
@@ -149,11 +149,7 @@ class ShowSongViewController: NusicDefaultViewController {
     override func viewDidLoad() {
         super.viewDidLoad();
         
-//        cardTitle.text = moodObject?.emotions.first?.basicGroup == EmotionDyad.unknown ? "" : moodObject?.emotions.first?.basicGroup.rawValue
-//        cardTitle.font = NusicDefaults.font!
-//        let width = cardTitle.text?.width(withConstraintedHeight: cardTitle.bounds.height, font: NusicDefaults.font!)
-////        cardTitle.frame.size.width = width!
-//        cardTitle.textColor = NusicDefaults.greenColor
+
         setupShowSongVC()
     }
     
@@ -194,6 +190,10 @@ class ShowSongViewController: NusicDefaultViewController {
             screenRotated = false
         }
         
+        if currentSongCardFrame != songCardView.frame {
+            currentSongCardFrame = songCardView.frame
+        }
+//        addCardBorderLayer()
         
     }
 
@@ -255,6 +255,7 @@ class ShowSongViewController: NusicDefaultViewController {
             setupSongs()
             setupPlayerMenu()
             setupNavigationBar()
+            setupMoodLabel()
             if preferredPlayer == NusicPreferredPlayer.spotify {
                 setupSpotify()
                 setupCommandCenter()
@@ -326,7 +327,7 @@ class ShowSongViewController: NusicDefaultViewController {
             labelView.text = currentMoodDyad == EmotionDyad.unknown ? "" : "Mood: \(currentMoodDyad.rawValue)"
         }
         
-        self.navigationItem.titleView = labelView
+//        self.navigationItem.titleView = labelView
         
         let navItem = self.navigationItem
         navbar.items = [navItem]
@@ -353,6 +354,12 @@ class ShowSongViewController: NusicDefaultViewController {
         }
     }
 
+    func setupMoodLabel() {
+        cardTitle.text = moodObject?.emotions.first?.basicGroup == EmotionDyad.unknown ? "" : moodObject?.emotions.first?.basicGroup.rawValue
+        cardTitle.font = NusicDefaults.font!
+        cardTitle.textColor = NusicDefaults.greenColor
+        addCardBorderLayer()
+    }
     @IBAction func showMoreClicked(_ sender: UIButton) {
         togglePlayerMenu();
     }

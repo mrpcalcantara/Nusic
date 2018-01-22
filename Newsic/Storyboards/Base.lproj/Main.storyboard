@@ -226,10 +226,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="700" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="b3r-mr-Y8T" userLabel="Track Stack View">
-                                <rect key="frame" x="24" y="80" width="327" height="463"/>
+                                <rect key="frame" x="24" y="90" width="327" height="453"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lxK-RZ-2XL" customClass="SongKolodaView" customModule="Newsic" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="327" height="463"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="327" height="453"/>
                                     </view>
                                 </subviews>
                             </stackView>
@@ -358,7 +358,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g6F-k9-GOb">
-                                <rect key="frame" x="44" y="55.5" width="42" height="20.5"/>
+                                <rect key="frame" x="44" y="65.5" width="42" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -382,7 +382,7 @@
                             <constraint firstItem="alX-vn-cgC" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="Yzb-nM-FQD"/>
                             <constraint firstItem="Iig-1D-otX" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="c8r-0N-0Ki"/>
                             <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="HQy-9W-NO5" secondAttribute="bottom" constant="8" id="c9f-1V-cd7"/>
-                            <constraint firstItem="b3r-mr-Y8T" firstAttribute="top" secondItem="WhN-EJ-UOd" secondAttribute="top" constant="60" id="cEx-Rd-wxv"/>
+                            <constraint firstItem="b3r-mr-Y8T" firstAttribute="top" secondItem="WhN-EJ-UOd" secondAttribute="top" constant="70" id="cEx-Rd-wxv"/>
                             <constraint firstItem="V03-pk-egn" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="gkI-as-pns"/>
                             <constraint firstItem="k6E-Yi-lJS" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="hbC-F6-Ape"/>
                             <constraint firstItem="Any-Pf-dnV" firstAttribute="top" secondItem="WhN-EJ-UOd" secondAttribute="top" constant="44" id="hgB-44-2Hq"/>
@@ -401,11 +401,6 @@
                             <constraint firstItem="V03-pk-egn" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="zbc-Wm-RlZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="WhN-EJ-UOd"/>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="g6F-k9-GOb"/>
-                            </mask>
-                        </variation>
                     </view>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
