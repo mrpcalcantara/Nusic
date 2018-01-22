@@ -65,7 +65,11 @@ class ShowSongViewController: NusicDefaultViewController {
     var cardCount = 10;
     var initialSongListCenter: CGPoint? = nil
     var initialPlayerMenuIconCenter: CGRect? = nil
-    var currentSongCardFrame: CGRect? = nil
+    var currentSongCardFrame: CGRect? = nil {
+        didSet {
+            
+        }
+    }
     var showMoreOpenPosition: CGPoint? = nil
     var showMoreClosePosition: CGPoint? = nil
     var songListMenuProgress: CGFloat! = 0;
@@ -124,7 +128,7 @@ class ShowSongViewController: NusicDefaultViewController {
 
     
     
-    
+    //Storyboard Elements
     @IBOutlet weak var songCardView: SongKolodaView!
     @IBOutlet weak var songListTableView: UITableView!
     @IBOutlet weak var songListTableViewHeader: SongTableViewHeader!
@@ -139,10 +143,17 @@ class ShowSongViewController: NusicDefaultViewController {
     @IBOutlet weak var songProgressSlider: UISlider!
     @IBOutlet weak var songDurationLabel: UILabel!
     @IBOutlet weak var songElapsedTime: UILabel!
+    @IBOutlet weak var cardTitle: UILabel!
     
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        
+//        cardTitle.text = moodObject?.emotions.first?.basicGroup == EmotionDyad.unknown ? "" : moodObject?.emotions.first?.basicGroup.rawValue
+//        cardTitle.font = NusicDefaults.font!
+//        let width = cardTitle.text?.width(withConstraintedHeight: cardTitle.bounds.height, font: NusicDefaults.font!)
+////        cardTitle.frame.size.width = width!
+//        cardTitle.textColor = NusicDefaults.greenColor
         setupShowSongVC()
     }
     
@@ -182,6 +193,7 @@ class ShowSongViewController: NusicDefaultViewController {
             reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
             screenRotated = false
         }
+        
         
     }
 

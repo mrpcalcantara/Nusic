@@ -97,7 +97,7 @@ extension NusicUser: FirebaseModel {
     
     func getUser(getUserHandler: @escaping (NusicUser?, NusicError?) -> ()) {
         getData { (dictionary, error) in
-            if let dictionary = dictionary {
+            if let dictionary = dictionary, dictionary.count > 1 {
                 self.userName = dictionary["canonicalUserName"] as? String ?? self.userName
                 
                 self.displayName = dictionary["displayName"] as? String ?? self.displayName
