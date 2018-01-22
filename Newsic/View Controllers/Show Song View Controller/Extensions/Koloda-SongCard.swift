@@ -303,26 +303,29 @@ extension ShowSongViewController {
             layer.name = "cardBorder"
             layer.path = path.cgPath
             layer.strokeColor = UIColor.white.cgColor
-//            layer.strokeEnd = 1
+//            layer.strokeEnd = 0
 //            layer.strokeStart = 1
             layer.lineWidth = 2
-            
-            
             layer.fillColor = UIColor.clear.cgColor
             
             let colors = [UIColor.green, UIColor.clear]
+            
+            self.view.layer.removeAllAnimations()
+            
             self.view.layer.removeGradientLayer(name: "borderGradientLayer")
             self.view.layer.addGradientBorder(name: "borderGradientLayer", path: path.cgPath, colors: colors, width: 3)
   
             let animation = CABasicAnimation(keyPath: "strokeEnd")
-            animation.toValue = 1
+//            animation.toValue = 1
+            animation.fromValue = 0
             animation.duration = 2 // seconds
-            animation.autoreverses = false
+            animation.autoreverses = true
             animation.repeatCount = .infinity
             animation.isRemovedOnCompletion = false
 
             // And finally add the linear animation to the shape!
-//            layer.add(animation, forKey: "line")
+            layer.add(animation, forKey: "line")
+//            self.view.layer.addSublayer(layer)
 //
 //            let animation2 = CABasicAnimation(keyPath: "strokeStart")
 //            animation2.toValue = 0
