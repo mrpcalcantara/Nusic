@@ -157,8 +157,9 @@ class SongPickerViewController: NusicDefaultViewController {
             self.moodObject = nusicMood;
         }
         
+
         self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
-        
+
         if Connectivity.isConnectedToNetwork() == .connectedCellular && nusicUser.settingValues.useMobileData! == false {
             showMobileDataPopup()
         } else {

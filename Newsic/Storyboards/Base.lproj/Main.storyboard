@@ -226,10 +226,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="700" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="b3r-mr-Y8T" userLabel="Track Stack View">
-                                <rect key="frame" x="24" y="64" width="327" height="479"/>
+                                <rect key="frame" x="24" y="80" width="327" height="463"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lxK-RZ-2XL" customClass="SongKolodaView" customModule="Newsic" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="327" height="479"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="327" height="463"/>
                                     </view>
                                 </subviews>
                             </stackView>
@@ -357,6 +357,12 @@
                                     <action selector="likeSongClicked:" destination="eJS-am-Jyf" eventType="touchUpInside" id="ruQ-RY-2Gc"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g6F-k9-GOb">
+                                <rect key="frame" x="44" y="55.5" width="42" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -364,7 +370,9 @@
                             <constraint firstItem="uVu-im-pgF" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="05z-3e-b3v"/>
                             <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="Any-Pf-dnV" secondAttribute="bottom" constant="8" id="0Cp-ds-gGe"/>
                             <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="Iig-1D-otX" secondAttribute="bottom" constant="8" id="3eq-9V-kik"/>
+                            <constraint firstItem="g6F-k9-GOb" firstAttribute="leading" secondItem="b3r-mr-Y8T" secondAttribute="leading" constant="20" id="57H-S4-7wu"/>
                             <constraint firstItem="Any-Pf-dnV" firstAttribute="leading" secondItem="WhN-EJ-UOd" secondAttribute="leading" constant="60" id="9Ib-eq-uoR"/>
+                            <constraint firstItem="b3r-mr-Y8T" firstAttribute="top" secondItem="g6F-k9-GOb" secondAttribute="bottom" constant="4" id="EoV-4i-X0Q"/>
                             <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="80" id="HDx-N2-1Fw"/>
                             <constraint firstItem="uVu-im-pgF" firstAttribute="trailing" secondItem="Yet-46-QVi" secondAttribute="trailingMargin" constant="-8" id="Ill-Y3-Qti"/>
                             <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="k6E-Yi-lJS" secondAttribute="bottom" constant="8" id="KtE-le-FYf"/>
@@ -374,7 +382,7 @@
                             <constraint firstItem="alX-vn-cgC" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="Yzb-nM-FQD"/>
                             <constraint firstItem="Iig-1D-otX" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="c8r-0N-0Ki"/>
                             <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="HQy-9W-NO5" secondAttribute="bottom" constant="8" id="c9f-1V-cd7"/>
-                            <constraint firstItem="b3r-mr-Y8T" firstAttribute="top" secondItem="WhN-EJ-UOd" secondAttribute="top" constant="44" id="cEx-Rd-wxv"/>
+                            <constraint firstItem="b3r-mr-Y8T" firstAttribute="top" secondItem="WhN-EJ-UOd" secondAttribute="top" constant="60" id="cEx-Rd-wxv"/>
                             <constraint firstItem="V03-pk-egn" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="gkI-as-pns"/>
                             <constraint firstItem="k6E-Yi-lJS" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="hbC-F6-Ape"/>
                             <constraint firstItem="Any-Pf-dnV" firstAttribute="top" secondItem="WhN-EJ-UOd" secondAttribute="top" constant="44" id="hgB-44-2Hq"/>
@@ -393,10 +401,16 @@
                             <constraint firstItem="V03-pk-egn" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="zbc-Wm-RlZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="WhN-EJ-UOd"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="g6F-k9-GOb"/>
+                            </mask>
+                        </variation>
                     </view>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="cardTitle" destination="g6F-k9-GOb" id="EBA-ZH-H5q"/>
                         <outlet property="dislikeSongBottomConstraint" destination="c9f-1V-cd7" id="JMP-pX-sKJ"/>
                         <outlet property="dislikeSongCenterXConstraint" destination="hrT-wC-tiN" id="OBb-IU-ALa"/>
                         <outlet property="dislikeSongTopConstraint" destination="vwZ-oO-l4k" id="we8-lr-xKO"/>

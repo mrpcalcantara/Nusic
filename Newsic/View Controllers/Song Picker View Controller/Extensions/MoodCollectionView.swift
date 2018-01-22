@@ -330,6 +330,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
             let emotion = Emotion(basicGroup: dyad, detailedEmotions: [], rating: 0)
             self.moodObject = NusicMood(emotions: [emotion], isAmbiguous: false, sentiment: 0.5, date: Date(), userName: spotifyHandler.auth.session.canonicalUsername, associatedGenres: [], associatedTracks: []);
             self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
+//            self.moodObject?.userName = "test.user"
             self.selectedGenres.removeAll()
             isMoodCellSelected = true
             manageButton(for: moodCollectionView)
