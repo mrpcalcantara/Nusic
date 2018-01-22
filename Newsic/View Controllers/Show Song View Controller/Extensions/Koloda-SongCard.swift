@@ -21,6 +21,27 @@ extension ShowSongViewController: KolodaViewDelegate {
         songCardView.addGestureRecognizer(doubleTapRecognizer);
         
         currentSongCardFrame = songCardView.frame
+//        var frame = currentSongCardFrame
+//        frame?.origin = CGPoint(x: (currentSongCardFrame?.origin.x)! - 16, y: (currentSongCardFrame?.origin.y)! - 16)
+//        frame?.size = CGSize(width: (currentSongCardFrame?.width)! + 16, height: (currentSongCardFrame?.height)! + 16)
+//
+//        if let index = songCardView.layer.sublayers?.index(where: { (layer) -> Bool in
+//            return layer.name == "cardBorder"
+//        }) {
+//            let borderLayer = songCardView.layer.sublayers![index].removeFromSuperlayer()
+//        }
+//
+//
+//        let path = UIBezierPath(roundedRect: frame!, cornerRadius: 10)
+//        let layer = CAShapeLayer()
+//        layer.name = "cardBorder"
+//        layer.path = path.cgPath
+//        layer.strokeColor = UIColor.green.cgColor
+//        layer.lineWidth = 3
+//
+//        layer.fillColor = UIColor.clear.cgColor
+        
+//        songCardView.layer.addSublayer(layer)
         
     }
     
@@ -80,6 +101,88 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
+//        if songCardView.frame != nil {
+//            var frame = songCardView.frame
+//            frame.origin = CGPoint(x: (frame.origin.x) - 4 , y: (frame.origin.y) - 4)
+//            frame.size = CGSize(width: (frame.width) + 8, height: (frame.height) + 8)
+//            if let index = songCardView.layer.sublayers?.index(where: { (layer) -> Bool in
+//                return layer.name == "cardBorder"
+//            }) {
+//                let borderLayer = songCardView.layer.sublayers![index].removeFromSuperlayer()
+//            }
+//            
+//            let path = UIBezierPath()
+//            
+//            //            path.move(to: CGPoint(x: cardTitle.frame.width  , y: frame.origin.y - 8))
+//            
+//            path.move(to: CGPoint(x: cardTitle.frame.origin.x + cardTitle.frame.width - 20, y: frame.origin.y - 8))
+//            path.addLine(to: CGPoint(x: frame.width - 8 , y: frame.origin.y - 8))
+//            path.addLine(to: CGPoint(x: frame.width + 8, y: frame.origin.y + 8))
+//            path.addLine(to: CGPoint(x: frame.width + 8, y: frame.height - 8))
+//            path.addLine(to: CGPoint(x: frame.width - 8, y: frame.height + 8))
+//            path.addLine(to: CGPoint(x: frame.origin.x + 8 , y: frame.height + 8))
+//            path.addLine(to: CGPoint(x: frame.origin.x - 8, y: frame.height - 8))
+//            
+//            path.addLine(to: CGPoint(x: frame.origin.x - 8, y: frame.origin.y + 8))
+//            path.addLine(to: CGPoint(x: frame.origin.x + 8, y: frame.origin.y - 8))
+//            path.addLine(to: CGPoint(x: frame.origin.x + 16, y: frame.origin.y - 8))
+//            //            path.addLine(to: CGPoint(x: cardTitle.frame., y: frame.origin.y - 8))
+//            if cardTitle.text == "" {
+//                path.close()
+//            }
+//            //            path.close()
+//            let layer = CAShapeLayer()
+//            layer.name = "cardBorder"
+//            layer.path = path.cgPath
+//            layer.strokeColor = UIColor.green.cgColor
+////            layer.strokeEnd = 1
+////            layer.strokeStart = 1
+//            layer.lineWidth = 2
+//            
+//            layer.fillColor = UIColor.clear.cgColor
+//            
+////            songCardView.layer.insertSublayer(layer, at: 0)
+////            songCardView.layer.addSublayer(layer)
+//            let colors = [UIColor.green, UIColor.red]
+//            let gradientLayer = CAGradientLayer()
+////            gradientLayer.frame = path.bounds
+//            gradientLayer.frame = songCardView.bounds
+//            gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+//            gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+//            gradientLayer.colors = colors
+////            gradientLayer.locations = [0.0,0.4]
+//            gradientLayer.mask = layer
+//            let shapeMask = CAShapeLayer()
+//            shapeMask.fillColor = UIColor.clear.cgColor
+//            shapeMask.path = path.cgPath
+////            gradientLayer.mask = shapeMask
+//
+////            songCardView.layer.addSublayer(gradientLayer)
+////            songCardView.layer.addGradientBorder(path: path.cgPath, colors: colors, width: 5)
+//            
+//            //            songCardView.layer.addSublayer(layer)
+//           
+//            
+//            let animation = CABasicAnimation(keyPath: "strokeEnd")
+//            animation.toValue = 1
+//            animation.duration = 2 // seconds
+//            animation.autoreverses = false
+//            animation.repeatCount = .infinity
+//            
+//            // And finally add the linear animation to the shape!
+////            layer.add(animation, forKey: "line")
+//            
+//            let animation2 = CABasicAnimation(keyPath: "strokeStart")
+//            animation2.toValue = 0
+//            animation2.beginTime = 2
+//            animation2.duration = 2 // seconds
+//            animation2.autoreverses = false
+//            animation2.repeatCount = .infinity
+//            
+////            layer.add(animation2, forKey: "line2")
+//            
+//            print("layer added")
+//        }
         self.hideLikeButtons()
         didUserSwipe = true;
         pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
