@@ -16,20 +16,31 @@ class NusicCustomLayer: CALayer {
 }
 
 extension CALayer {
-    func addGradientBorder(path: CGPath, colors:[UIColor],width:CGFloat = 1) {
+    func removeGradientLayer(name: String) {
+        if let index = self.sublayers?.index(where: { (layer) -> Bool in
+            return layer.name == name
+        }) {
+            let borderLayer = self.sublayers![index]
+            borderLayer.removeFromSuperlayer()
+        }
+    }
+    
+    func addGradientBorder(name:String, path: CGPath, colors:[UIColor],width:CGFloat = 1) {
         let gradientLayer = CAGradientLayer()
-        gradientLayer.frame =  CGRect(origin: CGPoint.zero, size: self.bounds.size)
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
-        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+        gradientLayer.name = name
+        gradientLayer.frame =  CGRect(origin: CGPoint.zero, size: self.frame.size)
+        gradientLayer.startPoint = CGPoint(x: 0.3, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0.3, y: 0.75)
         gradientLayer.colors = colors.map({$0.cgColor})
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.lineWidth = width
-        shapeLayer.path = UIBezierPath(rect: self.bounds).cgPath
+        shapeLayer.path = path
         shapeLayer.fillColor = nil
-        shapeLayer.strokeColor = UIColor.black.cgColor
+        shapeLayer.strokeColor = UIColor.white.cgColor
         gradientLayer.mask = shapeLayer
         
         self.addSublayer(gradientLayer)
+        
     }
 }
