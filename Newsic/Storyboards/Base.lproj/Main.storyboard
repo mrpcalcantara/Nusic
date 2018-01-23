@@ -14,6 +14,9 @@
         <array key="Futura.ttc">
             <string>Futura-Medium</string>
         </array>
+        <array key="Robot Crush.ttf">
+            <string>RobotCrush</string>
+        </array>
     </customFonts>
     <scenes>
         <!--Spotify Login View Controller-->
@@ -24,6 +27,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GYs-BA-23b" userLabel="Nusic Full Title">
+                                <rect key="frame" x="68" y="101" width="239.5" height="93"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Nusic">
+                                        <attributes>
+                                            <font key="NSFont" size="100" name="RobotCrush"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tgc-jo-MXh">
                                 <rect key="frame" x="67" y="321.5" width="241" height="44"/>
                                 <constraints>
@@ -34,17 +49,19 @@
                                     <action selector="spotifyLoginButton:" destination="alU-Ei-zcq" eventType="touchUpInside" id="Q62-X5-yhl"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nusic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNX-a4-ASH">
-                                <rect key="frame" x="122" y="313.5" width="131.5" height="60"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="50"/>
-                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="N" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNX-a4-ASH">
+                                <rect key="frame" x="160.5" y="297" width="54" height="93"/>
+                                <fontDescription key="fontDescription" name="RobotCrush" family="Robot Crush" pointSize="100"/>
+                                <color key="textColor" red="0.1146525223" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="GYs-BA-23b" firstAttribute="centerX" secondItem="ckI-yp-Fw4" secondAttribute="centerX" id="5FU-Xb-xPA"/>
                             <constraint firstItem="bNX-a4-ASH" firstAttribute="centerX" secondItem="nfP-bc-mRV" secondAttribute="centerX" id="9Ly-Oi-IfI"/>
                             <constraint firstItem="Tgc-jo-MXh" firstAttribute="centerY" secondItem="nfP-bc-mRV" secondAttribute="centerY" id="CGc-a8-FOW"/>
+                            <constraint firstItem="GYs-BA-23b" firstAttribute="top" secondItem="nfP-bc-mRV" secondAttribute="top" constant="81" id="b7T-l6-L5x"/>
                             <constraint firstItem="Tgc-jo-MXh" firstAttribute="centerX" secondItem="nfP-bc-mRV" secondAttribute="centerX" id="cVr-Bg-WjL"/>
                             <constraint firstItem="bNX-a4-ASH" firstAttribute="centerY" secondItem="nfP-bc-mRV" secondAttribute="centerY" id="e8w-G8-lio"/>
                         </constraints>
@@ -55,6 +72,7 @@
                         <outlet property="loginButton" destination="Tgc-jo-MXh" id="dpa-Gz-hAG"/>
                         <outlet property="loginButtonCenterXConstraint" destination="cVr-Bg-WjL" id="QRc-hb-AxN"/>
                         <outlet property="loginButtonCenterYConstraint" destination="CGc-a8-FOW" id="VhP-Me-Qhe"/>
+                        <outlet property="nusicFullTitle" destination="GYs-BA-23b" id="3n7-84-m8U"/>
                         <outlet property="nusicLabelCenterXConstraint" destination="9Ly-Oi-IfI" id="Sas-9b-S94"/>
                         <outlet property="nusicLabelCenterYConstraint" destination="e8w-G8-lio" id="giE-mo-ImV"/>
                         <outlet property="nusicLabl" destination="bNX-a4-ASH" id="bWV-4z-91Q"/>
@@ -62,7 +80,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0EX-ux-1tR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="49" y="-1565"/>
+            <point key="canvasLocation" x="48.799999999999997" y="-1565.6671664167918"/>
         </scene>
         <!--Song Picker View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -226,10 +244,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="700" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="b3r-mr-Y8T" userLabel="Track Stack View">
-                                <rect key="frame" x="24" y="90" width="327" height="453"/>
+                                <rect key="frame" x="24" y="86" width="327" height="457"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lxK-RZ-2XL" customClass="SongKolodaView" customModule="Newsic" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="327" height="453"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="327" height="457"/>
                                     </view>
                                 </subviews>
                             </stackView>
@@ -358,7 +376,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g6F-k9-GOb">
-                                <rect key="frame" x="44" y="65.5" width="42" height="20.5"/>
+                                <rect key="frame" x="44" y="61.5" width="42" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -382,7 +400,7 @@
                             <constraint firstItem="alX-vn-cgC" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="Yzb-nM-FQD"/>
                             <constraint firstItem="Iig-1D-otX" firstAttribute="top" secondItem="b3r-mr-Y8T" secondAttribute="bottom" constant="8" id="c8r-0N-0Ki"/>
                             <constraint firstItem="WhN-EJ-UOd" firstAttribute="bottom" secondItem="HQy-9W-NO5" secondAttribute="bottom" constant="8" id="c9f-1V-cd7"/>
-                            <constraint firstItem="b3r-mr-Y8T" firstAttribute="top" secondItem="WhN-EJ-UOd" secondAttribute="top" constant="70" id="cEx-Rd-wxv"/>
+                            <constraint firstItem="b3r-mr-Y8T" firstAttribute="top" secondItem="WhN-EJ-UOd" secondAttribute="top" constant="66" id="cEx-Rd-wxv"/>
                             <constraint firstItem="V03-pk-egn" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="gkI-as-pns"/>
                             <constraint firstItem="k6E-Yi-lJS" firstAttribute="centerX" secondItem="WhN-EJ-UOd" secondAttribute="centerX" id="hbC-F6-Ape"/>
                             <constraint firstItem="Any-Pf-dnV" firstAttribute="top" secondItem="WhN-EJ-UOd" secondAttribute="top" constant="44" id="hgB-44-2Hq"/>

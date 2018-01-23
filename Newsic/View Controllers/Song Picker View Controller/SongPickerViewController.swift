@@ -333,11 +333,10 @@ class SongPickerViewController: NusicDefaultViewController {
                                 }
                                 let username = self.spotifyHandler.user.canonicalUserName!
                                 let displayName = self.spotifyHandler.user.displayName != nil ? self.spotifyHandler.user.displayName : ""
-                                let emailAddress = self.spotifyHandler.user.emailAddress != nil ? self.spotifyHandler.user.emailAddress : ""
                                 let profileImage = self.spotifyHandler.user.smallestImage != nil ? self.spotifyHandler.user.smallestImage.imageURL.absoluteString : ""
                                 let territory = self.spotifyHandler.user.territory != nil ? self.spotifyHandler.user.territory! : "";
                                 let isPremium = self.spotifyHandler.user.product == SPTProduct.premium ? true : false
-                                let user = NusicUser(userName: username, displayName: displayName!, emailAddress: emailAddress!, imageURL: profileImage, territory: territory, isPremium: isPremium)
+                                let user = NusicUser(userName: username, displayName: displayName!, imageURL: profileImage, territory: territory, isPremium: isPremium)
                                 self.moodObject?.userName = username;
                                 self.spotifyPlaylistCheck();
                                 user.getUser(getUserHandler: { (fbUser, error) in
