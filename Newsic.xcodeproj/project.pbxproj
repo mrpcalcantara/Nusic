@@ -68,6 +68,13 @@
 		8C58ACF71FFE48DE00E68FD5 /* NewsicAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C58ACF61FFE48DE00E68FD5 /* NewsicAlertController.swift */; };
 		8C5B18F21FCBBEF400EBFAE1 /* CollectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B18F01FCBBEF400EBFAE1 /* CollectionViewHeader.swift */; };
 		8C5B18F31FCBBEF400EBFAE1 /* CollectionViewHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C5B18F11FCBBEF400EBFAE1 /* CollectionViewHeader.xib */; };
+		8C5E02A7201707A800413DBB /* Synthetic Sharps Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8C5E02A5201707A800413DBB /* Synthetic Sharps Italic.otf */; };
+		8C5E02A8201707A800413DBB /* Synthetic Sharps.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8C5E02A6201707A800413DBB /* Synthetic Sharps.otf */; };
+		8C5E02B12017217700413DBB /* Robot Crush Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8C5E02AB2017217700413DBB /* Robot Crush Italic.otf */; };
+		8C5E02B22017217700413DBB /* Robot Crush.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8C5E02AC2017217700413DBB /* Robot Crush.otf */; };
+		8C5E02B32017217700413DBB /* Robot Crush.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C5E02AD2017217700413DBB /* Robot Crush.ttf */; };
+		8C5E02B42017217700413DBB /* Robot Crush Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C5E02AE2017217700413DBB /* Robot Crush Italic.ttf */; };
+		8C5E02B52017217700413DBB /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8C5E02AF2017217700413DBB /* license.txt */; };
 		8C5E89291FBD7B2E00FF75AC /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5E89281FBD7B2E00FF75AC /* CustomNavigationController.swift */; };
 		8C5E892D1FBD930600FF75AC /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5E892C1FBD930600FF75AC /* UILabel.swift */; };
 		8C6052481F863DBC00892205 /* NewsicSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */; };
@@ -220,6 +227,13 @@
 		8C58ACF61FFE48DE00E68FD5 /* NewsicAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicAlertController.swift; sourceTree = "<group>"; };
 		8C5B18F01FCBBEF400EBFAE1 /* CollectionViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewHeader.swift; sourceTree = "<group>"; };
 		8C5B18F11FCBBEF400EBFAE1 /* CollectionViewHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionViewHeader.xib; sourceTree = "<group>"; };
+		8C5E02A5201707A800413DBB /* Synthetic Sharps Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Synthetic Sharps Italic.otf"; sourceTree = "<group>"; };
+		8C5E02A6201707A800413DBB /* Synthetic Sharps.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Synthetic Sharps.otf"; sourceTree = "<group>"; };
+		8C5E02AB2017217700413DBB /* Robot Crush Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Robot Crush Italic.otf"; sourceTree = "<group>"; };
+		8C5E02AC2017217700413DBB /* Robot Crush.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Robot Crush.otf"; sourceTree = "<group>"; };
+		8C5E02AD2017217700413DBB /* Robot Crush.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Robot Crush.ttf"; sourceTree = "<group>"; };
+		8C5E02AE2017217700413DBB /* Robot Crush Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Robot Crush Italic.ttf"; sourceTree = "<group>"; };
+		8C5E02AF2017217700413DBB /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		8C5E89281FBD7B2E00FF75AC /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		8C5E892C1FBD930600FF75AC /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		8C6052471F863DBC00892205 /* NewsicSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControl.swift; sourceTree = "<group>"; };
@@ -669,6 +683,36 @@
 			path = "Collection View Header";
 			sourceTree = "<group>";
 		};
+		8C5E02A32017075D00413DBB /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8C5E02A92017217700413DBB /* robot-crush */,
+				8C5E02A4201707A800413DBB /* synthetic-sharps */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		8C5E02A4201707A800413DBB /* synthetic-sharps */ = {
+			isa = PBXGroup;
+			children = (
+				8C5E02A5201707A800413DBB /* Synthetic Sharps Italic.otf */,
+				8C5E02A6201707A800413DBB /* Synthetic Sharps.otf */,
+			);
+			path = "synthetic-sharps";
+			sourceTree = "<group>";
+		};
+		8C5E02A92017217700413DBB /* robot-crush */ = {
+			isa = PBXGroup;
+			children = (
+				8C5E02AB2017217700413DBB /* Robot Crush Italic.otf */,
+				8C5E02AC2017217700413DBB /* Robot Crush.otf */,
+				8C5E02AD2017217700413DBB /* Robot Crush.ttf */,
+				8C5E02AE2017217700413DBB /* Robot Crush Italic.ttf */,
+				8C5E02AF2017217700413DBB /* license.txt */,
+			);
+			path = "robot-crush";
+			sourceTree = "<group>";
+		};
 		8C626E9E1FE7A21500BF0E08 /* Mood Genre List */ = {
 			isa = PBXGroup;
 			children = (
@@ -818,6 +862,7 @@
 		8C90E8601F53D838002B135F /* Newsic */ = {
 			isa = PBXGroup;
 			children = (
+				8C5E02A32017075D00413DBB /* Fonts */,
 				8C21E70E1FC6AB270033B477 /* Page View Controller */,
 				8CF8D3FC1FBA9C6400E130BC /* Interaction Controllers */,
 				8C9C9E8F1F67C2CF0093C14A /* Views */,
@@ -1205,13 +1250,17 @@
 			files = (
 				8C7989361FEA16160079A99D /* MusicChoiceCell.xib in Resources */,
 				8C7C41F31FFCCCF20051845D /* SettingsCellHeader.xib in Resources */,
+				8C5E02B42017217700413DBB /* Robot Crush Italic.ttf in Resources */,
 				8C9DB4FE1F6BB38800F35268 /* SongTableViewCell.xib in Resources */,
 				8C2B05F4200C7C4D00BA525C /* SongTableViewHeader.xib in Resources */,
 				8C2B05F1200C7B2900BA525C /* SongTableViewSectionHeader.xib in Resources */,
 				8C63A15A1FFF49C400613FC9 /* ShowSong.xcassets in Resources */,
 				8C63A15D1FFF49FC00613FC9 /* SongPicker.xcassets in Resources */,
 				8C7C41E91FFC928C0051845D /* SettingsCell.xib in Resources */,
+				8C5E02B32017217700413DBB /* Robot Crush.ttf in Resources */,
 				8C2605F51FEB61830025DD1E /* ChoiceListViewHeader.xib in Resources */,
+				8C5E02A8201707A800413DBB /* Synthetic Sharps.otf in Resources */,
+				8C5E02B22017217700413DBB /* Robot Crush.otf in Resources */,
 				8CC991D91FDA86050028F33A /* GoogleService-InfoBKP.plist in Resources */,
 				8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */,
 				8C90E86C1F53D838002B135F /* LaunchScreen.storyboard in Resources */,
@@ -1219,9 +1268,12 @@
 				8CB529DE1F83745200C8050F /* MoodViewCell.xib in Resources */,
 				8CD11B561F5FB6E3000004EA /* GoogleService-Info.plist in Resources */,
 				8C90E8691F53D838002B135F /* Assets.xcassets in Resources */,
+				8C5E02A7201707A800413DBB /* Synthetic Sharps Italic.otf in Resources */,
 				8C63A1571FFF496100613FC9 /* Settings.xcassets in Resources */,
 				8C5B18F31FCBBEF400EBFAE1 /* CollectionViewHeader.xib in Resources */,
+				8C5E02B52017217700413DBB /* license.txt in Resources */,
 				8C7C41E41FFC8F5F0051845D /* SettingsHeader.xib in Resources */,
+				8C5E02B12017217700413DBB /* Robot Crush Italic.otf in Resources */,
 				8C90E8671F53D838002B135F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

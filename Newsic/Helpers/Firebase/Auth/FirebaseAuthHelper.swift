@@ -22,8 +22,6 @@ class FirebaseAuthHelper {
             //
             urlComponents?.queryItems = []
             urlComponents?.queryItems?.insert(URLQueryItem(name: "accessToken", value: accessToken), at: 0)
-//            urlComponents?.queryItems?.insert(URLQueryItem(name: "uid", value: user.canonicalUserName), at: 0)
-//            var username = "test.user".replaceSymbols(symbol: ".", with: "-")
             var username = user.canonicalUserName.replaceSymbols(symbol: ".", with: "-")
             urlComponents?.queryItems?.insert(URLQueryItem(name: "uid", value: username), at: 0)
             if user.largestImage != nil {
@@ -33,7 +31,6 @@ class FirebaseAuthHelper {
             urlComponents?.queryItems?.insert(URLQueryItem(name: "displayName", value: user.displayName), at: 0)
             if user.emailAddress != nil && user.emailAddress != "" {
                 urlComponents?.queryItems?.insert(URLQueryItem(name: "emailAddress", value: user.emailAddress), at: 0)
-//                urlComponents?.queryItems?.insert(URLQueryItem(name: "emailAddress", value: "malcantara.fl@gmail.com"), at: 0)
             }
 
             let urlRequest = URLRequest(url: (urlComponents?.url)!)

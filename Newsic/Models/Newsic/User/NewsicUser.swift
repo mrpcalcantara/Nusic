@@ -17,7 +17,6 @@ class NusicUser: Iterable {
         }
     }
     var displayName: String
-    var emailAddress: String
     var territory: String
     var profileImage: UIImage?
     var favoriteGenres: [NusicGenre]?
@@ -25,11 +24,10 @@ class NusicUser: Iterable {
     var settingValues: NusicUserSettings
     var reference: DatabaseReference!
     
-    init(userName: String, displayName: String? = "", emailAddress: String? = "", imageURL: String? = "", territory: String? = "", favoriteGenres: [NusicGenre]? = nil, isPremium: Bool? = false, settingValues: NusicUserSettings? = NusicUserSettings()) {
+    init(userName: String, displayName: String? = "", imageURL: String? = "", territory: String? = "", favoriteGenres: [NusicGenre]? = nil, isPremium: Bool? = false, settingValues: NusicUserSettings? = NusicUserSettings()) {
         let firebaseUsername = userName.replaceSymbols(symbol: ".", with: "-")
         self.userName = firebaseUsername
         self.displayName = displayName!;
-        self.emailAddress = emailAddress!
         self.territory = territory!;
         self.favoriteGenres = favoriteGenres;
         self.isPremium = isPremium
@@ -69,7 +67,6 @@ extension NusicUser: FirebaseModel {
         let dictionary = ["canonicalUserName": userName,
                           "displayName": displayName,
                           "territory": territory,
-                          "emailAddress": emailAddress,
                           "isPremium": isPremium! ? 1 : 0] as [String : Any]
         
         
@@ -101,7 +98,6 @@ extension NusicUser: FirebaseModel {
                 self.userName = dictionary["canonicalUserName"] as? String ?? self.userName
                 
                 self.displayName = dictionary["displayName"] as? String ?? self.displayName
-                self.emailAddress = dictionary["emailAddress"] as? String ?? self.emailAddress
                 if let isPremiumValue = dictionary["isPremium"] as? NSNumber {
                     self.isPremium = Bool(isPremiumValue) ?? self.isPremium
                 }
