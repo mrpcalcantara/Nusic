@@ -50,7 +50,12 @@ extension ShowSongViewController: YTPlayerViewDelegate {
         } else {
         
         }
-        currentPlayingTrack = self.cardList[self.songCardView.currentCardIndex].trackInfo
+        let track = self.cardList[self.songCardView.currentCardIndex]
+        currentPlayingTrack = track.trackInfo
+        if currentPlayingTrack?.audioFeatures == nil {
+            currentPlayingTrack?.audioFeatures = SpotifyTrackFeature()
+        }
+        currentPlayingTrack?.audioFeatures?.youtubeId = track.youtubeInfo?.trackId
         playerView.playVideo();
     }
     

@@ -774,7 +774,12 @@ extension ShowSongViewController {
         if basedOnGenres != nil {
             genres = basedOnGenres!
         } else {
-            genres = selectedGenreList!
+            if let selectedGenreList = selectedGenreList {
+                genres = selectedGenreList
+            } else {
+                return;
+            }
+            
         }
         
         if currentPlayingTrack != nil {
@@ -842,7 +847,7 @@ extension ShowSongViewController {
         var index = 0
         var ytTracks: [NusicTrack] = []
         for track in tracks {
-            YouTubeSearch.getSongInfo(artist: track.artist.artistName, songName: track.songName, completionHandler: { (youtubeInfo) in
+            YouTubeSearch.getSongInfo(artist: Spotify.getFirstArtist(artistName: track.artist.artistName), songName: track.songName, completionHandler: { (youtubeInfo) in
                 index += 1
                 if let currentIndex = tracks.index(where: { (currentTrack) -> Bool in
                     return currentTrack.trackId == track.trackId
