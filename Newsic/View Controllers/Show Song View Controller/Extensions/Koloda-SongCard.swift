@@ -38,51 +38,90 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didSelectCardAt index: Int) {
-        let alertController = NusicAlertController(title: "More tracks based on:", message: nil, style: YBAlertControllerStyle.ActionSheet)
         
-        let actionArtist: () -> Void = {
-            self.musicSearchType = .artist
-            self.searchBasedOnArtist = self.currentPlayingTrack?.artist != nil ? self.currentPlayingTrack?.artist : nil
-            self.showSwiftSpinner(text: "Fetching tracks..")
-            self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
-            self.showMore.transform = CGAffineTransform.identity;
-            self.handleFetchNewTracks(numberOfSongs: 9, completionHandler: nil)
-            
-        }
+        let alertController = NusicAlertController(title: nil, message: nil, style: YBAlertControllerStyle.ActionSheet)
         
-        let actionTrack: () -> Void = {
-            self.musicSearchType = .track
-            self.searchBasedOnTrack = self.currentPlayingTrack != nil ? self.currentPlayingTrack! : nil
-            self.showSwiftSpinner(text: "Fetching tracks..")
-            self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
-            self.handleFetchNewTracks(numberOfSongs: 9, completionHandler: nil)
-        }
         
-        let actionGenre: () -> Void = {
-            let dict = self.currentPlayingTrack?.artist.listDictionary()
-            let count: Int? = dict?.count
-            if let count = count, count > 0 {
-                self.searchBasedOnGenres = dict!
-            }
-            
-            self.showSwiftSpinner(text: "Fetching tracks..")
-            self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
-            self.musicSearchType = .genre
-            self.handleFetchNewTracks(numberOfSongs: 9, completionHandler: nil)
-        }
         
         let actionShare: () -> Void = {
-            let url = URL(string:  (self.currentPlayingTrack?.songHref)!)!
+            var url: URL? = nil
+            if self.user.settingValues.preferredPlayer == NusicPreferredPlayer.spotify {
+                if let href = self.currentPlayingTrack?.songHref {
+                    url = URL(string: href)
+                } else {
+                    return;
+                }
+            } else {
+                if let ytId = self.currentPlayingTrack?.audioFeatures?.youtubeId {
+                    url = URL(string: "https://www.youtube.com/watch?v=\(ytId)");
+                } else {
+                    return;
+                }
+            }
+//            let url = URL(string:  (self.currentPlayingTrack?.songHref)!)!
             let appendedText = "Suggested by #nusic"
             let array: [Any] = [url as Any, appendedText as Any]
             let activityVC = UIActivityViewController(activityItems: array, applicationActivities: nil)
+            activityVC.completionWithItemsHandler = { activity, isSuccess, returneditems, activityError in
+                var spinnerMessage = ""
+                if isSuccess {
+                    spinnerMessage = "Shared!"
+                } else {
+                    spinnerMessage = "Error!"
+                    print(activityError?.localizedDescription)
+                }
+                
+                SwiftSpinner.show(duration: 2, title: spinnerMessage, animated: true)
+            }
             self.present(activityVC, animated: true, completion: nil)
         }
         
+        let actionBasedOn: () -> Void = {
+            alertController.dismiss()
+            
+            let actionArtist: () -> Void = {
+                self.musicSearchType = .artist
+                self.searchBasedOnArtist = self.currentPlayingTrack?.artist != nil ? self.currentPlayingTrack?.artist : nil
+                self.showSwiftSpinner(text: "Fetching tracks..")
+                self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
+                self.showMore.transform = CGAffineTransform.identity;
+                self.handleFetchNewTracks(numberOfSongs: 9, completionHandler: nil)
+                
+            }
+            
+            let actionTrack: () -> Void = {
+                self.musicSearchType = .track
+                self.searchBasedOnTrack = self.currentPlayingTrack != nil ? self.currentPlayingTrack! : nil
+                self.showSwiftSpinner(text: "Fetching tracks..")
+                self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
+                self.handleFetchNewTracks(numberOfSongs: 9, completionHandler: nil)
+            }
+            
+            let actionGenre: () -> Void = {
+                let dict = self.currentPlayingTrack?.artist.listDictionary()
+                let count: Int? = dict?.count
+                if let count = count, count > 0 {
+                    self.searchBasedOnGenres = dict!
+                }
+                
+                self.showSwiftSpinner(text: "Fetching tracks..")
+                self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
+                self.musicSearchType = .genre
+                self.handleFetchNewTracks(numberOfSongs: 9, completionHandler: nil)
+            }
+            
+            let basedOnAlertController = NusicAlertController(title: "More tracks based on:", message: nil, style: YBAlertControllerStyle.ActionSheet)
+            basedOnAlertController.addButton(icon: UIImage(named: "GenreIcon"), title: "Current Genre", action: actionGenre)
+            basedOnAlertController.addButton(icon: UIImage(named: "ArtistIcon"), title: "Current Artist", action: actionArtist)
+            basedOnAlertController.addButton(icon: UIImage(named: "TrackIcon"), title: "Current Track", action: actionTrack)
+            alertController.dismissCompletion({ (isCompleted) in
+                basedOnAlertController.show()
+            })
+        }
+        
         alertController.addButton(icon: UIImage(named: "Share"), title: "Share", action: actionShare)
-        alertController.addButton(icon: UIImage(named: "GenreIcon"), title: "Current Genre", action: actionGenre)
-        alertController.addButton(icon: UIImage(named: "ArtistIcon"), title: "Current Artist", action: actionArtist)
-        alertController.addButton(icon: UIImage(named: "TrackIcon"), title: "Current Track", action: actionTrack)
+        alertController.addButton(icon: UIImage(named: "BasedOn"), title: "More tracks based on", action: actionBasedOn)
+        
         
         alertController.show()
         

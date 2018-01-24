@@ -369,4 +369,14 @@ class Spotify {
         }
         return dict
     }
+    
+    static func getFirstArtist(artistName: String) -> String {
+        let subString = artistName.split(separator: ",")
+        if let substring = subString.first {
+            return substring.lowercased()
+        } else {
+            return artistName.lowercased()
+        }
+        
+    }
 }

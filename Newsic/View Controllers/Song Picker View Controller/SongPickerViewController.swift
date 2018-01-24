@@ -228,17 +228,20 @@ class SongPickerViewController: NusicDefaultViewController {
  
     override func viewDidLoad() {
         super.viewDidLoad()
-        DispatchQueue.main.async {
-            SwiftSpinner.show("Getting User..", animated: true)
+        print("viewDidLoad SongPicker")
+        if nusicUser == nil {
+            DispatchQueue.main.async {
+                SwiftSpinner.show("Getting User..", animated: true)
+            }
+            
+            extractInformationFromUser { (isFinished) in
+                print(isFinished)
+            }
+            self.setupCollectionCellViews();
+            self.setupView()
+            self.setupListMenu()
+            self.setupSegmentedControl()
         }
-        
-        extractInformationFromUser { (isFinished) in
-            print(isFinished)
-        }
-        self.setupCollectionCellViews();
-        self.setupView()
-        self.setupListMenu()
-        self.setupSegmentedControl()
         
     }
     

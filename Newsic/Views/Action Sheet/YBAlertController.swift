@@ -130,7 +130,7 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
                                        options: .curveEaseIn,
                                        animations: {
                                         self.containerView.frame.origin.y = self.view.frame.height - self.containerView.frame.height
-                                        self.getTopViewController()?.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+//                                        self.getTopViewController()?.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             },
                                        completion: { (finished) in
                                         if self.animated {
@@ -179,7 +179,7 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
                                        animations: {
                                         self.containerView.frame.origin.y = self.view.frame.height
                                         self.view.backgroundColor = UIColor(white: 0, alpha: 0)
-                                        self.getTopViewController()?.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+//                                        self.getTopViewController()?.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             },
                                        completion:  { (finished) in
                                         self.view.removeFromSuperview()
@@ -193,6 +193,37 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
             },
                                        completion:  { (finished) in
                                         self.view.removeFromSuperview()
+            })
+        }
+    }
+    
+    @objc public func dismissCompletion(_ completionHandler: @escaping (Bool) -> ()) {
+        showing = false
+        if let statusBarStyle = currentStatusBarStyle {
+            UIApplication.shared.statusBarStyle = statusBarStyle
+        }
+        
+        if style == .ActionSheet {
+            UIView.animate(withDuration: 0.2,
+                           animations: {
+                            self.containerView.frame.origin.y = self.view.frame.height
+                            self.view.backgroundColor = UIColor(white: 0, alpha: 0)
+                            //                                        self.getTopViewController()?.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            },
+                           completion:  { (finished) in
+                            self.view.removeFromSuperview()
+                            completionHandler(true)
+            })
+        } else {
+            UIView.animate(withDuration: 0.2,
+                           animations: {
+                            self.view.backgroundColor = UIColor(white: 0, alpha: 0)
+                            self.containerView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+                            self.containerView.alpha = 0
+            },
+                           completion:  { (finished) in
+                            self.view.removeFromSuperview()
+                            completionHandler(true)
             })
         }
     }

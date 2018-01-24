@@ -61,24 +61,26 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             
             print("track started");
             if let currentTrack = currentTrack {
-                let currentPlayingTrack = self.cardList[self.songCardView.currentCardIndex].trackInfo
+                let currentNusicTrack = self.cardList[self.songCardView.currentCardIndex]
                 
-                if currentPlayingTrack.audioFeatures == nil {
-                    currentPlayingTrack.audioFeatures = SpotifyTrackFeature()
+                if currentNusicTrack.trackInfo.audioFeatures == nil {
+                    currentNusicTrack.trackInfo.audioFeatures = SpotifyTrackFeature()
                 }
-                currentPlayingTrack.audioFeatures?.durationMs = currentTrack.duration
-                self.currentPlayingTrack = currentPlayingTrack;
+                currentNusicTrack.trackInfo.audioFeatures?.durationMs = currentTrack.duration
+                currentNusicTrack.trackInfo.audioFeatures?.youtubeId = currentNusicTrack.youtubeInfo?.trackId
+                self.currentPlayingTrack = currentNusicTrack.trackInfo;
                 
                 if let imageURL = currentTrack.albumCoverArtURL {
                     let imageURL = URL(string: imageURL)!
                     let image = UIImage(); image.downloadImage(from: imageURL) { (image) in
-                        currentPlayingTrack.thumbNail = image
+                        self.currentPlayingTrack?.thumbNail = image
                         self.activateAudioSession()
-                        self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
-                        DispatchQueue.main.async {
-                            self.toggleLikeButtons()
+                        if let songName = self.currentPlayingTrack?.songName, let artistName = self.currentPlayingTrack?.artist.artistName {
+                            self.updateNowPlayingCenter(title: songName, artist: artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+                            DispatchQueue.main.async {
+                                self.toggleLikeButtons()
+                            }
                         }
-                        
                     }
                 } else {
                     activateAudioSession()
@@ -97,6 +99,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             self.hideLikeButtons()
         }
         print(UIApplication.shared.applicationState)
+        koloda(songCardView, didSwipeCardAt: presentedCardIndex, in: .left)
         songCardView.swipe(.left);
         if UIApplication.shared.applicationState == .background {
             presentedCardIndex += 1
