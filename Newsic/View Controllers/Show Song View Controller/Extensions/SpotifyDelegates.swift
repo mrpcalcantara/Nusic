@@ -93,20 +93,17 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     
 
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
-        if trackUri != "" {
-            
-        }
         DispatchQueue.main.async {
             self.hideLikeButtons()
         }
-        
+        print(UIApplication.shared.applicationState)
         songCardView.swipe(.left);
-        
         if UIApplication.shared.applicationState == .background {
             presentedCardIndex += 1
             playCard(at: presentedCardIndex)
             getNextSong()
-            //
+        } else {
+            
         }
     }
     

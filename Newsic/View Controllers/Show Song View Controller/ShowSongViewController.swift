@@ -360,6 +360,7 @@ class ShowSongViewController: NusicDefaultViewController {
         cardTitle.textColor = NusicDefaults.greenColor
         addCardBorderLayer()
     }
+    
     @IBAction func showMoreClicked(_ sender: UIButton) {
         togglePlayerMenu();
     }
