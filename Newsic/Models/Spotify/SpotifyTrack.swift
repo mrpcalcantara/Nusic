@@ -20,16 +20,18 @@ class SpotifyTrack: Hashable {
     var trackId: String!;
     var trackUri: String!;
     var songName: String!;
+    var songHref: String!;
     var artist: SpotifyArtist;
     var addedAt: Date?!
     var audioFeatures: SpotifyTrackFeature? = nil
     
-    init(title: String? = "", thumbNail: UIImage? = nil, thumbNailUrl: String? = "", trackUri: String? = "", trackId: String, songName: String? = "", artist: SpotifyArtist?, addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?) {
+    init(title: String? = "", thumbNail: UIImage? = nil, thumbNailUrl: String? = "", trackUri: String? = "", trackId: String, songName: String? = "", songHref: String? = "", artist: SpotifyArtist?, addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?) {
         self.title = title;
         self.thumbNailUrl = thumbNailUrl;
         self.trackUri = trackUri;
         self.trackId = trackId;
         self.songName = songName;
+        self.songHref = songHref
         self.artist = artist!
         self.addedAt = addedAt;
         self.audioFeatures = audioFeatures
@@ -61,6 +63,7 @@ class SpotifyTrack: Hashable {
             lhs.trackId == rhs.trackId &&
             lhs.trackUri == rhs.trackUri &&
             lhs.songName == rhs.songName &&
+            lhs.songHref == rhs.songHref &&
             lhs.artist == rhs.artist &&
             lhs.addedAt == rhs.addedAt &&
             lhs.audioFeatures == rhs.audioFeatures

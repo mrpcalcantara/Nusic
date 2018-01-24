@@ -71,6 +71,15 @@ extension ShowSongViewController: KolodaViewDelegate {
             self.handleFetchNewTracks(numberOfSongs: 9, completionHandler: nil)
         }
         
+        let actionShare: () -> Void = {
+            let url = URL(string:  (self.currentPlayingTrack?.songHref)!)!
+            let appendedText = "Suggested by #nusic"
+            let array: [Any] = [url as Any, appendedText as Any]
+            let activityVC = UIActivityViewController(activityItems: array, applicationActivities: nil)
+            self.present(activityVC, animated: true, completion: nil)
+        }
+        
+        alertController.addButton(icon: UIImage(named: "Share"), title: "Share", action: actionShare)
         alertController.addButton(icon: UIImage(named: "GenreIcon"), title: "Current Genre", action: actionGenre)
         alertController.addButton(icon: UIImage(named: "ArtistIcon"), title: "Current Artist", action: actionArtist)
         alertController.addButton(icon: UIImage(named: "TrackIcon"), title: "Current Track", action: actionTrack)
@@ -88,7 +97,6 @@ extension ShowSongViewController: KolodaViewDelegate {
             likeTrack(in: index);
         }
         didUserSwipe = false;
-//        player?.playbackDelegate.audioStreaming!(player, didStopPlayingTrack: currentPlayingTrack?.trackUri)
         getNextSong()
 
     }

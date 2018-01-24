@@ -102,6 +102,10 @@ extension Spotify {
                     let trackName = track["name"] as! String;
                     let uri = track["uri"] as! String;
                     let id = track["id"] as! String;
+                    var songExternalHref = ""
+                    if let trackHref = track["external_urls"] as? [String: AnyObject] {
+                        songExternalHref = trackHref["spotify"] as! String
+                    }
                     let album = track["album"] as! [String: AnyObject];
                     let images = album["images"] as! [[String: AnyObject]];
                     let hqImage = images.count > 0 ? images[0]["url"] as! String : ""
@@ -110,7 +114,7 @@ extension Spotify {
                     let artistUri = artists.count > 0 ? artists[0]["uri"] as! String : "Unknown URI";
                     let title = "\(artistName) - \(trackName)"
                     
-                    let spotifyObject = SpotifyTrack(title: title, thumbNailUrl: hqImage, trackUri: uri, trackId: id, songName: trackName, artist: SpotifyArtist(artistName: artistName, uri: artistUri, id: Spotify.transformToID(type: .artist, uri: artistUri)), audioFeatures: nil);
+                    let spotifyObject = SpotifyTrack(title: title, thumbNailUrl: hqImage, trackUri: uri, trackId: id, songName: trackName, songHref: songExternalHref, artist: SpotifyArtist(artistName: artistName, uri: artistUri, id: Spotify.transformToID(type: .artist, uri: artistUri)), audioFeatures: nil);
                     spotifyResults.append(spotifyObject);
                     
                 }

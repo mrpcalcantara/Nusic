@@ -103,6 +103,12 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         popup.presentPopup(for: self);
     }
     
+    func setupLogo() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(rotateNusicLogo))
+        tapGestureRecognizer.numberOfTapsRequired = 1
+        nusicLabl.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
     func setupLabel() {
         nusicLabl.textColor = UIColor.lightText
     }
@@ -257,6 +263,11 @@ class SpotifyLoginViewController: NusicDefaultViewController {
             self.nusicLabl.alpha = 1;
         })
         
+        rotateNusicLogo()
+        
+    }
+    
+    @objc func rotateNusicLogo() {
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.2, options: [.curveEaseInOut], animations: {
             self.nusicLabl.transform = CGAffineTransform(rotationAngle: .pi)
         }) { (isCompleted) in
@@ -265,7 +276,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
             }, completion: nil)
             
         }
-        
     }
     
     
