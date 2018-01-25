@@ -331,8 +331,8 @@ class ShowSongViewController: NusicDefaultViewController {
         
         let navItem = self.navigationItem
         navbar.items = [navItem]
-        self.view.insertSubview(navbar, at: 0)
-        //        self.view.addSubview(navbar)
+//        self.view.insertSubview(navbar, at: 0)
+        self.view.addSubview(navbar)
     }
     
     func setupMenu() {

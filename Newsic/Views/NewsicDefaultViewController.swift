@@ -14,11 +14,6 @@ class NusicDefaultViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let image = UIImage(named: "BackgroundPattern")
-        if let image = image {
-            let backgroundPattern = UIColor(patternImage: image)
-            self.view.backgroundColor = backgroundPattern
-        }
     }
 
     override func didReceiveMemoryWarning() {

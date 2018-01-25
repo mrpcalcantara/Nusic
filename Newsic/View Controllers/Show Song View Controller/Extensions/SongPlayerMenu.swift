@@ -15,12 +15,10 @@ extension ShowSongViewController {
         
         showMore.setImage(UIImage(named: "ShowMore"), for: .normal)
         showMore.alpha = 1
-        showMore.layer.zPosition = -1
         showMore.translatesAutoresizingMaskIntoConstraints = false;
         
         previousSong.setImage(UIImage(named: "ThumbsDown"), for: .normal)
         previousSong.isHidden = true
-        previousSong.layer.zPosition = 1;
         previousSong.translatesAutoresizingMaskIntoConstraints = false;
         previousSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
         
@@ -29,44 +27,32 @@ extension ShowSongViewController {
         }
         
         pausePlay.isHidden = true
-        pausePlay.layer.zPosition = -1;
         pausePlay.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         
         nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
         nextSong.isHidden = true
-        nextSong.layer.zPosition = 1;
         nextSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
         
         previousTrack.setImage(UIImage(named: "Rewind"), for: .normal)
         previousTrack.isHidden = true
-        previousTrack.layer.zPosition = -1;
         previousTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         
         nextTrack.setImage(UIImage(named: "FastForward"), for: .normal)
         nextTrack.isHidden = true
-        nextTrack.layer.zPosition = -1;
         nextTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         
         if preferredPlayer == NusicPreferredPlayer.spotify {
             songProgressSlider.isHidden = false
             
             songProgressView.isHidden = true
-            songProgressView.layer.zPosition = 1;
             songProgressView.backgroundColor = UIColor.clear
             
-            songProgressSlider.layer.zPosition = 1;
             songProgressSlider.tintColor = UIColor.green
             songProgressSlider.thumbTintColor = UIColor.lightGray
-//            let image = UIImage(named: "SongProgressThumb")?.withRenderingMode(.alwaysTemplate)
-//            songProgressSlider.setThumbImage(image, for: .normal)
-//            songProgressSlider.setThumbImage(image, for: .focused)
-//            songProgressSlider.setThumbImage(image, for: .highlighted)
-            
-            songDurationLabel.layer.zPosition = 1;
+
             songDurationLabel.textColor = UIColor.lightText
             songDurationLabel.text = songDurationLabel.text == "" ? convertElapsedSecondsToTime(interval: 0) : songDurationLabel.text
             
-            songElapsedTime.layer.zPosition = 1;
             songElapsedTime.textColor = UIColor.lightText
             songElapsedTime.text = songElapsedTime.text == "" ? convertElapsedSecondsToTime(interval: 0) : songElapsedTime.text
         }
