@@ -65,7 +65,9 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        setupBackground()
         setupSpotify()
+        
         gotToken = UserDefaults.standard.object(forKey: "SpotifySession") as AnyObject != nil
         checkFirebaseConnectivity()
         
@@ -116,6 +118,17 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     func setupView() {
         loginButton.setImage(UIImage(named: "SpotifyLogin"), for: .normal);
         setupLabel()
+    }
+    
+    func setupBackground() {
+        let image = UIImage(named: "BackgroundPattern")
+        if let image = image {
+            let imageView = UIImageView(frame: self.view.frame)
+            imageView.contentMode = .scaleAspectFill
+            imageView.image = image
+            self.view.addSubview(imageView)
+            self.view.sendSubview(toBack: imageView)
+        }
     }
     
     func checkFirebaseConnectivity() {

@@ -64,14 +64,13 @@ extension ShowSongViewController: KolodaViewDelegate {
             let activityVC = UIActivityViewController(activityItems: array, applicationActivities: nil)
             activityVC.completionWithItemsHandler = { activity, isSuccess, returneditems, activityError in
                 var spinnerMessage = ""
-                if isSuccess {
-                    spinnerMessage = "Shared!"
-                } else {
-                    spinnerMessage = "Error!"
-                    print(activityError?.localizedDescription)
+                if activity != nil {
+                    if isSuccess {
+                        spinnerMessage = "Shared!"
+                    } 
+                    
+                    SwiftSpinner.show(duration: 2, title: spinnerMessage, animated: true)
                 }
-                
-                SwiftSpinner.show(duration: 2, title: spinnerMessage, animated: true)
             }
             self.present(activityVC, animated: true, completion: nil)
         }

@@ -50,9 +50,19 @@ class NusicPageViewController: UIPageViewController {
             }
         }
 
+        let image = UIImage(named: "BackgroundPattern")
+        if let image = image {
+            let imageView = UIImageView(frame: self.view.frame)
+            imageView.contentMode = .scaleAspectFill
+            imageView.image = image
+            self.view.addSubview(imageView)
+            self.view.sendSubview(toBack: imageView)
+        }
+        
         let initialViewController = orderedViewControllers[1]
         scrollToViewController(viewController: initialViewController)
         nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
+        
         
     }
     
