@@ -39,6 +39,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: String!) {
+        
         if Connectivity.isConnectedToNetwork() == .connectedCellular && !playOnCellularData! {
             let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
             
@@ -60,7 +61,9 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             let currentTrack = audioStreaming.metadata.currentTrack;
             
             print("track started");
+            
             if let currentTrack = currentTrack {
+                print("\(currentTrack.artistName) - \(currentTrack.name)")
                 let currentNusicTrack = self.cardList[self.songCardView.currentCardIndex]
                 
                 if currentNusicTrack.trackInfo.audioFeatures == nil {
@@ -69,12 +72,12 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
                 currentNusicTrack.trackInfo.audioFeatures?.durationMs = currentTrack.duration
                 currentNusicTrack.trackInfo.audioFeatures?.youtubeId = currentNusicTrack.youtubeInfo?.trackId
                 self.currentPlayingTrack = currentNusicTrack.trackInfo;
-                
+                self.activateAudioSession()
                 if let imageURL = currentTrack.albumCoverArtURL {
                     let imageURL = URL(string: imageURL)!
                     let image = UIImage(); image.downloadImage(from: imageURL) { (image) in
                         self.currentPlayingTrack?.thumbNail = image
-                        self.activateAudioSession()
+                        print("\(self.currentPlayingTrack?.songName)")
                         if let songName = self.currentPlayingTrack?.songName, let artistName = self.currentPlayingTrack?.artist.artistName {
                             self.updateNowPlayingCenter(title: songName, artist: artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
                             DispatchQueue.main.async {
@@ -83,7 +86,6 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
                         }
                     }
                 } else {
-                    activateAudioSession()
                     updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: nil, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
                 }
                 setupSongProgress(duration: Float(currentTrack.duration))
@@ -333,15 +335,25 @@ extension ShowSongViewController {
     // MARK: Activate audio session
     
     func activateAudioSession() {
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-        try? AVAudioSession.sharedInstance().setActive(true)
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("activateAudioSession() - error starting")
+        }
+        
         
     }
     
     // MARK: Deactivate audio session
     
     func deactivateAudioSession() {
-        try? AVAudioSession.sharedInstance().setActive(false)
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch {
+            print("deactivateAudioSession() - error stopping")
+        }
+        
     }
 
 

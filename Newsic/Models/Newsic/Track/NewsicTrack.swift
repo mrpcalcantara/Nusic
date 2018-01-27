@@ -46,18 +46,26 @@ extension NusicTrack : FirebaseModel {
     }
     
     internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
-        
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
+        let dateString = dateFormatter.string(from: date)
         if let audioFeatures = trackInfo.audioFeatures {
             if let moodInfo = moodInfo {
                 for emotion in moodInfo.emotions {
-                    reference.child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(trackInfo.trackId!).updateChildValues(audioFeatures.toDictionary()) { (error, reference) in
+                    var dict = audioFeatures.toDictionary();
+                    
+                    dict["addedOn"] = dateString as AnyObject;
+                    reference.child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(trackInfo.trackId!).updateChildValues(dict) { (error, reference) in
                         if let error = error {
                             saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveLikedTracks.rawValue, systemError: error))
                         }
                     }
                 }
             } else {
-                reference.child(userName).child("moods").child(EmotionDyad.unknown.rawValue).child(trackInfo.trackId!).updateChildValues(audioFeatures.toDictionary()) { (error, reference) in
+                var dict = audioFeatures.toDictionary();
+                dict["addedOn"] = dateString as AnyObject
+                reference.child(userName).child("moods").child(EmotionDyad.unknown.rawValue).child(trackInfo.trackId!).updateChildValues(dict) { (error, reference) in
                         if let error = error {
                             saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
                         }
@@ -91,6 +99,20 @@ extension NusicTrack : FirebaseModel {
         deleteCompleteHandler(reference, nil)
     }
     
+//    func getAddedMoods() {
+//        let dispatchGroup = DispatchGroup()
+//        let emotions: [String] = []
+//        
+//        dispatchGroup.enter()
+//        FirebaseDatabaseHelper.fetchAllMoods(user: self.userName) { (dyads, error) in
+//            self.getData(getCompleteHandler: { (dict, error) in
+//                <#code#>
+//            })
+//            dispatchGroup.leave()
+//        }
+//        
+//        dispatchGroup.wait()
+//    }
     
     
 }
