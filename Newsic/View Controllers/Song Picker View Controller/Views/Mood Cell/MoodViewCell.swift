@@ -80,6 +80,7 @@ class MoodViewCell: UICollectionViewCell {
         
         offsetPath = offsetRect
         
+        
         addPointerPath(for: index, isLastRow)
         addPath(for: index)
         setConstraints(for: index);
@@ -114,20 +115,27 @@ class MoodViewCell: UICollectionViewCell {
         let height = self.safeAreaLayoutGuide.layoutFrame.height
         
         let initialX:CGFloat = offsetPath.origin.x
+//        let initialX:CGFloat = offsetPath.origin.x
         let initialY:CGFloat = 0
         
+        var radius = height/2 - height/4
+        radius.round(.toNearestOrEven)
+//        let yPos = (height/4).rounded(.toNearestOrEven)
+        let yPos = (height/4)
         let pointerPath = UIBezierPath();
         pointerPath.move(to: CGPoint(x: initialX, y: initialY));
         pointerPath.addLine(to: CGPoint(x: initialX, y: height/4))
-        pointerPath.addLine(to: CGPoint(x: initialX + offsetPath.origin.x, y: height/2))
-        pointerPath.addLine(to: CGPoint(x: initialX + offsetPath.origin.x * 2, y: height/2))
+//        pointerPath.addLine(to: CGPoint(x: initialX + offsetPath.origin.x, y: height/2))
+        pointerPath.addQuadCurve(to: CGPoint(x: initialX + offsetPath.origin.x, y: height/2), controlPoint: CGPoint(x: initialX, y: height/2))
+//        pointerPath.addArc(withCenter: CGPoint(x: initialX + offsetPath.origin.x, y: yPos), radius: radius.rounded(.down), startAngle: .pi, endAngle: .pi*0.5, clockwise: false)
+//        pointerPath.addLine(to: CGPoint(x: initialX + offsetPath.origin.x, y: height/2))
         
         if isLastRow! == false {
             pointerPath.move(to: CGPoint(x: initialX, y: initialY));
             pointerPath.addLine(to: CGPoint(x: initialX, y: height))
         }
         
-        offsetSelectedPoint = CGPoint(x: initialX + offsetPath.origin.x * 2, y: height/2)
+        offsetSelectedPoint = CGPoint(x: initialX + offsetPath.origin.x, y: height/2)
         
         let layer = CAShapeLayer()
         
@@ -150,17 +158,23 @@ class MoodViewCell: UICollectionViewCell {
         let initialY:CGFloat = 0
         
         let pointerPath = UIBezierPath();
+        var radius = height/2 - height/4
+        radius.round(.toNearestOrEven)
+//        let yPos = (height/4).rounded(.toNearestOrEven)
+        let yPos = (height/4)
         pointerPath.move(to: CGPoint(x: initialX, y: initialY));
         pointerPath.addLine(to: CGPoint(x: initialX, y: height/4))
-        pointerPath.addLine(to: CGPoint(x: initialX - offsetPath.origin.x, y: height/2))
-        pointerPath.addLine(to: CGPoint(x: initialX - offsetPath.origin.x * 2, y: height/2))
+//        pointerPath.addArc(withCenter: CGPoint(x: initialX - offsetPath.origin.x , y: yPos), radius: radius, startAngle: 0, endAngle: .pi*0.5, clockwise: true)
+        pointerPath.addQuadCurve(to: CGPoint(x: initialX - offsetPath.origin.x, y: height/2), controlPoint: CGPoint(x: initialX, y: height/2))
+//        pointerPath.addLine(to: CGPoint(x: initialX - offsetPath.origin.x, y: height/2))
+//        pointerPath.addLine(to: CGPoint(x: initialX - offsetPath.origin.x , y: height/2))
         
         if isLastRow! == false {
             pointerPath.move(to: CGPoint(x: initialX, y: initialY));
             pointerPath.addLine(to: CGPoint(x: initialX, y: height))
         }
         
-        offsetSelectedPoint = CGPoint(x: initialX - offsetPath.origin.x * 2, y: height/2)
+        offsetSelectedPoint = CGPoint(x: initialX - offsetPath.origin.x, y: height/2)
         
         let layer = CAShapeLayer()
         

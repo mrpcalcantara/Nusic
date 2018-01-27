@@ -92,7 +92,8 @@ extension ChoiceListView {
         let endpointLeft = self.frame.width/2 - (arrowImageView.image?.size.width)!
         leftPath.move(to: CGPoint(x: initialX, y: initialY))
         leftPath.addLine(to: CGPoint(x: initialX, y: toggleView.bounds.height/4))
-        leftPath.addLine(to: CGPoint(x: initialX + 8, y: toggleView.bounds.height/2))
+        let radius = toggleView.bounds.height/2 - toggleView.bounds.height/4
+        leftPath.addArc(withCenter: CGPoint(x: initialX + radius, y: toggleView.bounds.height/4), radius: radius, startAngle: .pi, endAngle: .pi*0.5, clockwise: false)
         leftPath.addLine(to: CGPoint(x: endpointLeft, y: toggleView.bounds.height/2))
         
         leftLayer = CAShapeLayer()
@@ -109,7 +110,9 @@ extension ChoiceListView {
         let endpointRight = self.frame.width/2 + (arrowImageView.image?.size.width)!
         rightPath.move(to: CGPoint(x: initialX, y: 0))
         rightPath.addLine(to: CGPoint(x: initialX, y: toggleView.bounds.height/4))
-        rightPath.addLine(to: CGPoint(x: initialX-8, y: toggleView.bounds.height/2))
+//        rightPath.addLine(to: CGPoint(x: initialX-8, y: toggleView.bounds.height/2))
+        
+        rightPath.addArc(withCenter: CGPoint(x: initialX - radius, y: toggleView.bounds.height/4), radius: radius, startAngle: 0, endAngle: .pi*0.5, clockwise: true)
         rightPath.addLine(to: CGPoint(x: endpointRight, y: toggleView.bounds.height/2))
         
         rightLayer = CAShapeLayer()
@@ -129,7 +132,9 @@ extension ChoiceListView {
         let endpointLeft = self.frame.width/2 - (arrowImageView.image?.size.width)!
         leftPath.move(to: CGPoint(x: initialX, y: initialY))
         leftPath.addLine(to: CGPoint(x: initialX, y: initialY-toggleView.bounds.height/4))
-        leftPath.addLine(to: CGPoint(x: initialX + 8, y: toggleView.bounds.height/2))
+//        leftPath.addLine(to: CGPoint(x: initialX + 8, y: toggleView.bounds.height/2))
+        let radius = toggleView.bounds.height/2 - toggleView.bounds.height/4
+        leftPath.addArc(withCenter: CGPoint(x: initialX + radius, y: 3*toggleView.bounds.height/4), radius: radius, startAngle: .pi, endAngle: .pi*1.5, clockwise: true)
         leftPath.addLine(to: CGPoint(x: endpointLeft, y: toggleView.bounds.height/2))
         
         leftLayer = CAShapeLayer()
@@ -146,7 +151,9 @@ extension ChoiceListView {
         let endpointRight = self.frame.width/2 + (arrowImageView.image?.size.width)!
         rightPath.move(to: CGPoint(x: initialX, y: initialY))
         rightPath.addLine(to: CGPoint(x: initialX, y: initialY-toggleView.bounds.height/4))
-        rightPath.addLine(to: CGPoint(x: initialX-8, y: toggleView.bounds.height/2))
+//        rightPath.addLine(to: CGPoint(x: initialX-8, y: toggleView.bounds.height/2))
+        
+        rightPath.addArc(withCenter: CGPoint(x: initialX - radius, y: 3*toggleView.bounds.height/4), radius: radius, startAngle: 0, endAngle: .pi*1.5, clockwise: false)
         rightPath.addLine(to: CGPoint(x: endpointRight, y: toggleView.bounds.height/2))
         
         rightLayer = CAShapeLayer()
