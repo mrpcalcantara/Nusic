@@ -31,7 +31,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="N" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b0D-IF-AGY">
                                 <rect key="frame" x="160" y="359.66666666666669" width="54" height="93"/>
                                 <fontDescription key="fontDescription" name="RobotCrush" family="Robot Crush" pointSize="100"/>
-                                <color key="textColor" red="0.1146525223" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="textColor" red="0.329308033" green="0.72263795139999998" blue="0.30971136690000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TransparentAppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="yiH-l8-knO">
@@ -59,7 +59,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="BackgroundPattern" width="640" height="393"/>
+        <image name="BackgroundPattern" width="200" height="207"/>
         <image name="TransparentAppIcon" width="85" height="85"/>
     </resources>
 </document>

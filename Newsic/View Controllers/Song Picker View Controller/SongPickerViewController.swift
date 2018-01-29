@@ -220,9 +220,12 @@ class SongPickerViewController: NusicDefaultViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        genreCollectionView.collectionViewLayout.invalidateLayout()
+        moodCollectionView.collectionViewLayout.invalidateLayout()
         genreCollectionView.reloadData()
         moodCollectionView.reloadData()
         listMenuView.reloadView()
+        setupNavigationBar()
         self.view.layoutIfNeeded()
     }
  
@@ -236,6 +239,7 @@ class SongPickerViewController: NusicDefaultViewController {
             
             extractInformationFromUser { (isFinished) in
                 print(isFinished)
+                
             }
             self.setupCollectionCellViews();
             self.setupView()
@@ -262,7 +266,26 @@ class SongPickerViewController: NusicDefaultViewController {
 
         self.navigationItem.leftBarButtonItem = barButton
         
+        if let pageViewController = parent as? NusicPageViewController {
+            let showSongImage = UIImage(named: "PreferredPlayer")?.withRenderingMode(.alwaysTemplate)
+            let barButton = UIBarButtonItem(image: showSongImage, style: .plain, target: self, action: #selector(goToShowSongVC));
+            if pageViewController.orderedViewControllers.contains(pageViewController.showSongVC!) {
+                barButton.tintColor = UIColor.white
+                barButton.isEnabled = true
+            } else {
+                barButton.tintColor = UIColor.gray
+                barButton.isEnabled = false
+            }
+            
+            self.navigationItem.rightBarButtonItem = barButton
+            
+        }
+        
+        
+        
         let navItem = self.navigationItem
+        
+//        navItem.titleView = NusicSegmentedControl(frame: (navItem.titleView?.bounds)!)
         navbar.items = [navItem]
         
         self.view.addSubview(navbar)
@@ -291,6 +314,11 @@ class SongPickerViewController: NusicDefaultViewController {
     @objc func toggleMenu() {
         let parent = self.parent as! NusicPageViewController
         parent.scrollToViewController(index: 0)
+    }
+    
+    @objc func goToShowSongVC() {
+        let parent = self.parent as! NusicPageViewController
+        parent.scrollToViewController(index: parent.orderedViewControllers.count-1)
     }
     
     func manageViewControllerShowSong() {

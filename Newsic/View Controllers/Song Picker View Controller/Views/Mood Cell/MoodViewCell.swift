@@ -16,7 +16,7 @@ class MoodViewCell: UICollectionViewCell {
     
     var borderPathLayer: CAShapeLayer?;
     var pointerPathLayer: CAShapeLayer?;
-    var selectedColor: UIColor = UIColor.green.withAlphaComponent(0.2)
+    var selectedColor: UIColor = NusicDefaults.greenColor
     var deselectedColor: UIColor = UIColor.clear
     var offsetPath: CGRect = CGRect.zero
     var offsetSelectedPoint: CGPoint = CGPoint.zero
@@ -141,7 +141,7 @@ class MoodViewCell: UICollectionViewCell {
         
         
         let color = UIColor(red: 255, green: 69, blue: 0, alpha: 1).cgColor
-        layer.strokeColor = UIColor.green.cgColor
+        layer.strokeColor = NusicDefaults.greenColor.cgColor
         layer.lineWidth = 2
         layer.fillColor = self.deselectedColor.cgColor
         layer.path = pointerPath.cgPath
@@ -180,7 +180,7 @@ class MoodViewCell: UICollectionViewCell {
         
         
         let color = UIColor(red: 255, green: 69, blue: 0, alpha: 1).cgColor
-        layer.strokeColor = UIColor.green.cgColor
+        layer.strokeColor = NusicDefaults.greenColor.cgColor
         layer.lineWidth = 2
         layer.fillColor = self.deselectedColor.cgColor
         layer.path = pointerPath.cgPath
@@ -195,7 +195,7 @@ class MoodViewCell: UICollectionViewCell {
         
         
         let color = UIColor(red: 255, green: 69, blue: 0, alpha: 1).cgColor
-        layer.strokeColor = UIColor.green.cgColor
+        layer.strokeColor = NusicDefaults.greenColor.cgColor
         layer.lineWidth = 2
         layer.fillColor = self.deselectedColor.cgColor
         layer.backgroundColor = self.deselectedColor.cgColor
@@ -262,7 +262,7 @@ class MoodViewCell: UICollectionViewCell {
     func setPathSelectAnimation() {
         if let borderPathLayer = borderPathLayer {
             borderPathLayer.removeAllAnimations()
-            borderPathLayer.strokeColor = UIColor.green.cgColor
+            borderPathLayer.strokeColor = NusicDefaults.greenColor.cgColor
             let strokePathAnimation = CABasicAnimation(keyPath: "strokeEnd")
             strokePathAnimation.fromValue = 0
             strokePathAnimation.duration = 0.2
@@ -276,7 +276,7 @@ class MoodViewCell: UICollectionViewCell {
             
             let strokeColorAnimation = CABasicAnimation(keyPath: "strokeColor")
             strokeColorAnimation.fromValue = self.selectedColor.cgColor
-            strokeColorAnimation.toValue = UIColor.green.cgColor
+            strokeColorAnimation.toValue = NusicDefaults.greenColor.cgColor
             strokeColorAnimation.duration = 0.5
             strokeColorAnimation.autoreverses = true
             strokeColorAnimation.repeatCount = .infinity

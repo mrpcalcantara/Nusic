@@ -17,13 +17,14 @@ extension SongPickerViewController {
         
         let headerNib = UINib(nibName: CollectionViewHeader.className, bundle: nil)
         let view = UINib(nibName: MoodViewCell.className, bundle: nil);
+        let viewTEST = UINib(nibName: MoodGenreListCell.className, bundle: nil);
         
         genreCollectionView.delegate = self;
         genreCollectionView.dataSource = self;
         genreCollectionView.allowsMultipleSelection = true;
         genreCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
-        genreCollectionView.register(view, forCellWithReuseIdentifier: MoodViewCell.reuseIdentifier);
-        genreCollectionView.setCollectionViewLayout(NusicCollectionViewLayout(), animated: true)
+        genreCollectionView.register(viewTEST, forCellWithReuseIdentifier: "moodGenreListCell");
+//        genreCollectionView.setCollectionViewLayout(NusicCollectionViewLayout(), animated: true)
         
         let genreLayout = genreCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         genreLayout.sectionHeadersPinToVisibleBounds = true
@@ -281,14 +282,14 @@ extension SongPickerViewController: UICollectionViewDelegate {
                 }
             }
         } else if collectionView == genreCollectionView {
-            let nusicCell = cell as! MoodViewCell
-            if let genre = nusicCell.moodLabel.text {
-                if selectedGenres[genre.lowercased()] != nil {
-                    DispatchQueue.main.async {
-//                        nusicCell.selectCell()
-                    }
-                }
-            }
+//            let nusicCell = cell as! MoodViewCell
+//            if let genre = nusicCell.moodLabel.text {
+//                if selectedGenres[genre.lowercased()] != nil {
+//                    DispatchQueue.main.async {
+////                        nusicCell.selectCell()
+//                    }
+//                }
+//            }
         }
         
         
@@ -356,20 +357,20 @@ extension SongPickerViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if collectionView == self.genreCollectionView {
-            let cell = genreCollectionView.cellForItem(at: indexPath) as! MoodViewCell
-            if let genre = cell.moodLabel.text {
-                selectedGenres.removeValue(forKey: genre.lowercased());
+        if let cell = collectionView.cellForItem(at: indexPath) as? MoodViewCell {
+            if collectionView == self.genreCollectionView {
+                if let genre = cell.moodLabel.text {
+                    selectedGenres.removeValue(forKey: genre.lowercased());
+                    cell.deselectCell()
+                }
+            } else if collectionView == self.moodCollectionView {
+                isMoodCellSelected = false
+                moodObject = nil
                 cell.deselectCell()
+                manageButton(for: moodCollectionView);
             }
-//            manageButton(for: genreCollectionView);
-        } else if collectionView == self.moodCollectionView {
-            let cell = moodCollectionView.cellForItem(at: indexPath) as! MoodViewCell
-            isMoodCellSelected = false
-            moodObject = nil
-            cell.deselectCell()
-            manageButton(for: moodCollectionView);
         }
+        
     }
     
 }
@@ -390,8 +391,9 @@ extension SongPickerViewController: UICollectionViewDataSource {
             return moods.count
         } else {
             if section > 0 {
-                return sectionGenres[section-1].count
+//                return sectionGenres[section-1].count
 //                return getGenresForSection(section: section-1).count
+                return 1
             } else {
                 return 0
             }
@@ -427,21 +429,32 @@ extension SongPickerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         var isLastRow: Bool = false
-        let cell: MoodViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: MoodViewCell.reuseIdentifier, for: indexPath) as! MoodViewCell;
+        
         if collectionView == self.moodCollectionView {
+            let cell: MoodViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: MoodViewCell.reuseIdentifier, for: indexPath) as! MoodViewCell;
             let mood = moods[indexPath.row].rawValue
             cell.moodLabel.text = "\(mood)"
             isLastRow = indexPath.row > moods.count - Int(cellsPerRow)-1
+            cell.configure(for: indexPath.row, offsetRect: self.sectionHeaderFrame, isLastRow: isLastRow);
+            cell.layoutIfNeeded()
+            
+            return cell;
         } else {
             let genres = sectionGenres[indexPath.section-1]
             let genre = genres[indexPath.row].rawValue
-            cell.moodLabel.text = "\(genre)"
+//            cell.moodLabel.text = "\(genre)"
             isLastRow = indexPath.row > genres.count - Int(cellsPerRow)-1
+            print("showing indexPath: \(indexPath)")
+            
+            let cellTEST = collectionView.dequeueReusableCell(withReuseIdentifier: "moodGenreListCell", for: indexPath) as! MoodGenreListCell
+            
+            cellTEST.configure(for: genres, section: indexPath.section-1);
+            cellTEST.delegate = self
+            cellTEST.layoutIfNeeded()
+            return cellTEST
+            
         }
-        cell.configure(for: indexPath.row, offsetRect: self.sectionHeaderFrame, isLastRow: isLastRow);
-        cell.layoutIfNeeded()
         
-        return cell;
         
     }
     
@@ -451,23 +464,40 @@ extension SongPickerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        //If iPad show 4 per row, otherwise only 2
-        cellsPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2
-        let sizeWidth = collectionView.frame.width/cellsPerRow
-        if let window = UIApplication.shared.keyWindow {
-            return CGSize(width: sizeWidth, height: window.frame.height/10);
-        } else {
-            return CGSize(width: sizeWidth, height: collectionView.frame.height/10);
+        if collectionView == moodCollectionView {
+            //If iPad show 4 per row, otherwise only 2
+            cellsPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2
+            let sizeWidth = collectionView.frame.width/cellsPerRow
+            if let window = UIApplication.shared.keyWindow {
+                return CGSize(width: sizeWidth, height: window.frame.height/10);
+            } else {
+                return CGSize(width: sizeWidth, height: collectionView.frame.height/10);
+            }
         }
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height/5)
         
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        if collectionView == genreCollectionView {
+            return 16
+        }
         return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0;
+        if collectionView == genreCollectionView {
+            return 8
+        }
+        return 0
     }
     
+}
+
+extension SongPickerViewController: MoodGenreListCellDelegate {
+    func didSelect(section:Int, indexPath:IndexPath) {
+        let currentIndexPath = IndexPath(row: indexPath.row, section: section+1)
+        print("selected at indexPath : \(currentIndexPath)")
+        self.collectionView(genreCollectionView, didSelectItemAt: currentIndexPath)
+    }
 }

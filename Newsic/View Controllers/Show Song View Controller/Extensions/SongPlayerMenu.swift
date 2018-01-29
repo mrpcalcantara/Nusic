@@ -47,7 +47,7 @@ extension ShowSongViewController {
             songProgressView.isHidden = true
             songProgressView.backgroundColor = UIColor.clear
             
-            songProgressSlider.tintColor = UIColor.green
+            songProgressSlider.tintColor = NusicDefaults.greenColor
             songProgressSlider.thumbTintColor = UIColor.lightGray
 
             songDurationLabel.textColor = UIColor.lightText

@@ -56,6 +56,7 @@ class NusicSegmentedControl: UIControl {
     
     @IBInspectable var thumbColor : UIColor = UIColor.green {
         didSet {
+            print(thumbColor)
             setSelectedColors()
         }
     }
@@ -94,9 +95,9 @@ class NusicSegmentedControl: UIControl {
 //
 //        self.insertSubview(containerView, at: 0)
 //
-//        layer.cornerRadius = frame.height / 2
+        layer.cornerRadius = frame.height / 2
 //        layer.borderColor = UIColor(white: 1.0, alpha: 0.5).cgColor
-//        layer.borderWidth = 2
+        layer.borderWidth = 1
         
         backgroundColor = UIColor.clear
         
@@ -118,9 +119,9 @@ class NusicSegmentedControl: UIControl {
         
         for index in 1...items.count {
             
-            let frame = CGRect(x: 0, y: 0, width: 70, height: 40);
+            let frame = CGRect(x: 0, y: 0, width: self.bounds.height - 5, height: self.bounds.height - 5);
             let label = UIImageView(frame: frame)
-            label.contentMode = .scaleAspectFit
+            label.contentMode = .center
             //label.clipsToBounds = true;
             label.image = items[index - 1]
             label.backgroundColor = UIColor.clear;
