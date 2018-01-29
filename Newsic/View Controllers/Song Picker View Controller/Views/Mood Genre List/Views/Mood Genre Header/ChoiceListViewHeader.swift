@@ -40,7 +40,7 @@ class ChoiceListViewHeader: UICollectionReusableView {
     
     func setupLabel(label: String) {
         self.sectionHeaderLabel.text = label
-        self.sectionHeaderLabel.textColor = UIColor.green
+        self.sectionHeaderLabel.textColor = NusicDefaults.greenColor
         self.addBlurEffect(style: .dark, alpha: 0.7);
     }
     

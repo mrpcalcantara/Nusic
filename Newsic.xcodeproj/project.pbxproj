@@ -46,6 +46,10 @@
 		8C2B05F4200C7C4D00BA525C /* SongTableViewHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C2B05F2200C7C4D00BA525C /* SongTableViewHeader.xib */; };
 		8C2B05F5200C7C4D00BA525C /* SongTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2B05F3200C7C4D00BA525C /* SongTableViewHeader.swift */; };
 		8C2B40891FD9488C00F08087 /* NewsicPopupButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2B40881FD9488C00F08087 /* NewsicPopupButton.swift */; };
+		8C2D05E5201EE7FA00518B68 /* MoodGenreListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2D05E3201EE7FA00518B68 /* MoodGenreListCell.swift */; };
+		8C2D05E6201EE7FA00518B68 /* MoodGenreListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C2D05E4201EE7FA00518B68 /* MoodGenreListCell.xib */; };
+		8C2D05E9201EE80700518B68 /* MoodGenreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2D05E7201EE80700518B68 /* MoodGenreCell.swift */; };
+		8C2D05EA201EE80700518B68 /* MoodGenreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C2D05E8201EE80700518B68 /* MoodGenreCell.xib */; };
 		8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3654BE1F551ABE006C12D9 /* OverlayView.xib */; };
 		8C3654C11F551B16006C12D9 /* SongOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654C01F551B16006C12D9 /* SongOverlayView.swift */; };
 		8C3654C31F552201006C12D9 /* SongKolodaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654C21F552201006C12D9 /* SongKolodaView.swift */; };
@@ -142,6 +146,7 @@
 		8CC991D91FDA86050028F33A /* GoogleService-InfoBKP.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CC991D81FDA86050028F33A /* GoogleService-InfoBKP.plist */; };
 		8CCC55341F66587A005090A4 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC55331F66587A005090A4 /* UIImage.swift */; };
 		8CCC55361F67975F005090A4 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC55351F67975F005090A4 /* Double.swift */; };
+		8CCEB3C7201F1EB200AC8350 /* GenreIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CCEB3C6201F1EB200AC8350 /* GenreIcons.xcassets */; };
 		8CD0C7271FD541D90095A309 /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD0C7261FD541D90095A309 /* URLSession.swift */; };
 		8CD0C7291FD55B4D0095A309 /* SpotifyErrorCodeDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD0C7281FD55B4D0095A309 /* SpotifyErrorCodeDescription.swift */; };
 		8CD0C72B1FD55E450095A309 /* NewsicErrorSubCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD0C72A1FD55E450095A309 /* NewsicErrorSubCode.swift */; };
@@ -207,6 +212,10 @@
 		8C2B05F2200C7C4D00BA525C /* SongTableViewHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SongTableViewHeader.xib; sourceTree = "<group>"; };
 		8C2B05F3200C7C4D00BA525C /* SongTableViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongTableViewHeader.swift; sourceTree = "<group>"; };
 		8C2B40881FD9488C00F08087 /* NewsicPopupButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicPopupButton.swift; sourceTree = "<group>"; };
+		8C2D05E3201EE7FA00518B68 /* MoodGenreListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodGenreListCell.swift; sourceTree = "<group>"; };
+		8C2D05E4201EE7FA00518B68 /* MoodGenreListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoodGenreListCell.xib; sourceTree = "<group>"; };
+		8C2D05E7201EE80700518B68 /* MoodGenreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodGenreCell.swift; sourceTree = "<group>"; };
+		8C2D05E8201EE80700518B68 /* MoodGenreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MoodGenreCell.xib; sourceTree = "<group>"; };
 		8C3654BE1F551ABE006C12D9 /* OverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
 		8C3654C01F551B16006C12D9 /* SongOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongOverlayView.swift; sourceTree = "<group>"; };
 		8C3654C21F552201006C12D9 /* SongKolodaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongKolodaView.swift; sourceTree = "<group>"; };
@@ -307,6 +316,7 @@
 		8CC991D81FDA86050028F33A /* GoogleService-InfoBKP.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-InfoBKP.plist"; sourceTree = "<group>"; };
 		8CCC55331F66587A005090A4 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		8CCC55351F67975F005090A4 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		8CCEB3C6201F1EB200AC8350 /* GenreIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = GenreIcons.xcassets; sourceTree = "<group>"; };
 		8CD0C7261FD541D90095A309 /* URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
 		8CD0C7281FD55B4D0095A309 /* SpotifyErrorCodeDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyErrorCodeDescription.swift; sourceTree = "<group>"; };
 		8CD0C72A1FD55E450095A309 /* NewsicErrorSubCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicErrorSubCode.swift; sourceTree = "<group>"; };
@@ -629,6 +639,33 @@
 			path = "Song Table View Section Header";
 			sourceTree = "<group>";
 		};
+		8C2D05E0201EE7B000518B68 /* New Layout */ = {
+			isa = PBXGroup;
+			children = (
+				8C2D05E1201EE7BA00518B68 /* Cell Collection View */,
+			);
+			path = "New Layout";
+			sourceTree = "<group>";
+		};
+		8C2D05E1201EE7BA00518B68 /* Cell Collection View */ = {
+			isa = PBXGroup;
+			children = (
+				8C2D05E2201EE7C800518B68 /* Genre Cell */,
+				8C2D05E3201EE7FA00518B68 /* MoodGenreListCell.swift */,
+				8C2D05E4201EE7FA00518B68 /* MoodGenreListCell.xib */,
+			);
+			path = "Cell Collection View";
+			sourceTree = "<group>";
+		};
+		8C2D05E2201EE7C800518B68 /* Genre Cell */ = {
+			isa = PBXGroup;
+			children = (
+				8C2D05E7201EE80700518B68 /* MoodGenreCell.swift */,
+				8C2D05E8201EE80700518B68 /* MoodGenreCell.xib */,
+			);
+			path = "Genre Cell";
+			sourceTree = "<group>";
+		};
 		8C3654BA1F551694006C12D9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -747,6 +784,7 @@
 		8C63A15B1FFF49F100613FC9 /* Song Picker */ = {
 			isa = PBXGroup;
 			children = (
+				8CCEB3C5201F1EA300AC8350 /* Genre Icons */,
 				8C63A15C1FFF49FC00613FC9 /* SongPicker.xcassets */,
 			);
 			path = "Song Picker";
@@ -1094,6 +1132,7 @@
 		8CB529DA1F8373FB00C8050F /* Mood Cell */ = {
 			isa = PBXGroup;
 			children = (
+				8C2D05E0201EE7B000518B68 /* New Layout */,
 				8CB529DB1F83745200C8050F /* MoodViewCell.swift */,
 				8CB529DC1F83745200C8050F /* MoodViewCell.xib */,
 			);
@@ -1129,6 +1168,14 @@
 				8C90E8631F53D838002B135F /* SongPickerViewController.swift */,
 			);
 			path = "Song Picker View Controller";
+			sourceTree = "<group>";
+		};
+		8CCEB3C5201F1EA300AC8350 /* Genre Icons */ = {
+			isa = PBXGroup;
+			children = (
+				8CCEB3C6201F1EB200AC8350 /* GenreIcons.xcassets */,
+			);
+			path = "Genre Icons";
 			sourceTree = "<group>";
 		};
 		8CF78D231F82006900249C2F /* Song Table View Header */ = {
@@ -1255,11 +1302,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C7989361FEA16160079A99D /* MusicChoiceCell.xib in Resources */,
+				8C2D05EA201EE80700518B68 /* MoodGenreCell.xib in Resources */,
 				8C7C41F31FFCCCF20051845D /* SettingsCellHeader.xib in Resources */,
 				8C5E02B42017217700413DBB /* Robot Crush Italic.ttf in Resources */,
 				8C9DB4FE1F6BB38800F35268 /* SongTableViewCell.xib in Resources */,
 				8C2B05F4200C7C4D00BA525C /* SongTableViewHeader.xib in Resources */,
 				8C2B05F1200C7B2900BA525C /* SongTableViewSectionHeader.xib in Resources */,
+				8C2D05E6201EE7FA00518B68 /* MoodGenreListCell.xib in Resources */,
 				8C63A15A1FFF49C400613FC9 /* ShowSong.xcassets in Resources */,
 				8C63A15D1FFF49FC00613FC9 /* SongPicker.xcassets in Resources */,
 				8C7C41E91FFC928C0051845D /* SettingsCell.xib in Resources */,
@@ -1280,6 +1329,7 @@
 				8C63A1571FFF496100613FC9 /* Settings.xcassets in Resources */,
 				8C5B18F31FCBBEF400EBFAE1 /* CollectionViewHeader.xib in Resources */,
 				8C5E02B52017217700413DBB /* license.txt in Resources */,
+				8CCEB3C7201F1EB200AC8350 /* GenreIcons.xcassets in Resources */,
 				8C7C41E41FFC8F5F0051845D /* SettingsHeader.xib in Resources */,
 				8C5E02B12017217700413DBB /* Robot Crush Italic.otf in Resources */,
 				8C90E8671F53D838002B135F /* Main.storyboard in Resources */,
@@ -1423,6 +1473,7 @@
 				8C8C65971F55A6B4000711AC /* ShowSongViewController.swift in Sources */,
 				8CA40DF51F8B7C8200C95B9D /* SpotifyArtists.swift in Sources */,
 				8C7C0A431FEA768D0077B109 /* CL-NewsicButton.swift in Sources */,
+				8C2D05E5201EE7FA00518B68 /* MoodGenreListCell.swift in Sources */,
 				8C0C1E9F1F61343900CF8516 /* Date.swift in Sources */,
 				8C2B05F5200C7C4D00BA525C /* SongTableViewHeader.swift in Sources */,
 				8C27011B1FDA46090044D10F /* ConnectivityStatus.swift in Sources */,
@@ -1521,6 +1572,7 @@
 				8C7C0A3F1FEA76780077B109 /* CL-ToggleView.swift in Sources */,
 				8C2B40891FD9488C00F08087 /* NewsicPopupButton.swift in Sources */,
 				8C58ACEB1FFE1B9E00E68FD5 /* NewsicUserSpotifySettings.swift in Sources */,
+				8C2D05E9201EE80700518B68 /* MoodGenreCell.swift in Sources */,
 				8C58ACED1FFE202500E68FD5 /* SPTBitrate.swift in Sources */,
 				8C0ED6BD1FE7C79700394909 /* ChoiceListViewDelegate.swift in Sources */,
 				8CFFBF371F9708F100A69E78 /* NewsicCollectionViewLayout.swift in Sources */,

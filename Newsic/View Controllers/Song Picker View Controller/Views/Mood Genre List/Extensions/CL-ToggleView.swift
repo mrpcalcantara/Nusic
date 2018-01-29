@@ -99,7 +99,7 @@ extension ChoiceListView {
         leftLayer = CAShapeLayer()
         leftLayer.path = leftPath.cgPath
         leftLayer.fillColor = UIColor.clear.cgColor
-        leftLayer.strokeColor = UIColor.green.cgColor
+        leftLayer.strokeColor = NusicDefaults.greenColor.cgColor
         leftLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(leftLayer)
@@ -118,7 +118,7 @@ extension ChoiceListView {
         rightLayer = CAShapeLayer()
         rightLayer.path = rightPath.cgPath
         rightLayer.fillColor = UIColor.clear.cgColor
-        rightLayer.strokeColor = UIColor.green.cgColor
+        rightLayer.strokeColor = NusicDefaults.greenColor.cgColor
         rightLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(rightLayer)
@@ -140,7 +140,7 @@ extension ChoiceListView {
         leftLayer = CAShapeLayer()
         leftLayer.path = leftPath.cgPath
         leftLayer.fillColor = UIColor.clear.cgColor
-        leftLayer.strokeColor = UIColor.green.cgColor
+        leftLayer.strokeColor = NusicDefaults.greenColor.cgColor
         leftLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(leftLayer)
@@ -159,7 +159,7 @@ extension ChoiceListView {
         rightLayer = CAShapeLayer()
         rightLayer.path = rightPath.cgPath
         rightLayer.fillColor = UIColor.clear.cgColor
-        rightLayer.strokeColor = UIColor.green.cgColor
+        rightLayer.strokeColor = NusicDefaults.greenColor.cgColor
         rightLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(rightLayer)
