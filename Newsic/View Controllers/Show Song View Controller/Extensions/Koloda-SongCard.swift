@@ -354,7 +354,7 @@ extension ShowSongViewController {
             layer.lineWidth = 2
             layer.fillColor = UIColor.clear.cgColor
             
-            let colors = [UIColor.green, UIColor.clear]
+            let colors = [NusicDefaults.foregroundThemeColor, UIColor.clear]
             
             self.view.layer.removeAllAnimations()
             

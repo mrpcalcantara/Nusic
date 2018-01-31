@@ -164,10 +164,20 @@ class ShowSongViewController: NusicDefaultViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         if newMoodOrGenre {
             resetView()
             showSwiftSpinner()
             _ = checkConnectivity()
+        } else {
+            reloadNavigationBar()
+            reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
+            if UIApplication.shared.statusBarOrientation == .portrait || UIApplication.shared.statusBarOrientation == .portraitUpsideDown {
+                closeMenu()
+            }
+            if isPlayerMenuOpen {
+                closePlayerMenu(animated: true)
+            }
         }
     }
     
@@ -181,11 +191,9 @@ class ShowSongViewController: NusicDefaultViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews();
-        if navbar.frame.origin.y != self.view.safeAreaLayoutGuide.layoutFrame.origin.y || navbar.frame.width != self.view.safeAreaLayoutGuide.layoutFrame.width {
-            setupNavigationBar()
-        }
         
         if screenRotated {
+            reloadNavigationBar()
             reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
             screenRotated = false
         }
@@ -193,8 +201,8 @@ class ShowSongViewController: NusicDefaultViewController {
         if currentSongCardFrame != songCardView.frame {
             currentSongCardFrame = songCardView.frame
         }
-//        addCardBorderLayer()
         
+        self.view.layoutIfNeeded()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -300,11 +308,9 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     
     func setupNavigationBar() {
-        if self.view.subviews.contains(navbar) {
-            navbar.removeFromSuperview()
-        }
         navbar  = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
         navbar.barStyle = .default
+        navbar.translatesAutoresizingMaskIntoConstraints = false
         
         let barButtonLeft = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(backToSongPicker));
         self.navigationItem.leftBarButtonItem = barButtonLeft
@@ -331,8 +337,49 @@ class ShowSongViewController: NusicDefaultViewController {
         
         let navItem = self.navigationItem
         navbar.items = [navItem]
-//        self.view.insertSubview(navbar, at: 0)
-        self.view.addSubview(navbar)
+        
+        if !self.view.subviews.contains(navbar) {
+            self.view.addSubview(navbar)
+        }
+        NSLayoutConstraint.activate([
+            navbar.widthAnchor.constraint(equalToConstant: self.view.frame.width),
+            navbar.heightAnchor.constraint(equalToConstant: 44),
+            navbar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
+            navbar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0),
+            navbar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0)
+            ])
+        
+        self.view.layoutIfNeeded()
+    }
+    
+    func reloadNavigationBar() {
+        if navbar != nil {
+            let barButtonLeft = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(backToSongPicker));
+            self.navigationItem.leftBarButtonItem = barButtonLeft
+            
+            let barButtonRight = UIBarButtonItem(image: UIImage(named: "MusicNote"), style: .plain, target: self, action: #selector(toggleSongMenu));
+            
+            if UIApplication.shared.statusBarOrientation.isLandscape {
+                barButtonRight.isEnabled = false
+            } else {
+                barButtonRight.isEnabled = true
+            }
+            
+            self.navigationItem.rightBarButtonItem = barButtonRight
+            
+            
+            let labelView = UILabel()
+            labelView.font = UIFont(name: "Futura", size: 20)
+            labelView.textColor = UIColor.white
+            if let currentMoodDyad = currentMoodDyad {
+                labelView.text = currentMoodDyad == EmotionDyad.unknown ? "" : "Mood: \(currentMoodDyad.rawValue)"
+            }
+            
+            //        self.navigationItem.titleView = labelView
+            
+            let navItem = self.navigationItem
+            navbar.items = [navItem]
+        }
     }
     
     func setupMenu() {
@@ -357,7 +404,7 @@ class ShowSongViewController: NusicDefaultViewController {
     func setupMoodLabel() {
         cardTitle.text = moodObject?.emotions.first?.basicGroup == EmotionDyad.unknown ? "" : moodObject?.emotions.first?.basicGroup.rawValue
         cardTitle.font = NusicDefaults.font!
-        cardTitle.textColor = NusicDefaults.greenColor
+        cardTitle.textColor = NusicDefaults.foregroundThemeColor
         addCardBorderLayer()
     }
     

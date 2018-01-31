@@ -32,7 +32,7 @@ class MusicChoiceCell: UICollectionViewCell {
         
 //        let borderLayer = CAShapeLayer()
 //        borderLayer.path = UIBezierPath(roundedRect: self.frame, cornerRadius: 15).cgPath
-//        borderLayer.strokeColor = NusicDefaults.greenColor.cgColor
+//        borderLayer.strokeColor = NusicDefaults.foregroundThemeColor.cgColor
 //        borderLayer.fillColor = UIColor.clear.cgColor
 ////        self.layer.insertSublayer(borderLayer, at: 0)
 ////        self.layer.addSublayer(borderLayer)
@@ -41,7 +41,7 @@ class MusicChoiceCell: UICollectionViewCell {
     func setupLabel(with text: String) {
         choiceLabel.font = NusicDefaults.font!
         choiceLabel.textAlignment = .center
-        choiceLabel.textColor = NusicDefaults.greenColor
+        choiceLabel.textColor = NusicDefaults.foregroundThemeColor
         choiceLabel.text = text
         choiceLabel.minimumScaleFactor = 0.1
     }

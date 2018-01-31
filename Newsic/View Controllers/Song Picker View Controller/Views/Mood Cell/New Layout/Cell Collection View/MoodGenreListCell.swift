@@ -16,16 +16,17 @@ class MoodGenreListCell: UICollectionViewCell {
 
     @IBOutlet weak var listCollectionView: UICollectionView!
     
-    var items: [SpotifyGenres]?
+    var items: [String]?
     weak var delegate: MoodGenreListCellDelegate?
     var section: Int?
+    var cellSize: CGSize?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
     
-    convenience init(frame: CGRect, items: [SpotifyGenres]) {
+    convenience init(frame: CGRect, items: [String]) {
         self.init(frame: frame)
         self.items = items
     }
@@ -46,7 +47,7 @@ class MoodGenreListCell: UICollectionViewCell {
         self.layer.rasterizationScale = UIScreen.main.scale
     }
     
-    func configure(for items: [SpotifyGenres], section: Int) {
+    func configure(for items: [String], section: Int) {
         let view = UINib(nibName: MoodGenreCell.className, bundle: nil);
         
         self.listCollectionView.backgroundColor = NusicDefaults.deselectedColor
@@ -54,7 +55,13 @@ class MoodGenreListCell: UICollectionViewCell {
         self.listCollectionView.dataSource = self;
         self.listCollectionView.allowsMultipleSelection = true;
         self.listCollectionView.register(view, forCellWithReuseIdentifier: "moodGenreCell");
-//        self.listCollectionView.setCollectionViewLayout(NusicCollectionViewLayout(), animated: true)
+        let layout = ListCollectionViewFlowLayout()
+//        let layout = NusicCollectionViewLayout()
+        
+//        let layout = listCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.scrollDirection = .horizontal
+        
+//        self.listCollectionView.setCollectionViewLayout(layout, animated: false)
         self.items = items
         self.section = section
 //        listCollectionView.setCollectionViewLayout(NusicCollectionViewLayout(), animated: true)
@@ -83,7 +90,7 @@ extension MoodGenreListCell: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 //        print("showing indexPath: \(indexPath)")
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "moodGenreCell", for: indexPath) as? MoodGenreCell {
-            cell.configure(text: items![indexPath.row].rawValue)
+            cell.configure(text: items![indexPath.row])
             cell.layoutIfNeeded()
             return cell;
         }
@@ -111,7 +118,8 @@ extension MoodGenreListCell: UICollectionViewDelegateFlowLayout {
 //        } else {
 //            return CGSize(width: sizeWidth, height: collectionView.frame.height/3);
 //        }
-        return CGSize(width: sizeWidth, height: collectionView.bounds.height - 8);
+        cellSize = CGSize(width: collectionView.frame.width - collectionView.bounds.width/6, height:  collectionView.bounds.height - collectionView.bounds.height/6)
+        return cellSize!
     }
 //
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -122,4 +130,12 @@ extension MoodGenreListCell: UICollectionViewDelegateFlowLayout {
         return 16;
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        if let cellSize = cellSize {
+            let inset = (collectionView.frame.width - cellSize.width)/2
+            return UIEdgeInsetsMake(0, inset, 0, inset)
+        }
+        return UIEdgeInsetsMake(0, 0, 0, 0)
+    }
 }

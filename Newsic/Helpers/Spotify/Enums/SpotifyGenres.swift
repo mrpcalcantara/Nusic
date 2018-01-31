@@ -144,4 +144,35 @@ enum SpotifyGenres: String {
 //    static let allShownValues = [acoustic, afrobeat, altRock, alternative, ambient, blackMetal, bluegrass, blues, bossanova, brazil, breakbeat, chicagoHouse, chill, classical, country, dance, dancehall, deathMetal, deepHouse, detroitTechno, disco, drumAndBass, dub, dubstep, edm, electro, electronic, emo, folk, forro, funk, gospel, goth, grindcore, groove, grunge, guitar, hardRock, hardcore, hardstyle, heavyMetal, hipHop, honkyTonk, house, idm, indie, indiePop, industrial, jDance, jIdol, jPop, jRock, jazz, kPop, latin, latino, mandopop, metal, metalMisc, metalcore, minimalTechno, newAge, opera, pagode, piano, pop, postDubstep, powerPop, progressiveHouse, psychRock, punk, punkRock, rnb, reggae, reggaeton, rock, rockNRoll, rockabilly, salsa, samba, sertanejo, ska, songwriter, soul, synthPop, tango, techno, trance, tripHop, worldMusic]
     static let allShownValues = [acoustic, afrobeat, altRock, alternative, ambient, blackMetal, bluegrass, blues, bossanova, brazil, breakbeat, chicagoHouse, chill, classical, country, dance, dancehall, deathMetal, deepHouse, detroitTechno, disco, drumAndBass, dub, dubstep, edm, electro, electronic, emo, folk, forro, funk, gospel, goth, grindcore, groove, grunge, guitar, hardRock, hardcore, hardstyle, heavyMetal, hipHop, honkyTonk, house, indie, indiePop, industrial, jDance, jIdol, jPop, jRock, jazz, kPop, latin, latino, mandopop, metal, metalcore, minimalTechno, newAge, opera, piano, pop, powerPop, progressiveHouse, psychRock, punk, punkRock, rnb, reggae, reggaeton, rock, rockNRoll, rockabilly, salsa, samba, ska, songwriter, soul, synthPop, tango, techno, trance, tripHop, worldMusic]
     
+    
+    static let genreDictionary = ["Alternative": [SpotifyGenres.alternative, SpotifyGenres.altRock, SpotifyGenres.goth, SpotifyGenres.grunge, SpotifyGenres.hardRock, SpotifyGenres.punk],
+                                  "Blues": [SpotifyGenres.blues],
+                                  "Classical" : [SpotifyGenres.classical, SpotifyGenres.opera],
+                                  "Country" : [SpotifyGenres.bluegrass, SpotifyGenres.country, SpotifyGenres.honkyTonk],
+                                  "Dance" : [SpotifyGenres.breakbeat, SpotifyGenres.dubstep, SpotifyGenres.garage, SpotifyGenres.hardcore, SpotifyGenres.house, SpotifyGenres.deepHouse, SpotifyGenres.progressiveHouse, SpotifyGenres.chicagoHouse, SpotifyGenres.drumAndBass, SpotifyGenres.techno, SpotifyGenres.detroitTechno, SpotifyGenres.minimalTechno, SpotifyGenres.trance, SpotifyGenres.postDubstep, SpotifyGenres.jDance],
+                                  "Electronic" : [SpotifyGenres.ambient, SpotifyGenres.electro, SpotifyGenres.electronic, SpotifyGenres.hardstyle, SpotifyGenres.industrial, SpotifyGenres.tripHop],
+                                  "Hip-Hop" : [SpotifyGenres.hipHop],
+                                  "Jazz" : [SpotifyGenres.jazz],
+                                  "Latin" : [SpotifyGenres.latin, SpotifyGenres.latino, SpotifyGenres.tango, SpotifyGenres.brazil, SpotifyGenres.bossanova, SpotifyGenres.reggaeton, SpotifyGenres.salsa, SpotifyGenres.pagode, SpotifyGenres.sertanejo, SpotifyGenres.samba],
+                                  "New-Age" : [SpotifyGenres.newAge],
+                                  "Pop" : [SpotifyGenres.pop, SpotifyGenres.indiePop, SpotifyGenres.powerPop, SpotifyGenres.synthPop, SpotifyGenres.kPop, SpotifyGenres.jPop, SpotifyGenres.popFilm],
+                                  "R&B/Soul" : [SpotifyGenres.disco, SpotifyGenres.funk, SpotifyGenres.soul, SpotifyGenres.rnb],
+                                  "Reggae" : [SpotifyGenres.dub, SpotifyGenres.dancehall, SpotifyGenres.ska, SpotifyGenres.reggae],
+                                  "Rock" : [SpotifyGenres.rock, SpotifyGenres.hardRock, SpotifyGenres.metal, SpotifyGenres.metalcore, SpotifyGenres.heavyMetal, SpotifyGenres.deathMetal, SpotifyGenres.blackMetal, SpotifyGenres.grindcore, SpotifyGenres.rockNRoll, SpotifyGenres.rockabilly, SpotifyGenres.jRock ],
+                                  "Singer/Songwriter" : [SpotifyGenres.songwriter, SpotifyGenres.singerSongwriter, SpotifyGenres.folk],
+                                  "World-Music" : [SpotifyGenres.afrobeat, SpotifyGenres.cantopop, SpotifyGenres.mandopop, SpotifyGenres.french, SpotifyGenres.indian, SpotifyGenres.iranian, SpotifyGenres.spanish, SpotifyGenres.mpb, SpotifyGenres.turkish]]
+
+    static func getSectionTitles(sorted: Bool? = true) -> [String] {
+        
+        var titles: [String] = genreDictionary.keys.map({ $0 })
+        return sorted! ? titles.sorted() : titles
+    }
+    
+    static func getGenres(for mainGenre: String) -> [SpotifyGenres] {
+        if let genres = genreDictionary[mainGenre] {
+            return genres
+        }
+        return []
+    }
+    
 }

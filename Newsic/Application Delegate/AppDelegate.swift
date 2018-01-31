@@ -139,7 +139,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Default button
         buttonAppearance.titleFont      = UIFont(name: "Futura", size: 16)!
-        buttonAppearance.titleColor     = NusicDefaults.greenColor
+        buttonAppearance.titleColor     = NusicDefaults.foregroundThemeColor
         buttonAppearance.buttonColor    = UIColor(white: 0.15, alpha: 1)
         buttonAppearance.separatorColor = UIColor(white: 0.9, alpha: 1)
         

@@ -18,8 +18,14 @@ class SongPickerViewController: NusicDefaultViewController {
     var genreList:[SpotifyGenres] = SpotifyGenres.allShownValues;
     let itemsPerRow: CGFloat = 2;
     let sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8);
-    var sectionTitles: [String] = []
+    var sectionGenreTitles: [String] = []
+    var sectionMoodTitles: [String] = []
     var sectionGenres: [[SpotifyGenres]] = [[]]
+    var sectionMoods: [[EmotionDyad]] = [[]] {
+        didSet {
+            moodCollectionView.reloadData()
+        }
+    }
     var sectionHeaderFrame: CGRect = CGRect(x: 16, y: 8, width: 0, height: 0)
     var currentSection: Int = 0
     let username = "81d1a191-5d1e-47df-934a-c4bf91b63dd0"
@@ -113,6 +119,7 @@ class SongPickerViewController: NusicDefaultViewController {
     var listMenuView: ChoiceListView! = nil
     var viewRotated:Bool = false
     var cellsPerRow: CGFloat = 0
+    var nusicControl: NusicSegmentedControl!
     
     //Segues
     let sideMenuSegue = "showSideMenuSegue"
@@ -140,7 +147,6 @@ class SongPickerViewController: NusicDefaultViewController {
     @IBOutlet weak var moodGenreSegmentedControl: UISegmentedControl!
     @IBOutlet weak var genreCollectionView: UICollectionView!
     @IBOutlet weak var searchButton: UIButton!
-    @IBOutlet weak var nusicControl: NusicSegmentedControl!
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var userView: UIView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -181,7 +187,7 @@ class SongPickerViewController: NusicDefaultViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if navbar.frame.origin.y != self.view.safeAreaLayoutGuide.layoutFrame.origin.y {
-            setupNavigationBar()
+//            setupNavigationBar()
         }
         
         if viewRotated {
@@ -201,8 +207,6 @@ class SongPickerViewController: NusicDefaultViewController {
             listMenuView.frame = CGRect(x: listMenuView.frame.origin.x, y: newY, width: self.view.frame.width, height: listMenuView.frame.height)
             listMenuView.reloadView()
             searchButton.reloadBlurEffect()
-//            searchButton.removeBlurEffect();
-//            searchButton.addBlurEffect(style: .dark, alpha: 1)
             self.view.layoutIfNeeded()
             viewRotated = false
         }
@@ -211,7 +215,11 @@ class SongPickerViewController: NusicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated);
+        hideChoiceMenu()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -224,8 +232,8 @@ class SongPickerViewController: NusicDefaultViewController {
         moodCollectionView.collectionViewLayout.invalidateLayout()
         genreCollectionView.reloadData()
         moodCollectionView.reloadData()
-        listMenuView.reloadView()
-        setupNavigationBar()
+        reloadListMenu()
+        reloadNavigationBar()
         self.view.layoutIfNeeded()
     }
  
@@ -245,51 +253,95 @@ class SongPickerViewController: NusicDefaultViewController {
             self.setupView()
             self.setupListMenu()
             self.setupSegmentedControl()
+            self.setupNavigationBar()
         }
         
     }
     
     func setupSegmentedControl() {
+        nusicControl = NusicSegmentedControl(frame: navbar.frame)
+        nusicControl.frame.size = CGSize(width: nusicControl.frame.width, height: navbar.frame.height - 10)
+        
+        nusicControl.translatesAutoresizingMaskIntoConstraints = false
+        nusicControl.layoutIfNeeded()
+        nusicControl.sizeToFit()
+        nusicControl.translatesAutoresizingMaskIntoConstraints = true
+        nusicControl.delegate = self
+        nusicControl.thumbColor = NusicDefaults.foregroundThemeColor
+        nusicControl.borderColor = NusicDefaults.foregroundThemeColor
         self.nusicControl.selectedIndex = 0
         self.nusicControl.delegate = self
         toggleCollectionViews(for: 0);
     }
     
     func setupNavigationBar(image: UIImage? = UIImage(named: "SettingsIcon")) {
-        if self.view.subviews.contains(navbar) {
-            navbar.removeFromSuperview()
-        }
         navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
+        
         navbar.barStyle = .default
+        navbar.translatesAutoresizingMaskIntoConstraints = false
         
-        let barButton = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
-
-        self.navigationItem.leftBarButtonItem = barButton
+        print("navbar frame = \(navbar.frame)")
         
+        let leftBarButton = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
+        
+        self.navigationItem.leftBarButtonItem = leftBarButton
+        let showSongImage = UIImage(named: "PreferredPlayer")?.withRenderingMode(.alwaysTemplate)
+        let rightBarButton = UIBarButtonItem(image: showSongImage, style: .plain, target: self, action: #selector(goToShowSongVC));
         if let pageViewController = parent as? NusicPageViewController {
-            let showSongImage = UIImage(named: "PreferredPlayer")?.withRenderingMode(.alwaysTemplate)
-            let barButton = UIBarButtonItem(image: showSongImage, style: .plain, target: self, action: #selector(goToShowSongVC));
+            
             if pageViewController.orderedViewControllers.contains(pageViewController.showSongVC!) {
-                barButton.tintColor = UIColor.white
-                barButton.isEnabled = true
+                rightBarButton.tintColor = UIColor.white
+                rightBarButton.isEnabled = true
             } else {
-                barButton.tintColor = UIColor.gray
-                barButton.isEnabled = false
+                rightBarButton.tintColor = UIColor.gray
+                rightBarButton.isEnabled = false
             }
             
-            self.navigationItem.rightBarButtonItem = barButton
+            self.navigationItem.rightBarButtonItem = rightBarButton
             
         }
-        
-        
+        self.navigationItem.titleView = nusicControl
         
         let navItem = self.navigationItem
         
-//        navItem.titleView = NusicSegmentedControl(frame: (navItem.titleView?.bounds)!)
         navbar.items = [navItem]
         
-        self.view.addSubview(navbar)
-        self.navbar.setNeedsLayout()
+        if !self.view.subviews.contains(navbar) {
+            self.view.addSubview(navbar)
+        }
+        NSLayoutConstraint.activate([
+            navbar.widthAnchor.constraint(equalToConstant: self.view.frame.width),
+            navbar.heightAnchor.constraint(equalToConstant: 44),
+            navbar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
+            navbar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0),
+            navbar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0)
+            ])
+        
+        self.view.layoutIfNeeded()
+        
+    }
+    
+    func reloadNavigationBar(image: UIImage? = UIImage(named: "SettingsIcon")) {
+        if navbar != nil {
+            let barButton = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
+            self.navigationItem.leftBarButtonItem = barButton
+            
+            if let pageViewController = parent as? NusicPageViewController {
+                let showSongImage = UIImage(named: "PreferredPlayer")?.withRenderingMode(.alwaysTemplate)
+                let barButton = UIBarButtonItem(image: showSongImage, style: .plain, target: self, action: #selector(goToShowSongVC));
+                if pageViewController.orderedViewControllers.contains(pageViewController.showSongVC!) {
+                    barButton.tintColor = UIColor.white
+                    barButton.isEnabled = true
+                } else {
+                    barButton.tintColor = UIColor.gray
+                    barButton.isEnabled = false
+                }
+                self.navigationItem.rightBarButtonItem = barButton
+            }
+            let navItem = self.navigationItem
+            navbar.items = [navItem]
+            self.view.layoutIfNeeded()
+        }
     }
     
     func setupView() {
@@ -360,7 +412,8 @@ class SongPickerViewController: NusicDefaultViewController {
                                 self.loadingFinished = true
                             } else {
                                 FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
-                                    self.moods = dyadList
+                                    self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
+                                    self.sectionMoods = dyadList.map({ $0.value })
                                 }
                                 let username = self.spotifyHandler.user.canonicalUserName!
                                 let displayName = self.spotifyHandler.user.displayName != nil ? self.spotifyHandler.user.displayName : ""

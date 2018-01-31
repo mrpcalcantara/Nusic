@@ -40,7 +40,7 @@ class ChoiceListViewHeader: UICollectionReusableView {
     
     func setupLabel(label: String) {
         self.sectionHeaderLabel.text = label
-        self.sectionHeaderLabel.textColor = NusicDefaults.greenColor
+        self.sectionHeaderLabel.textColor = NusicDefaults.foregroundThemeColor
         self.addBlurEffect(style: .dark, alpha: 0.7);
     }
     
@@ -49,6 +49,8 @@ class ChoiceListViewHeader: UICollectionReusableView {
         
         clearButton.titleLabel?.adjustsFontSizeToFitWidth = true
         clearButton.titleLabel?.minimumScaleFactor = 0.1
+        clearButton.tintColor = NusicDefaults.foregroundThemeColor
+        clearButton.borderColor = NusicDefaults.foregroundThemeColor
     }
     
     func configure(label: String) {

@@ -40,10 +40,11 @@ extension ChoiceListView {
         if toggleView.subviews.contains(arrowImageView) {
             arrowImageView.removeFromSuperview()
         }
-        let image = UIImage(named: "Arrow")
+        let image = UIImage(named: "Arrow")?.withRenderingMode(.alwaysTemplate)
         arrowImageView = UIImageView(frame: CGRect(x: toggleView.bounds.origin.x, y: toggleView.bounds.origin.y, width: self.bounds.width, height: toggleViewHeight))
         arrowImageView.image = image!
         arrowImageView.contentMode = .scaleAspectFit
+        arrowImageView.tintColor = NusicDefaults.foregroundThemeColor
         toggleView.addSubview(arrowImageView)
         showOpenArrow()
     }
@@ -99,7 +100,7 @@ extension ChoiceListView {
         leftLayer = CAShapeLayer()
         leftLayer.path = leftPath.cgPath
         leftLayer.fillColor = UIColor.clear.cgColor
-        leftLayer.strokeColor = NusicDefaults.greenColor.cgColor
+        leftLayer.strokeColor = NusicDefaults.foregroundThemeColor.cgColor
         leftLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(leftLayer)
@@ -118,7 +119,7 @@ extension ChoiceListView {
         rightLayer = CAShapeLayer()
         rightLayer.path = rightPath.cgPath
         rightLayer.fillColor = UIColor.clear.cgColor
-        rightLayer.strokeColor = NusicDefaults.greenColor.cgColor
+        rightLayer.strokeColor = NusicDefaults.foregroundThemeColor.cgColor
         rightLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(rightLayer)
@@ -140,7 +141,7 @@ extension ChoiceListView {
         leftLayer = CAShapeLayer()
         leftLayer.path = leftPath.cgPath
         leftLayer.fillColor = UIColor.clear.cgColor
-        leftLayer.strokeColor = NusicDefaults.greenColor.cgColor
+        leftLayer.strokeColor = NusicDefaults.foregroundThemeColor.cgColor
         leftLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(leftLayer)
@@ -159,7 +160,7 @@ extension ChoiceListView {
         rightLayer = CAShapeLayer()
         rightLayer.path = rightPath.cgPath
         rightLayer.fillColor = UIColor.clear.cgColor
-        rightLayer.strokeColor = NusicDefaults.greenColor.cgColor
+        rightLayer.strokeColor = NusicDefaults.foregroundThemeColor.cgColor
         rightLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(rightLayer)

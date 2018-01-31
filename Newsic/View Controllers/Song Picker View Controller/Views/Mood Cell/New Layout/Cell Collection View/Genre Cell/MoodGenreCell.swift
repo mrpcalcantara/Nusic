@@ -31,13 +31,15 @@ class MoodGenreCell: UICollectionViewCell {
 //            self.removeBlurEffect()
 //            self.addBlurEffect(style: .dark, alpha: 0.5, inFront: true)
             self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-            self.layer.borderWidth = 2
-            self.layer.borderColor = NusicDefaults.greenColor.withAlphaComponent(0.5).cgColor
+//            self.layer.borderWidth = 2
+//            self.layer.borderColor = NusicDefaults.foregroundThemeColor.withAlphaComponent(0.5).cgColor
             self.layer.cornerRadius = 5
             self.moodGenreLabel.backgroundColor = NusicDefaults.deselectedColor
             self.moodGenreLabel.font = NusicDefaults.font!
             self.moodGenreLabel.textColor = UIColor.lightText
             self.moodGenreLabel.text = text
+            self.moodGenreLabel.layer.zPosition = 1
+            self.moodGenreLabel.layer.shadowColor = UIColor.red.cgColor
             
             self.moodGenreIcon.contentMode = .scaleAspectFit
             

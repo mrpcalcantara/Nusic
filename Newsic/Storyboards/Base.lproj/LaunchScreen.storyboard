@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Robot Crush.otf">
+        <array key="Robot Crush.ttf">
             <string>RobotCrush</string>
         </array>
     </customFonts>
@@ -35,18 +35,18 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TransparentAppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="yiH-l8-knO">
-                                <rect key="frame" x="145" y="363.66666666666669" width="85" height="85"/>
+                                <rect key="frame" x="17" y="235.66666666666663" width="341" height="341"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="yiH-l8-knO" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="3h4-rU-MwI"/>
                             <constraint firstAttribute="trailing" secondItem="63a-QZ-YHj" secondAttribute="trailing" id="Bfz-aY-GOU"/>
-                            <constraint firstItem="b0D-IF-AGY" firstAttribute="height" relation="greaterThanOrEqual" secondItem="yiH-l8-knO" secondAttribute="height" priority="250" id="D6U-VJ-lcu"/>
+                            <constraint firstItem="b0D-IF-AGY" firstAttribute="height" relation="lessThanOrEqual" secondItem="yiH-l8-knO" secondAttribute="height" priority="250" id="D6U-VJ-lcu"/>
                             <constraint firstItem="b0D-IF-AGY" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="JEl-Uh-RGd"/>
                             <constraint firstAttribute="bottom" secondItem="63a-QZ-YHj" secondAttribute="bottom" id="KCJ-Ze-eaR"/>
                             <constraint firstItem="63a-QZ-YHj" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="KKi-OU-eXl"/>
-                            <constraint firstItem="b0D-IF-AGY" firstAttribute="width" relation="greaterThanOrEqual" secondItem="yiH-l8-knO" secondAttribute="width" priority="250" id="aLP-35-Pxo"/>
+                            <constraint firstItem="b0D-IF-AGY" firstAttribute="width" relation="lessThanOrEqual" secondItem="yiH-l8-knO" secondAttribute="width" priority="250" id="aLP-35-Pxo"/>
                             <constraint firstItem="63a-QZ-YHj" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="psB-Zr-E5Z"/>
                             <constraint firstItem="b0D-IF-AGY" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="s2s-ad-7ed"/>
                             <constraint firstItem="yiH-l8-knO" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="zQb-43-lqT"/>
@@ -60,6 +60,6 @@
     </scenes>
     <resources>
         <image name="BackgroundPattern" width="200" height="207"/>
-        <image name="TransparentAppIcon" width="85" height="85"/>
+        <image name="TransparentAppIcon" width="341" height="341"/>
     </resources>
 </document>

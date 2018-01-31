@@ -24,6 +24,10 @@ class NusicSegmentedControl: UIControl {
     }
     */
     
+    override var intrinsicContentSize: CGSize {
+        return UILayoutFittingExpandedSize
+    }
+    
     private var lastSetPoint: CGPoint? = CGPoint.zero
     private var labels = [UIImageView]()
     private var correction: CGFloat = 0
@@ -42,7 +46,7 @@ class NusicSegmentedControl: UIControl {
         }
     }
     
-    @IBInspectable var selectedLabelColor : UIColor = UIColor.green {
+    @IBInspectable var selectedLabelColor : UIColor = NusicDefaults.foregroundThemeColor {
         didSet {
             setSelectedColors()
         }
@@ -54,14 +58,14 @@ class NusicSegmentedControl: UIControl {
         }
     }
     
-    @IBInspectable var thumbColor : UIColor = UIColor.green {
+    @IBInspectable var thumbColor : UIColor = NusicDefaults.foregroundThemeColor {
         didSet {
             print(thumbColor)
             setSelectedColors()
         }
     }
     
-    @IBInspectable var borderColor : UIColor = UIColor.clear {
+    @IBInspectable var borderColor : UIColor = NusicDefaults.foregroundThemeColor {
         didSet {
             layer.borderColor = borderColor.cgColor
         }
@@ -95,7 +99,8 @@ class NusicSegmentedControl: UIControl {
 //
 //        self.insertSubview(containerView, at: 0)
 //
-        layer.cornerRadius = frame.height / 2
+//        layer.cornerRadius = frame.height / 2
+        layer.cornerRadius = 22
 //        layer.borderColor = UIColor(white: 1.0, alpha: 0.5).cgColor
         layer.borderWidth = 1
         

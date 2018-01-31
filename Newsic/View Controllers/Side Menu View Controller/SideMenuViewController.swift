@@ -69,15 +69,10 @@ class SideMenuViewController: NusicDefaultViewController {
     
     func setupNavigationBar() {
         
-        if let navbar = navbar {
-            if self.view.subviews.contains(navbar) {
-                navbar.removeFromSuperview()
-            }
-        }
-        
         navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
         if let navbar = navbar {
             navbar.barStyle = .default
+            navbar.translatesAutoresizingMaskIntoConstraints = false
             let button = UIButton(type: .system)
             button.setImage(UIImage(named: "MoodIcon"), for: .normal)
             button.addTarget(self, action: #selector(dismissMenu), for: .touchUpInside)
@@ -87,7 +82,18 @@ class SideMenuViewController: NusicDefaultViewController {
             
             let navItem = self.navigationItem
             navbar.items = [navItem]
-            self.view.addSubview(navbar)
+            if !self.view.subviews.contains(navbar) {
+                self.view.addSubview(navbar)
+            }
+            NSLayoutConstraint.activate([
+                navbar.widthAnchor.constraint(equalToConstant: self.view.frame.width),
+                navbar.heightAnchor.constraint(equalToConstant: 44),
+                navbar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
+                navbar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0),
+                navbar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0)
+                ])
+            
+            self.view.layoutIfNeeded()
         }
     }
     
