@@ -29,7 +29,7 @@ class CollectionViewHeader: UICollectionReusableView {
     
     func configure(label: String) {
         self.sectionHeaderLabel.text = label
-        self.sectionHeaderLabel.textColor = NusicDefaults.greenColor
+        self.sectionHeaderLabel.textColor = NusicDefaults.foregroundThemeColor
         self.addBlurEffect(style: .dark, alpha: 1);
     }
 }

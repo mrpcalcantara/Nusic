@@ -18,22 +18,53 @@ class FirebaseDatabaseHelper {
         })
     }
     
-    class func fetchAllMoods(user: String, fetchMoodsHandler: @escaping([EmotionDyad], NusicError?) -> ()) {
+//    class func fetchAllMoods(user: String, fetchMoodsHandler: @escaping([EmotionDyad], NusicError?) -> ()) {
+//        Database.database().reference().child("emotions").observeSingleEvent(of: .value, with: { (dataSnapshot) in
+//            if let values = dataSnapshot.value as? [String : AnyObject] {
+//                var dyadList: [EmotionDyad] = []
+//                for key in values.keys {
+//                    if let dyad = EmotionDyad(rawValue: key.capitalizingFirstLetter()) {
+//                        dyadList.append(dyad);
+//                    }
+//
+//                }
+//                fetchMoodsHandler(dyadList.sorted(by: { (dyad1, dyad2) -> Bool in
+//                    return dyad1.rawValue < dyad2.rawValue
+//                }), nil)
+//            }
+//        }) { (error) in
+//            fetchMoodsHandler(EmotionDyad.allValues, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: "", systemError: error))
+//        }
+//    }
+    
+    class func fetchAllMoods(user: String, fetchMoodsHandler: @escaping([EmotionCategory:[EmotionDyad]], NusicError?) -> ()) {
         Database.database().reference().child("emotions").observeSingleEvent(of: .value, with: { (dataSnapshot) in
             if let values = dataSnapshot.value as? [String : AnyObject] {
+                
                 var dyadList: [EmotionDyad] = []
-                for key in values.keys {
-                    if let dyad = EmotionDyad(rawValue: key.capitalizingFirstLetter()) {
-                        dyadList.append(dyad);
-                    }
-                    
-                }
-                fetchMoodsHandler(dyadList.sorted(by: { (dyad1, dyad2) -> Bool in
-                    return dyad1.rawValue < dyad2.rawValue
-                }), nil)
+                var emotionDict: [EmotionCategory: [EmotionDyad]] = [:]
+                emotionDict[EmotionCategory.positive] =
+                    values.filter({ $0.value["valence"] as! Double >= 0.7 })
+                        .map({ EmotionDyad(rawValue: $0.key.capitalizingFirstLetter())!  })
+                        .sorted(by: { (dyad1, dyad2) -> Bool in return dyad1.rawValue < dyad2.rawValue })
+                
+                emotionDict[EmotionCategory.neutral] =
+                    values.filter({ ($0.value["valence"] as! Double) < 0.7 })
+                        .filter({ ($0.value["valence"] as! Double) > 0.25 })
+                        .map({ EmotionDyad(rawValue: $0.key.capitalizingFirstLetter())! })
+                        .sorted(by: { (dyad1, dyad2) -> Bool in return dyad1.rawValue < dyad2.rawValue })
+                
+                emotionDict[EmotionCategory.negative] =
+                    values.filter({ ($0.value["valence"] as! Double) <= 0.25 })
+                        .map({ EmotionDyad(rawValue: $0.key.capitalizingFirstLetter())! })
+                        .sorted(by: { (dyad1, dyad2) -> Bool in return dyad1.rawValue < dyad2.rawValue })
+                
+                let test = emotionDict
+                fetchMoodsHandler(emotionDict, nil)
+                
             }
         }) { (error) in
-            fetchMoodsHandler(EmotionDyad.allValues, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: "", systemError: error))
+            fetchMoodsHandler(EmotionDyad.allValuesDict, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: "", systemError: error))
         }
     }
     

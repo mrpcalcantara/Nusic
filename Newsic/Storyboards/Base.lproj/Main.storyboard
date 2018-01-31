@@ -88,10 +88,10 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TJk-WK-DBD" userLabel="List View">
-                                        <rect key="frame" x="0.0" y="36" width="375" height="567"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                         <subviews>
-                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bqf-Kb-x3U" userLabel="Genre Collection View">
-                                                <rect key="frame" x="16" y="0.0" width="343" height="532"/>
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bqf-Kb-x3U" userLabel="Genre Collection View">
+                                                <rect key="frame" x="16" y="0.0" width="343" height="568"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="z9q-vZ-mww">
                                                     <size key="itemSize" width="50" height="50"/>
                                                     <size key="headerReferenceSize" width="50" height="50"/>
@@ -114,7 +114,7 @@
                                                 </collectionReusableView>
                                             </collectionView>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8t3-hW-Upx">
-                                                <rect key="frame" x="16" y="0.0" width="343" height="567"/>
+                                                <rect key="frame" x="16" y="0.0" width="343" height="603"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cp9-Te-6Sc">
                                                     <size key="itemSize" width="50" height="50"/>
                                                     <size key="headerReferenceSize" width="50" height="50"/>
@@ -141,7 +141,7 @@
                                                 </connections>
                                             </collectionView>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="na7-Jq-MEC" customClass="NusicButton" customModule="Newsic" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="532" width="375" height="35"/>
+                                                <rect key="frame" x="0.0" y="568" width="375" height="35"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="35" id="ieg-f5-GXs"/>
                                                 </constraints>
@@ -192,9 +192,15 @@
                                     <constraint firstAttribute="trailing" secondItem="JE2-ew-ku9" secondAttribute="trailing" constant="8" id="8C0-of-Dwq"/>
                                     <constraint firstItem="TJk-WK-DBD" firstAttribute="top" secondItem="JE2-ew-ku9" secondAttribute="bottom" constant="8" id="M9r-yh-agY"/>
                                     <constraint firstItem="JE2-ew-ku9" firstAttribute="leading" secondItem="Sau-Kp-Sny" secondAttribute="leading" constant="8" id="OAg-Eb-2TE"/>
+                                    <constraint firstItem="TJk-WK-DBD" firstAttribute="top" secondItem="Sau-Kp-Sny" secondAttribute="top" id="R1y-jB-uZc"/>
                                     <constraint firstItem="JE2-ew-ku9" firstAttribute="top" secondItem="Sau-Kp-Sny" secondAttribute="top" id="alM-9f-n4o"/>
                                     <constraint firstAttribute="bottom" secondItem="TJk-WK-DBD" secondAttribute="bottom" id="zQi-zr-YYv"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="JE2-ew-ku9"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <constraints>

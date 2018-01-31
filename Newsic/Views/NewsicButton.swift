@@ -51,13 +51,13 @@ class NusicButton: UIButton {
         if animated {
             let flashAnimation = CABasicAnimation(keyPath: "fillColor")
             flashAnimation.fromValue = NusicDefaults.deselectedColor.cgColor
-            flashAnimation.toValue = NusicDefaults.greenColor.cgColor
+            flashAnimation.toValue = NusicDefaults.foregroundThemeColor.cgColor
             flashAnimation.duration = 0.5
             flashAnimation.autoreverses = true
             flashAnimation.repeatCount = .infinity
             
             let strokeColorAnimation = CABasicAnimation(keyPath: "strokeColor")
-            strokeColorAnimation.fromValue = NusicDefaults.greenColor.cgColor
+            strokeColorAnimation.fromValue = NusicDefaults.foregroundThemeColor.cgColor
             strokeColorAnimation.toValue = UIColor.green.cgColor
             strokeColorAnimation.duration = 0.5
             strokeColorAnimation.autoreverses = true

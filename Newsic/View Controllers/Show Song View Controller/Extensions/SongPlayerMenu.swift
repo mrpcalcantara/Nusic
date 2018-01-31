@@ -13,7 +13,8 @@ extension ShowSongViewController {
     func setupPlayerMenu() {
         setupConstraints(for: self.view.frame.size)
         
-        showMore.setImage(UIImage(named: "ShowMore"), for: .normal)
+        showMore.setImage(UIImage(named: "ShowMore")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        showMore.tintColor = NusicDefaults.foregroundThemeColor
         showMore.alpha = 1
         showMore.translatesAutoresizingMaskIntoConstraints = false;
         
@@ -47,7 +48,7 @@ extension ShowSongViewController {
             songProgressView.isHidden = true
             songProgressView.backgroundColor = UIColor.clear
             
-            songProgressSlider.tintColor = NusicDefaults.greenColor
+            songProgressSlider.tintColor = NusicDefaults.foregroundThemeColor
             songProgressSlider.thumbTintColor = UIColor.lightGray
 
             songDurationLabel.textColor = UIColor.lightText

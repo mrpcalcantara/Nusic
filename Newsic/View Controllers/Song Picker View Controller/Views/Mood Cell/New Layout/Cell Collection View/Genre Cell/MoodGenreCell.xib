@@ -19,8 +19,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="365" height="180"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TransparentAppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="I7B-Cf-YFn">
+                        <rect key="frame" x="0.0" y="0.0" width="365" height="180"/>
+                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TGz-vP-tu4">
-                        <rect key="frame" x="8" y="151" width="349" height="21"/>
+                        <rect key="frame" x="161.5" y="80" width="42" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -34,15 +37,23 @@
                 </subviews>
             </view>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="I7B-Cf-YFn" secondAttribute="trailing" id="4Mf-VL-PAK"/>
                 <constraint firstItem="TGz-vP-tu4" firstAttribute="top" secondItem="A1Y-Gc-an1" secondAttribute="bottom" constant="8" id="5Z9-rY-YUZ"/>
+                <constraint firstAttribute="bottom" secondItem="I7B-Cf-YFn" secondAttribute="bottom" id="F00-Pi-BOI"/>
                 <constraint firstItem="A1Y-Gc-an1" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="20" id="LgL-aC-Jr3"/>
-                <constraint firstItem="TGz-vP-tu4" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="aKM-6q-mYC"/>
-                <constraint firstAttribute="bottom" secondItem="TGz-vP-tu4" secondAttribute="bottom" constant="8" id="hNP-xh-Ggs"/>
+                <constraint firstItem="TGz-vP-tu4" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="YMA-a4-d3e"/>
+                <constraint firstItem="I7B-Cf-YFn" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="dHn-WE-G1z"/>
+                <constraint firstItem="I7B-Cf-YFn" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="dV5-P1-qg5"/>
                 <constraint firstItem="A1Y-Gc-an1" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="m2L-kP-DVm"/>
-                <constraint firstAttribute="trailing" secondItem="TGz-vP-tu4" secondAttribute="trailing" constant="8" id="tAg-Dg-ND2"/>
+                <constraint firstItem="TGz-vP-tu4" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="p2q-An-Xqi"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="365" height="180"/>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="A1Y-Gc-an1"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="moodGenreIcon" destination="A1Y-Gc-an1" id="Bjo-bo-zZm"/>
                 <outlet property="moodGenreLabel" destination="TGz-vP-tu4" id="e3a-sb-7aj"/>
@@ -50,4 +61,7 @@
             <point key="canvasLocation" x="20.5" y="117"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="TransparentAppIcon" width="512" height="512"/>
+    </resources>
 </document>

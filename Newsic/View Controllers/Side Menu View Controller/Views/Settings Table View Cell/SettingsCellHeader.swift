@@ -47,7 +47,7 @@ class SettingsCellHeader: UIView {
         contentView.frame = self.bounds
         contentView.tag = 1
         
-        contentView.headerLabel.textColor = NusicDefaults.greenColor
+        contentView.headerLabel.textColor = NusicDefaults.foregroundThemeColor
     
         self.headerLabel = contentView.headerLabel
         

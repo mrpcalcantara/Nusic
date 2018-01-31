@@ -41,7 +41,7 @@ class SettingsCell: UITableViewCell {
         
         UIView.animate(withDuration: 0.3, animations: {
             if selected {
-                self.backgroundColor = NusicDefaults.greenColor.withAlphaComponent(0.5)
+                self.backgroundColor = NusicDefaults.foregroundThemeColor.withAlphaComponent(0.5)
             } else {
                 self.backgroundColor = NusicDefaults.deselectedColor
             }

@@ -31,20 +31,20 @@ class NusicAlertController : YBAlertController {
         
         //Title details
         super.titleFont = NusicDefaults.font
-        super.titleTextColor = NusicDefaults.greenColor
+        super.titleTextColor = NusicDefaults.foregroundThemeColor
         
         //Message Details
         super.messageFont = NusicDefaults.font
-        super.messageTextColor = NusicDefaults.greenColor
+        super.messageTextColor = NusicDefaults.foregroundThemeColor
         super.messageLabel.backgroundColor = NusicDefaults.blackColor
         
         //Button Details
         super.buttonFont = NusicDefaults.font
-        super.buttonTextColor = NusicDefaults.greenColor
+        super.buttonTextColor = NusicDefaults.foregroundThemeColor
         
         //Cancel Button Details
         super.cancelButtonFont = NusicDefaults.font
-        super.cancelButtonTextColor = NusicDefaults.greenColor
+        super.cancelButtonTextColor = NusicDefaults.foregroundThemeColor
         
     }
     

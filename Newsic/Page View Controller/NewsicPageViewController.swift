@@ -15,11 +15,18 @@ class NusicPageViewController: UIPageViewController {
     var songPickerVC: UIViewController?
     var sideMenuVC: UIViewController?
     var showSongVC: UIViewController?
+    var backgroundImageView: UIImageView!
     
     private(set) lazy var orderedViewControllers: [UIViewController] = {
         // The view controllers will be shown in this order
         return []
     }()
+    
+    override func viewDidLayoutSubviews() {
+        if let pageViewController = parent as? NusicPageViewController {
+            pageViewController.backgroundImageView?.frame = self.view.frame
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,12 +59,14 @@ class NusicPageViewController: UIPageViewController {
 
         let image = UIImage(named: "BackgroundPattern")
         if let image = image {
-            let imageView = UIImageView(frame: self.view.frame)
-            imageView.contentMode = .scaleAspectFill
-            imageView.image = image
-            self.view.addSubview(imageView)
-            self.view.sendSubview(toBack: imageView)
+            backgroundImageView = UIImageView(frame: self.view.frame)
+            backgroundImageView.contentMode = .scaleAspectFill
+            backgroundImageView.image = image
+            self.view.addSubview(backgroundImageView)
+            self.view.sendSubview(toBack: backgroundImageView)
         }
+        
+        
         
         let initialViewController = orderedViewControllers[1]
         scrollToViewController(viewController: initialViewController)
