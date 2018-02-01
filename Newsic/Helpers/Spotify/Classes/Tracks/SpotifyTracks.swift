@@ -69,7 +69,7 @@ extension Spotify {
                             songExternalHref = trackHref["spotify"] as! String
                         }
                         
-                        let albumImage = imageInfo[0]["url"] as? String;
+                        let albumImage = imageInfo[1]["url"] as? String;
                         if let trackName = track["name"] as? String,
                             let trackId = track["id"] as? String,
                             let trackUri = track["uri"] as? String,
@@ -229,7 +229,7 @@ extension Spotify {
                             songExternalHref = trackHref["spotify"] as! String
                         }
                         //print(artists)
-                        let albumImage = imageInfo[0]["url"] as? String;
+                        let albumImage = imageInfo[1]["url"] as? String;
                         if let trackName = trackInfo["name"] as? String,
                             let trackId = trackInfo["id"] as? String,
                             let trackUri = trackInfo["uri"] as? String,

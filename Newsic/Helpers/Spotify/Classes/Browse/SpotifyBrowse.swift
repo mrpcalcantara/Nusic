@@ -10,6 +10,7 @@ extension Spotify {
    
     func fetchRecommendations(for recommendation: SpotifyRecommendation,
                               numberOfSongs: Int,
+                              market: String? = nil,
                               artists: [SpotifyArtist],
                               completionHandler: @escaping ([SpotifyTrack], NusicError?) -> ()) {
         fetchSpotifyRecommendations(for: recommendation, numberOfSongs: numberOfSongs, artists: artists, completionHandler: completionHandler)
@@ -17,6 +18,7 @@ extension Spotify {
     
     func fetchRecommendations(for recommendation: SpotifyRecommendation,
                               numberOfSongs: Int,
+                              market: String? = nil,
                               tracks: [SpotifyTrack],
                               completionHandler: @escaping ([SpotifyTrack], NusicError?) -> ()) {
         fetchSpotifyRecommendations(for: recommendation, numberOfSongs: numberOfSongs, tracks: tracks, completionHandler: completionHandler)
@@ -24,11 +26,12 @@ extension Spotify {
     
     func fetchRecommendations(for recommendation: SpotifyRecommendation,
                               numberOfSongs: Int,
+                              market: String? = nil,
                               moodObject: NusicMood?,
                               preferredTrackFeatures: [SpotifyTrackFeature]? = nil,
                               selectedGenreList: [String: Int]? = nil,
                               completionHandler: @escaping ([SpotifyTrack], NusicError?) -> ()) {
-        fetchSpotifyRecommendations(for: recommendation, numberOfSongs: numberOfSongs, moodObject: moodObject, preferredTrackFeatures: preferredTrackFeatures, selectedGenreList: selectedGenreList, completionHandler: completionHandler)
+        fetchSpotifyRecommendations(for: recommendation, numberOfSongs: numberOfSongs, moodObject: moodObject, preferredTrackFeatures: preferredTrackFeatures, selectedGenreList: selectedGenreList, market: market, completionHandler: completionHandler)
     }
  
     func fetchSpotifyRecommendations(for recommendation: SpotifyRecommendation,
@@ -36,12 +39,16 @@ extension Spotify {
                                      moodObject: NusicMood? = nil,
                                      preferredTrackFeatures: [SpotifyTrackFeature]? = nil,
                                      selectedGenreList: [String: Int]? = nil,
+                                     market: String? = nil,
                                      artists: [SpotifyArtist]? = nil,
                                      tracks: [SpotifyTrack]? = nil,
                                      completionHandler: @escaping ([SpotifyTrack], NusicError?) -> ()) {
         
         
         var urlString = "https://api.spotify.com/v1/recommendations?"
+        if let market = market {
+            urlString.append("market=\(market)&")
+        }
         
         switch recommendation {
         case .genres:
@@ -108,7 +115,7 @@ extension Spotify {
                     }
                     let album = track["album"] as! [String: AnyObject];
                     let images = album["images"] as! [[String: AnyObject]];
-                    let hqImage = images.count > 0 ? images[0]["url"] as! String : ""
+                    let hqImage = images.count > 0 ? images[1]["url"] as! String : ""
                     let artists = track["artists"] as! [[String: AnyObject]];
                     let artistName = artists.count > 0 ? artists[0]["name"] as! String : "Unknown Artist";
                     let artistUri = artists.count > 0 ? artists[0]["uri"] as! String : "Unknown URI";

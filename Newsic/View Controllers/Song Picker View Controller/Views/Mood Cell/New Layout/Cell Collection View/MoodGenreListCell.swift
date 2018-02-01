@@ -10,6 +10,8 @@ import UIKit
 
 protocol MoodGenreListCellDelegate: class {
     func didSelect(section:Int, indexPath:IndexPath)
+    func willDisplayCell(section: Int, indexPath: IndexPath)
+    
 }
 
 class MoodGenreListCell: UICollectionViewCell {
@@ -41,8 +43,10 @@ class MoodGenreListCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        self.listCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredVertically, animated: false)
         self.listCollectionView.dataSource = nil
-        self.listCollectionView.delegate = nil
+//        self.listCollectionView.delegate = nil
+        self.listCollectionView.reloadData()
         self.layer.shouldRasterize = true;
         self.layer.rasterizationScale = UIScreen.main.scale
     }
@@ -74,6 +78,9 @@ extension MoodGenreListCell: UICollectionViewDelegate {
         delegate?.didSelect(section: section!, indexPath: indexPath)
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        delegate?.willDisplayCell(section: section!, indexPath: indexPath)
+    }
 }
 
 extension MoodGenreListCell: UICollectionViewDataSource {
@@ -92,6 +99,7 @@ extension MoodGenreListCell: UICollectionViewDataSource {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "moodGenreCell", for: indexPath) as? MoodGenreCell {
             cell.configure(text: items![indexPath.row])
             cell.layoutIfNeeded()
+//            delegate?.willDisplayCell(section: section!, indexPath: indexPath)
             return cell;
         }
         

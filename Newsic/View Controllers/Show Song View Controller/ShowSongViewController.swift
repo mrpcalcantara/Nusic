@@ -47,6 +47,7 @@ class ShowSongViewController: NusicDefaultViewController {
     var auth: SPTAuth! = nil;
     var isPlaying: Bool = false;
     var selectedGenreList: [String: Int]? = nil
+    var selectedSongs: [SpotifyTrack]? = nil
     var currentPlayingTrack: SpotifyTrack?
     var playedSongsHistory: [SpotifyTrack]? = []
     var trackFeatures: [SpotifyTrackFeature]? = nil
@@ -394,10 +395,14 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     
     func setupSongs() {
-        if selectedGenreList == nil {
-            getSongsForSelectedMood();
+        if let selectedSongs = selectedSongs, selectedSongs.count > 0 {
+            fetchYouTubeInfo()
         } else {
-            getSongsForSelectedGenres();
+            if selectedGenreList == nil {
+                getSongsForSelectedMood();
+            } else {
+                getSongsForSelectedGenres();
+            }
         }
     }
 
@@ -691,7 +696,7 @@ extension ShowSongViewController {
         }
         
         let songCountToSearch = numberOfSongs == nil ? self.cardCount : numberOfSongs
-        self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: songCountToSearch!, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: self.selectedGenreList) { (results, error) in
+        self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: songCountToSearch!, market: user.territory, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: self.selectedGenreList) { (results, error) in
             if let error = error {
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
             }
@@ -714,6 +719,28 @@ extension ShowSongViewController {
                     
                 })
             }
+        }
+    }
+    
+    func fetchYouTubeInfo() {
+        
+        DispatchQueue.main.async {
+            self.showSwiftSpinner(text: "Fetching tracks..")
+        }
+        
+        for track in selectedSongs! {
+            self.playedSongsHistory?.append(track)
+        }
+        if selectedSongs!.count == 0 {
+            self.setupSongs();
+        } else {
+            self.getYouTubeResults(tracks: selectedSongs!, youtubeSearchHandler: { (tracks) in
+                self.cardList = tracks
+                DispatchQueue.main.async {
+                    self.songCardView.reloadData()
+                    self.showSwiftSpinner(text: "Done!", duration: 2)
+                }
+            })
         }
     }
     
@@ -766,7 +793,7 @@ extension ShowSongViewController {
         }
         
         if artist.id != nil {
-            self.spotifyHandler.fetchRecommendations(for: .artist, numberOfSongs: numberOfSongs, artists: [artist]) { (results, error) in
+            self.spotifyHandler.fetchRecommendations(for: .artist, numberOfSongs: numberOfSongs, market: user.territory, artists: [artist]) { (results, error) in
                 if let error = error {
                     error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
                 }
@@ -797,7 +824,7 @@ extension ShowSongViewController {
         }
         
         if track.trackId != nil {
-            self.spotifyHandler.fetchRecommendations(for: .track, numberOfSongs: numberOfSongs, tracks: [track]) { (results, error) in
+            self.spotifyHandler.fetchRecommendations(for: .track, numberOfSongs: numberOfSongs, market: user.territory, tracks: [track]) { (results, error) in
                 if let error = error {
                     error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
                 }
@@ -831,7 +858,7 @@ extension ShowSongViewController {
         
         if currentPlayingTrack != nil {
             
-            self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, moodObject: moodObject, selectedGenreList: genres) { (results, error) in
+            self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, market: user.territory, moodObject: moodObject, selectedGenreList: genres) { (results, error) in
                 if let error = error {
                     error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
                 }
@@ -849,7 +876,7 @@ extension ShowSongViewController {
     }
     
     func fetchNewCardNormal(numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
-        self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: selectedGenreList) { (results, error) in
+        self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, market: user.territory, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: selectedGenreList) { (results, error) in
             if let error = error {
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
             }
@@ -864,7 +891,7 @@ extension ShowSongViewController {
             }
             
             if spotifyResults.count == 0 {
-                self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, moodObject: self.moodObject, completionHandler: { (results, error) in
+                self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, market: self.user.territory, moodObject: self.moodObject, completionHandler: { (results, error) in
                     if let cardFetchingHandler = cardFetchingHandler {
                         cardFetchingHandler([])
                     }

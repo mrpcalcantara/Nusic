@@ -302,6 +302,13 @@ extension SongPickerViewController: UICollectionViewDelegate {
                 }
             }
         } else if collectionView == genreCollectionView {
+            if let cellList = genreCollectionView.cellForItem(at: IndexPath(row: 0, section: indexPath.section)) {
+                print("cell not empty")
+            }
+            if let cellList = genreCollectionView.cellForItem(at: IndexPath(row: 0, section: indexPath.section)) as? MoodGenreListCell {
+                cellList.delegate?.willDisplayCell(section: indexPath.section, indexPath: IndexPath(row: indexPath.row, section: 0))
+            }
+            print("showing cell for \(sectionGenres[indexPath.section][indexPath.row])")
 //            let nusicCell = cell as! MoodViewCell
 //            if let genre = nusicCell.moodLabel.text {
 //                if selectedGenres[genre.lowercased()] != nil {
@@ -365,8 +372,13 @@ extension SongPickerViewController: UICollectionViewDelegate {
             selectedGenres.updateValue(1, forKey: selectedGenre.lowercased());
             if let genreCell = genreCollectionView.cellForItem(at: IndexPath(row: 0, section: indexPath.section)) as? MoodGenreListCell {
                 genreCell.items = sectionGenres[indexPath.section].map({$0.rawValue})
+                let selectedIndexPath = IndexPath(row: indexPath.row, section: 0)
+                if let selectedCell = genreCell.listCollectionView.cellForItem(at: selectedIndexPath) as? MoodGenreCell {
+                    selectedSongsForGenre[(selectedCell.moodGenreLabel?.text)!] = selectedCell.trackList
+                }
+                
                 genreCell.listCollectionView.performBatchUpdates({
-                    genreCell.listCollectionView.deleteItems(at: [IndexPath(row: indexPath.row, section: 0)])
+                    genreCell.listCollectionView.deleteItems(at: [selectedIndexPath])
                     var indexSet = IndexSet()
                     indexSet.insert(0)
                     genreCell.listCollectionView.reloadSections(indexSet)
@@ -448,6 +460,7 @@ extension SongPickerViewController: UICollectionViewDataSource {
             
             return cell;
         } else {
+            
             let genres = sectionGenres[indexPath.section].map({ $0.rawValue })
             let genre = genres[indexPath.row]
 //            cell.moodLabel.text = "\(genre)"
@@ -501,9 +514,51 @@ extension SongPickerViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension SongPickerViewController: MoodGenreListCellDelegate {
+    func willDisplayCell(section: Int, indexPath: IndexPath) {
+        
+        DispatchQueue.main.async {
+            if let cellList = self.genreCollectionView.cellForItem(at: IndexPath(row: 0, section: section)) as? MoodGenreListCell {
+                if let cell = cellList.listCollectionView.cellForItem(at: IndexPath(row: indexPath.row, section: 0)) as? MoodGenreCell {
+                    if let label = cell.moodGenreLabel.text, label != "" {
+                        if self.fetchedSongsForGenre.keys.contains(label)  {
+                            let tracks = self.fetchedSongsForGenre[label] as! [SpotifyTrack]
+                            cell.trackList = tracks
+                            cell.imageList = tracks.map({ $0.thumbNail! })
+                            //                            cell.addImages(urlList: cell.trackList.map({ $0. }))
+                        } else {
+                            print("fetching songs for genre: \(cell.moodGenreLabel.text)")
+                            let genre = self.sectionGenres[section][indexPath.row]
+                            let dict = ["\(genre.rawValue.lowercased())":1]
+                            let moodObject = NusicMood(emotions: [.init(basicGroup: .unknown, detailedEmotions: [], rating: 0)], isAmbiguous: false, sentiment: 0.5, date: Date(), associatedGenres: [], associatedTracks: [])
+                            self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: 5, market: self.user?.territory, moodObject: moodObject, selectedGenreList: dict) { (tracks, error) in
+                                if let error = error {
+                                    error.presentPopup(for: self)
+                                } else {
+                                    tracks
+                                    cell.trackList = tracks
+                                    cell.addImages(urlList: tracks.map({ $0.thumbNailUrl }))
+                                    self.fetchedSongsForGenre[label] = tracks
+                                }
+                            }
+                        }
+                    }
+//                    if (cell.imageList?.count)! < 999 {
+//
+//                    } else {
+//                        cell.cycleImages()
+//                    }
+                    
+                }
+                
+            }
+        }
+    }
+    
     func didSelect(section:Int, indexPath:IndexPath) {
         let currentIndexPath = IndexPath(row: indexPath.row, section: section)
         print("selected at indexPath : \(currentIndexPath)")
         self.collectionView(genreCollectionView, didSelectItemAt: currentIndexPath)
     }
+    
+    
 }
