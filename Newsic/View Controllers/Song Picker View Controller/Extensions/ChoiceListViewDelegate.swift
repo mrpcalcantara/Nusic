@@ -79,6 +79,10 @@ extension SongPickerViewController : ChoiceListDelegate {
                 selectedGenres.removeValue(forKey: genre.rawValue.lowercased());
                 if let genreCell = genreCollectionView.cellForItem(at: indexPath) as? MoodGenreListCell {
                     genreCell.items = sectionGenres[indexPath.section].map({ $0.rawValue })
+                    let selectedIndexPath = IndexPath(row: indexPath.row, section: 0)
+                    if let selectedCell = genreCell.listCollectionView.cellForItem(at: selectedIndexPath) as? MoodGenreCell {
+                        selectedSongsForGenre.removeValue(forKey: value)
+                    }
                     genreCell.listCollectionView.performBatchUpdates({
                         genreCell.listCollectionView.insertItems(at: [IndexPath(row: 0, section: 0)])
                         var indexSet = IndexSet()

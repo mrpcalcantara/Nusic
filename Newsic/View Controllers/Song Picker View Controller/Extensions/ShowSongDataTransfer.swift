@@ -29,7 +29,12 @@ extension SongPickerViewController {
             selectedGenres.removeAll()
             playerViewController.selectedGenreList = nil
         } else {
+            var selectedTrackList: [SpotifyTrack] = Array()
+            for trackList in selectedSongsForGenre.values {
+                selectedTrackList.append(contentsOf: trackList.map({ $0 }))
+            }
             
+            playerViewController.selectedSongs = selectedTrackList
             playerViewController.selectedGenreList = selectedGenres;
         }
         

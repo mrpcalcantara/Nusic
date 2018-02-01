@@ -68,16 +68,37 @@ class SongPickerViewController: NusicDefaultViewController {
     var user: SPTUser? = nil;
     var selectedGenres: [String: Int] = [:] {
         didSet {
-            if selectedGenres.count == 0 {
+//            if selectedGenres.count == 0 {
+//                DispatchQueue.main.async {
+//                    UIView.animate(withDuration: 0.3, animations: {
+//                        self.searchButton.setTitle(self.isMoodCellSelected ? "Get Songs!" : "Random it up!", for: .normal)
+//                    }, completion: nil)
+//                }
+////                listMenuView.removeFromSuperview()
+//
+//            } else {
+//
+//                DispatchQueue.main.async {
+//                    UIView.animate(withDuration: 0.3, animations: {
+//                        self.searchButton.setTitle("Get Songs!", for: .normal)
+//                    }, completion: nil)
+//                }
+//            }
+//            self.view.layoutIfNeeded()
+
+        }
+    }
+    
+    var fetchedSongsForGenre: [String: [SpotifyTrack]] = [:]
+    var selectedSongsForGenre: [String: [SpotifyTrack]] = [:] {
+        didSet {
+            if selectedSongsForGenre.count == 0 {
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.3, animations: {
                         self.searchButton.setTitle(self.isMoodCellSelected ? "Get Songs!" : "Random it up!", for: .normal)
                     }, completion: nil)
                 }
-//                listMenuView.removeFromSuperview()
-                
             } else {
-                
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.3, animations: {
                         self.searchButton.setTitle("Get Songs!", for: .normal)
@@ -85,7 +106,6 @@ class SongPickerViewController: NusicDefaultViewController {
                 }
             }
             self.view.layoutIfNeeded()
-
         }
     }
     var isMoodSelected: Bool = true
@@ -349,15 +369,15 @@ class SongPickerViewController: NusicDefaultViewController {
         self.mainControlView.backgroundColor = UIColor.clear
         self.genreCollectionView.backgroundColor = UIColor.clear
         self.moodCollectionView.backgroundColor = UIColor.clear
-        self.nusicControl.backgroundColor = UIColor.clear
-        self.nusicControl.layer.zPosition = 1
+//        self.nusicControl.backgroundColor = UIColor.clear
+//        self.nusicControl.layer.zPosition = 1
         self.searchButton.backgroundColor = UIColor.clear
         self.searchButton.setTitle("Random it up!", for: .normal)
         
         moodCollectionView.layer.zPosition = -1
         genreCollectionView.layer.zPosition = -1
         
-        self.mainControlView.bringSubview(toFront: nusicControl)
+//        self.mainControlView.bringSubview(toFront: nusicControl)
         
         let collectionViewsPanGestureRecoginizer = UIPanGestureRecognizer(target: self, action: #selector(panCollectionViews(_:)))
         self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecoginizer)
