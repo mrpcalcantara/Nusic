@@ -147,7 +147,6 @@
 		8CC991D91FDA86050028F33A /* GoogleService-InfoBKP.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CC991D81FDA86050028F33A /* GoogleService-InfoBKP.plist */; };
 		8CCC55341F66587A005090A4 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC55331F66587A005090A4 /* UIImage.swift */; };
 		8CCC55361F67975F005090A4 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC55351F67975F005090A4 /* Double.swift */; };
-		8CCEB3C7201F1EB200AC8350 /* GenreIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CCEB3C6201F1EB200AC8350 /* GenreIcons.xcassets */; };
 		8CD0C7271FD541D90095A309 /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD0C7261FD541D90095A309 /* URLSession.swift */; };
 		8CD0C7291FD55B4D0095A309 /* SpotifyErrorCodeDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD0C7281FD55B4D0095A309 /* SpotifyErrorCodeDescription.swift */; };
 		8CD0C72B1FD55E450095A309 /* NewsicErrorSubCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD0C72A1FD55E450095A309 /* NewsicErrorSubCode.swift */; };
@@ -318,7 +317,6 @@
 		8CC991D81FDA86050028F33A /* GoogleService-InfoBKP.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-InfoBKP.plist"; sourceTree = "<group>"; };
 		8CCC55331F66587A005090A4 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		8CCC55351F67975F005090A4 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
-		8CCEB3C6201F1EB200AC8350 /* GenreIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = GenreIcons.xcassets; sourceTree = "<group>"; };
 		8CD0C7261FD541D90095A309 /* URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
 		8CD0C7281FD55B4D0095A309 /* SpotifyErrorCodeDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyErrorCodeDescription.swift; sourceTree = "<group>"; };
 		8CD0C72A1FD55E450095A309 /* NewsicErrorSubCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicErrorSubCode.swift; sourceTree = "<group>"; };
@@ -787,7 +785,6 @@
 		8C63A15B1FFF49F100613FC9 /* Song Picker */ = {
 			isa = PBXGroup;
 			children = (
-				8CCEB3C5201F1EA300AC8350 /* Genre Icons */,
 				8C63A15C1FFF49FC00613FC9 /* SongPicker.xcassets */,
 			);
 			path = "Song Picker";
@@ -1173,14 +1170,6 @@
 			path = "Song Picker View Controller";
 			sourceTree = "<group>";
 		};
-		8CCEB3C5201F1EA300AC8350 /* Genre Icons */ = {
-			isa = PBXGroup;
-			children = (
-				8CCEB3C6201F1EB200AC8350 /* GenreIcons.xcassets */,
-			);
-			path = "Genre Icons";
-			sourceTree = "<group>";
-		};
 		8CF78D231F82006900249C2F /* Song Table View Header */ = {
 			isa = PBXGroup;
 			children = (
@@ -1332,7 +1321,6 @@
 				8C63A1571FFF496100613FC9 /* Settings.xcassets in Resources */,
 				8C5B18F31FCBBEF400EBFAE1 /* CollectionViewHeader.xib in Resources */,
 				8C5E02B52017217700413DBB /* license.txt in Resources */,
-				8CCEB3C7201F1EB200AC8350 /* GenreIcons.xcassets in Resources */,
 				8C7C41E41FFC8F5F0051845D /* SettingsHeader.xib in Resources */,
 				8C5E02B12017217700413DBB /* Robot Crush Italic.otf in Resources */,
 				8C90E8671F53D838002B135F /* Main.storyboard in Resources */,
