@@ -43,15 +43,18 @@ class MoodGenreListCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        self.layer.shouldRasterize = true;
+        self.layer.rasterizationScale = UIScreen.main.scale
         self.section = nil
-        self.cellSize = nil
+//        self.cellSize = nil
         self.items?.removeAll()
-//        self.listCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredVertically, animated: false)
+        if self.listCollectionView.numberOfItems(inSection: 0) > 0 {
+            self.listCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredVertically, animated: false)
+        }
         self.listCollectionView.dataSource = nil
         self.listCollectionView.reloadData()
        
-        self.layer.shouldRasterize = true;
-        self.layer.rasterizationScale = UIScreen.main.scale
+        
     }
     
     func configure(for items: [String], section: Int) {
