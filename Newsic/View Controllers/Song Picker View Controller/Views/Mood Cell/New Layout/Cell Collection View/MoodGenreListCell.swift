@@ -43,10 +43,13 @@ class MoodGenreListCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.listCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredVertically, animated: false)
+        self.section = nil
+        self.cellSize = nil
+        self.items?.removeAll()
+//        self.listCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredVertically, animated: false)
         self.listCollectionView.dataSource = nil
-//        self.listCollectionView.delegate = nil
         self.listCollectionView.reloadData()
+       
         self.layer.shouldRasterize = true;
         self.layer.rasterizationScale = UIScreen.main.scale
     }
@@ -60,15 +63,10 @@ class MoodGenreListCell: UICollectionViewCell {
         self.listCollectionView.allowsMultipleSelection = true;
         self.listCollectionView.register(view, forCellWithReuseIdentifier: "moodGenreCell");
         let layout = ListCollectionViewFlowLayout()
-//        let layout = NusicCollectionViewLayout()
-        
-//        let layout = listCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.scrollDirection = .horizontal
-        
-//        self.listCollectionView.setCollectionViewLayout(layout, animated: false)
+
         self.items = items
         self.section = section
-//        listCollectionView.setCollectionViewLayout(NusicCollectionViewLayout(), animated: true)
     }
 }
 
@@ -80,6 +78,25 @@ extension MoodGenreListCell: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         delegate?.willDisplayCell(section: section!, indexPath: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? MoodGenreCell {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
+                cell.moodGenreLabel.alpha = 0
+                cell.backgroundImage.alpha = 1
+            }, completion: nil)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? MoodGenreCell {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
+                
+                cell.moodGenreLabel.alpha = 1
+                cell.backgroundImage.alpha = 0.3
+            }, completion: nil)
+        }
     }
 }
 

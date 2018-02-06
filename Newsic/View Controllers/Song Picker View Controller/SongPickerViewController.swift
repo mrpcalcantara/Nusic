@@ -19,13 +19,17 @@ class SongPickerViewController: NusicDefaultViewController {
     let itemsPerRow: CGFloat = 2;
     let sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8);
     var sectionGenreTitles: [String] = []
+    var originalSectionGenreTitles: [String] = []
     var sectionMoodTitles: [String] = []
+    var originalSectionMoodTitles: [String] = []
     var sectionGenres: [[SpotifyGenres]] = [[]]
+    var originalSectionGenres: [[SpotifyGenres]] = [[]]
     var sectionMoods: [[EmotionDyad]] = [[]] {
         didSet {
             moodCollectionView.reloadData()
         }
     }
+    var originalSectionMoods: [[EmotionDyad]] = [[]] 
     var sectionHeaderFrame: CGRect = CGRect(x: 16, y: 8, width: 0, height: 0)
     var currentSection: Int = 0
     let username = "81d1a191-5d1e-47df-934a-c4bf91b63dd0"
@@ -66,28 +70,10 @@ class SongPickerViewController: NusicDefaultViewController {
     var nusicPlaylist: NusicPlaylist! = nil;
     var moodHacker: MoodHacker? = nil;
     var user: SPTUser? = nil;
-    var selectedGenres: [String: Int] = [:] {
-        didSet {
-//            if selectedGenres.count == 0 {
-//                DispatchQueue.main.async {
-//                    UIView.animate(withDuration: 0.3, animations: {
-//                        self.searchButton.setTitle(self.isMoodCellSelected ? "Get Songs!" : "Random it up!", for: .normal)
-//                    }, completion: nil)
-//                }
-////                listMenuView.removeFromSuperview()
-//
-//            } else {
-//
-//                DispatchQueue.main.async {
-//                    UIView.animate(withDuration: 0.3, animations: {
-//                        self.searchButton.setTitle("Get Songs!", for: .normal)
-//                    }, completion: nil)
-//                }
-//            }
-//            self.view.layoutIfNeeded()
-
-        }
-    }
+//    var selectedGenres: [String: Int] = [:] {
+//        didSet {
+//        }
+//    }
     
     var fetchedSongsForGenre: [String: [SpotifyTrack]] = [:]
     var selectedSongsForGenre: [String: [SpotifyTrack]] = [:] {

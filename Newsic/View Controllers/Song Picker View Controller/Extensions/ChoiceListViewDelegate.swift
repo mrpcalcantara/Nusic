@@ -42,60 +42,93 @@ extension SongPickerViewController {
 
 extension SongPickerViewController : ChoiceListDelegate {
     
-//    func didTapGenre(value: String) {
-//        if var indexPath = getIndexPathForGenre(value) {
-//            if let genre = SpotifyGenres(rawValue: value) {
-//
-//                sectionGenres[indexPath.section-1].append(genre)
-//                sectionGenres[indexPath.section-1].sort(by: { (genre1, genre2) -> Bool in
-//                    return genre1.rawValue < genre2.rawValue
-//                })
-//                selectedGenres.removeValue(forKey: genre.rawValue.lowercased());
-//                genreCollectionView.performBatchUpdates({
-//                    if indexPath.row + 1 > sectionGenres[indexPath.section-1].count {
-//                        indexPath.row = sectionGenres[indexPath.section-1].count-1
-//                    }
-//                    self.genreCollectionView.insertItems(at: [indexPath])
-//                    var indexSet = IndexSet()
-//                    indexSet.insert(indexPath.section)
-//                    self.genreCollectionView.reloadSections(indexSet)
-//                }, completion: { (isCompleted) in
-//
-//                })
-//
-//            }
-//
-//        }
-//    }
-    
     func didTapGenre(value: String) {
-        if var indexPath = getIndexPathForGenre(value) {
-            if let genre = SpotifyGenres(rawValue: value) {
+        if let genre = SpotifyGenres(rawValue: value) {
+            var addedSection = false
+            if var indexPath = getIndexPathForGenre(value) {
                 
+            } else {
+                sectionGenreTitles.append(genre.rawValue)
+                sectionGenreTitles.sort()
+                if let index = sectionGenreTitles.index(of: genre.rawValue) {
+                    sectionGenres.insert([], at: index)
+                }
+                addedSection = true
+            }
+            
+            if var indexPath = getIndexPathForGenre(value) {
                 sectionGenres[indexPath.section].append(genre)
                 sectionGenres[indexPath.section].sort(by: { (genre1, genre2) -> Bool in
                     return genre1.rawValue < genre2.rawValue
                 })
-                selectedGenres.removeValue(forKey: genre.rawValue.lowercased());
-                if let genreCell = genreCollectionView.cellForItem(at: indexPath) as? MoodGenreListCell {
-                    genreCell.items = sectionGenres[indexPath.section].map({ $0.rawValue })
-                    let selectedIndexPath = IndexPath(row: indexPath.row, section: 0)
-                    if let selectedCell = genreCell.listCollectionView.cellForItem(at: selectedIndexPath) as? MoodGenreCell {
-                        selectedSongsForGenre.removeValue(forKey: value)
+            
+                if addedSection {
+//                    genreCollectionView.performBatchUpdates({
+//                        genreCollectionView.insertSections(IndexSet(arrayLiteral: indexPath.section))
+//                    }, completion: nil)
+                    
+                    genreCollectionView.reloadData()
+                } else {
+                    if let genreCell = genreCollectionView.cellForItem(at: indexPath) as? MoodGenreListCell {
+                        genreCell.items = sectionGenres[indexPath.section].map({ $0.rawValue })
+                        let selectedIndexPath = IndexPath(row: indexPath.row, section: 0)
+                        if let selectedCell = genreCell.listCollectionView.cellForItem(at: selectedIndexPath) as? MoodGenreCell {
+                            selectedSongsForGenre.removeValue(forKey: value)
+                        }
+                        
+                        genreCell.listCollectionView.reloadData()
+//                        genreCell.listCollectionView.performBatchUpdates({
+//                            var indexSet = IndexSet()
+//                            indexSet.insert(0);
+//                            genreCell.listCollectionView.insertItems(at: [IndexPath(row: 0, section: 0)])
+//                            genreCell.listCollectionView.reloadSections(indexSet)
+//                        }, completion: nil)
                     }
-                    genreCell.listCollectionView.performBatchUpdates({
-                        genreCell.listCollectionView.insertItems(at: [IndexPath(row: 0, section: 0)])
-                        var indexSet = IndexSet()
-                        indexSet.insert(0)
-                        genreCell.listCollectionView.reloadSections(indexSet)
-                    }, completion: nil)
                 }
             }
         }
+        
+        
+        
+//
+//
+//        if var indexPath = getIndexPathForGenre(value) {
+//            if let genre = SpotifyGenres(rawValue: value) {
+//
+//                sectionGenres[indexPath.section].append(genre)
+//                sectionGenres[indexPath.section].sort(by: { (genre1, genre2) -> Bool in
+//                    return genre1.rawValue < genre2.rawValue
+//                })
+//                //                selectedGenres.removeValue(forKey: genre.rawValue.lowercased());
+//                if let genreCell = genreCollectionView.cellForItem(at: indexPath) as? MoodGenreListCell {
+//                    genreCell.items = sectionGenres[indexPath.section].map({ $0.rawValue })
+//                    let selectedIndexPath = IndexPath(row: indexPath.row, section: 0)
+//                    if let selectedCell = genreCell.listCollectionView.cellForItem(at: selectedIndexPath) as? MoodGenreCell {
+//                        selectedSongsForGenre.removeValue(forKey: value)
+//                    }
+//                    genreCell.listCollectionView.performBatchUpdates({
+//
+//                        var indexSet = IndexSet()
+//                        indexSet.insert(indexPath.section);
+//                        if sectionGenres[indexPath.section].count == 0 {
+//                            genreCollectionView.insertSections(indexSet)
+//                            genreCell.listCollectionView.insertItems(at: [IndexPath(row: 0, section: 0)])
+//                        } else {
+//                            genreCell.listCollectionView.reloadSections(indexSet)
+//                        }
+//
+//
+//                    }, completion: nil)
+//                }
+//            }
+//        } else {
+//
+//        }
     }
     
     func didRemoveGenres() {
-        selectedGenres.removeAll()
+//        selectedGenres.removeAll()
+        selectedSongsForGenre.removeAll()
         resetGenresPerSection()
     }
     
