@@ -383,28 +383,17 @@ extension SongPickerViewController: UICollectionViewDelegate {
                     sectionGenres.remove(at: indexPath.section)
                     sectionGenreTitles.remove(at: indexPath.section)
                     genreCollectionView.reloadData()
+                    
+//                    manageButton(for: genreCollectionView)
                 }
-                genreCell.listCollectionView.reloadData()
-                
-//                genreCell.listCollectionView.performBatchUpdates({
-//                    if sectionGenres[indexPath.section].count == 0 {
-//                        sectionGenres.remove(at: indexPath.section)
-//                        sectionGenreTitles.remove(at: indexPath.section)
-//                    }
-//                    var indexSet = IndexSet()
-//                    indexSet.insert(indexPath.section)
-//                    genreCell.listCollectionView.deleteItems(at: [selectedIndexPath])
-//                    if sectionGenres[indexPath.section].count == 0 {
-////                        sectionGenreTitles.remove(at: indexPath.section)
-//                        sectionGenres.remove(at: indexPath.section)
-//                        sectionGenreTitles.remove(at: indexPath.section)
-//                        collectionView.deleteSections(indexSet)
-//
-//                    } else {
-//                        genreCell.listCollectionView.reloadSections(indexSet)
-//                    }
-//
-//                }, completion: nil)
+//                genreCell.listCollectionView.reloadData()
+//                genreCell.listCollectionView.collectionViewLayout.invalidateLayout()
+                genreCell.listCollectionView.performBatchUpdates({
+                    var indexSet = IndexSet()
+                    indexSet.insert(0)
+                    genreCell.listCollectionView.deleteItems(at: [selectedIndexPath])
+                    genreCell.listCollectionView.reloadSections(indexSet)
+                }, completion: nil)
             }
         }
         

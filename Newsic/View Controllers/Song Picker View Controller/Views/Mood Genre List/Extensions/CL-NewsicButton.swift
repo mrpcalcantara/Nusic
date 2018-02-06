@@ -12,6 +12,7 @@ extension ChoiceListView {
     
     func setupButton() {
         fetchSongsButton.allowBlur = true
+        fetchSongsButton.tintColor = NusicDefaults.greenColor
         fetchSongsButton.setTitle("Get Songs!", for: .normal)
         fetchSongsButton.addTarget(self, action: #selector(triggerButton), for: .touchUpInside)
     }

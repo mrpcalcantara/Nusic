@@ -61,7 +61,7 @@ extension SongPickerViewController : ChoiceListDelegate {
                 sectionGenres[indexPath.section].sort(by: { (genre1, genre2) -> Bool in
                     return genre1.rawValue < genre2.rawValue
                 })
-            
+                selectedSongsForGenre.removeValue(forKey: value)
                 if addedSection {
 //                    genreCollectionView.performBatchUpdates({
 //                        genreCollectionView.insertSections(IndexSet(arrayLiteral: indexPath.section))
@@ -73,16 +73,16 @@ extension SongPickerViewController : ChoiceListDelegate {
                         genreCell.items = sectionGenres[indexPath.section].map({ $0.rawValue })
                         let selectedIndexPath = IndexPath(row: indexPath.row, section: 0)
                         if let selectedCell = genreCell.listCollectionView.cellForItem(at: selectedIndexPath) as? MoodGenreCell {
-                            selectedSongsForGenre.removeValue(forKey: value)
+                            
                         }
                         
-                        genreCell.listCollectionView.reloadData()
-//                        genreCell.listCollectionView.performBatchUpdates({
-//                            var indexSet = IndexSet()
-//                            indexSet.insert(0);
-//                            genreCell.listCollectionView.insertItems(at: [IndexPath(row: 0, section: 0)])
-//                            genreCell.listCollectionView.reloadSections(indexSet)
-//                        }, completion: nil)
+//                        genreCell.listCollectionView.reloadData()
+                        genreCell.listCollectionView.performBatchUpdates({
+                            var indexSet = IndexSet()
+                            indexSet.insert(0);
+                            genreCell.listCollectionView.insertItems(at: [IndexPath(row: 0, section: 0)])
+                            genreCell.listCollectionView.reloadSections(indexSet)
+                        }, completion: nil)
                     }
                 }
             }
