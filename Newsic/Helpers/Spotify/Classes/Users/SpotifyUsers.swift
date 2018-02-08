@@ -16,7 +16,6 @@ extension Spotify {
             }
             if let results = results {
                 let userResult = results as! SPTUser
-                print(userResult.description)
                 completion(userResult, nil);
             } else {
                 completion(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError))

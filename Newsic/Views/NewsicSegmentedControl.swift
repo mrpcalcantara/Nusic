@@ -60,7 +60,6 @@ class NusicSegmentedControl: UIControl {
     
     @IBInspectable var thumbColor : UIColor = NusicDefaults.foregroundThemeColor {
         didSet {
-            print(thumbColor)
             setSelectedColors()
         }
     }

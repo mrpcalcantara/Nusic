@@ -63,7 +63,6 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             print("track started");
             
             if let currentTrack = currentTrack {
-                print("\(currentTrack.artistName) - \(currentTrack.name)")
                 let currentNusicTrack = self.cardList[self.songCardView.currentCardIndex]
                 
                 if currentNusicTrack.trackInfo.audioFeatures == nil {
@@ -77,7 +76,6 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
                     let imageURL = URL(string: imageURL)!
                     let image = UIImage(); image.downloadImage(from: imageURL) { (image) in
                         self.currentPlayingTrack?.thumbNail = image
-                        print("\(self.currentPlayingTrack?.songName)")
                         if let songName = self.currentPlayingTrack?.songName, let artistName = self.currentPlayingTrack?.artist.artistName {
                             self.updateNowPlayingCenter(title: songName, artist: artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
                             DispatchQueue.main.async {
@@ -100,15 +98,12 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         DispatchQueue.main.async {
             self.hideLikeButtons()
         }
-        print(UIApplication.shared.applicationState)
         koloda(songCardView, didSwipeCardAt: presentedCardIndex, in: .left)
         songCardView.swipe(.left);
         if UIApplication.shared.applicationState == .background {
             presentedCardIndex += 1
             playCard(at: presentedCardIndex)
             getNextSong()
-        } else {
-            
         }
     }
     

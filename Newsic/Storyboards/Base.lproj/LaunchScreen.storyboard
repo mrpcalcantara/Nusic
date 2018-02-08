@@ -29,33 +29,35 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="N" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b0D-IF-AGY">
-                                <rect key="frame" x="160" y="359.66666666666669" width="54" height="93"/>
+                                <rect key="frame" x="160.33333333333334" y="359.66666666666669" width="54" height="93"/>
                                 <fontDescription key="fontDescription" name="RobotCrush" family="Robot Crush" pointSize="100"/>
                                 <color key="textColor" red="0.329308033" green="0.72263795139999998" blue="0.30971136690000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TransparentAppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="yiH-l8-knO">
-                                <rect key="frame" x="17" y="235.66666666666663" width="341" height="341"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TransparentAppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="yiH-l8-knO">
+                                <rect key="frame" x="134.66666666666666" y="358.66666666666669" width="100" height="93"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="6DG-IC-WLU"/>
+                                    <constraint firstAttribute="height" constant="93" id="D7I-cZ-Trt"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="yiH-l8-knO" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="3h4-rU-MwI"/>
                             <constraint firstAttribute="trailing" secondItem="63a-QZ-YHj" secondAttribute="trailing" id="Bfz-aY-GOU"/>
-                            <constraint firstItem="b0D-IF-AGY" firstAttribute="height" relation="lessThanOrEqual" secondItem="yiH-l8-knO" secondAttribute="height" priority="250" id="D6U-VJ-lcu"/>
                             <constraint firstItem="b0D-IF-AGY" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="JEl-Uh-RGd"/>
                             <constraint firstAttribute="bottom" secondItem="63a-QZ-YHj" secondAttribute="bottom" id="KCJ-Ze-eaR"/>
                             <constraint firstItem="63a-QZ-YHj" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="KKi-OU-eXl"/>
-                            <constraint firstItem="b0D-IF-AGY" firstAttribute="width" relation="lessThanOrEqual" secondItem="yiH-l8-knO" secondAttribute="width" priority="250" id="aLP-35-Pxo"/>
+                            <constraint firstItem="yiH-l8-knO" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" constant="-2" id="nzJ-fj-ii7"/>
                             <constraint firstItem="63a-QZ-YHj" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="psB-Zr-E5Z"/>
                             <constraint firstItem="b0D-IF-AGY" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="s2s-ad-7ed"/>
-                            <constraint firstItem="yiH-l8-knO" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="zQb-43-lqT"/>
+                            <constraint firstItem="yiH-l8-knO" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="t7p-mP-WtF"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52" y="374.66266866566718"/>
+            <point key="canvasLocation" x="52" y="374.6305418719212"/>
         </scene>
     </scenes>
     <resources>

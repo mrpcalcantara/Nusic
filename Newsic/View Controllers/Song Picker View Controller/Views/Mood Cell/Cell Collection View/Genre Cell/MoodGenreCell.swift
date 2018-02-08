@@ -39,7 +39,6 @@ class MoodGenreCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        print("preparing cell \(moodGenreLabel.text) for reuse")
         super.prepareForReuse()
         self.layer.shouldRasterize = true;
         self.layer.rasterizationScale = UIScreen.main.scale
@@ -168,8 +167,6 @@ class MoodGenreCell: UICollectionViewCell {
             
 //            self.layer.insertSublayer(borderPathLayer, at: 0)
             self.layer.addSublayer(borderPathLayer)
-            
-            print("selected. added to layer")
         }
     }
     
@@ -196,7 +193,6 @@ class MoodGenreCell: UICollectionViewCell {
             
         }
         
-        print("deselected. removed from layer")
         if let borderLayer = self.borderPathLayer {
             borderLayer.removeFromSuperlayer()
         }

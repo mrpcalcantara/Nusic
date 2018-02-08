@@ -153,7 +153,6 @@
 		8CD0C72B1FD55E450095A309 /* NewsicErrorSubCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD0C72A1FD55E450095A309 /* NewsicErrorSubCode.swift */; };
 		8CD11B561F5FB6E3000004EA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */; };
 		8CD7344B1FEB69A7009B461F /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD7344A1FEB69A7009B461F /* NSObject.swift */; };
-		8CF6C6C5202C55E000D688B5 /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF6C6C4202C55E000D688B5 /* UICollectionView.swift */; };
 		8CF78D251F82020600249C2F /* SongTableViewSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF78D241F82020600249C2F /* SongTableViewSectionHeader.swift */; };
 		8CF8D3FE1FBA9C9300E130BC /* CustomNavigationAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF8D3FD1FBA9C9300E130BC /* CustomNavigationAnimationController.swift */; };
 		8CF8D4021FBAC7D200E130BC /* CustomInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF8D4011FBAC7D200E130BC /* CustomInteractionController.swift */; };
@@ -325,7 +324,6 @@
 		8CD0C72A1FD55E450095A309 /* NewsicErrorSubCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicErrorSubCode.swift; sourceTree = "<group>"; };
 		8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8CD7344A1FEB69A7009B461F /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
-		8CF6C6C4202C55E000D688B5 /* UICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionView.swift; sourceTree = "<group>"; };
 		8CF78D241F82020600249C2F /* SongTableViewSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongTableViewSectionHeader.swift; sourceTree = "<group>"; };
 		8CF8D3FD1FBA9C9300E130BC /* CustomNavigationAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationAnimationController.swift; sourceTree = "<group>"; };
 		8CF8D4011FBAC7D200E130BC /* CustomInteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInteractionController.swift; sourceTree = "<group>"; };
@@ -622,7 +620,6 @@
 				8CD7344A1FEB69A7009B461F /* NSObject.swift */,
 				8C7C41EC1FFCC2FF0051845D /* Bool.swift */,
 				8C2B05E7200C6EFC00BA525C /* ArrayString.swift */,
-				8CF6C6C4202C55E000D688B5 /* UICollectionView.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1541,7 +1538,6 @@
 				8C3654C11F551B16006C12D9 /* SongOverlayView.swift in Sources */,
 				8C626E9A1FE77F9900BF0E08 /* NewsicScrollView.swift in Sources */,
 				8CC6E7161F54044800846080 /* Int.swift in Sources */,
-				8CF6C6C5202C55E000D688B5 /* UICollectionView.swift in Sources */,
 				8C55956D1FD4FE6600E70667 /* NewsicError.swift in Sources */,
 				8C09622E1F614FA60025A65E /* NewsicArtist.swift in Sources */,
 				8C268B561FCFD62F00BB4C6F /* SwipeInteractionController.swift in Sources */,

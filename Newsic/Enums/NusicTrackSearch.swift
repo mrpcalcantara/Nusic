@@ -1,5 +1,5 @@
 //
-//  NusicSearch.swift
+//  NusicTrackSearch.swift
 //  Nusic
 //
 //  Created by Miguel Alcantara on 06/01/2018.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum NusicSearch {
+enum NusicTrackSearch {
     case normal
     case genre
     case artist

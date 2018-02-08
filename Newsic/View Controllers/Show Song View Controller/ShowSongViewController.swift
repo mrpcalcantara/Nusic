@@ -395,6 +395,7 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     
     func setupSongs() {
+        musicSearchType = .normal
         if let selectedSongs = selectedSongs, selectedSongs.count > 0 {
             fetchYouTubeInfo()
         } else {
@@ -1016,7 +1017,7 @@ extension ShowSongViewController {
     
     func playCard(at index:Int) {
         if preferredPlayer == NusicPreferredPlayer.spotify {
-            print("attempting to start track = \(cardList[index].trackInfo.songName)")
+//            print("attempting to start track = \(cardList[index].trackInfo.songName)")
             actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.trackUri);
         }
     }
@@ -1054,7 +1055,7 @@ extension ShowSongViewController {
     }
     
     func addSongToCardPlaylist(index: Int? = nil, track: NusicTrack) {
-        print("added track = \(track.trackInfo.songName)")
+//        print("added track = \(track.trackInfo.songName)")
         if index != nil {
             self.cardList.insert(track, at: index!)
         } else {
