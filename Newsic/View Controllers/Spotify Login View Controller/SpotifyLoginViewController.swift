@@ -175,7 +175,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     @objc func updateAfterFirstLogin(notification: Notification) {
         gotToken = notification.object as! Bool
-        print(gotToken)
         getSession();
     }
    

@@ -90,7 +90,7 @@ class FirebaseDatabaseHelper {
                 }
                 
             }) { (error, isCommited, snapshot) in
-                print("completed")
+                
             }
         }
     }

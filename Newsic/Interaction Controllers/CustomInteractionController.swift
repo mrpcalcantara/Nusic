@@ -34,7 +34,6 @@ class CustomInteractionController: UIPercentDrivenInteractiveTransition {
         case .began:
             transitionInProgress = true
             navigationController.popViewController(animated: true)
-            print("began")
         case .changed:
             let progress = abs(Float(viewTranslation.x / 200.0))
             let const = CGFloat(fminf(fmaxf(progress, 0.0), 1.0))
@@ -44,7 +43,6 @@ class CustomInteractionController: UIPercentDrivenInteractiveTransition {
             
         case .cancelled, .ended:
             transitionInProgress = false
-            print("ended, shouldCompleteTransition = \(shouldCompleteTransition)")
             if !shouldCompleteTransition || gestureRecognizer.state == .cancelled {
                 self.cancel()
             } else {

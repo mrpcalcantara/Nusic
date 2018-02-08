@@ -373,8 +373,6 @@ extension ShowSongViewController {
 
             // And finally add the linear animation to the shape!
             layer.add(animation, forKey: "line")
-            
-            print("layer added")
         }
     }
 }

@@ -254,14 +254,12 @@ class SongPickerViewController: NusicDefaultViewController {
  
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad SongPicker")
         if nusicUser == nil {
             DispatchQueue.main.async {
                 SwiftSpinner.show("Getting User..", animated: true)
             }
             
             extractInformationFromUser { (isFinished) in
-                print(isFinished)
                 
             }
             self.setupCollectionCellViews();
@@ -293,8 +291,6 @@ class SongPickerViewController: NusicDefaultViewController {
         
         navbar.barStyle = .default
         navbar.translatesAutoresizingMaskIntoConstraints = false
-        
-        print("navbar frame = \(navbar.frame)")
         
         let leftBarButton = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
         
