@@ -19,6 +19,7 @@ final class NusicDefaults {
     
 //    static let themeColor = UIColor(displayP3Red: 208/255, green: 202/255, blue: 156/255, alpha: 1)
     static let deselectedColor = UIColor.clear
+    static let selectedColor = UIColor(displayP3Red: 0.00351345, green: 0.733679, blue: 0.238104, alpha: 1)
     static let foregroundThemeColor = UIColor(red: 102/255, green: 170/255, blue: 102/255, alpha: 1)
     
 }

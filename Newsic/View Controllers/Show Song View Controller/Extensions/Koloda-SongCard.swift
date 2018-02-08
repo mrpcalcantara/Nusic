@@ -316,23 +316,27 @@ extension ShowSongViewController {
         }
     }
     
+    func removeCardBorderLayer() {
+        if let index = self.view.layer.sublayers?.index(where: { (layer) -> Bool in
+            return layer.name == "cardBorder"
+        }) {
+            let borderLayer = self.view.layer.sublayers![index]
+            borderLayer.removeFromSuperlayer()
+        }
+    }
+    
     func addCardBorderLayer() {
         
         if songCardView.frame != nil {
+            removeCardBorderLayer()
             var frame = trackStackView.frame
             frame.origin = CGPoint(x: (frame.origin.x) - 4 , y: (frame.origin.y) - 4)
             frame.size = CGSize(width: (frame.width) + 8, height: (frame.height) + 8)
-            if let index = self.view.layer.sublayers?.index(where: { (layer) -> Bool in
-                return layer.name == "cardBorder"
-            }) {
-                let borderLayer = self.view.layer.sublayers![index]
-                borderLayer.removeFromSuperlayer()
-            }
             
             let path = UIBezierPath()
         
             let pathOriginX = cardTitle.text != "" ? cardTitle.frame.origin.x + cardTitle.frame.width + 8 : cardTitle.frame.origin.x + 8
-            path.move(to: CGPoint(x: cardTitle.frame.origin.x + cardTitle.frame.width + 8, y: frame.origin.y - 8))
+            path.move(to: CGPoint(x: pathOriginX, y: frame.origin.y - 8))
             path.addLine(to: CGPoint(x: frame.origin.x + frame.width - 8 , y: frame.origin.y - 8))
             path.addLine(to: CGPoint(x: frame.origin.x + frame.width + 8, y: frame.origin.y + 8))
             path.addLine(to: CGPoint(x: frame.origin.x + frame.width + 8, y: frame.origin.y + frame.height - 8))
@@ -349,8 +353,6 @@ extension ShowSongViewController {
             layer.name = "cardBorder"
             layer.path = path.cgPath
             layer.strokeColor = UIColor.white.cgColor
-//            layer.strokeEnd = 0
-//            layer.strokeStart = 1
             layer.lineWidth = 2
             layer.fillColor = UIColor.clear.cgColor
             
@@ -371,16 +373,6 @@ extension ShowSongViewController {
 
             // And finally add the linear animation to the shape!
             layer.add(animation, forKey: "line")
-//            self.view.layer.addSublayer(layer)
-//
-//            let animation2 = CABasicAnimation(keyPath: "strokeStart")
-//            animation2.toValue = 0
-//            animation2.beginTime = 2
-//            animation2.duration = 2 // seconds
-//            animation2.autoreverses = false
-//            animation2.repeatCount = .infinity
-//
-            //            layer.add(animation2, forKey: "line2")
             
             print("layer added")
         }

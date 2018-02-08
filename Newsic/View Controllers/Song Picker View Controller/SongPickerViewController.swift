@@ -22,9 +22,9 @@ class SongPickerViewController: NusicDefaultViewController {
     var originalSectionGenreTitles: [String] = []
     var sectionMoodTitles: [String] = []
     var originalSectionMoodTitles: [String] = []
-    var sectionGenres: [[SpotifyGenres]] = [[]]
+    var sectionGenres: [[SpotifyGenres]] = Array(Array())
     var originalSectionGenres: [[SpotifyGenres]] = [[]]
-    var sectionMoods: [[EmotionDyad]] = [[]] {
+    var sectionMoods: [[EmotionDyad]] = Array(Array()) {
         didSet {
             moodCollectionView.reloadData()
         }
@@ -70,11 +70,10 @@ class SongPickerViewController: NusicDefaultViewController {
     var nusicPlaylist: NusicPlaylist! = nil;
     var moodHacker: MoodHacker? = nil;
     var user: SPTUser? = nil;
-//    var selectedGenres: [String: Int] = [:] {
-//        didSet {
-//        }
-//    }
     
+    var fetchedSongsForMood: [String: [SpotifyTrack]] = [:]
+    var selectedSongsForMood: [String: [SpotifyTrack]] = [:]
+    var selectedIndexPathForMood: IndexPath?
     var fetchedSongsForGenre: [String: [SpotifyTrack]] = [:]
     var selectedSongsForGenre: [String: [SpotifyTrack]] = [:] {
         didSet {
@@ -118,7 +117,12 @@ class SongPickerViewController: NusicDefaultViewController {
     var navbar: UINavigationBar = UINavigationBar()
     var loadingFinished: Bool = false {
         didSet {
-            SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
+            FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
+                self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
+                self.sectionMoods = dyadList.map({ $0.value })
+                SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
+            }
+            
         }
     }
     var spinner: SwiftSpinner! = nil
@@ -185,9 +189,8 @@ class SongPickerViewController: NusicDefaultViewController {
 //            genreCollectionView.collectionViewLayout.invalidateLayout()
 //            moodCollectionView.collectionViewLayout.invalidateLayout()
         }
-        genreCollectionView.collectionViewLayout.invalidateLayout()
-        moodCollectionView.collectionViewLayout.invalidateLayout()
-        
+        invalidateCellsLayout(for: genreCollectionView)
+        invalidateCellsLayout(for: moodCollectionView)
     }
     
     override func viewDidLayoutSubviews() {
@@ -197,8 +200,8 @@ class SongPickerViewController: NusicDefaultViewController {
         }
         
         if viewRotated {
-            genreCollectionView.reloadData()
-            moodCollectionView.reloadData()
+            reloadCellsData(for: genreCollectionView)
+            reloadCellsData(for: moodCollectionView)
             var newY:CGFloat = 0
             if !listMenuView.isShowing {
                 newY = self.view.frame.height
@@ -225,21 +228,27 @@ class SongPickerViewController: NusicDefaultViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated);
-        hideChoiceMenu()
+        if nusicControl.selectedIndex == 1 {
+            hideChoiceMenu()
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         viewRotated = true
+        if nusicControl.selectedIndex == 1 {
+            hideChoiceMenu()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         genreCollectionView.collectionViewLayout.invalidateLayout()
         moodCollectionView.collectionViewLayout.invalidateLayout()
-        genreCollectionView.reloadData()
-        moodCollectionView.reloadData()
+        reloadCellsData(for: genreCollectionView)
+        reloadCellsData(for: moodCollectionView)
         reloadListMenu()
         reloadNavigationBar()
+        
         self.view.layoutIfNeeded()
     }
  
@@ -266,7 +275,7 @@ class SongPickerViewController: NusicDefaultViewController {
     
     func setupSegmentedControl() {
         nusicControl = NusicSegmentedControl(frame: navbar.frame)
-        nusicControl.frame.size = CGSize(width: nusicControl.frame.width, height: navbar.frame.height - 10)
+        nusicControl.frame.size = CGSize(width: nusicControl.frame.width, height: 44)
         
         nusicControl.translatesAutoresizingMaskIntoConstraints = false
         nusicControl.layoutIfNeeded()
@@ -275,8 +284,7 @@ class SongPickerViewController: NusicDefaultViewController {
         nusicControl.delegate = self
         nusicControl.thumbColor = NusicDefaults.foregroundThemeColor
         nusicControl.borderColor = NusicDefaults.foregroundThemeColor
-        self.nusicControl.selectedIndex = 0
-        self.nusicControl.delegate = self
+        nusicControl.selectedIndex = 0
         toggleCollectionViews(for: 0);
     }
     
@@ -306,6 +314,8 @@ class SongPickerViewController: NusicDefaultViewController {
             self.navigationItem.rightBarButtonItem = rightBarButton
             
         }
+        
+        nusicControl.frame.size.height = 44
         self.navigationItem.titleView = nusicControl
         
         let navItem = self.navigationItem
@@ -320,7 +330,8 @@ class SongPickerViewController: NusicDefaultViewController {
             navbar.heightAnchor.constraint(equalToConstant: 44),
             navbar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
             navbar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0),
-            navbar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0)
+            navbar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            
             ])
         
         self.view.layoutIfNeeded()
@@ -417,10 +428,7 @@ class SongPickerViewController: NusicDefaultViewController {
                                 self.showLoginErrorPopup()
                                 self.loadingFinished = true
                             } else {
-                                FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
-                                    self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
-                                    self.sectionMoods = dyadList.map({ $0.value })
-                                }
+                                
                                 let username = self.spotifyHandler.user.canonicalUserName!
                                 let displayName = self.spotifyHandler.user.displayName != nil ? self.spotifyHandler.user.displayName : ""
                                 let profileImage = self.spotifyHandler.user.smallestImage != nil ? self.spotifyHandler.user.smallestImage.imageURL.absoluteString : ""
