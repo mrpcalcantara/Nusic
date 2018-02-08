@@ -10,14 +10,23 @@ import UIKit
 
 extension UIView {
     
+    func createBlurEffect(style: UIBlurEffectStyle, alpha: CGFloat, customBounds: CGRect? = nil, inFront: Bool? = true) -> UIVisualEffectView {
+        let blurEffect = UIBlurEffect(style: style)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.frame = customBounds != nil ? customBounds! : self.bounds
+        blurView.autoresizingMask = [.flexibleHeight, .flexibleWidth, .flexibleLeftMargin, .flexibleRightMargin];
+        blurView.tag = 111
+        blurView.alpha = alpha
+        return blurView
+    }
     
     func addBlurEffect(style: UIBlurEffectStyle, alpha: CGFloat, customBounds: CGRect? = nil, inFront: Bool? = true) {
         
         let blurEffect = UIBlurEffect(style: style)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.frame = customBounds != nil ? customBounds! : self.bounds
-        blurView.autoresizingMask = [.flexibleHeight, .flexibleWidth];
-        blurView.tag = 1
+        blurView.autoresizingMask = [.flexibleHeight, .flexibleWidth, .flexibleLeftMargin, .flexibleRightMargin];
+        blurView.tag = 111
         blurView.alpha = alpha
         if inFront! {
             self.insertSubview(blurView, at: 0);
@@ -30,7 +39,7 @@ extension UIView {
     func removeBlurEffect() {
         let subviews = self.subviews
         for view in subviews {
-            if view.tag == 1 {
+            if view.tag == 111 {
                 view.removeFromSuperview()
                 break;
             }
@@ -39,7 +48,7 @@ extension UIView {
     
     func reloadBlurEffect() {
         for view in subviews {
-            if view.tag == 1 {
+            if view.tag == 111 {
                 view.frame.size = self.bounds.size
                 break;
             }

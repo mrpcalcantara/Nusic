@@ -101,10 +101,12 @@ class ChoiceListView: NusicView {
         let contentView = UINib(nibName: "ChoiceList", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! ChoiceListView
         contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         contentView.frame = bounds
+        contentView.fetchSongsButton.tintColor = NusicDefaults.greenColor
         
         self.choiceCollectionView = contentView.choiceCollectionView
         self.toggleView = contentView.toggleView
         self.fetchSongsButton = contentView.fetchSongsButton
+        
         addSubview(contentView)
     }
     
@@ -127,9 +129,11 @@ class ChoiceListView: NusicView {
         
         
         startY = self.frame.origin.y
-        self.fetchSongsButton.layoutIfNeeded()
+        
         if self.isShowing {
-            self.reloadBlurEffect()
+            fetchSongsButton.tintColor = NusicDefaults.greenColor
+            self.fetchSongsButton.reloadBlurEffect()
+            self.fetchSongsButton.layoutIfNeeded()
             self.layoutChoiceView()
             self.layoutIfNeeded()
         }

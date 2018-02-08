@@ -90,7 +90,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TJk-WK-DBD" userLabel="List View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                         <subviews>
-                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" indicatorStyle="black" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bqf-Kb-x3U" userLabel="Genre Collection View">
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="black" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bqf-Kb-x3U" userLabel="Genre Collection View">
                                                 <rect key="frame" x="16" y="0.0" width="343" height="568"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="z9q-vZ-mww">
                                                     <size key="itemSize" width="50" height="50"/>
@@ -113,7 +113,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </collectionReusableView>
                                             </collectionView>
-                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8t3-hW-Upx">
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="black" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8t3-hW-Upx">
                                                 <rect key="frame" x="16" y="0.0" width="343" height="603"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cp9-Te-6Sc">
                                                     <size key="itemSize" width="50" height="50"/>

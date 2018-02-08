@@ -37,7 +37,7 @@ class ShowSongViewController: NusicDefaultViewController {
         }
     }
     var preferredPlayer: NusicPreferredPlayer?
-    var musicSearchType: NusicSearch = .normal
+    var musicSearchType: NusicTrackSearch = .normal
     var moodObject: NusicMood? = nil;
     var currentMoodDyad: EmotionDyad? = EmotionDyad.unknown
     
@@ -149,8 +149,6 @@ class ShowSongViewController: NusicDefaultViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        
-
         setupShowSongVC()
     }
     
@@ -184,6 +182,7 @@ class ShowSongViewController: NusicDefaultViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        currentSongCardFrame = nil
     }
     
     override func viewWillLayoutSubviews() {
@@ -270,9 +269,7 @@ class ShowSongViewController: NusicDefaultViewController {
                 setupCommandCenter()
                 UIApplication.shared.beginReceivingRemoteControlEvents()
             }
-            
             NotificationCenter.default.addObserver(self, selector: #selector(updateAuthObject), name: NSNotification.Name(rawValue: "refreshSuccessful"), object: nil)
-            
         }
         
         newMoodOrGenre = false
@@ -309,7 +306,10 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     
     func setupNavigationBar() {
-        navbar  = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
+        if navbar != nil {
+            navbar.removeFromSuperview()
+        }
+        navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
         navbar.barStyle = .default
         navbar.translatesAutoresizingMaskIntoConstraints = false
         
@@ -410,6 +410,7 @@ class ShowSongViewController: NusicDefaultViewController {
         cardTitle.text = moodObject?.emotions.first?.basicGroup == EmotionDyad.unknown ? "" : moodObject?.emotions.first?.basicGroup.rawValue
         cardTitle.font = NusicDefaults.font!
         cardTitle.textColor = NusicDefaults.foregroundThemeColor
+        cardTitle.layoutIfNeeded()
         addCardBorderLayer()
     }
     
@@ -763,19 +764,19 @@ extension ShowSongViewController {
     
     func fetchNewCardsFromSpotify(numberOfSongs: Int? = 1, fetchedCardsHandler: @escaping ([NusicTrack]) -> ()) {
         switch musicSearchType {
-        case NusicSearch.normal:
+        case NusicTrackSearch.normal:
             fetchNewCardNormal(numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
                 fetchedCardsHandler(tracks)
             })
-        case NusicSearch.genre:
+        case NusicTrackSearch.genre:
             fetchNewCardGenre(basedOnGenres: searchBasedOnGenres, numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
                 fetchedCardsHandler(tracks)
             })
-        case NusicSearch.artist:
+        case NusicTrackSearch.artist:
             fetchNewCardArtist(basedOnArtist: searchBasedOnArtist, numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
                 fetchedCardsHandler(tracks)
             })
-        case NusicSearch.track:
+        case NusicTrackSearch.track:
             fetchNewCardTrack(basedOnTrack: searchBasedOnTrack, numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
                 fetchedCardsHandler(tracks)
             })

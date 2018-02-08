@@ -39,13 +39,10 @@ class NusicButton: UIButton {
         
         if allowBlur {
             let containerEffect = UIBlurEffect(style: .dark)
-            let containerView = UIVisualEffectView(effect: containerEffect)
-            containerView.alpha = blurAlpha
-            containerView.frame = self.bounds
-            
+            let containerView = createBlurEffect(style: .dark, alpha: blurAlpha)
             containerView.isUserInteractionEnabled = false // Edit: so that subview simply passes the event through to the button
-            
             self.insertSubview(containerView, belowSubview: self.titleLabel!)
+            
         }
     
         if animated {

@@ -25,11 +25,21 @@ extension SongPickerViewController {
         playerViewController.spotifyHandler = spotifyHandler;
         playerViewController.moodObject = moodObject
         playerViewController.isMoodSelected = isMoodSelected
+        
+        var selectedTrackList: [SpotifyTrack] = Array()
         if isMoodSelected {
             selectedSongsForGenre.removeAll()
             playerViewController.selectedGenreList = nil
+            for trackList in selectedSongsForMood.values {
+                selectedTrackList.append(contentsOf: trackList.map({ $0 }))
+            }
+            
+            for mood in selectedSongsForMood.keys {
+                fetchedSongsForMood.removeValue(forKey: mood)
+            }
+            
         } else {
-            var selectedTrackList: [SpotifyTrack] = Array()
+            
             var selectedGenres: [String: Int] = [:]
             for trackList in selectedSongsForGenre.values {
                 selectedTrackList.append(contentsOf: trackList.map({ $0 }))
@@ -37,12 +47,12 @@ extension SongPickerViewController {
             
             for genre in selectedSongsForGenre.keys {
                 selectedGenres[genre.lowercased()] = 1
+                fetchedSongsForGenre.removeValue(forKey: genre)
             }
             
-            playerViewController.selectedSongs = selectedTrackList
             playerViewController.selectedGenreList = selectedGenres
         }
-        
+        playerViewController.selectedSongs = selectedTrackList
         playerViewController.playOnCellularData = nusicUser.settingValues.useMobileData
         
         playerViewController.newMoodOrGenre = true;

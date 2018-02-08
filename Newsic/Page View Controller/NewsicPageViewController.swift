@@ -23,9 +23,7 @@ class NusicPageViewController: UIPageViewController {
     }()
     
     override func viewDidLayoutSubviews() {
-        if let pageViewController = parent as? NusicPageViewController {
-            pageViewController.backgroundImageView?.frame = self.view.frame
-        }
+        self.backgroundImageView?.frame = self.view.frame
     }
     
     override func viewDidLoad() {
