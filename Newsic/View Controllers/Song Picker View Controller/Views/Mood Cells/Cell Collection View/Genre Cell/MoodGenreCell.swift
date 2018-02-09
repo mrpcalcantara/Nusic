@@ -30,6 +30,8 @@ class MoodGenreCell: UICollectionViewCell {
     let cornerRadius:CGFloat = 5
     let deselectedLabelColor: UIColor = UIColor.lightText
     let selectedLabelColor: UIColor = UIColor.white
+    let highlightedAlpha: CGFloat = 1
+    let unhighlightedAlpha: CGFloat = 0.4
     var timer: Timer?
     var borderPathLayer: CAShapeLayer?
     
@@ -44,11 +46,12 @@ class MoodGenreCell: UICollectionViewCell {
         self.layer.rasterizationScale = UIScreen.main.scale
         self.moodGenreLabel.text = ""
         self.backgroundImage.image = #imageLiteral(resourceName: "TransparentAppIcon")
+        self.backgroundImage.alpha = self.unhighlightedAlpha
         self.imageUrlList?.removeAll()
         self.imageList?.removeAll()
         self.currentImageIndex = 0
         self.deselectCell()
-//        self.borderPathLayer = nil
+        self.borderPathLayer = nil
         self.timer?.invalidate()
         self.timer = nil
     }
@@ -65,6 +68,7 @@ class MoodGenreCell: UICollectionViewCell {
             self.moodGenreLabel.text = text
             
             self.backgroundImage.contentMode = .scaleAspectFit
+            self.backgroundImage.alpha = self.unhighlightedAlpha
             
             if let imageList = self.imageList, imageList.count > 0 {
                 self.setTimer()
@@ -165,14 +169,12 @@ class MoodGenreCell: UICollectionViewCell {
             animationGroup.duration = .greatestFiniteMagnitude
             borderPathLayer.add(animationGroup, forKey: "myAnimation")
             
-//            self.layer.insertSublayer(borderPathLayer, at: 0)
             self.layer.addSublayer(borderPathLayer)
         }
     }
     
     func setPathDeselectAnimation() {
         self.moodGenreLabel.textColor = deselectedLabelColor
-        self.sendSubview(toBack: self.moodGenreLabel)
         if let borderPathLayer = borderPathLayer {
             borderPathLayer.removeAllAnimations()
             borderPathLayer.strokeColor = NusicDefaults.deselectedColor.cgColor

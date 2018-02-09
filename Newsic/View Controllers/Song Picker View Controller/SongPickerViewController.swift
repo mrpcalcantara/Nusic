@@ -173,6 +173,9 @@ class SongPickerViewController: NusicDefaultViewController {
             self.moodObject = nusicMood;
         }
         
+        if let selectedIndexPath = selectedIndexPathForMood {
+            invalidateCellsLayout(for: moodCollectionView)
+        }
 
         self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
 

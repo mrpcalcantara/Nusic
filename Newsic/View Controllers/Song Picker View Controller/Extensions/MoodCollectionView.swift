@@ -266,6 +266,19 @@ extension SongPickerViewController {
         }
     }
     
+    func cleanCellsLayer(for collectionView: UICollectionView) {
+        var section = 0;
+        let sections = collectionView == moodCollectionView ? sectionMoodTitles : sectionGenreTitles
+        for title in sections {
+            if title != "" {
+                if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: section)) as? MoodGenreListCell {
+                    cell.listCollectionView.collectionViewLayout.invalidateLayout()
+                }
+            }
+            section += 1;
+        }
+    }
+    
     func invalidateCellsLayout(for collectionView: UICollectionView) {
         var section = 0;
         let sections = collectionView == moodCollectionView ? sectionMoodTitles : sectionGenreTitles
@@ -558,6 +571,7 @@ extension SongPickerViewController: MoodGenreListCellDelegate {
         if let selectedMood = moodObject?.emotions.first?.basicGroup.rawValue {
             if label == selectedMood {
                 DispatchQueue.main.async {
+                    print("selecting cell with indexPath = \(section),\(indexPath.row), label = \(label)")
                     cell.selectCell()
                 }
             }
