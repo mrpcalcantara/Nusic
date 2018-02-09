@@ -173,6 +173,15 @@ extension ShowSongViewController: KolodaViewDelegate {
     func kolodaShouldTransparentizeNextCard(_ koloda: KolodaView) -> Bool {
         return false
     }
+
+    func kolodaSwipeThresholdRatioMargin(_ koloda: KolodaView) -> CGFloat? {
+        return 0.75
+    }
+    
+    func koloda(_ koloda: KolodaView, draggedCardWithPercentage finishPercentage: CGFloat, in direction: SwipeResultDirection) {
+        print(finishPercentage)
+        
+    }
 }
 
 
@@ -184,7 +193,7 @@ extension ShowSongViewController: KolodaViewDataSource {
     }
     
     func kolodaSpeedThatCardShouldDrag(_ koloda: KolodaView) -> DragSpeed {
-        return .fast
+        return .default
     }
     
     func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {

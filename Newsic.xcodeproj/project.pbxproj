@@ -434,7 +434,7 @@
 			children = (
 				8C626E9E1FE7A21500BF0E08 /* Genre Choice List */,
 				8C5B18EF1FCBBEC900EBFAE1 /* Collection View Header */,
-				8CB529DA1F8373FB00C8050F /* Mood Cell */,
+				8CB529DA1F8373FB00C8050F /* Mood Cells */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1124,14 +1124,14 @@
 			path = Newsic;
 			sourceTree = "<group>";
 		};
-		8CB529DA1F8373FB00C8050F /* Mood Cell */ = {
+		8CB529DA1F8373FB00C8050F /* Mood Cells */ = {
 			isa = PBXGroup;
 			children = (
 				8C2D05E1201EE7BA00518B68 /* Cell Collection View */,
 				8CB529DB1F83745200C8050F /* MoodViewCell.swift */,
 				8CB529DC1F83745200C8050F /* MoodViewCell.xib */,
 			);
-			path = "Mood Cell";
+			path = "Mood Cells";
 			sourceTree = "<group>";
 		};
 		8CB529DF1F8375C700C8050F /* Extensions */ = {

@@ -26,6 +26,8 @@ class MoodGenreListCell: UICollectionViewCell {
     var cellSize: CGSize?
     var nusicType: NusicTypeSearch?
     
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -100,7 +102,7 @@ extension MoodGenreListCell: UICollectionViewDelegate {
         if let cell = collectionView.cellForItem(at: indexPath) as? MoodGenreCell {
             UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
                 cell.moodGenreLabel.alpha = 0
-                cell.backgroundImage.alpha = 1
+                cell.backgroundImage.alpha = cell.highlightedAlpha
             }, completion: nil)
         }
     }
@@ -110,7 +112,7 @@ extension MoodGenreListCell: UICollectionViewDelegate {
             UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
                 
                 cell.moodGenreLabel.alpha = 1
-                cell.backgroundImage.alpha = 0.3
+                cell.backgroundImage.alpha = cell.unhighlightedAlpha
             }, completion: nil)
         }
     }
