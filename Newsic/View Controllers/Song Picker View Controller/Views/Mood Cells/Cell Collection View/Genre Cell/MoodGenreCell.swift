@@ -16,9 +16,15 @@ class MoodGenreCell: UICollectionViewCell {
     
     static let reuseIdentifier: String? = "moodGenreCell"
     
-    
+    //View
+    var currentImageIndex: Int = 0
+    let cornerRadius:CGFloat = 5
+    let deselectedLabelColor: UIColor = UIColor.lightText
+    let selectedLabelColor: UIColor = UIColor.white
+    let highlightedAlpha: CGFloat = 1
+    let unhighlightedAlpha: CGFloat = 0.4
+    var borderPathLayer: CAShapeLayer?
     var imageUrlList: [String]?
-    var trackList: [SpotifyTrack]?
     var imageList: [UIImage]? {
         didSet {
             DispatchQueue.main.async {
@@ -26,14 +32,11 @@ class MoodGenreCell: UICollectionViewCell {
             }
         }
     }
-    var currentImageIndex: Int = 0
-    let cornerRadius:CGFloat = 5
-    let deselectedLabelColor: UIColor = UIColor.lightText
-    let selectedLabelColor: UIColor = UIColor.white
-    let highlightedAlpha: CGFloat = 1
-    let unhighlightedAlpha: CGFloat = 0.4
+    
+    //Data
+    var trackList: [SpotifyTrack]?
     var timer: Timer?
-    var borderPathLayer: CAShapeLayer?
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -56,7 +59,6 @@ class MoodGenreCell: UICollectionViewCell {
         self.timer = nil
     }
     
-    
     func configure(text: String) {
         DispatchQueue.main.async {
             self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -76,18 +78,6 @@ class MoodGenreCell: UICollectionViewCell {
                 self.imageList = Array()
             }
         }
-    }
-    
-    func setupBorderLayer() {
-        let path = UIBezierPath(roundedRect: self.bounds, cornerRadius: cornerRadius)
-        let layer = CAShapeLayer()
-        layer.strokeColor = NusicDefaults.foregroundThemeColor.cgColor
-        layer.lineWidth = 2
-        layer.fillColor = NusicDefaults.deselectedColor.cgColor
-        layer.backgroundColor = NusicDefaults.deselectedColor.cgColor
-        layer.path = path.cgPath
-        
-        borderPathLayer = layer
     }
     
     func addImages(urlList: [String]) {
@@ -112,7 +102,27 @@ class MoodGenreCell: UICollectionViewCell {
         }
     }
     
-    @objc func cycleImages() {
+    func selectCell() {
+        setPathSelectAnimation()
+    }
+    
+    func deselectCell() {
+        setPathDeselectAnimation()
+    }
+    
+    fileprivate func setupBorderLayer() {
+        let path = UIBezierPath(roundedRect: self.bounds, cornerRadius: cornerRadius)
+        let layer = CAShapeLayer()
+        layer.strokeColor = NusicDefaults.foregroundThemeColor.cgColor
+        layer.lineWidth = 2
+        layer.fillColor = NusicDefaults.deselectedColor.cgColor
+        layer.backgroundColor = NusicDefaults.deselectedColor.cgColor
+        layer.path = path.cgPath
+        
+        borderPathLayer = layer
+    }
+    
+    @objc fileprivate func cycleImages() {
         
         if currentImageIndex == imageUrlList?.count {
             currentImageIndex = 0
@@ -132,7 +142,7 @@ class MoodGenreCell: UICollectionViewCell {
         
     }
     
-    func setTimer() {
+    fileprivate func setTimer() {
         self.timer?.invalidate()
         self.timer = nil
         self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true, block: { (timer) in
@@ -141,7 +151,7 @@ class MoodGenreCell: UICollectionViewCell {
         timer?.fire()
     }
     
-    func setPathSelectAnimation() {
+    fileprivate func setPathSelectAnimation() {
         self.moodGenreLabel.textColor = selectedLabelColor
         if let borderPathLayer = borderPathLayer {
             borderPathLayer.removeAllAnimations()
@@ -173,7 +183,7 @@ class MoodGenreCell: UICollectionViewCell {
         }
     }
     
-    func setPathDeselectAnimation() {
+    fileprivate func setPathDeselectAnimation() {
         self.moodGenreLabel.textColor = deselectedLabelColor
         if let borderPathLayer = borderPathLayer {
             borderPathLayer.removeAllAnimations()
@@ -199,14 +209,6 @@ class MoodGenreCell: UICollectionViewCell {
             borderLayer.removeFromSuperlayer()
         }
         
-    }
-    
-    func selectCell() {
-        setPathSelectAnimation()
-    }
-    
-    func deselectCell() {
-        setPathDeselectAnimation()
     }
 
 }

@@ -34,7 +34,7 @@ class SettingsHeader: NusicView {
         // Initialization code
     }
     
-    func loadFromNib() {
+    fileprivate func loadFromNib() {
         let contentView = UINib(nibName: self.className, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SettingsHeader
         contentView.backgroundColor = NusicDefaults.deselectedColor
         contentView.frame = self.bounds
