@@ -4,7 +4,7 @@ iOS music suggestion app according to moods or genres
 My second app! Nusic is an application that will suggest you songs, in case you need a change in your current playlists ( I know I did..! )
 You can either choose a mood or specific genres to get a suggested list powered by Spotify!
 <br /><br />
-<p align="center"><img src="https://media.giphy.com/media/xUNda6VmlAk6cTA2M8/giphy.gif"></img></p>
+<p align="center"><img src="https://media.giphy.com/media/l1JohRRNDAzDvgSAw/giphy.gif"></img></p>
 
 ## Getting Started
 
