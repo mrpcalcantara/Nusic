@@ -52,4 +52,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * **Koloda** - [Click here](https://github.com/Yalantis/Koloda)
 * **PopupDialog** - [Click here](https://github.com/Orderella/PopupDialog)
 * **SwiftSpinner** - [Click here](https://github.com/icanzilb/SwiftSpinner)
+* **TwicketSegmentedControl** - [Click here](https://github.com/twicketapp/TwicketSegmentedControl)
 
