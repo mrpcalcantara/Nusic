@@ -117,6 +117,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
 }
 
 extension ShowSongViewController: SPTAudioStreamingPlaybackDelegate {
+    
     func setupPlaybackDelegate() {
         player?.playbackDelegate = self
     }
@@ -124,6 +125,7 @@ extension ShowSongViewController: SPTAudioStreamingPlaybackDelegate {
     func resetPlaybackDelegate() {
         player?.playbackDelegate = nil
     }
+
 }
 
 
@@ -190,6 +192,28 @@ extension ShowSongViewController {
         
     }
     
+    // MARK: Activate audio session
+    func activateAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("activateAudioSession() - error starting")
+        }
+        
+        
+    }
+    
+    // MARK: Deactivate audio session
+    func deactivateAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch {
+            print("deactivateAudioSession() - error stopping")
+        }
+        
+    }
+
     @objc func actionPreviousSong() {
         songCardView.revertAction()
     }
@@ -326,31 +350,7 @@ extension ShowSongViewController {
         
         
     }
-    
-    // MARK: Activate audio session
-    
-    func activateAudioSession() {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
-            print("activateAudioSession() - error starting")
-        }
-        
-        
-    }
-    
-    // MARK: Deactivate audio session
-    
-    func deactivateAudioSession() {
-        do {
-            try AVAudioSession.sharedInstance().setActive(false)
-        } catch {
-            print("deactivateAudioSession() - error stopping")
-        }
-        
-    }
-
+  
 
 }
 

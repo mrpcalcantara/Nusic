@@ -16,9 +16,8 @@ class ChoiceListViewHeader: UICollectionReusableView {
 
     @IBOutlet weak var sectionHeaderLabel: UILabel!
     @IBOutlet weak var clearButton: NusicButton!
-    static let reuseIdentifier = "choiceViewHeader"
-//    static let reuseIdentifier: String? = "choiceListViewHeader"
     
+    static let reuseIdentifier = "choiceViewHeader"
     weak var delegate: ChoiceListViewHeaderDelegate?
     
     override class var layerClass: AnyClass {
@@ -38,17 +37,18 @@ class ChoiceListViewHeader: UICollectionReusableView {
         delegate?.clearButtonClicked()
     }
     
-    func setupLabel(label: String) {
+    fileprivate func setupLabel(label: String) {
         self.sectionHeaderLabel.text = label
         self.sectionHeaderLabel.textColor = NusicDefaults.foregroundThemeColor
         self.addBlurEffect(style: .dark, alpha: 0.7);
     }
     
-    func setupButton() {
+    fileprivate func setupButton() {
         clearButton.setTitle("Reset", for: .normal)
         
         clearButton.titleLabel?.adjustsFontSizeToFitWidth = true
         clearButton.titleLabel?.minimumScaleFactor = 0.1
+        clearButton.setTitleColor(NusicDefaults.foregroundThemeColor, for: .normal)
         clearButton.tintColor = NusicDefaults.foregroundThemeColor
         clearButton.borderColor = NusicDefaults.foregroundThemeColor
     }

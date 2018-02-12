@@ -58,19 +58,6 @@ extension ChoiceListView {
         }
     }
     
-    func showOpenArrow() {
-        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
-            self.arrowImageView.transform = CGAffineTransform(rotationAngle: .pi)
-        }, completion: nil)
-    }
-    
-    func showCloseArrow() {
-        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
-            self.arrowImageView.transform = CGAffineTransform.identity
-        }, completion: nil)
-        
-    }
-    
     func removeBezierPaths() {
         leftLayer.removeFromSuperlayer()
         rightLayer.removeFromSuperlayer()
@@ -85,9 +72,9 @@ extension ChoiceListView {
         }
     }
     
-    func setupOpenBezierPaths() {
+    fileprivate func setupOpenBezierPaths() {
         var initialX:CGFloat = 8
-        var initialY:CGFloat = 0
+        let initialY:CGFloat = 0
         
         let leftPath = UIBezierPath();
         let endpointLeft = self.frame.width/2 - (arrowImageView.image?.size.width)!
@@ -125,9 +112,9 @@ extension ChoiceListView {
         self.layer.addSublayer(rightLayer)
     }
     
-    func setupCloseBezierPaths() {
+    fileprivate func setupCloseBezierPaths() {
         var initialX:CGFloat = 8
-        var initialY:CGFloat = toggleView.bounds.height
+        let initialY:CGFloat = toggleView.bounds.height
         
         let leftPath = UIBezierPath();
         let endpointLeft = self.frame.width/2 - (arrowImageView.image?.size.width)!
@@ -152,8 +139,6 @@ extension ChoiceListView {
         let endpointRight = self.frame.width/2 + (arrowImageView.image?.size.width)!
         rightPath.move(to: CGPoint(x: initialX, y: initialY))
         rightPath.addLine(to: CGPoint(x: initialX, y: initialY-toggleView.bounds.height/4))
-//        rightPath.addLine(to: CGPoint(x: initialX-8, y: toggleView.bounds.height/2))
-        
         rightPath.addArc(withCenter: CGPoint(x: initialX - radius, y: 3*toggleView.bounds.height/4), radius: radius, startAngle: 0, endAngle: .pi*1.5, clockwise: false)
         rightPath.addLine(to: CGPoint(x: endpointRight, y: toggleView.bounds.height/2))
         
@@ -164,6 +149,19 @@ extension ChoiceListView {
         rightLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(rightLayer)
+    }
+    
+    fileprivate func showOpenArrow() {
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
+            self.arrowImageView.transform = CGAffineTransform(rotationAngle: .pi)
+        }, completion: nil)
+    }
+    
+    fileprivate func showCloseArrow() {
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
+            self.arrowImageView.transform = CGAffineTransform.identity
+        }, completion: nil)
+        
     }
     
 }

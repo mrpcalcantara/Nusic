@@ -122,7 +122,7 @@ extension SideMenuViewController : UITableViewDataSource {
 extension SideMenuViewController {
     
     //Setup functions for Table View cells and sections
-    func setupPlayerSettings(for cell: SettingsCell, title: String) {
+    fileprivate func setupPlayerSettings(for cell: SettingsCell, title: String) {
         if let value = settings?.preferredPlayer?.rawValue {
             if let str = NusicPreferredPlayer(rawValue: value) {
                 
@@ -159,7 +159,7 @@ extension SideMenuViewController {
         }
     }
     
-    func setupConnectionSettings(for cell: SettingsCell, title: String) {
+    fileprivate func setupConnectionSettings(for cell: SettingsCell, title: String) {
         if let useMobileData = settings?.useMobileData {
             
             let buttonOn = YBButton(frame: CGRect.zero, icon: UIImage(named: "CheckmarkIcon"), text: (true).toString())
@@ -180,7 +180,7 @@ extension SideMenuViewController {
         }
     }
     
-    func setupActionSettings(for cell: SettingsCell, title: String) {
+    fileprivate func setupActionSettings(for cell: SettingsCell, title: String) {
         let buttonLogout = YBButton(frame: CGRect.zero, icon: UIImage(named: "CheckmarkIcon"), text: "Yes")
         let actionLogout = { () -> Void in
             self.logoutUser()
@@ -198,7 +198,7 @@ extension SideMenuViewController {
         
     }
     
-    func setupSpotifySettings(for cell: SettingsCell, title: String) {
+    fileprivate func setupSpotifySettings(for cell: SettingsCell, title: String) {
         if let bitrate = settings?.spotifySettings?.bitrate {
             let buttonHigh = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifySoundQualityHigh"), text: SPTBitrate.high.description())
             let actionHigh = { () -> Void in

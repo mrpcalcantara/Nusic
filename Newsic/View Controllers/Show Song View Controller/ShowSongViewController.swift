@@ -15,7 +15,7 @@ import PopupDialog
 
 class ShowSongViewController: NusicDefaultViewController {
     
-    //Views
+    //View variables
     var isMenuOpen: Bool = false;
     var isPlayerMenuOpen: Bool = false;
     var navbar: UINavigationBar = UINavigationBar()
@@ -23,7 +23,7 @@ class ShowSongViewController: NusicDefaultViewController {
     var screenRotated: Bool = false
     var playerMenuMaxWidth: CGFloat = 0
     
-    //Nusic Objects
+    //Data variables
     var cardList:[NusicTrack] = [];
     var playlist:NusicPlaylist! = nil
     var user: NusicUser! = nil;
@@ -175,7 +175,7 @@ class ShowSongViewController: NusicDefaultViewController {
                 closeMenu()
             }
             if isPlayerMenuOpen {
-                closePlayerMenu(animated: true)
+                togglePlayerMenu()
             }
         }
     }
@@ -183,6 +183,9 @@ class ShowSongViewController: NusicDefaultViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         currentSongCardFrame = nil
+        if isPlayerMenuOpen {
+            togglePlayerMenu(false)
+        }
     }
     
     override func viewWillLayoutSubviews() {
@@ -218,40 +221,12 @@ class ShowSongViewController: NusicDefaultViewController {
         
         closeMenu()
         if isPlayerMenuOpen {
-            closePlayerMenu(animated: true)
+            togglePlayerMenu(false)
         }
         screenRotated = true
     }
     
-    func setupConstraints(for size: CGSize) {
-        //Landscape
-//        print("songCardView.frame on setupConstraints \(songCardView.frame)")
-        if size.width > size.height {
-            self.songCardTrailingConstraint.constant = -size.width*(1/3)
-            self.dislikeSongCenterXConstraint.constant = -size.width*(1/6)
-            self.previousTrackCenterXConstraint.constant = -size.width*(1/6)
-            self.pausePlayCenterXConstraint.constant = -size.width*(1/6)
-            self.likeSongCenterXConstraint.constant = -size.width*(1/6)
-            self.showMoreCenterXConstraint.constant = -size.width*(1/6)
-            self.nextTrackCenterXConstraint.constant = -size.width*(1/6)
-            self.songProgressTrailingConstraint.constant = -size.width*(1/3)
-            self.tableViewLeadingConstraint.constant = size.width*(2/3)
-            self.tableViewTrailingConstraint.constant = 0
-            songListTableView.isUserInteractionEnabled = true
-        } else {
-            self.dislikeSongCenterXConstraint.constant = 0
-            self.previousTrackCenterXConstraint.constant = 0
-            self.pausePlayCenterXConstraint.constant = 0
-            self.likeSongCenterXConstraint.constant = 0
-            self.showMoreCenterXConstraint.constant = 0
-            self.nextTrackCenterXConstraint.constant = 0
-            self.songProgressTrailingConstraint.constant = 0
-            self.songCardTrailingConstraint.constant = -8
-            
-        }
-    }
-    
-    func setupShowSongVC() {
+    fileprivate func setupShowSongVC() {
         
         if checkConnectivity() {
             preferredPlayer = user.settingValues.preferredPlayer
@@ -275,7 +250,7 @@ class ShowSongViewController: NusicDefaultViewController {
         newMoodOrGenre = false
     }
     
-    func setupMainView() {
+    fileprivate func setupMainView() {
         
         currentMoodDyad = moodObject?.emotions.first?.basicGroup
         addMenuSwipeGestureRecognizer()
@@ -283,7 +258,7 @@ class ShowSongViewController: NusicDefaultViewController {
         
     }
     
-    func setupCommandCenter() {
+    fileprivate func setupCommandCenter() {
         let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.changePlaybackPositionCommand.isEnabled = true
         commandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(remoteControlSeekSong))
@@ -305,7 +280,7 @@ class ShowSongViewController: NusicDefaultViewController {
         //
     }
     
-    func setupNavigationBar() {
+    fileprivate func setupNavigationBar() {
         if navbar != nil {
             navbar.removeFromSuperview()
         }
@@ -353,7 +328,7 @@ class ShowSongViewController: NusicDefaultViewController {
         self.view.layoutIfNeeded()
     }
     
-    func reloadNavigationBar() {
+    fileprivate func reloadNavigationBar() {
         if navbar != nil {
             let barButtonLeft = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(backToSongPicker));
             self.navigationItem.leftBarButtonItem = barButtonLeft
@@ -383,7 +358,7 @@ class ShowSongViewController: NusicDefaultViewController {
         }
     }
     
-    func setupMenu() {
+    fileprivate func setupMenu() {
         
         self.view.sendSubview(toBack: trackStackView)
         self.view.sendSubview(toBack: songCardView)
@@ -394,7 +369,7 @@ class ShowSongViewController: NusicDefaultViewController {
         
     }
     
-    func setupSongs() {
+    fileprivate func setupSongs() {
         musicSearchType = .normal
         if let selectedSongs = selectedSongs, selectedSongs.count > 0 {
             fetchYouTubeInfo()
@@ -407,12 +382,49 @@ class ShowSongViewController: NusicDefaultViewController {
         }
     }
 
-    func setupMoodLabel() {
+    fileprivate func setupMoodLabel() {
         cardTitle.text = moodObject?.emotions.first?.basicGroup == EmotionDyad.unknown ? "" : moodObject?.emotions.first?.basicGroup.rawValue
         cardTitle.font = NusicDefaults.font!
         cardTitle.textColor = NusicDefaults.foregroundThemeColor
         cardTitle.layoutIfNeeded()
         addCardBorderLayer()
+    }
+    
+    fileprivate func resetView() {
+        if isPlayerMenuOpen {
+            togglePlayerMenu(false)
+        }
+        self.cardList.removeAll();
+        self.songCardView.resetCurrentCardIndex()
+        self.songCardView.reloadData();
+        
+        if preferredPlayer == NusicPreferredPlayer.youtube {
+            if let player = player, player.initialized {
+                resetPlaybackDelegate()
+                resetStreamingDelegate()
+                actionStopPlayer()
+            }
+        }
+    }
+    
+    fileprivate func setShowMoreOrigin() {
+        if currentSongCardFrame != songCardView.frame {
+            currentSongCardFrame = songCardView.frame
+            showMoreOpenPosition = CGPoint(x: songCardView.frame.origin.x + songCardView.frame.size.width/2, y: songCardView.frame.height + songCardBottomConstraint.constant)
+            showMoreOpenPosition?.x = songCardView.frame.origin.x + songCardView.frame.size.width/2 - songCardLeadingConstraint.constant
+            
+            showMoreOpenPosition?.y = self.preferredPlayer == NusicPreferredPlayer.spotify ? self.view.safeAreaLayoutGuide.layoutFrame.height * 0.84 - showMore.frame.width : self.view.safeAreaLayoutGuide.layoutFrame.height * 0.9 - showMore.frame.width
+            showMoreClosePosition = CGPoint(x: songCardView.frame.origin.x + songCardView.frame.size.width/2, y: songCardView.frame.height + songCardBottomConstraint.constant)
+            showMoreClosePosition?.x = (showMoreOpenPosition?.x)!
+            showMoreClosePosition?.y = songCardView.frame.height + songCardBottomConstraint.constant
+            initialPlayerMenuIconCenter = CGRect(origin: showMoreClosePosition!, size: showMore.frame.size)
+            if isPlayerMenuOpen {
+                self.showMore.frame.origin = self.showMoreOpenPosition!
+            } else {
+                self.showMore.frame.origin = self.showMoreClosePosition!
+            }
+            
+        }
     }
     
     @IBAction func showMoreClicked(_ sender: UIButton) {
@@ -506,42 +518,33 @@ class ShowSongViewController: NusicDefaultViewController {
         }
     }
     
-    func resetView() {
-        if isPlayerMenuOpen {
-            closePlayerMenu(animated: false)
-        }
-        self.cardList.removeAll();
-        self.songCardView.resetCurrentCardIndex()
-        self.songCardView.reloadData();
-        
-        if preferredPlayer == NusicPreferredPlayer.youtube {
-            if let player = player, player.initialized {
-                resetPlaybackDelegate()
-                resetStreamingDelegate()
-                actionStopPlayer()
-            }
-        }
-    }
-
-    func setShowMoreOrigin() {
-        if currentSongCardFrame != songCardView.frame {
-            currentSongCardFrame = songCardView.frame
-            showMoreOpenPosition = CGPoint(x: songCardView.frame.origin.x + songCardView.frame.size.width/2, y: songCardView.frame.height + songCardBottomConstraint.constant)
-            showMoreOpenPosition?.x = songCardView.frame.origin.x + songCardView.frame.size.width/2 - songCardLeadingConstraint.constant 
-            
-            showMoreOpenPosition?.y = self.preferredPlayer == NusicPreferredPlayer.spotify ? self.view.safeAreaLayoutGuide.layoutFrame.height * 0.84 - showMore.frame.width : self.view.safeAreaLayoutGuide.layoutFrame.height * 0.9 - showMore.frame.width
-            showMoreClosePosition = CGPoint(x: songCardView.frame.origin.x + songCardView.frame.size.width/2, y: songCardView.frame.height + songCardBottomConstraint.constant)
-            showMoreClosePosition?.x = (showMoreOpenPosition?.x)!
-            showMoreClosePosition?.y = songCardView.frame.height + songCardBottomConstraint.constant
-            initialPlayerMenuIconCenter = CGRect(origin: showMoreClosePosition!, size: showMore.frame.size)
-            if isPlayerMenuOpen {
-                self.showMore.frame.origin = self.showMoreOpenPosition!
-            } else {
-                self.showMore.frame.origin = self.showMoreClosePosition!
-            }
+    func setupConstraints(for size: CGSize) {
+        //Landscape
+        if size.width > size.height {
+            self.songCardTrailingConstraint.constant = -size.width*(1/3)
+            self.dislikeSongCenterXConstraint.constant = -size.width*(1/6)
+            self.previousTrackCenterXConstraint.constant = -size.width*(1/6)
+            self.pausePlayCenterXConstraint.constant = -size.width*(1/6)
+            self.likeSongCenterXConstraint.constant = -size.width*(1/6)
+            self.showMoreCenterXConstraint.constant = -size.width*(1/6)
+            self.nextTrackCenterXConstraint.constant = -size.width*(1/6)
+            self.songProgressTrailingConstraint.constant = -size.width*(1/3)
+            self.tableViewLeadingConstraint.constant = size.width*(2/3)
+            self.tableViewTrailingConstraint.constant = 0
+            songListTableView.isUserInteractionEnabled = true
+        } else {
+            self.dislikeSongCenterXConstraint.constant = 0
+            self.previousTrackCenterXConstraint.constant = 0
+            self.pausePlayCenterXConstraint.constant = 0
+            self.likeSongCenterXConstraint.constant = 0
+            self.showMoreCenterXConstraint.constant = 0
+            self.nextTrackCenterXConstraint.constant = 0
+            self.songProgressTrailingConstraint.constant = 0
+            self.songCardTrailingConstraint.constant = -8
             
         }
     }
+    
 }
 
 extension ShowSongViewController: UIGestureRecognizerDelegate {
@@ -618,7 +621,7 @@ extension ShowSongViewController {
         if !isMenuOpen {
             openMenu();
             if isPlayerMenuOpen {
-                closePlayerMenu(animated: true)
+                togglePlayerMenu()
             }
         } else {
             closeMenu();
@@ -634,7 +637,7 @@ extension ShowSongViewController {
         self.auth = (UIApplication.shared.delegate as! AppDelegate).auth
     }
     
-    func fetchLikedTracks() {
+    fileprivate func fetchLikedTracks() {
         likedTrackList.removeAll()
         if moodObject?.emotions.first?.basicGroup == EmotionDyad.unknown {
             spotifyHandler.getAllTracksForPlaylist(playlistId: playlist.id!, fetchGenres: true) { (spotifyTracks, error) in
@@ -691,7 +694,7 @@ extension ShowSongViewController {
         }
     }
     
-    func fetchSongsAndSetup(numberOfSongs: Int? = nil, moodObject: NusicMood?) {
+    fileprivate func fetchSongsAndSetup(numberOfSongs: Int? = nil, moodObject: NusicMood?) {
         
         DispatchQueue.main.async {
             self.showSwiftSpinner(text: "Fetching tracks..")
@@ -724,7 +727,7 @@ extension ShowSongViewController {
         }
     }
     
-    func fetchYouTubeInfo() {
+    fileprivate func fetchYouTubeInfo() {
         
         DispatchQueue.main.async {
             self.showSwiftSpinner(text: "Fetching tracks..")
@@ -746,7 +749,7 @@ extension ShowSongViewController {
         }
     }
     
-    func fetchNewCard(numberOfSongs: Int? = 1, cardFetchingHandler: ((Bool) -> ())?){
+    fileprivate func fetchNewCard(numberOfSongs: Int? = 1, cardFetchingHandler: ((Bool) -> ())?){
         
         let addSongsHandler: ([NusicTrack]) -> Bool = { trackList in
             self.addSongsToCardList(for: nil, tracks: trackList)
@@ -784,7 +787,7 @@ extension ShowSongViewController {
         }
     }
     
-    func fetchNewCardArtist(basedOnArtist: SpotifyArtist? = nil, numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
+    fileprivate func fetchNewCardArtist(basedOnArtist: SpotifyArtist? = nil, numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
         var artist: SpotifyArtist = SpotifyArtist()
         if basedOnArtist != nil {
             artist = basedOnArtist!
@@ -814,7 +817,7 @@ extension ShowSongViewController {
         
     }
     
-    func fetchNewCardTrack(basedOnTrack: SpotifyTrack? = nil, numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
+    fileprivate func fetchNewCardTrack(basedOnTrack: SpotifyTrack? = nil, numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
         var track: SpotifyTrack = SpotifyTrack()
         if basedOnTrack != nil {
             track = basedOnTrack!
@@ -845,7 +848,7 @@ extension ShowSongViewController {
         
     }
     
-    func fetchNewCardGenre(basedOnGenres: [String : Int]? = nil, numberOfSongs: Int, insert inIndex: Int? = nil, cardFetchingHandler: (([NusicTrack]) -> ())?) {
+    fileprivate func fetchNewCardGenre(basedOnGenres: [String : Int]? = nil, numberOfSongs: Int, insert inIndex: Int? = nil, cardFetchingHandler: (([NusicTrack]) -> ())?) {
         var genres: [String: Int]
         if basedOnGenres != nil {
             genres = basedOnGenres!
@@ -877,7 +880,7 @@ extension ShowSongViewController {
         }
     }
     
-    func fetchNewCardNormal(numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
+    fileprivate func fetchNewCardNormal(numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
         self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, market: user.territory, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: selectedGenreList) { (results, error) in
             if let error = error {
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
@@ -908,18 +911,18 @@ extension ShowSongViewController {
         }
     }
     
-    func getSongsForSelectedMood() {
+    fileprivate func getSongsForSelectedMood() {
         updateCurrentGenresAndFeatures { (genres, trackFeatures) in
             self.fetchSongsAndSetup(moodObject: self.moodObject)
         }
     }
     
-    func getSongsForSelectedGenres() {
+    fileprivate func getSongsForSelectedGenres() {
         trackFeatures?.removeAll()
         fetchSongsAndSetup(moodObject: self.moodObject)
     }
     
-    func getYouTubeResults(tracks: [SpotifyTrack], youtubeSearchHandler: @escaping ([NusicTrack]) -> ()) {
+    fileprivate func getYouTubeResults(tracks: [SpotifyTrack], youtubeSearchHandler: @escaping ([NusicTrack]) -> ()) {
         var index = 0
         var ytTracks: [NusicTrack] = []
         for track in tracks {
@@ -953,7 +956,7 @@ extension ShowSongViewController {
         });
     }
     
-    func getGenresAndFeaturesForMoods(genresFeaturesHandler: @escaping([String]?, [SpotifyTrackFeature]?) -> ()) {
+    fileprivate func getGenresAndFeaturesForMoods(genresFeaturesHandler: @escaping([String]?, [SpotifyTrackFeature]?) -> ()) {
         moodObject?.getTrackIdAndFeaturesForEmotion(trackIdAndFeaturesHandler: { (trackIdList, trackFeatures, error) in
             if let error = error {
                 error.presentPopup(for: self)
@@ -1054,7 +1057,7 @@ extension ShowSongViewController {
         }
     }
     
-    func addSongToCardPlaylist(index: Int? = nil, track: NusicTrack) {
+    fileprivate func addSongToCardPlaylist(index: Int? = nil, track: NusicTrack) {
 //        print("added track = \(track.trackInfo.songName)")
         if index != nil {
             self.cardList.insert(track, at: index!)
@@ -1064,7 +1067,7 @@ extension ShowSongViewController {
         self.playedSongsHistory?.append(track.trackInfo)
     }
     
-    func checkConnectivity() -> Bool {
+    fileprivate func checkConnectivity() -> Bool {
         let title = "Error!"
         var message = ""
         if Connectivity.isConnectedToNetwork() == .notConnected {

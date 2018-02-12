@@ -19,13 +19,6 @@ class SongTableViewSectionHeader: UITableViewHeaderFooterView {
     override func awakeFromNib() {
         super.awakeFromNib();
     }
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -36,7 +29,7 @@ class SongTableViewSectionHeader: UITableViewHeaderFooterView {
         super.init(coder: aDecoder)
     }
     
-    func loadFromNib() {
+    fileprivate func loadFromNib() {
         let contentView = UINib(nibName: self.className, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SongTableViewHeader
         self.displayName = contentView.displayName
         self.contentView.backgroundColor = UIColor.red

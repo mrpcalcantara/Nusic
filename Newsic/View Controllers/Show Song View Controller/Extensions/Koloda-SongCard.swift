@@ -12,27 +12,6 @@ import SwiftSpinner
 
 extension ShowSongViewController: KolodaViewDelegate {
     
-    func setupCards() {
-        songCardView.delegate = self;
-        songCardView.dataSource = self;
-        
-        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(likeTrack(in:)));
-        doubleTapRecognizer.numberOfTapsRequired = 2
-        songCardView.addGestureRecognizer(doubleTapRecognizer);
-        
-        currentSongCardFrame = songCardView.frame
-        
-    }
-    
-    func addSongToPosition(at indexPath: IndexPath, position: Int) {
-//        let nusicTrack = likedTrackList[index]
-        let nusicTrack = sectionSongs[indexPath.section][indexPath.row]
-        cardList.insert(nusicTrack, at: position);
-        
-        songCardView.insertCardAtIndexRange(position..<position+1, animated: false);
-        songCardView.delegate?.koloda(songCardView, didShowCardAt: position)
-    }
-    
     func kolodaShouldMoveBackgroundCard(_ koloda: Koloda.KolodaView) -> Bool {
         return false;
     }
@@ -239,6 +218,18 @@ extension ShowSongViewController: KolodaViewDataSource {
 
 extension ShowSongViewController {
     
+    func setupCards() {
+        songCardView.delegate = self;
+        songCardView.dataSource = self;
+        
+        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(likeTrack(in:)));
+        doubleTapRecognizer.numberOfTapsRequired = 2
+        songCardView.addGestureRecognizer(doubleTapRecognizer);
+        
+        currentSongCardFrame = songCardView.frame
+        
+    }
+    
     @objc func likeTrack(in index: Int) {
         guard cardList.count > 0, containsTrack(trackId: cardList[presentedCardIndex].trackInfo.trackId) == false else { return; }
         let likedCardIndex = presentedCardIndex
@@ -309,6 +300,14 @@ extension ShowSongViewController {
         })
     }
     
+    func addSongToPosition(at indexPath: IndexPath, position: Int) {
+        let nusicTrack = sectionSongs[indexPath.section][indexPath.row]
+        cardList.insert(nusicTrack, at: position);
+        
+        songCardView.insertCardAtIndexRange(position..<position+1, animated: false);
+        songCardView.delegate?.koloda(songCardView, didShowCardAt: position)
+    }
+    
     func getCurrentCardView() -> SongOverlayView {
         return songCardView.viewForCard(at: songCardView.currentCardIndex) as! SongOverlayView
     }
@@ -335,54 +334,51 @@ extension ShowSongViewController {
     }
     
     func addCardBorderLayer() {
+        removeCardBorderLayer()
+        var frame = trackStackView.frame
+        frame.origin = CGPoint(x: (frame.origin.x) - 4 , y: (frame.origin.y) - 4)
+        frame.size = CGSize(width: (frame.width) + 8, height: (frame.height) + 8)
         
-        if songCardView.frame != nil {
-            removeCardBorderLayer()
-            var frame = trackStackView.frame
-            frame.origin = CGPoint(x: (frame.origin.x) - 4 , y: (frame.origin.y) - 4)
-            frame.size = CGSize(width: (frame.width) + 8, height: (frame.height) + 8)
-            
-            let path = UIBezierPath()
+        let path = UIBezierPath()
         
-            let pathOriginX = cardTitle.text != "" ? cardTitle.frame.origin.x + cardTitle.frame.width + 8 : cardTitle.frame.origin.x + 8
-            path.move(to: CGPoint(x: pathOriginX, y: frame.origin.y - 8))
-            path.addLine(to: CGPoint(x: frame.origin.x + frame.width - 8 , y: frame.origin.y - 8))
-            path.addLine(to: CGPoint(x: frame.origin.x + frame.width + 8, y: frame.origin.y + 8))
-            path.addLine(to: CGPoint(x: frame.origin.x + frame.width + 8, y: frame.origin.y + frame.height - 8))
-            path.addLine(to: CGPoint(x: frame.origin.x + frame.width - 8, y: frame.origin.y + frame.height + 8))
-            path.addLine(to: CGPoint(x: frame.origin.x + 8 , y: frame.origin.y + frame.height + 8))
-            path.addLine(to: CGPoint(x: frame.origin.x - 8, y: frame.origin.y + frame.height - 8))
-            path.addLine(to: CGPoint(x: frame.origin.x - 8, y: frame.origin.y + 8))
-            path.addLine(to: CGPoint(x: frame.origin.x + 8, y: frame.origin.y - 8))
-            path.addLine(to: CGPoint(x: frame.origin.x + 16, y: frame.origin.y - 8))
-            if cardTitle.text == "" {
-                path.close()
-            }
-            let layer = CAShapeLayer()
-            layer.name = "cardBorder"
-            layer.path = path.cgPath
-            layer.strokeColor = UIColor.white.cgColor
-            layer.lineWidth = 2
-            layer.fillColor = UIColor.clear.cgColor
-            
-            let colors = [NusicDefaults.foregroundThemeColor, UIColor.clear]
-            
-            self.view.layer.removeAllAnimations()
-            
-            self.view.layer.removeGradientLayer(name: "borderGradientLayer")
-            self.view.layer.addGradientBorder(name: "borderGradientLayer", path: path.cgPath, colors: colors, width: 3)
-  
-            let animation = CABasicAnimation(keyPath: "strokeEnd")
-//            animation.toValue = 1
-            animation.fromValue = 0
-            animation.duration = 2 // seconds
-            animation.autoreverses = true
-            animation.repeatCount = .infinity
-            animation.isRemovedOnCompletion = false
-
-            // And finally add the linear animation to the shape!
-            layer.add(animation, forKey: "line")
+        let pathOriginX = cardTitle.text != "" ? cardTitle.frame.origin.x + cardTitle.frame.width + 8 : cardTitle.frame.origin.x + 8
+        path.move(to: CGPoint(x: pathOriginX, y: frame.origin.y - 8))
+        path.addLine(to: CGPoint(x: frame.origin.x + frame.width - 8 , y: frame.origin.y - 8))
+        let radius:CGFloat = 16
+        path.addArc(withCenter: CGPoint(x: frame.origin.x + frame.width - 8, y: frame.origin.y + 8), radius: radius, startAngle: .pi*1.5, endAngle: 0, clockwise: true)
+        
+        path.addLine(to: CGPoint(x: frame.origin.x + frame.width + 8, y: frame.origin.y + frame.height - 8))
+        path.addArc(withCenter: CGPoint(x: frame.origin.x + frame.width - 8, y: frame.origin.y + frame.height - 8), radius: radius, startAngle: 0, endAngle: .pi*0.5, clockwise: true)
+        
+        path.addLine(to: CGPoint(x: frame.origin.x + 8 , y: frame.origin.y + frame.height + 8))
+        path.addArc(withCenter: CGPoint(x: frame.origin.x + 8, y: frame.origin.y + frame.height - 8), radius: radius, startAngle: .pi*0.5, endAngle: .pi, clockwise: true)
+        
+        path.addLine(to: CGPoint(x: frame.origin.x - 8, y: frame.origin.y + 8))
+        path.addArc(withCenter: CGPoint(x: frame.origin.x + 8, y: frame.origin.y + 8), radius: radius, startAngle: .pi, endAngle: .pi*1.5, clockwise: true)
+        
+        path.addLine(to: CGPoint(x: frame.origin.x + 16, y: frame.origin.y - 8))
+        if cardTitle.text == "" {
+            path.close()
         }
+        let layer = CAShapeLayer()
+        layer.name = "cardBorder"
+        layer.path = path.cgPath
+        layer.strokeColor = UIColor.white.cgColor
+        layer.lineWidth = 2
+        layer.fillColor = UIColor.clear.cgColor
+        
+        let colors = [NusicDefaults.foregroundThemeColor, NusicDefaults.clearColor]
+        self.view.layer.removeGradientLayer(name: "borderGradientLayer")
+        self.view.layer.addGradientBorder(name: "borderGradientLayer", path: path.cgPath, colors: colors, width: 3)
+        
+        self.view.layer.removeAllAnimations()
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 0
+        animation.duration = 2
+        animation.autoreverses = true
+        animation.repeatCount = .infinity
+        animation.isRemovedOnCompletion = false
+        layer.add(animation, forKey: "border")
     }
 }
 

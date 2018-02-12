@@ -26,13 +26,7 @@ extension ShowSongViewController {
         setupView();
     }
     
-    func updateTableView() {
-        DispatchQueue.main.async {
-            self.songListTableView.reloadData()
-        }
-    }
-    
-    func setupView() {
+    fileprivate func setupView() {
         closeMenu()
         
         songListTableView.isHidden = false
@@ -52,7 +46,17 @@ extension ShowSongViewController {
         nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
         
         initialSongListCenter = songListTableView.center;
-        configure(headerCell: songListTableViewHeader)
+        
+        let emotion = moodObject?.emotions.first?.basicGroup.rawValue
+        songListTableViewHeader.configure(isMoodSelected: isMoodSelected, emotion: emotion)
+        
+        if UIApplication.shared.statusBarOrientation.isLandscape {
+            removeHeaderGestureRecognizer(for: songListTableViewHeader)
+            removeMenuSwipeGestureRecognizer()
+        } else {
+            addHeaderGestureRecognizer(for: songListTableViewHeader)
+            addMenuSwipeGestureRecognizer()
+        }
     }
     
     func containsTrack(trackId: String) -> Bool {
@@ -219,7 +223,6 @@ extension ShowSongViewController: UITableViewDelegate {
                         tableView.reloadSections(indexSet, with: UITableViewRowAnimation.fade)
                     }, completion: nil)
                 }
-//                self.updateTableView();
             })
             
             
@@ -242,11 +245,10 @@ extension ShowSongViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let regCell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongTableViewCell else {
+        guard let regCell = tableView.dequeueReusableCell(withIdentifier: SongTableViewCell.reuseIdentifier, for: indexPath) as? SongTableViewCell else {
             fatalError("Unexpected Index Path")
         }
-        
-        configure(cell: regCell, at: indexPath)
+        regCell.configure(for: sectionSongs[indexPath.section][indexPath.row])
         return regCell;
     }
     
@@ -254,83 +256,50 @@ extension ShowSongViewController: UITableViewDataSource {
         return sectionTitles[section]
     }
     
-    func configure(cell: SongTableViewCell, at indexPath: IndexPath) {
+    fileprivate func configure(headerCell: SongTableViewHeader) {
         
-        let element = sectionSongs[indexPath.section][indexPath.row]
-//        let element = likedTrackList[indexPath.row];
-        //cell.albumImage.bounds = CGRect(x: 0, y: 0, width: cell.bounds.height, height: cell.bounds.height);
-        cell.albumImage.contentMode = .scaleAspectFit
-        cell.albumImage.image = element.trackInfo.thumbNail;
-        cell.artistLabel.text = element.trackInfo.artist.artistName;
-        cell.trackLabel.text = element.trackInfo.songName;
-        cell.backgroundColor = .clear
-        cell.layoutIfNeeded()
-    }
-    
-    func configure(sectionHeaderCell: SongTableViewSectionHeader, at section: Int) {
         
-        sectionHeaderCell.displayName.text = sectionTitles[section]
         
-        if UIApplication.shared.statusBarOrientation.isLandscape {
-            removeHeaderGestureRecognizer(for: sectionHeaderCell)
-            removeMenuSwipeGestureRecognizer()
-        } else {
-            addHeaderGestureRecognizer(for: sectionHeaderCell)
-            addMenuSwipeGestureRecognizer()
-        }
         
     }
     
-    func configure(headerCell: SongTableViewHeader) {
-        if isMoodSelected {
-            let emotion = moodObject?.emotions.first?.basicGroup.rawValue
-            headerCell.displayName.text = "Mood: \(emotion!)"
-        } else {
-            headerCell.displayName.text = "Liked in Nusic"
-        }
-        
-        headerCell.layer.shadowColor = UIColor.black.cgColor;
-        headerCell.layer.shadowOffset = CGSize(width: 1, height: -1);
-        headerCell.layer.shadowRadius = 3.0;
-        headerCell.layer.shadowOpacity = 1;
-        
-        let gradient = CAGradientLayer()
-        gradient.frame.size = CGSize(width: headerCell.bounds.width, height: 10)
-        let stopColor = UIColor.white.cgColor
-        let startColor = UIColor.white.cgColor
-        
-        gradient.colors = [stopColor,startColor]
-        gradient.locations = [0.0,0.4]
-        headerCell.layer.addSublayer(gradient)
-        
-        if UIApplication.shared.statusBarOrientation.isLandscape {
-            removeHeaderGestureRecognizer(for: headerCell)
-            removeMenuSwipeGestureRecognizer()
-        } else {
-            addHeaderGestureRecognizer(for: headerCell)
-            addMenuSwipeGestureRecognizer()
-        }
-        
-    }
+//    func configure(cell: SongTableViewCell, at indexPath: IndexPath) {
+//
+//        let element = sectionSongs[indexPath.section][indexPath.row]
+//
+//
+//    }
+    
+//    func configure(sectionHeaderCell: SongTableViewSectionHeader, at section: Int) {
+//
+//        sectionHeaderCell.displayName.text = sectionTitles[section]
+//
+//        if UIApplication.shared.statusBarOrientation.isLandscape {
+//            removeHeaderGestureRecognizer(for: sectionHeaderCell)
+//            removeMenuSwipeGestureRecognizer()
+//        } else {
+//            addHeaderGestureRecognizer(for: sectionHeaderCell)
+//            addMenuSwipeGestureRecognizer()
+//        }
+//
+//    }
     
     func sortTableView(by type: SpotifyType) {
         switch type {
         case .artist:
-            sectionTitles = likedTrackList.map { $0.trackInfo.artist.artistName.capitalizingFirstLetter().first?.description as! String }.getFirstLetterArray(removeDuplicates: true).sorted()
+            sectionTitles = likedTrackList.map { String($0.trackInfo.artist.artistName.capitalizingFirstLetter().first!) }.getFirstLetterArray(removeDuplicates: true).sorted()
             sectionSongs = sectionTitles.map({ (firstLetter) in
                 return likedTrackList.filter({ (track) -> Bool in
                     return track.trackInfo.artist.artistName.first?.description == firstLetter
                 })
             })
         case .track:
-            sectionTitles = likedTrackList.map { $0.trackInfo.songName.capitalizingFirstLetter().first?.description as! String }.getFirstLetterArray(removeDuplicates: true).sorted()
+            sectionTitles = likedTrackList.map { String($0.trackInfo.songName.capitalizingFirstLetter().first!) }.getFirstLetterArray(removeDuplicates: true).sorted()
             sectionSongs = sectionTitles.map({ (firstLetter) in
                 return likedTrackList.filter({ (track) -> Bool in
                     return track.trackInfo.songName.first?.description == firstLetter
                 })
             })
-            
-            let test = sectionSongs
         case .genre:
             let list = likedTrackList.map({ (track) -> String in
                 if let subGenres = track.trackInfo.artist.subGenres {
@@ -357,7 +326,6 @@ extension ShowSongViewController: UITableViewDataSource {
         }
         
     }
-    
     
 }
 
