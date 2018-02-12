@@ -11,10 +11,6 @@ import Foundation
 extension ChoiceListView {
     
     func setupCollectionView() {
-        let x = self.bounds.origin.x
-        let y = toggleView.bounds.height
-        let width = self.bounds.width
-        let height:CGFloat = self.bounds.height - y - fetchSongsButton.bounds.height
         choiceCollectionView.delegate = self
         choiceCollectionView.dataSource = self
         choiceCollectionView.isScrollEnabled = true
@@ -41,7 +37,6 @@ extension ChoiceListView {
         let genreHeaderSize = CGSize(width: choiceCollectionView.bounds.width, height: 45)
         genreLayout.headerReferenceSize = genreHeaderSize
         
-        //        self.addSubview(choiceCollectionView)
     }
     
     func setupGestureRecognizers() {

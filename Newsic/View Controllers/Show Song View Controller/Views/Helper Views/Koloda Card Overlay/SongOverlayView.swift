@@ -64,9 +64,7 @@ class SongOverlayView: OverlayView {
     
     @IBOutlet lazy var clickIcon: UIImageView! = {
         [unowned self] in
-        
         var imageView = UIImageView()
-//        imageView.image = UIImage(named: "Click")
         return imageView
     }()
     
@@ -99,7 +97,7 @@ class SongOverlayView: OverlayView {
         setupView()
     }
     
-    func setupView() {
+    fileprivate func setupView() {
         
         self.addSubview(songTitle);
         songTitle.layer.zPosition = 1;
@@ -119,14 +117,13 @@ class SongOverlayView: OverlayView {
     
     func setupViewForSpotify() {
         self.youtubePlayer.alpha = 0
-//        self.layoutIfNeeded()
     }
     
     func setupViewForYoutube() {
         self.albumImage.alpha = 0
     }
     
-    func loadViewFromNib() -> UIView {
+    fileprivate func loadViewFromNib() -> UIView {
         let view: UIView = UINib(nibName: "OverlayView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! UIView
         return view
     }

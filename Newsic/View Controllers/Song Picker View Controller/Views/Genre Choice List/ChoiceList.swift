@@ -97,11 +97,11 @@ class ChoiceListView: NusicView {
         // Initialization code
     }
     
-    func loadFromNib() {
+    fileprivate func loadFromNib() {
         let contentView = UINib(nibName: "ChoiceList", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! ChoiceListView
         contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         contentView.frame = bounds
-        contentView.fetchSongsButton.tintColor = NusicDefaults.greenColor
+        contentView.fetchSongsButton.tintColor = NusicDefaults.foregroundThemeColor
         
         self.choiceCollectionView = contentView.choiceCollectionView
         self.toggleView = contentView.toggleView
@@ -110,7 +110,7 @@ class ChoiceListView: NusicView {
         addSubview(contentView)
     }
     
-    func setupView(maxY: CGFloat) {
+    fileprivate func setupView(maxY: CGFloat) {
         
         setupToggleView();
         setupCollectionView();
@@ -119,6 +119,10 @@ class ChoiceListView: NusicView {
         self.maxY = maxY
         startY = self.frame.origin.y
         
+    }
+    
+    fileprivate func layoutChoiceView() {
+        self.frame.size = CGSize(width: self.frame.width, height: (UIApplication.shared.keyWindow?.frame.height)! - self.frame.origin.y)
     }
     
     func reloadView() {
@@ -131,7 +135,7 @@ class ChoiceListView: NusicView {
         startY = self.frame.origin.y
         
         if self.isShowing {
-            fetchSongsButton.tintColor = NusicDefaults.greenColor
+            fetchSongsButton.tintColor = NusicDefaults.foregroundThemeColor
             self.fetchSongsButton.reloadBlurEffect()
             self.fetchSongsButton.layoutIfNeeded()
             self.layoutChoiceView()
@@ -187,10 +191,6 @@ class ChoiceListView: NusicView {
             
         })
         
-    }
-    
-    func layoutChoiceView() {
-        self.frame.size = CGSize(width: self.frame.width, height: (UIApplication.shared.keyWindow?.frame.height)! - self.frame.origin.y)
     }
     
     func insertChosenGenre(value: String) {

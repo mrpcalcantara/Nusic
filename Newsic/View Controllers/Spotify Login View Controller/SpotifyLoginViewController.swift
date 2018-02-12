@@ -105,22 +105,22 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         popup.presentPopup(for: self);
     }
     
-    func setupLogo() {
+    fileprivate func setupLogo() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(rotateNusicLogo))
         tapGestureRecognizer.numberOfTapsRequired = 1
         nusicLabl.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    func setupLabel() {
+    fileprivate func setupLabel() {
         nusicLabl.textColor = UIColor.lightText
     }
     
-    func setupView() {
+    fileprivate func setupView() {
         loginButton.setImage(UIImage(named: "SpotifyLogin"), for: .normal);
         setupLabel()
     }
     
-    func setupBackground() {
+    fileprivate func setupBackground() {
         let image = UIImage(named: "BackgroundPattern")
         if let image = image {
             let imageView = UIImageView(frame: self.view.frame)
@@ -131,7 +131,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         }
     }
     
-    func checkFirebaseConnectivity() {
+    fileprivate func checkFirebaseConnectivity() {
         FirebaseDatabaseHelper.detectFirebaseConnectivity { (isConnected) in
             if isConnected {
                 self.getSession()
@@ -146,7 +146,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         }
     }
     
-    @objc func moveToMainScreen() {
+    @objc fileprivate func moveToMainScreen() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
@@ -173,12 +173,12 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         
     }
     
-    @objc func updateAfterFirstLogin(notification: Notification) {
+    @objc fileprivate func updateAfterFirstLogin(notification: Notification) {
         gotToken = notification.object as! Bool
         getSession();
     }
    
-    func getSession() {
+    fileprivate func getSession() {
         
         let userDefaults = UserDefaults.standard
         if let sessionObj:AnyObject = userDefaults.object(forKey: "SpotifySession") as AnyObject? {
@@ -209,7 +209,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         }
     }
     
-    func getRefreshToken(currentSession: SPTSession, refreshTokenCompletionHandler: @escaping (Bool) -> ()) {
+    fileprivate func getRefreshToken(currentSession: SPTSession, refreshTokenCompletionHandler: @escaping (Bool) -> ()) {
         let userDefaults = UserDefaults.standard;
         SPTAuth.defaultInstance().renewSession(currentSession, callback: { (error, session) in
             if error == nil {
@@ -231,12 +231,12 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         })
     }
     
-    @objc func notificationResetLogin() {
+    @objc fileprivate func notificationResetLogin() {
         resetLogin()
 //        viewDidLoad()
     }
     
-    func resetLogin() {
+    fileprivate func resetLogin() {
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
 //            self.resetViewLogin()
 //        }
@@ -244,7 +244,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         resetViewLogin()
     }
     
-    func resetSpotifyLogin() {
+    fileprivate func resetSpotifyLogin() {
         self.session = nil
         self.auth.session = nil
         let userDefaults = UserDefaults.standard;
@@ -252,7 +252,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         userDefaults.synchronize()
     }
     
-    func resetViewLogin() {
+    fileprivate func resetViewLogin() {
        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
             self.nusicLabelCenterYConstraint.constant = self.nusicFullTitle.frame.origin.y - self.nusicLabl.frame.origin.y
             self.nusicLabelCenterXConstraint.constant = self.nusicFullTitle.frame.origin.x - self.nusicLabl.frame.origin.x
@@ -267,7 +267,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         }, completion: nil)
     }
     
-    func animateLogo() {
+    fileprivate func animateLogo() {
         loginButton.alpha = 0
         nusicFullTitle.alpha = 0
         
@@ -279,7 +279,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         
     }
     
-    @objc func rotateNusicLogo() {
+    @objc fileprivate func rotateNusicLogo() {
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.2, options: [.curveEaseInOut], animations: {
             self.nusicLabl.transform = CGAffineTransform(rotationAngle: .pi)
         }) { (isCompleted) in
@@ -289,6 +289,5 @@ class SpotifyLoginViewController: NusicDefaultViewController {
             
         }
     }
-    
     
 }

@@ -24,21 +24,13 @@ class MusicChoiceCell: UICollectionViewCell {
         self.layer.rasterizationScale = UIScreen.main.scale
     }
     
-    func setupView() {
-
+    fileprivate func setupView() {
         self.layer.cornerRadius = 15
         self.contentView.addBlurEffect(style: .dark, alpha: 1)
         self.backgroundColor = UIColor.clear
-        
-//        let borderLayer = CAShapeLayer()
-//        borderLayer.path = UIBezierPath(roundedRect: self.frame, cornerRadius: 15).cgPath
-//        borderLayer.strokeColor = NusicDefaults.foregroundThemeColor.cgColor
-//        borderLayer.fillColor = UIColor.clear.cgColor
-////        self.layer.insertSublayer(borderLayer, at: 0)
-////        self.layer.addSublayer(borderLayer)
     }
     
-    func setupLabel(with text: String) {
+    fileprivate func setupLabel(with text: String) {
         choiceLabel.font = NusicDefaults.font!
         choiceLabel.textAlignment = .center
         choiceLabel.textColor = NusicDefaults.foregroundThemeColor

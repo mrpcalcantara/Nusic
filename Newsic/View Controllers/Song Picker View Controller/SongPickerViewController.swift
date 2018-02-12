@@ -15,33 +15,30 @@ import FirebaseDatabase
 
 class SongPickerViewController: NusicDefaultViewController {
     
-    var genreList:[SpotifyGenres] = SpotifyGenres.allShownValues;
-    let itemsPerRow: CGFloat = 2;
+    
+    //View variables
     let sectionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8);
+    var sectionHeaderFrame: CGRect = CGRect(x: 16, y: 8, width: 0, height: 0)
+    var navbar: UINavigationBar = UINavigationBar()
+    var spinner: SwiftSpinner! = nil
+    var listMenuView: ChoiceListView! = nil
+    var viewRotated:Bool = false
+    var cellsPerRow: CGFloat = 0
+    var nusicControl: NusicSegmentedControl!
+    var currentSection: Int = 0
+    let itemsPerRow: CGFloat = 2;
+    var selectedIndexPathForMood: IndexPath?
     var sectionGenreTitles: [String] = []
-    var originalSectionGenreTitles: [String] = []
     var sectionMoodTitles: [String] = []
-    var originalSectionMoodTitles: [String] = []
-    var sectionGenres: [[SpotifyGenres]] = Array(Array())
-    var originalSectionGenres: [[SpotifyGenres]] = [[]]
     var sectionMoods: [[EmotionDyad]] = Array(Array()) {
         didSet {
             moodCollectionView.reloadData()
         }
     }
-    var originalSectionMoods: [[EmotionDyad]] = [[]] 
-    var sectionHeaderFrame: CGRect = CGRect(x: 16, y: 8, width: 0, height: 0)
-    var currentSection: Int = 0
-    let username = "81d1a191-5d1e-47df-934a-c4bf91b63dd0"
-    let password = "Ibls3Rzrbuy0"
-    var spotifyHandler = Spotify();
+    
+    //Nusic data variables
+    var nusicPlaylist: NusicPlaylist! = nil;
     var moodObject: NusicMood? = nil;
-    var genres:[NusicGenre]! = nil;
-    var moods:[EmotionDyad]! = [] {
-        didSet {
-            moodCollectionView.reloadData();
-        }
-    }
     var nusicUser: NusicUser! = nil {
         didSet {
             let parent = self.parent as! NusicPageViewController
@@ -67,13 +64,46 @@ class SongPickerViewController: NusicDefaultViewController {
             
         }
     }
-    var nusicPlaylist: NusicPlaylist! = nil;
-    var moodHacker: MoodHacker? = nil;
-    var user: SPTUser? = nil;
+    var isMoodSelected: Bool = true
+    var isMoodCellSelected: Bool = false {
+        didSet {
+            if isMoodCellSelected {
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.searchButton.alpha = 1
+                    }, completion: nil)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.searchButton.alpha = self.nusicControl.selectedIndex == 0 ? 0 : 1
+                    }, completion: nil)
+                }
+            }
+        }
+    }
     
+    var loadingFinished: Bool = false {
+        didSet {
+            FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
+                self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
+                self.sectionMoods = dyadList.map({ $0.value })
+                SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
+            }
+            
+        }
+    }
+    
+    //Spotify variables
+    var currentPlaylistIndex: Int = 0
+    var fullArtistList:[SpotifyArtist] = [];
+    var fullPlaylistList:[SPTPartialPlaylist] = []
+    var genreList:[SpotifyGenres] = SpotifyGenres.allShownValues;
+    var sectionGenres: [[SpotifyGenres]] = Array(Array())
+    var spotifyHandler = Spotify();
+    var user: SPTUser? = nil;
     var fetchedSongsForMood: [String: [SpotifyTrack]] = [:]
     var selectedSongsForMood: [String: [SpotifyTrack]] = [:]
-    var selectedIndexPathForMood: IndexPath?
     var fetchedSongsForGenre: [String: [SpotifyTrack]] = [:]
     var selectedSongsForGenre: [String: [SpotifyTrack]] = [:] {
         didSet {
@@ -93,47 +123,6 @@ class SongPickerViewController: NusicDefaultViewController {
             self.view.layoutIfNeeded()
         }
     }
-    var isMoodSelected: Bool = true
-    var isMoodCellSelected: Bool = false {
-        didSet {
-            if isMoodCellSelected {
-                DispatchQueue.main.async {
-                    UIView.animate(withDuration: 0.3, animations: {
-                        self.searchButton.alpha = 1
-                    }, completion: nil)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    UIView.animate(withDuration: 0.3, animations: {
-                        self.searchButton.alpha = self.nusicControl.selectedIndex == 0 ? 0 : 1
-                    }, completion: nil)
-                }
-            }
-        }
-    }
-    var fullArtistList:[SpotifyArtist] = [];
-    var fullPlaylistList:[SPTPartialPlaylist] = []
-    var currentPlaylistIndex: Int = 0
-    var navbar: UINavigationBar = UINavigationBar()
-    var loadingFinished: Bool = false {
-        didSet {
-            FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
-                self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
-                self.sectionMoods = dyadList.map({ $0.value })
-                SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
-            }
-            
-        }
-    }
-    var spinner: SwiftSpinner! = nil
-    var listMenuView: ChoiceListView! = nil
-    var viewRotated:Bool = false
-    var cellsPerRow: CGFloat = 0
-    var nusicControl: NusicSegmentedControl!
-    
-    //Segues
-    let sideMenuSegue = "showSideMenuSegue"
-    let showVideoSegue = "showVideoSegue"
     
     //Constraints
     @IBOutlet weak var menuTrailingConstraint: NSLayoutConstraint!
@@ -173,7 +162,7 @@ class SongPickerViewController: NusicDefaultViewController {
             self.moodObject = nusicMood;
         }
         
-        if let selectedIndexPath = selectedIndexPathForMood {
+        if selectedIndexPathForMood != nil {
             invalidateCellsLayout(for: moodCollectionView)
         }
 
@@ -274,7 +263,7 @@ class SongPickerViewController: NusicDefaultViewController {
         
     }
     
-    func setupSegmentedControl() {
+    fileprivate func setupSegmentedControl() {
         nusicControl = NusicSegmentedControl(frame: navbar.frame)
         nusicControl.frame.size = CGSize(width: nusicControl.frame.width, height: 44)
         
@@ -289,7 +278,7 @@ class SongPickerViewController: NusicDefaultViewController {
         toggleCollectionViews(for: 0);
     }
     
-    func setupNavigationBar(image: UIImage? = UIImage(named: "SettingsIcon")) {
+    fileprivate func setupNavigationBar(image: UIImage? = UIImage(named: "SettingsIcon")) {
         navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
         
         navbar.barStyle = .default
@@ -337,7 +326,7 @@ class SongPickerViewController: NusicDefaultViewController {
         
     }
     
-    func reloadNavigationBar(image: UIImage? = UIImage(named: "SettingsIcon")) {
+    fileprivate func reloadNavigationBar(image: UIImage? = UIImage(named: "SettingsIcon")) {
         if navbar != nil {
             let barButton = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
             self.navigationItem.leftBarButtonItem = barButton
@@ -360,13 +349,11 @@ class SongPickerViewController: NusicDefaultViewController {
         }
     }
     
-    func setupView() {
+    fileprivate func setupView() {
         
         self.mainControlView.backgroundColor = UIColor.clear
         self.genreCollectionView.backgroundColor = UIColor.clear
         self.moodCollectionView.backgroundColor = UIColor.clear
-//        self.nusicControl.backgroundColor = UIColor.clear
-//        self.nusicControl.layer.zPosition = 1
         self.searchButton.backgroundColor = UIColor.clear
         self.searchButton.setTitle("Random it up!", for: .normal)
         
@@ -379,17 +366,17 @@ class SongPickerViewController: NusicDefaultViewController {
         self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecoginizer)
     }
     
-    @objc func toggleMenu() {
+    @objc fileprivate func toggleMenu() {
         let parent = self.parent as! NusicPageViewController
         parent.scrollToViewController(index: 0)
     }
     
-    @objc func goToShowSongVC() {
+    @objc fileprivate func goToShowSongVC() {
         let parent = self.parent as! NusicPageViewController
         parent.scrollToViewController(index: parent.orderedViewControllers.count-1)
     }
     
-    func manageViewControllerShowSong() {
+    fileprivate func manageViewControllerShowSong() {
         let pageVC = (self.parent as! NusicPageViewController)
         if SPTAudioStreamingController.sharedInstance().initialized {
             pageVC.addViewControllerToPageVC(viewController: pageVC.showSongVC!)
@@ -398,7 +385,7 @@ class SongPickerViewController: NusicDefaultViewController {
         }
     }
     
-    func showMobileDataPopup(){
+    fileprivate func showMobileDataPopup(){
         let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using mobile data and have set the app to not use this data. Please connect to a WiFi network or enable Mobile Data usage in the Settings.", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
         
         dialog.addButton(DefaultButton(title: "Got it!", action: nil))
@@ -406,7 +393,7 @@ class SongPickerViewController: NusicDefaultViewController {
         self.present(dialog, animated: true, completion: nil)
     }
     
-    func extractInformationFromUser(extractionHandler: @escaping (Bool) -> ()) {
+    fileprivate func extractInformationFromUser(extractionHandler: @escaping (Bool) -> ()) {
         
         fullArtistList = [];
         
@@ -423,7 +410,7 @@ class SongPickerViewController: NusicDefaultViewController {
                         accessToken: self.spotifyHandler.auth.session.accessToken,
                         user: self.spotifyHandler.user,
                         loginCompletionHandler: { (user, error) in
-                            if let error = error {
+                            if error != nil {
                                 self.showLoginErrorPopup()
                                 self.loadingFinished = true
                             } else {
@@ -484,7 +471,7 @@ class SongPickerViewController: NusicDefaultViewController {
         }
     }
     
-    func extractGenresFromSpotify(genreExtractionHandler: @escaping (Bool) -> ()) {
+    fileprivate func extractGenresFromSpotify(genreExtractionHandler: @escaping (Bool) -> ()) {
         //Get Followed Artists
         SwiftSpinner.show("Extracting Followed Artists..", animated: true)
         spotifyHandler.getFollowedArtistsForUser(user: spotifyHandler.user, followedArtistsHandler: { (followedArtistsList, error) in
@@ -553,7 +540,7 @@ class SongPickerViewController: NusicDefaultViewController {
         })
     }
     
-    func spotifyPlaylistCheck() {
+    fileprivate func spotifyPlaylistCheck() {
         nusicPlaylist = NusicPlaylist(userName: self.spotifyHandler.user.canonicalUserName);
         nusicPlaylist.getPlaylist { (playlist, error) in
             if let error = error {
@@ -581,7 +568,7 @@ class SongPickerViewController: NusicDefaultViewController {
         }
     }
     
-    func createPlaylistSpotify() {
+    fileprivate func createPlaylistSpotify() {
         self.spotifyHandler.createNusicPlaylist(playlistName: "Liked in Nusic", playlistCreationHandler: { (isCreated, playlist, error) in
             if let error = error {
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.createPlaylist.rawValue)
@@ -613,6 +600,7 @@ extension SongPickerViewController: UIGestureRecognizerDelegate {
         progress = CGFloat(fminf(fmaxf(Float(abs(progress)), 0.0), 1.0))
         var toIndex = panDirection == .left ? nusicControl.selectedIndex + 1 : nusicControl.selectedIndex - 1
         var allowMove = true
+        
         if toIndex < 0 {
             toIndex = 0
             allowMove = panDirection == .right ? false : true
@@ -620,6 +608,7 @@ extension SongPickerViewController: UIGestureRecognizerDelegate {
             toIndex = nusicControl.items.count - 1
             allowMove = panDirection == .left ? false : true
         }
+        
         switch gestureRecognizer.state {
         case .began:
             break
