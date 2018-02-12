@@ -40,7 +40,7 @@ class SettingsCellHeader: UIView {
         super.init(coder: aDecoder)
     }
     
-    func loadFromNib() {
+    fileprivate func loadFromNib() {
         let contentView = UINib(nibName: self.className, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SettingsCellHeader
         contentView.addBlurEffect(style: .dark, alpha: 0.8)
         contentView.backgroundColor = NusicDefaults.deselectedColor

@@ -10,6 +10,7 @@ import UIKit
 
 class SettingsCell: UITableViewCell {
 
+    //Outlets
     @IBOutlet weak var itemDescription: UILabel!
     @IBOutlet weak var itemValue: UILabel!
     @IBOutlet weak var descriptionImage: UIImageView!
@@ -17,6 +18,7 @@ class SettingsCell: UITableViewCell {
     //Image View Constraints
     @IBOutlet weak var itemDescriptionLeadingConstraint: NSLayoutConstraint!
     
+    //Data variables
     static let reuseIdentifier = "settingsCell"
     static let rowHeight:CGFloat = 45
     var initialDescriptionConstraintConstant: CGFloat? = nil

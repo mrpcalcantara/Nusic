@@ -66,7 +66,7 @@ extension ShowSongViewController {
         self.view.layoutIfNeeded()
     }
     
-    func openPlayerMenu() {
+    fileprivate func openPlayerMenu() {
         UIView.animate(withDuration: 0.3) {
             self.pausePlay.alpha = 1
             self.pausePlay.isHidden = false
@@ -125,7 +125,7 @@ extension ShowSongViewController {
         
     }
     
-    func closePlayerMenu(animated: Bool) {
+    fileprivate func closePlayerMenu(animated: Bool) {
         if animated {
             UIView.animate(withDuration: 0.3, animations: {
                 self.previousSong.alpha = 0
@@ -155,8 +155,6 @@ extension ShowSongViewController {
             
             UIView.animate(withDuration: 0.3) {
                 
-//                self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.15
-//                self.songCardBottomConstraint.constant -= self.view.frame.height * 0.20
                 self.pausePlayTopConstraint.constant -= self.view.frame.height * 0.20
                 self.previousTrackCenterXConstraint.constant -= -self.trackStackView.bounds.width/4
                 self.previousTrackTopConstraint.constant -= self.view.frame.height * 0.20
@@ -169,7 +167,6 @@ extension ShowSongViewController {
                 self.songProgressBottomConstraint.constant -= self.view.frame.height * 0.10
                 self.songProgressTopConstraint.constant -= self.view.frame.height * 0.10
                 if self.preferredPlayer == NusicPreferredPlayer.spotify {
-                    
                     self.songCardBottomConstraint.constant -= self.view.frame.height * 0.20
                     self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.15
                 } else {
@@ -190,9 +187,10 @@ extension ShowSongViewController {
         isPlayerMenuOpen = false
     }
     
-    func togglePlayerMenu() {
+    func togglePlayerMenu(_ animated: Bool? = true) {
         if isPlayerMenuOpen {
-            closePlayerMenu(animated: true)
+            closePlayerMenu(animated: animated!)
+            
         } else {
             openPlayerMenu()
         }
@@ -210,23 +208,24 @@ extension ShowSongViewController {
             self.songProgressView.isHidden = true
         }
         
-        self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.15
-        self.songCardBottomConstraint.constant -= self.view.frame.height * 0.20
         self.pausePlayTopConstraint.constant -= self.view.frame.height * 0.20
+        self.previousTrackCenterXConstraint.constant -= -self.trackStackView.bounds.width/4
         self.previousTrackTopConstraint.constant -= self.view.frame.height * 0.20
-        self.previousTrackCenterXConstraint.constant = 0
+        self.nextTrackCenterXConstraint.constant -= self.trackStackView.bounds.width/4
         self.nextTrackTopConstraint.constant -= self.view.frame.height * 0.20
-        self.nextTrackCenterXConstraint.constant = 0
+        self.dislikeSongCenterXConstraint.constant -= -self.trackStackView.bounds.width/2
         self.dislikeSongTopConstraint.constant -= self.view.frame.height * 0.20
-        self.dislikeSongCenterXConstraint.constant = 0
+        self.likeSongCenterXConstraint.constant -= self.trackStackView.bounds.width/2
         self.likeSongTopConstraint.constant -= self.view.frame.height * 0.20
-        self.likeSongCenterXConstraint.constant = 0
-        
+        self.songProgressBottomConstraint.constant -= self.view.frame.height * 0.10
+        self.songProgressTopConstraint.constant -= self.view.frame.height * 0.10
         if self.preferredPlayer == NusicPreferredPlayer.spotify {
-            self.songProgressBottomConstraint.constant -= self.view.frame.height * 0.10
-            self.songProgressTopConstraint.constant -= self.view.frame.height * 0.10
+            self.songCardBottomConstraint.constant -= self.view.frame.height * 0.20
+            self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.15
+        } else {
+            self.songCardBottomConstraint.constant -= self.view.frame.height * 0.15
+            self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.10
         }
-        
         self.view.layoutIfNeeded();
     }
     

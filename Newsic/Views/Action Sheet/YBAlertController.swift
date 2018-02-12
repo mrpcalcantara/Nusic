@@ -76,8 +76,6 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
         tapGesture.numberOfTapsRequired = 1
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        
-//        NotificationCenter.default.addObserver(self, selector: Selector(("changedOrientation:")), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     }
     
     public convenience init(style: YBAlertControllerStyle) {
@@ -104,7 +102,7 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         if touchingOutsideDismiss == false { return false }
         if touch.view != gestureRecognizer.view { return false }
         return true
@@ -388,15 +386,10 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
     
     private func startButtonAppearAnimation() {
         for i in 0..<buttons.count {
-            let delay = 0.2 * Double(NSEC_PER_SEC)
-//            let time = DispatchTime.now(dispatch_time_t(DispatchTime.now()), Int64(delay * Double(i)))
             let time = DispatchTime.now()
             DispatchQueue.main.asyncAfter(deadline: time, execute: {
                 self.buttons[i].appear()
             })
-//            dispatch_after(time, dispatch_get_main_queue(), {
-//                self.buttons[i].appear()
-//            })
         }
     }
     

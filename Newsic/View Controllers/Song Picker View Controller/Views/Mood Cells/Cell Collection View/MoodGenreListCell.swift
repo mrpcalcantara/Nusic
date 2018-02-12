@@ -143,7 +143,6 @@ extension MoodGenreListCell: UICollectionViewDataSource {
         return UICollectionViewCell();
     }
     
-    
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1;
     }

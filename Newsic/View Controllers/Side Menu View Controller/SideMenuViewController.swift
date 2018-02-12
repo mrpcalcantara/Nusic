@@ -56,7 +56,12 @@ class SideMenuViewController: NusicDefaultViewController {
         setupNavigationBar()
     }
    
-    func setupSettingsArray() {
+    @objc func dismissMenu() {
+        let vc = self.parent as! NusicPageViewController
+        vc.scrollToViewController(index: 1)
+    }
+    
+    fileprivate func setupSettingsArray() {
         settingsValues = [[NusicSettingsLabel.preferredPlayer.rawValue]]
         if let preferredPlayer = preferredPlayer, preferredPlayer == .spotify {
             settingsValues.append([NusicSettingsLabel.spotifyQuality.rawValue])
@@ -67,7 +72,7 @@ class SideMenuViewController: NusicDefaultViewController {
         
     }
     
-    func setupNavigationBar() {
+    fileprivate func setupNavigationBar() {
         
         navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
         if let navbar = navbar {
@@ -96,12 +101,7 @@ class SideMenuViewController: NusicDefaultViewController {
             self.view.layoutIfNeeded()
         }
     }
-    
-    @objc func dismissMenu() {
-        let vc = self.parent as! NusicPageViewController
-        vc.scrollToViewController(index: 1)
-    }
-    
+
     func logoutUser() {
         
         UserDefaults.standard.removeObject(forKey: "SpotifySession");
@@ -118,7 +118,6 @@ class SideMenuViewController: NusicDefaultViewController {
         });
         
     }
-    
 }
 
 
