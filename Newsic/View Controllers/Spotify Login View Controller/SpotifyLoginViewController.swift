@@ -165,8 +165,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         auth.tokenSwapURL = URL(string: Spotify.swapURL)!
         auth.tokenRefreshURL = URL(string: Spotify.refreshURL)!
         
-//        getSession();
-        
         if auth.session == nil || !auth.session.isValid() {
             loginUrl = auth.spotifyWebAuthenticationURL();
         }
