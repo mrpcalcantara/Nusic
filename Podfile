@@ -9,6 +9,7 @@ target 'Newsic' do
   pod 'Koloda', '~> 4.0'
   pod "youtube-ios-player-helper", "~> 0.1.4"
   pod 'Firebase/Core'
+  pod 'Firebase/Messaging'
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
   pod 'SwiftSpinner'

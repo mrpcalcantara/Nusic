@@ -255,6 +255,7 @@
 		8C63A1591FFF49C400613FC9 /* ShowSong.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ShowSong.xcassets; sourceTree = "<group>"; };
 		8C63A15C1FFF49FC00613FC9 /* SongPicker.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = SongPicker.xcassets; sourceTree = "<group>"; };
 		8C64F45C1F56C9540006B644 /* Spotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
+		8C6D595320329AAA009D10AE /* Newsic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Newsic.entitlements; sourceTree = "<group>"; };
 		8C777148201C59C3004A5455 /* GoogleService-InfoDEV.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-InfoDEV.plist"; sourceTree = "<group>"; };
 		8C77714A201C59CA004A5455 /* GoogleService-InfoPROD.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-InfoPROD.plist"; sourceTree = "<group>"; };
 		8C77714C201C7945004A5455 /* Koloda-SongCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Koloda-SongCard.swift"; sourceTree = "<group>"; };
@@ -895,6 +896,7 @@
 		8C90E8601F53D838002B135F /* Newsic */ = {
 			isa = PBXGroup;
 			children = (
+				8C6D595320329AAA009D10AE /* Newsic.entitlements */,
 				8C5E02A32017075D00413DBB /* Fonts */,
 				8C21E70E1FC6AB270033B477 /* Page View Controller */,
 				8CF8D3FC1FBA9C6400E130BC /* Interaction Controllers */,
@@ -1240,6 +1242,9 @@
 							com.apple.InterAppAudio = {
 								enabled = 0;
 							};
+							com.apple.Push = {
+								enabled = 1;
+							};
 						};
 					};
 					8C90E8711F53D838002B135F = {
@@ -1328,6 +1333,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Koloda/Koloda.framework",
 				"${BUILT_PRODUCTS_DIR}/PopupDialog/PopupDialog.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSpinner/SwiftSpinner.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
@@ -1340,6 +1346,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Koloda.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PopupDialog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSpinner.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -1709,6 +1716,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Newsic/Newsic.entitlements;
 				DEVELOPMENT_TEAM = VNFY2URN36;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1743,6 +1751,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Newsic/Newsic.entitlements;
 				DEVELOPMENT_TEAM = VNFY2URN36;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
