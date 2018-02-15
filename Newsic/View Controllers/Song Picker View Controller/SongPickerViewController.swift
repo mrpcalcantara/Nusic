@@ -62,6 +62,15 @@ class SongPickerViewController: NusicDefaultViewController {
                 
             }
             
+            if let fcmTokenId = UserDefaults.standard.value(forKey: "fcmTokenId") as? String {
+                FirebaseAuthHelper.addApnsDeviceToken(apnsToken: fcmTokenId, userId: nusicUser.userName, apnsTokenCompletionHandler: { (isSuccess, error) in
+                    if let error = error {
+                        error.presentPopup(for: self)
+                    }
+                    print("adding APNS token = \(isSuccess!)")
+                })
+            }
+            
         }
     }
     var isMoodSelected: Bool = true
@@ -246,6 +255,7 @@ class SongPickerViewController: NusicDefaultViewController {
  
     override func viewDidLoad() {
         super.viewDidLoad()
+    
         if nusicUser == nil {
             DispatchQueue.main.async {
                 SwiftSpinner.show("Getting User..", animated: true)
