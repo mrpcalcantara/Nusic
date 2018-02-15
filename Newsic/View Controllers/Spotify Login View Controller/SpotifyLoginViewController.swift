@@ -141,19 +141,8 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     fileprivate func checkFirebaseConnectivity() {
         FirebaseDatabaseHelper.detectFirebaseConnectivity { (isConnected) in
-            let appOpened = UserDefaults.standard.value(forKey: "appOpened") as? Bool
-            if appOpened == nil || appOpened == false {
-                if isConnected {
-                    self.getSession()
-                    UserDefaults.standard.setValue(true, forKey: "appOpened")
-                    if !self.gotToken {
-                        if self.timer != nil {
-                            self.timer.invalidate()
-                        }
-                    }
-                } else {
-                    self.timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.fireErrorPopup), userInfo: nil, repeats: false)
-                }
+            if isConnected {
+                self.getSession()
             }
         }
     }
