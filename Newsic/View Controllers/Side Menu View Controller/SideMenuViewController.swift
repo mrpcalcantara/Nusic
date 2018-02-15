@@ -73,7 +73,9 @@ class SideMenuViewController: NusicDefaultViewController {
     }
     
     fileprivate func setupNavigationBar() {
-        
+        if navbar != nil {
+            navbar?.removeFromSuperview()
+        }
         navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
         if let navbar = navbar {
             navbar.barStyle = .default
@@ -82,7 +84,6 @@ class SideMenuViewController: NusicDefaultViewController {
             button.setImage(UIImage(named: "MoodIcon"), for: .normal)
             button.addTarget(self, action: #selector(dismissMenu), for: .touchUpInside)
             let barButton = UIBarButtonItem(customView: button);
-            let barButton2 = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(dismissMenu));
             self.navigationItem.rightBarButtonItem = barButton
             
             let navItem = self.navigationItem
