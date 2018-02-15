@@ -73,7 +73,9 @@ class SideMenuViewController: NusicDefaultViewController {
     }
     
     fileprivate func setupNavigationBar() {
-        
+        if navbar != nil {
+            navbar?.removeFromSuperview()
+        }
         navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
         if let navbar = navbar {
             navbar.barStyle = .default

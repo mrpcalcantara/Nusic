@@ -20,6 +20,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     var loading: SwiftSpinner!;
     var safariViewController: SFSafariViewController!
     var timer: Timer! = Timer();
+    var toActivateTimer: Bool = false
     var gotToken: Bool = false;
     var loadFullTitle: Bool = false {
         didSet {
@@ -55,7 +56,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     @IBAction func spotifyLoginButton(_ sender: UIButton) {
        
-        
+        toActivateTimer = true
         safariViewController = SFSafariViewController(url: loginUrl!);
         (UIApplication.shared.delegate as! AppDelegate).safariViewController = safariViewController;
         
@@ -83,6 +84,9 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
+        if toActivateTimer {
+            activateTimer()
+        }
         
     }
     
@@ -98,6 +102,10 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated);
         self.removeFromParentViewController()
+        if timer != nil {
+            deactivateTimer()
+        }
+        
     }
     
     @objc func fireErrorPopup() {
@@ -135,13 +143,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         FirebaseDatabaseHelper.detectFirebaseConnectivity { (isConnected) in
             if isConnected {
                 self.getSession()
-                if !self.gotToken {
-                    if self.timer != nil {
-                        self.timer.invalidate()
-                    }
-                }
-            } else {
-                self.timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.fireErrorPopup), userInfo: nil, repeats: false)
             }
         }
     }
@@ -165,8 +166,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         auth.tokenSwapURL = URL(string: Spotify.swapURL)!
         auth.tokenRefreshURL = URL(string: Spotify.refreshURL)!
         
-//        getSession();
-        
         if auth.session == nil || !auth.session.isValid() {
             loginUrl = auth.spotifyWebAuthenticationURL();
         }
@@ -179,7 +178,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     }
    
     fileprivate func getSession() {
-        
+        activateTimer()
         let userDefaults = UserDefaults.standard
         if let sessionObj:AnyObject = userDefaults.object(forKey: "SpotifySession") as AnyObject? {
             //SwiftSpinner.show("Logging in..", animated: true);
@@ -203,9 +202,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
             
         } else {
             self.resetLogin()
-//            if !gotToken {
-//                self.resetLogin()
-//            }
         }
     }
     
@@ -233,13 +229,9 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     @objc fileprivate func notificationResetLogin() {
         resetLogin()
-//        viewDidLoad()
     }
     
     fileprivate func resetLogin() {
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-//            self.resetViewLogin()
-//        }
         resetSpotifyLogin()
         resetViewLogin()
     }
@@ -253,7 +245,8 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     }
     
     fileprivate func resetViewLogin() {
-       UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
+        deactivateTimer()
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
             self.nusicLabelCenterYConstraint.constant = self.nusicFullTitle.frame.origin.y - self.nusicLabl.frame.origin.y
             self.nusicLabelCenterXConstraint.constant = self.nusicFullTitle.frame.origin.x - self.nusicLabl.frame.origin.x
             self.view.layoutIfNeeded()
@@ -290,4 +283,17 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         }
     }
     
+    fileprivate func activateTimer(resetPrevious: Bool? = true) {
+        if resetPrevious! {
+            deactivateTimer()
+        }
+        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(self.fireErrorPopup), userInfo: nil, repeats: false)
+    }
+    
+    fileprivate func deactivateTimer() {
+        if timer != nil {
+            timer.invalidate()
+            timer = nil
+        }
+    }
 }
