@@ -27,19 +27,26 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="tuX-6U-qIh">
+                        <rect key="frame" x="164" y="72" width="37" height="37"/>
+                        <color key="color" red="1" green="0.9999879002571106" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    </activityIndicatorView>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="I7B-Cf-YFn" secondAttribute="trailing" id="4Mf-VL-PAK"/>
+                <constraint firstItem="tuX-6U-qIh" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="5bF-Ec-2Yb"/>
                 <constraint firstAttribute="bottom" secondItem="I7B-Cf-YFn" secondAttribute="bottom" id="F00-Pi-BOI"/>
                 <constraint firstItem="TGz-vP-tu4" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="YMA-a4-d3e"/>
                 <constraint firstItem="I7B-Cf-YFn" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="dHn-WE-G1z"/>
                 <constraint firstItem="I7B-Cf-YFn" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="dV5-P1-qg5"/>
                 <constraint firstItem="TGz-vP-tu4" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="p2q-An-Xqi"/>
+                <constraint firstItem="tuX-6U-qIh" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="vRu-cn-Vxr"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="365" height="180"/>
             <connections>
+                <outlet property="activityIndicator" destination="tuX-6U-qIh" id="ZEA-nh-qzm"/>
                 <outlet property="backgroundImage" destination="I7B-Cf-YFn" id="stS-g8-rDd"/>
                 <outlet property="moodGenreLabel" destination="TGz-vP-tu4" id="e3a-sb-7aj"/>
             </connections>

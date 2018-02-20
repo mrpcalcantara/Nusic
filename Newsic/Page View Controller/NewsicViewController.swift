@@ -29,6 +29,7 @@ class NusicViewController: UIViewController {
         }
     }
     
+    
 }
 
 extension NusicViewController: NusicPageViewControllerDelegate {

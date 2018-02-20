@@ -31,7 +31,7 @@ extension Array where Element == String {
     func removeDuplicates() -> [String] {
         var uniqueArray:[String] = []
         
-        self.filter({
+        _ = self.filter({
             if uniqueArray.contains($0) {
                 return false
             } else {

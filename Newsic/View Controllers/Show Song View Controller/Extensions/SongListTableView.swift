@@ -256,34 +256,6 @@ extension ShowSongViewController: UITableViewDataSource {
         return sectionTitles[section]
     }
     
-    fileprivate func configure(headerCell: SongTableViewHeader) {
-        
-        
-        
-        
-    }
-    
-//    func configure(cell: SongTableViewCell, at indexPath: IndexPath) {
-//
-//        let element = sectionSongs[indexPath.section][indexPath.row]
-//
-//
-//    }
-    
-//    func configure(sectionHeaderCell: SongTableViewSectionHeader, at section: Int) {
-//
-//        sectionHeaderCell.displayName.text = sectionTitles[section]
-//
-//        if UIApplication.shared.statusBarOrientation.isLandscape {
-//            removeHeaderGestureRecognizer(for: sectionHeaderCell)
-//            removeMenuSwipeGestureRecognizer()
-//        } else {
-//            addHeaderGestureRecognizer(for: sectionHeaderCell)
-//            addMenuSwipeGestureRecognizer()
-//        }
-//
-//    }
-    
     func sortTableView(by type: SpotifyType) {
         switch type {
         case .artist:

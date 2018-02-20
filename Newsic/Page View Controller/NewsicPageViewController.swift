@@ -51,7 +51,7 @@ class NusicPageViewController: UIPageViewController {
         
         for view in view.subviews {
             if let myView = view as? UIScrollView {
-                myView.canCancelContentTouches = false
+                myView.delaysContentTouches = false
             }
         }
 
@@ -219,6 +219,9 @@ extension NusicPageViewController : UIScrollViewDelegate {
         print("started dragging")
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print("scroll scroll")
+    }
     
 }
 

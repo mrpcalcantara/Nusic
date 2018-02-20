@@ -145,7 +145,7 @@ enum SpotifyGenres: String {
     static let allShownValues = [acoustic, afrobeat, altRock, alternative, ambient, blackMetal, bluegrass, blues, bossanova, brazil, breakbeat, chicagoHouse, chill, classical, country, dance, dancehall, deathMetal, deepHouse, detroitTechno, disco, drumAndBass, dub, dubstep, edm, electro, electronic, emo, folk, forro, funk, gospel, goth, grindcore, groove, grunge, guitar, hardRock, hardcore, hardstyle, heavyMetal, hipHop, honkyTonk, house, indie, indiePop, industrial, jDance, jIdol, jPop, jRock, jazz, kPop, latin, latino, mandopop, metal, metalcore, minimalTechno, newAge, opera, piano, pop, powerPop, progressiveHouse, psychRock, punk, punkRock, rnb, reggae, reggaeton, rock, rockNRoll, rockabilly, salsa, samba, ska, songwriter, soul, synthPop, tango, techno, trance, tripHop, worldMusic]
     
     
-    static let genreDictionary = ["Alternative": [SpotifyGenres.alternative, SpotifyGenres.altRock, SpotifyGenres.goth, SpotifyGenres.grunge, SpotifyGenres.hardRock, SpotifyGenres.punk],
+    static let genreDictionary = ["Alternative": [SpotifyGenres.alternative, SpotifyGenres.altRock, SpotifyGenres.goth, SpotifyGenres.grunge, SpotifyGenres.punk],
                                   "Blues": [SpotifyGenres.blues],
                                   "Classical" : [SpotifyGenres.classical, SpotifyGenres.opera],
                                   "Country" : [SpotifyGenres.bluegrass, SpotifyGenres.country, SpotifyGenres.honkyTonk],
@@ -164,7 +164,7 @@ enum SpotifyGenres: String {
 
     static func getSectionTitles(sorted: Bool? = true) -> [String] {
         
-        var titles: [String] = genreDictionary.keys.map({ $0 })
+        let titles: [String] = genreDictionary.keys.map({ $0 })
         return sorted! ? titles.sorted() : titles
     }
     

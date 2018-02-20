@@ -17,6 +17,17 @@ extension SongPickerViewController {
 //        let view = UINib(nibName: MoodViewCell.className, bundle: nil);
         let view = UINib(nibName: MoodGenreListCell.className, bundle: nil);
         
+        moodCollectionView.delegate = self;
+        moodCollectionView.dataSource = self;
+        moodCollectionView.allowsMultipleSelection = false;
+        moodCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
+        moodCollectionView.register(view, forCellWithReuseIdentifier: "moodGenreListCell");
+        //        moodCollectionView.register(view, forCellWithReuseIdentifier: MoodViewCell.reuseIdentifier);
+        let moodLayout = moodCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        moodLayout.sectionHeadersPinToVisibleBounds = true
+        let moodHeaderSize = CGSize(width: moodCollectionView.bounds.width, height: 45)
+        moodLayout.headerReferenceSize = moodHeaderSize
+        
         genreCollectionView.delegate = self;
         genreCollectionView.dataSource = self;
         genreCollectionView.allowsMultipleSelection = true;
@@ -32,16 +43,7 @@ extension SongPickerViewController {
         sectionGenreTitles = getSectionTitles()
         setupGenresPerSection()
         
-        moodCollectionView.delegate = self;
-        moodCollectionView.dataSource = self;
-        moodCollectionView.allowsMultipleSelection = false;
-        moodCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
-        moodCollectionView.register(view, forCellWithReuseIdentifier: "moodGenreListCell");
-//        moodCollectionView.register(view, forCellWithReuseIdentifier: MoodViewCell.reuseIdentifier);
-        let moodLayout = moodCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        moodLayout.sectionHeadersPinToVisibleBounds = true
-        let moodHeaderSize = CGSize(width: moodCollectionView.bounds.width, height: 45)
-        moodLayout.headerReferenceSize = moodHeaderSize
+        
         
         //Populate every section
 //        setupGenresPerSection()
@@ -338,7 +340,6 @@ extension SongPickerViewController: UICollectionViewDelegate {
                 self.selectedSongsForMood = self.fetchedSongsForMood.filter({ $0.key == moodCell.moodGenreLabel.text })
             }
             let dyad = sectionMoods[indexPath.section][indexPath.row]
-//
             let emotion = Emotion(basicGroup: dyad, detailedEmotions: [], rating: 0)
             self.moodObject = NusicMood(emotions: [emotion], isAmbiguous: false, sentiment: 0.5, date: Date(), userName: spotifyHandler.auth.session.canonicalUsername, associatedGenres: [], associatedTracks: []);
             self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
@@ -346,7 +347,6 @@ extension SongPickerViewController: UICollectionViewDelegate {
             
             isMoodCellSelected = true
             manageButton(for: moodCollectionView)
-//            cell.selectCell()
             
         } else {
             //Get genre from section genre for section and row.
@@ -447,16 +447,6 @@ extension SongPickerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-//        if collectionView == moodCollectionView {
-//            //If iPad show 4 per row, otherwise only 2
-//            cellsPerRow = UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2
-//            let sizeWidth = collectionView.frame.width/cellsPerRow
-//            if let window = UIApplication.shared.keyWindow {
-//                return CGSize(width: sizeWidth, height: window.frame.height/10);
-//            } else {
-//                return CGSize(width: sizeWidth, height: collectionView.frame.height/10);
-//            }
-//        }
         let layout = collectionViewLayout as! UICollectionViewFlowLayout
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.height/2 - layout.headerReferenceSize.height)
         
@@ -537,18 +527,34 @@ extension SongPickerViewController: MoodGenreListCellDelegate {
             cell.trackList = tracks
             cell.imageList = tracks.flatMap({ $0.thumbNail })
         } else {
+//            DispatchQueue.main.async {
+//                cell.activityIndicator.alpha = 1
+//                cell.activityIndicator.startAnimating()
+//            }
+            
             if section < self.sectionMoods.count && self.sectionMoods[section].count > 0 {
 //                print("fetching songs for mood: \(cell.moodGenreLabel.text)")
                 let mood = self.sectionMoods[section][indexPath.row]
                 let moodObject = NusicMood(emotions: [.init(basicGroup: mood, detailedEmotions: [], rating: 0)], isAmbiguous: false, sentiment: 0.5, date: Date(), associatedGenres: [], associatedTracks: [])
-                self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: 5, market: self.user?.territory, moodObject: moodObject, selectedGenreList: nil) { (tracks, error) in
-                    if let error = error {
-                        error.presentPopup(for: self)
-                    } else {
-                        cell.trackList = tracks
-                        cell.addImages(urlList: tracks.map({ $0.thumbNailUrl }))
-                        self.fetchedSongsForMood[label] = tracks
-                    }
+                if self.nusicUser != nil {
+                    FirebaseDatabaseHelper.fetchTrackFeatures(for: (self.nusicUser.userName), moodObject: moodObject, fetchTrackFeaturesHandler: { (trackFeatures) in
+                        self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: 5, market: self.user?.territory, moodObject: moodObject, preferredTrackFeatures: trackFeatures!, selectedGenreList: nil) { (tracks, error) in
+                            if let error = error {
+                                error.presentPopup(for: self)
+                            } else {
+//                                UIView.animate(withDuration: 1, delay: 0, options: [.curveEaseInOut], animations: {
+//                                    DispatchQueue.main.async {
+//                                        cell.activityIndicator.stopAnimating()
+//                                        cell.activityIndicator.alpha = 0
+//                                    }
+//
+//                                }, completion: nil)
+                                cell.trackList = tracks
+                                cell.addImages(urlList: tracks.map({ $0.thumbNailUrl }))
+                                self.fetchedSongsForMood[label] = tracks
+                            }
+                        }
+                    })
                 }
             }
         }

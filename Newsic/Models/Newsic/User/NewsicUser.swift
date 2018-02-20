@@ -99,7 +99,7 @@ extension NusicUser: FirebaseModel {
                 
                 self.displayName = dictionary["displayName"] as? String ?? self.displayName
                 if let isPremiumValue = dictionary["isPremium"] as? NSNumber {
-                    self.isPremium = Bool(isPremiumValue) ?? self.isPremium
+                    self.isPremium = Bool(truncating: isPremiumValue) ?? self.isPremium
                 }
                 
                 if let territory = dictionary["territory"] as? String {
@@ -253,16 +253,16 @@ extension NusicUser: FirebaseModel {
                 var spotifySettings = NusicUserSpotifySettings(bitrate: .normal)
                 
                 if let preferredPlayerValue = dictionary["preferredPlayer"] as? NSNumber {
-                    preferredPlayer = NusicPreferredPlayer(rawValue: Int(preferredPlayerValue))
+                    preferredPlayer = NusicPreferredPlayer(rawValue: Int(truncating: preferredPlayerValue))
                 }
                 
                 if let useMobileDataValue = dictionary["useMobileData"] as? NSNumber {
-                    useMobileData = Bool(useMobileDataValue)
+                    useMobileData = Bool(truncating: useMobileDataValue)
                 }
                 
                 if let spotifyDict = dictionary["spotify"] as? NSDictionary {
                     let bitrate = spotifyDict["bitrate"] as? NSNumber
-                    spotifySettings.bitrate = SPTBitrate(rawValue: UInt(bitrate!))!
+                    spotifySettings.bitrate = SPTBitrate(rawValue: UInt(truncating: bitrate!))!
                 }
                 
                 let settings = NusicUserSettings(useMobileData: useMobileData!, preferredPlayer: preferredPlayer!, spotifySettings: spotifySettings)

@@ -123,7 +123,7 @@ struct NusicMood: FirebaseModel, Iterable {
         let count = emotions.count;
         var index = 0;
         for emotion in emotions {
-            reference.child("likedTracks").child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
+            reference.child("moodTracks").child(userName).child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
                 let value = dataSnapshot.value as? [String: AnyObject];
                 var iterator = value?.makeIterator();
                 
@@ -170,7 +170,8 @@ struct NusicMood: FirebaseModel, Iterable {
         let count = emotions.count;
         var index = 0;
         for emotion in emotions {
-            reference.child("likedTracks").child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
+            
+            reference.child("likedTracks").child("moods").child(userName).child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
                 let value = dataSnapshot.value as? [String: AnyObject];
                 var iterator = value?.makeIterator();
                 
@@ -182,7 +183,6 @@ struct NusicMood: FirebaseModel, Iterable {
                         var value = SpotifyTrackFeature();
                         value.mapDictionary(featureDictionary: (element.value as? [String: AnyObject])!)
                         extractedTrackFeatures.append(value);
-                        //extractedGenres.append([element.key: element.value])
                     }
                     element = iterator?.next();
                 }

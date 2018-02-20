@@ -10,8 +10,7 @@ import UIKit
 
 protocol MoodGenreListCellDelegate: class {
     func didSelect(nusicType: NusicTypeSearch, section:Int, indexPath:IndexPath)
-    func willDisplayCell(cell: MoodGenreCell, nusicType: NusicTypeSearch, section: Int, indexPath: IndexPath)
-    
+    func willDisplayCell(cell: MoodGenreCell, nusicType: NusicTypeSearch, section: Int, indexPath: IndexPath)    
 }
 
 class MoodGenreListCell: UICollectionViewCell {

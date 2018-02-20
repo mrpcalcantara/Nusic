@@ -45,9 +45,7 @@ extension SongPickerViewController : ChoiceListDelegate {
     func didTapGenre(value: String) {
         if let genre = SpotifyGenres(rawValue: value) {
             var addedSection = false
-            if var indexPath = getIndexPathForGenre(value) {
-                
-            } else {
+            if getIndexPathForGenre(value) == nil {
                 sectionGenreTitles.append(genre.rawValue)
                 sectionGenreTitles.sort()
                 if let index = sectionGenreTitles.index(of: genre.rawValue) {

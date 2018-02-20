@@ -278,9 +278,9 @@ extension ShowSongViewController {
             } else {
                 if var trackFeatures = trackFeatures {
                     trackFeatures.youtubeId = track.youtubeInfo?.trackId;
-                    self.updateCurrentGenresAndFeatures { (genres, trackFeatures) in
-                        self.trackFeatures = trackFeatures;
-                    }
+//                    self.updateCurrentGenresAndFeatures { (genres, trackFeatures) in
+//                        self.trackFeatures = trackFeatures;
+//                    }
                     
                     track.trackInfo.audioFeatures = trackFeatures;
                     track.saveData(saveCompleteHandler: { (reference, error) in

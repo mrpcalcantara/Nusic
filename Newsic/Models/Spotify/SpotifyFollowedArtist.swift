@@ -42,7 +42,7 @@ struct SpotifyArtist: Hashable {
     func listGenres(showPrefix: Bool? = true) -> String {
         if let subGenres = subGenres {
             var genreList = ""
-            for var genre in subGenres {
+            for genre in subGenres {
                 genreList.append("\(genre.capitalizingFirstLetter()), ")
             }
             

@@ -66,8 +66,8 @@ class Spotify {
         }
     }
     
-    
-    func getAverageTrackFeatures(preferredTrackFeatures: [SpotifyTrackFeature]) -> [String: AnyObject] {
+    func getAverageTrackFeatures(preferredTrackFeatures: [SpotifyTrackFeature]) -> SpotifyTrackFeature {
+        
         let trackCount = Double(preferredTrackFeatures.count)
         var emotionValues:[String: AnyObject] = [:]
         
@@ -90,30 +90,68 @@ class Spotify {
             energy = trackFeatures.energy != nil ? energy + trackFeatures.energy! : 0
             instrumentalness = trackFeatures.instrumentalness != nil ? instrumentalness + trackFeatures.instrumentalness! : 0
             liveness = trackFeatures.liveness != nil ? liveness + trackFeatures.liveness! : 0
-            loudness = trackFeatures.loudness != nil ? loudness + trackFeatures.loudness! : 0
+            loudness = trackFeatures.loudness != nil ? loudness - trackFeatures.loudness! : 0
             speechiness = trackFeatures.speechiness != nil ? speechiness + trackFeatures.speechiness! : 0
             tempo = trackFeatures.tempo != nil ?  tempo + trackFeatures.tempo! : 0
             valence = trackFeatures.valence != nil ? valence + trackFeatures.valence! : 0
         }
         
         acousticness = (acousticness/Double(trackCount));
-        acousticness.randomInRange(value: acousticness, range: 0.2, acceptNegativeValues: false)
         danceability = danceability/Double(trackCount);
-        danceability.randomInRange(value: danceability, range: 0.2, acceptNegativeValues: false)
         energy = energy/Double(trackCount);
-        energy.randomInRange(value: energy, range: 0.2, acceptNegativeValues: false)
         instrumentalness = instrumentalness/Double(trackCount);
-        instrumentalness.randomInRange(value: instrumentalness, range: 0.2, acceptNegativeValues: false)
         liveness = liveness/Double(trackCount);
-        liveness.randomInRange(value: liveness, range: 3, acceptNegativeValues: true)
         loudness = loudness/Double(trackCount);
-        loudness.randomInRange(value: loudness, range: 0.2, acceptNegativeValues: false)
         speechiness = speechiness/Double(trackCount);
-        speechiness.randomInRange(value: speechiness, range: 0.2, acceptNegativeValues: false)
         tempo = tempo/Double(trackCount);
-        tempo.randomInRange(value: tempo, range: 100, acceptNegativeValues: false, maxValue: 250)
         valence = valence/Double(trackCount);
-        valence.randomInRange(value: valence, range: 0.2, acceptNegativeValues: false)
+        
+        return SpotifyTrackFeature(acousticness: acousticness, analysisUrl: nil, danceability: danceability, durationMs: nil, energy: energy, id: nil, instrumentalness: instrumentalness, key: nil, liveness: liveness, loudness: loudness, mode: nil, speechiness: speechiness, tempo: tempo, timeSignature: nil, trackHref: nil, type: nil, uri: nil, valence: valence, genre: nil, youtubeId: nil)
+        
+    }
+    
+    
+    func getAverageTrackFeaturesRandomized(preferredTrackFeatures: [SpotifyTrackFeature]) -> [String: AnyObject] {
+        let trackCount = Double(preferredTrackFeatures.count)
+        var emotionValues:[String: AnyObject] = [:]
+        
+        var acousticness:Double = 0
+        var danceability:Double = 0
+        var energy:Double = 0
+        var instrumentalness:Double = 0
+        var liveness:Double = 0
+        var loudness:Double = 0
+        var speechiness:Double = 0
+        var tempo:Double = 0
+        var valence:Double = 0
+        
+        
+        
+        for trackFeatures in preferredTrackFeatures {
+            
+            acousticness = trackFeatures.acousticness != nil ? acousticness + trackFeatures.acousticness! : 0
+            danceability = trackFeatures.danceability != nil ? danceability + trackFeatures.danceability! : 0
+            energy = trackFeatures.energy != nil ? energy + trackFeatures.energy! : 0
+            instrumentalness = trackFeatures.instrumentalness != nil ? instrumentalness + trackFeatures.instrumentalness! : 0
+            liveness = trackFeatures.liveness != nil ? liveness + trackFeatures.liveness! : 0
+            loudness = trackFeatures.loudness != nil ? loudness - trackFeatures.loudness! : 0
+            speechiness = trackFeatures.speechiness != nil ? speechiness + trackFeatures.speechiness! : 0
+            tempo = trackFeatures.tempo != nil ?  tempo + trackFeatures.tempo! : 0
+            valence = trackFeatures.valence != nil ? valence + trackFeatures.valence! : 0
+        }
+        
+        var trackFeatures = getAverageTrackFeatures(preferredTrackFeatures: preferredTrackFeatures)
+        
+        
+        trackFeatures.acousticness!.randomInRange(value: trackFeatures.acousticness!, range: 0.2, acceptNegativeValues: false)
+        trackFeatures.danceability!.randomInRange(value: trackFeatures.danceability!, range: 0.2, acceptNegativeValues: false)
+        trackFeatures.energy!.randomInRange(value: trackFeatures.energy!, range: 0.2, acceptNegativeValues: false)
+        trackFeatures.instrumentalness!.randomInRange(value: trackFeatures.instrumentalness!, range: 0.2, acceptNegativeValues: false)
+        trackFeatures.liveness!.randomInRange(value: trackFeatures.liveness!, range: 0.2, acceptNegativeValues: false)
+        trackFeatures.loudness!.randomInRange(value: trackFeatures.loudness!, range: 3, acceptNegativeValues: true)
+        trackFeatures.speechiness!.randomInRange(value: trackFeatures.speechiness!, range: 0.2, acceptNegativeValues: false)
+        trackFeatures.tempo!.randomInRange(value: trackFeatures.tempo!, range: 100, acceptNegativeValues: false, maxValue: 250)
+        trackFeatures.valence!.randomInRange(value: trackFeatures.valence!, range: 0.2, acceptNegativeValues: false)
         
         if preferredTrackFeatures.first?.acousticness != nil {
             emotionValues["acousticness"] = acousticness as AnyObject
