@@ -28,6 +28,44 @@ struct NusicTrack {
         self.userName = firebaseUsername
         self.youtubeInfo = youtubeInfo;
         self.reference = Database.database().reference().child("likedTracks");
+        setupListeners()
+    }
+    
+    func setupListeners() {
+        
+        //Save
+//        Database.database().reference().child("trackFeatures").child(userName).child(trackInfo.trackId!).observe(.childAdded) { (dataSnapshot) in
+//            if let moodInfo = self.moodInfo {
+//                for emotion in moodInfo.emotions {
+//                    self.reference.child(self.userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(self.trackInfo.trackId!).setValue(true)
+//                }
+//            }
+//        }
+        
+//        Database.database().reference().child("trackFeatures").queryOrdered(byChild: "users").observe(.childAdded) { (dataSnapshot) in
+//            if dataSnapshot.key == self.trackInfo.trackId {
+//                if let moodInfo = self.moodInfo {
+//                    for emotion in moodInfo.emotions {
+//                        self.reference.child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(self.userName).childByAutoId().setValue(self.trackInfo.trackId)
+//                    }
+//                }
+//            }
+//        }
+        
+        Database.database().reference().child("likedTracks").child(userName).observe(.childAdded) { (dataSnapshot) in
+            if dataSnapshot.key == self.trackInfo.trackId {
+                if let moodInfo = self.moodInfo {
+                    for emotion in moodInfo.emotions {
+                        Database.database().reference()
+                            .child("moodTracks")
+                            .child(self.userName)
+                            .child(emotion.basicGroup.rawValue.lowercased())
+                            .child(self.trackInfo.trackId)
+                                .setValue(true)
+                    }
+                }
+            }
+        }
     }
     
 }
@@ -55,17 +93,22 @@ extension NusicTrack : FirebaseModel {
                 for emotion in moodInfo.emotions {
                     var dict = audioFeatures.toDictionary();
                     
-                    dict["addedOn"] = dateString as AnyObject;
-                    reference.child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(trackInfo.trackId!).updateChildValues(dict) { (error, reference) in
+                    Database.database().reference().child("trackFeatures").child(trackInfo.trackId!).updateChildValues(dict) { (error, reference) in
                         if let error = error {
-                            saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveLikedTracks.rawValue, systemError: error))
+                            saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
+                        } else {
+                            print(reference)
+                            
+                            
                         }
                     }
+                    
+                    Database.database().reference().child("likedTracks").child(self.userName).child(self.trackInfo.trackId).child("likedOn").setValue(dateString as AnyObject)
                 }
             } else {
                 var dict = audioFeatures.toDictionary();
                 dict["addedOn"] = dateString as AnyObject
-                reference.child(userName).child("moods").child(EmotionDyad.unknown.rawValue).child(trackInfo.trackId!).updateChildValues(dict) { (error, reference) in
+                self.reference.child(userName).child("moods").child(EmotionDyad.unknown.rawValue).child(trackInfo.trackId!).updateChildValues(dict) { (error, reference) in
                         if let error = error {
                             saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
                         }

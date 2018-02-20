@@ -9,9 +9,21 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>NewsicDEV.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>12</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>8C3C34632036EA070092B953</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>8C90E85D1F53D838002B135F</key>
 		<dict>
 			<key>primary</key>

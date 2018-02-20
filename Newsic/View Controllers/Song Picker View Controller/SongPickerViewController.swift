@@ -190,8 +190,9 @@ class SongPickerViewController: NusicDefaultViewController {
 //            genreCollectionView.collectionViewLayout.invalidateLayout()
 //            moodCollectionView.collectionViewLayout.invalidateLayout()
         }
-        invalidateCellsLayout(for: genreCollectionView)
         invalidateCellsLayout(for: moodCollectionView)
+        invalidateCellsLayout(for: genreCollectionView)
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -201,8 +202,9 @@ class SongPickerViewController: NusicDefaultViewController {
         }
         
         if viewRotated {
-            reloadCellsData(for: genreCollectionView)
             reloadCellsData(for: moodCollectionView)
+            reloadCellsData(for: genreCollectionView)
+            
             var newY:CGFloat = 0
             if !listMenuView.isShowing {
                 newY = self.view.frame.height
@@ -243,13 +245,12 @@ class SongPickerViewController: NusicDefaultViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        genreCollectionView.collectionViewLayout.invalidateLayout()
         moodCollectionView.collectionViewLayout.invalidateLayout()
-        reloadCellsData(for: genreCollectionView)
+        genreCollectionView.collectionViewLayout.invalidateLayout()
         reloadCellsData(for: moodCollectionView)
+        reloadCellsData(for: genreCollectionView)
         reloadListMenu()
         reloadNavigationBar()
-        
         self.view.layoutIfNeeded()
     }
  
@@ -370,10 +371,9 @@ class SongPickerViewController: NusicDefaultViewController {
         moodCollectionView.layer.zPosition = -1
         genreCollectionView.layer.zPosition = -1
         
-//        self.mainControlView.bringSubview(toFront: nusicControl)
-        
         let collectionViewsPanGestureRecoginizer = UIPanGestureRecognizer(target: self, action: #selector(panCollectionViews(_:)))
         self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecoginizer)
+        
     }
     
     @objc fileprivate func toggleMenu() {
@@ -640,6 +640,7 @@ extension SongPickerViewController: UIGestureRecognizerDelegate {
             break
         }
     }
+
 }
 
 

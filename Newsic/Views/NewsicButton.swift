@@ -38,7 +38,6 @@ class NusicButton: UIButton {
         self.layer.cornerRadius = cornerSize
         
         if allowBlur {
-            let containerEffect = UIBlurEffect(style: .dark)
             let containerView = createBlurEffect(style: .dark, alpha: blurAlpha)
             containerView.isUserInteractionEnabled = false // Edit: so that subview simply passes the event through to the button
             self.insertSubview(containerView, belowSubview: self.titleLabel!)

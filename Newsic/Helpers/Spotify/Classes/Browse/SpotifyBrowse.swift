@@ -59,7 +59,7 @@ extension Spotify {
             urlString.append("seed_genres=\(genres)")
             if let preferredTrackFeatures = preferredTrackFeatures {
                 if preferredTrackFeatures.count > 0 {
-                    let averageFeatures = getAverageTrackFeatures(preferredTrackFeatures: preferredTrackFeatures)
+                    let averageFeatures = getAverageTrackFeaturesRandomized(preferredTrackFeatures: preferredTrackFeatures)
                     let averageFeaturesString = trackFeaturesToString(features: averageFeatures)
                     urlString.append(averageFeaturesString)
                 }

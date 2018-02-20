@@ -53,6 +53,8 @@ extension SongPickerViewController {
             playerViewController.selectedGenreList = selectedGenres
         }
         playerViewController.selectedSongs = selectedTrackList
+        playerViewController.trackFeatures.removeAll()
+        playerViewController.playedSongsHistory?.removeAll()
         playerViewController.playOnCellularData = nusicUser.settingValues.useMobileData
         
         playerViewController.newMoodOrGenre = true;

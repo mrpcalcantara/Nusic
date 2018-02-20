@@ -12,8 +12,7 @@ class MoodGenreCell: UICollectionViewCell {
 
     @IBOutlet weak var moodGenreLabel: UILabel!
     @IBOutlet weak var backgroundImage: UIImageView!
-    
-    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     static let reuseIdentifier: String? = "moodGenreCell"
     
     //View
@@ -50,16 +49,18 @@ class MoodGenreCell: UICollectionViewCell {
         self.moodGenreLabel.text = ""
         self.backgroundImage.image = #imageLiteral(resourceName: "TransparentAppIcon")
         self.backgroundImage.alpha = self.unhighlightedAlpha
-        self.imageUrlList?.removeAll()
-        self.imageList?.removeAll()
+        self.imageUrlList = nil
+        self.imageList = nil
         self.currentImageIndex = 0
         self.deselectCell()
         self.borderPathLayer = nil
         self.timer?.invalidate()
         self.timer = nil
+        self.activityIndicator.stopAnimating()
     }
     
     func configure(text: String) {
+        
         DispatchQueue.main.async {
             self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
             self.setupBorderLayer()
@@ -72,9 +73,12 @@ class MoodGenreCell: UICollectionViewCell {
             self.backgroundImage.contentMode = .scaleAspectFit
             self.backgroundImage.alpha = self.unhighlightedAlpha
             
+            self.activityIndicator.hidesWhenStopped = true
+            
             if let imageList = self.imageList, imageList.count > 0 {
                 self.setTimer()
             } else {
+                
                 self.imageList = Array()
             }
         }
@@ -87,7 +91,7 @@ class MoodGenreCell: UICollectionViewCell {
         for imageUrl in urlList {
             if let url = URL(string: imageUrl) {
                 guard (UIImage(named: "TransparentAppIcon")?.downloadImage(from: url, downloadImageHandler: { (downloadedImage) in
-                    if let downloadedImage = downloadedImage {
+                    if var downloadedImage = downloadedImage {
                         downloadedImageList.append(downloadedImage);
                     }
                     
@@ -96,7 +100,7 @@ class MoodGenreCell: UICollectionViewCell {
                         self.imageList = downloadedImageList
                     }
                 })) != nil else {
-                    break;
+                    return
                 }
             }
         }
@@ -123,32 +127,41 @@ class MoodGenreCell: UICollectionViewCell {
     }
     
     @objc fileprivate func cycleImages() {
-        
+        if self.activityIndicator.isAnimating {
+            self.activityIndicator.stopAnimating()
+        }
         if currentImageIndex == imageUrlList?.count {
             currentImageIndex = 0
         }
         if let imageList = self.imageList {
-                DispatchQueue.main.async {
-                    UIView.transition(with: self.backgroundImage, duration: 1, options: [.transitionCrossDissolve], animations: {
-                        if self.currentImageIndex < imageList.count {
-//                            print("\(self.moodGenreLabel.text) - assigning image for index = \(self.currentImageIndex)")
-                            self.backgroundImage.image = imageList[self.currentImageIndex]
-                            self.currentImageIndex += 1
-                        }
-                    }, completion: nil)
-                }
+            DispatchQueue.main.async {
+                
+                UIView.transition(with: self.backgroundImage, duration: 1, options: [.transitionCrossDissolve], animations: {
+                    if self.currentImageIndex < imageList.count {
+                        self.backgroundImage.image = imageList[self.currentImageIndex]
+                        self.currentImageIndex += 1
+                    }
+                }, completion: { (isCompleted) in
+                    
+                })
+            }
         }
         
         
     }
     
     fileprivate func setTimer() {
+        
+        
         self.timer?.invalidate()
         self.timer = nil
         self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true, block: { (timer) in
             self.cycleImages()
         })
         timer?.fire()
+        
+        
+        
     }
     
     fileprivate func setPathSelectAnimation() {

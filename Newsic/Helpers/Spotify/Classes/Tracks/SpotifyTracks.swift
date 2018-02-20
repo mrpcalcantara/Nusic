@@ -80,9 +80,7 @@ extension Spotify {
                     }
                     
                     let nextPage = jsonObject["next"] as? String
-                    if let nextPage = nextPage {
-//                        let nextPageUrl = URL(string: nextPage)
-//                        let nextPageUrlRequest = URLRequest(url: nextPageUrl!)
+                    if nextPage != nil {
                         self.getTrackInfo(for: trackList, offset: nextOffset, currentExtractedTrackList: currentExtractedTrackList, trackInfoListHandler: { (trackList, error) in
                             trackInfoListHandler(trackList, nil);
                         })

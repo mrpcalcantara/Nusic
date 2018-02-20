@@ -11,7 +11,6 @@ import Foundation
 extension String {
     
     func capitalizingFirstLetter() -> String {
-        let letter = prefix(1).uppercased() + dropFirst()
         return prefix(1).uppercased() + dropFirst()
     }
     

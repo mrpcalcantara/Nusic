@@ -44,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Setup Firebase
         FirebaseApp.configure();
+        
         Messaging.messaging().delegate = self
         registerForPushNotifications()
         

@@ -8,6 +8,7 @@
 
 import Foundation
 import FirebaseDatabase
+import Firebase
 
 class FirebaseDatabaseHelper {
     
@@ -41,7 +42,6 @@ class FirebaseDatabaseHelper {
         Database.database().reference().child("emotions").observeSingleEvent(of: .value, with: { (dataSnapshot) in
             if let values = dataSnapshot.value as? [String : AnyObject] {
                 
-                var dyadList: [EmotionDyad] = []
                 var emotionDict: [EmotionCategory: [EmotionDyad]] = [:]
                 emotionDict[EmotionCategory.positive] =
                     values.filter({ $0.value["valence"] as! Double >= 0.7 })
@@ -59,7 +59,6 @@ class FirebaseDatabaseHelper {
                         .map({ EmotionDyad(rawValue: $0.key.capitalizingFirstLetter())! })
                         .sorted(by: { (dyad1, dyad2) -> Bool in return dyad1.rawValue < dyad2.rawValue })
                 
-                let test = emotionDict
                 fetchMoodsHandler(emotionDict, nil)
                 
             }
@@ -98,6 +97,39 @@ class FirebaseDatabaseHelper {
     private class func fetchAllDataForDelete(user: String, fetchAllDataHandler: @escaping ([[String: AnyObject]]) -> ()) {
         let user = NusicUser(userName: user)
     
+    }
+    
+    class func fetchTrackFeatures(for user: String, moodObject: NusicMood, fetchTrackFeaturesHandler: @escaping ([SpotifyTrackFeature]?) -> ()) {
+        var trackFeatures = [SpotifyTrackFeature]()
+        var index = 0
+        let mood = moodObject.emotions.first?.basicGroup.rawValue.lowercased()
+        let reference = Database.database().reference()
+            reference.child("moodTracks/\(user)/\(mood!)").observeSingleEvent(of: .value) { (dataSnapshot) in
+                if dataSnapshot.exists() {
+                    for child in dataSnapshot.children {
+                        
+                        let trackId = (child as! DataSnapshot).key
+                        reference.child("trackFeatures").child(trackId).observeSingleEvent(of: .value, with: { (childSnapshot) in
+                            if childSnapshot.exists() {
+                                var features = SpotifyTrackFeature()
+                                features.mapDictionary(featureDictionary: childSnapshot.value as! [String: AnyObject])
+                                trackFeatures.append(features)
+                                index += 1
+                                if index == dataSnapshot.childrenCount - 1 {
+                                    fetchTrackFeaturesHandler(trackFeatures)
+                                }
+                            }
+                        })
+                    }
+                } else {
+                    moodObject.getDefaultTrackFeatures(getDefaultTrackFeaturesHandler: { (trackFeatures, error) in
+                        if let trackFeatures = trackFeatures {
+                            fetchTrackFeaturesHandler(trackFeatures)
+                        }
+                    })
+                }
+                
+            }
     }
     
 }
