@@ -25,8 +25,9 @@ class SpotifyTrack: Hashable {
     var artist: SpotifyArtist;
     var addedAt: Date?!
     var audioFeatures: SpotifyTrackFeature? = nil
+    var suggestedSong: Bool? = false
     
-    init(title: String? = "", thumbNail: UIImage? = nil, thumbNailUrl: String? = "", smallThumbNailUrl: String? = "", trackUri: String? = "", trackId: String, songName: String? = "", songHref: String? = "", artist: SpotifyArtist?, addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?) {
+    init(title: String? = "", thumbNail: UIImage? = nil, thumbNailUrl: String? = "", smallThumbNailUrl: String? = "", trackUri: String? = "", trackId: String, songName: String? = "", songHref: String? = "", artist: SpotifyArtist?, addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?, suggestedSong: Bool? = false) {
         self.title = title;
         self.thumbNailUrl = thumbNailUrl;
         self.smallThumbNailUrl = smallThumbNailUrl
@@ -37,6 +38,7 @@ class SpotifyTrack: Hashable {
         self.artist = artist!
         self.addedAt = addedAt;
         self.audioFeatures = audioFeatures
+        self.suggestedSong = suggestedSong
         
         let image = UIImage()
         if let thumbNail = thumbNail {
@@ -50,8 +52,6 @@ class SpotifyTrack: Hashable {
                 }
             }
         }
-        
-        
     }
     
     convenience init() {
@@ -68,7 +68,8 @@ class SpotifyTrack: Hashable {
             lhs.songHref == rhs.songHref &&
             lhs.artist == rhs.artist &&
             lhs.addedAt == rhs.addedAt &&
-            lhs.audioFeatures == rhs.audioFeatures
+            lhs.audioFeatures == rhs.audioFeatures &&
+            lhs.suggestedSong == rhs.suggestedSong
     }
     
     func setImage() {

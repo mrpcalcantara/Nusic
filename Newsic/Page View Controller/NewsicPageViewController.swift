@@ -15,7 +15,7 @@ class NusicPageViewController: UIPageViewController {
     var songPickerVC: UIViewController?
     var sideMenuVC: UIViewController?
     var showSongVC: UIViewController?
-    var backgroundImageView: UIImageView!
+    private var backgroundImageView: UIImageView!
     
     private(set) lazy var orderedViewControllers: [UIViewController] = {
         // The view controllers will be shown in this order
@@ -132,7 +132,7 @@ class NusicPageViewController: UIPageViewController {
      
      - parameter viewController: the view controller to show.
      */
-    private func scrollToViewController(viewController: UIViewController,
+    func scrollToViewController(viewController: UIViewController,
                                         direction: UIPageViewControllerNavigationDirection = .forward) {
 //        if !(viewController is ShowSongViewController) {
 //
@@ -165,6 +165,14 @@ class NusicPageViewController: UIPageViewController {
 // MARK: UIPageViewControllerDataSource
 
 extension NusicPageViewController: UIPageViewControllerDataSource {
+    
+    func activateDataSource() {
+        self.dataSource = self
+    }
+    
+    func deactivateDataSource() {
+        self.dataSource = nil
+    }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let viewControllerIndex = orderedViewControllers.index(of: viewController) else {

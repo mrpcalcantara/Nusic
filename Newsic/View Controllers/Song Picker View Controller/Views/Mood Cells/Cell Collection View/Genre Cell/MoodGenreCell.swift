@@ -85,13 +85,13 @@ class MoodGenreCell: UICollectionViewCell {
     }
     
     func addImages(urlList: [String]) {
-        imageUrlList = urlList
+        imageUrlList = Array(urlList.prefix(2))
         var count = 0
         var downloadedImageList: [UIImage] = Array()
         for imageUrl in urlList {
             if let url = URL(string: imageUrl) {
                 guard (UIImage(named: "TransparentAppIcon")?.downloadImage(from: url, downloadImageHandler: { (downloadedImage) in
-                    if var downloadedImage = downloadedImage {
+                    if let downloadedImage = downloadedImage {
                         downloadedImageList.append(downloadedImage);
                     }
                     

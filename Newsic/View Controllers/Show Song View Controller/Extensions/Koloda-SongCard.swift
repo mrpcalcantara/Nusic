@@ -19,9 +19,6 @@ extension ShowSongViewController: KolodaViewDelegate {
     func koloda(_ koloda: KolodaView, didSelectCardAt index: Int) {
         
         let alertController = NusicAlertController(title: nil, message: nil, style: YBAlertControllerStyle.ActionSheet)
-        
-        
-        
         let actionShare: () -> Void = {
             var url: URL? = nil
             if self.user.settingValues.preferredPlayer == NusicPreferredPlayer.spotify {
@@ -37,7 +34,6 @@ extension ShowSongViewController: KolodaViewDelegate {
                     return;
                 }
             }
-//            let url = URL(string:  (self.currentPlayingTrack?.songHref)!)!
             let appendedText = "Suggested by #nusic"
             let array: [Any] = [url as Any, appendedText as Any]
             let activityVC = UIActivityViewController(activityItems: array, applicationActivities: nil)
@@ -119,7 +115,6 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
-//        print("showing card at: \(index)")
         DispatchQueue.main.async {
             self.songListTableView.reloadData()
         }
@@ -157,17 +152,12 @@ extension ShowSongViewController: KolodaViewDelegate {
         return 0.75
     }
     
-    func koloda(_ koloda: KolodaView, draggedCardWithPercentage finishPercentage: CGFloat, in direction: SwipeResultDirection) {
-        print(finishPercentage)
-        
-    }
 }
 
 
 extension ShowSongViewController: KolodaViewDataSource {
     
     func kolodaNumberOfCards(_ koloda: KolodaView) -> Int {
-        //print("card list count = \(cardList.count)")
         return cardList.count
     }
     
@@ -184,7 +174,6 @@ extension ShowSongViewController: KolodaViewDataSource {
     }
     
     func koloda(_ koloda: KolodaView, viewForCardOverlayAt index: Int) -> OverlayView? {
-        //print("viewForCardOverlayAt index \(index)")
         return Bundle.main.loadNibNamed("OverlayView", owner: self, options: nil)?[0] as? SongOverlayView
     }
     
@@ -198,6 +187,7 @@ extension ShowSongViewController: KolodaViewDataSource {
         view.songTitle.text = self.cardList[index].trackInfo.songName;
         view.genreLabel.text = self.cardList[index].trackInfo.artist.listGenres()
         view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
+        view.suggestedSongIcon.isHidden = !self.cardList[index].trackInfo.suggestedSong!
         
         //TODO: Swiping for Spotify shows YT view regardless, and as such, the album image is hidden.
         if preferredPlayer == NusicPreferredPlayer.spotify {
@@ -233,9 +223,9 @@ extension ShowSongViewController {
     @objc func likeTrack(in index: Int) {
         guard cardList.count > 0, containsTrack(trackId: cardList[presentedCardIndex].trackInfo.trackId) == false else { return; }
         let likedCardIndex = presentedCardIndex
-        SwiftSpinner.show("Adding track to playlist..").addTapHandler({
-            SwiftSpinner.hide()
-        }, subtitle: "Tap on the screen to go back to the cards. We'll add the song on the background!")
+        DispatchQueue.main.async {
+            SwiftSpinner.show(duration: 1, title: "Liked!");
+        }
         
         let track = cardList[likedCardIndex];
         isSongLiked = didUserSwipe == true ? false : true ; toggleLikeButtons()
@@ -253,15 +243,9 @@ extension ShowSongViewController {
                                     if let error = error {
                                         SwiftSpinner.hide()
                                         error.presentPopup(for: self)
-                                    } else {
-                                        SwiftSpinner.show(duration: 2, title: "Liked!");
                                     }
                                     
                                 })
-                            }
-                        } else {
-                            DispatchQueue.main.async {
-                                SwiftSpinner.show(duration: 2, title: "Liked!");
                             }
                         }
                         
@@ -278,17 +262,13 @@ extension ShowSongViewController {
             } else {
                 if var trackFeatures = trackFeatures {
                     trackFeatures.youtubeId = track.youtubeInfo?.trackId;
-//                    self.updateCurrentGenresAndFeatures { (genres, trackFeatures) in
-//                        self.trackFeatures = trackFeatures;
-//                    }
-                    
                     track.trackInfo.audioFeatures = trackFeatures;
                     track.saveData(saveCompleteHandler: { (reference, error) in
                         if let error = error {
                             SwiftSpinner.hide()
                             error.presentPopup(for: self)
                         }
-                        self.likedTrackList.insert(track, at: 0);
+//                        self.likedTrackList.insert(track, at: 0);
                         DispatchQueue.main.async {
                             self.songListTableView.reloadData();
                         }

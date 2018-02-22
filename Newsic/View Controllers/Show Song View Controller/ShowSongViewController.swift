@@ -24,16 +24,25 @@ class ShowSongViewController: NusicDefaultViewController {
     var playerMenuMaxWidth: CGFloat = 0
     
     //Data variables
-    var cardList:[NusicTrack] = [];
+    var cardList:[NusicTrack] = [] {
+        didSet {
+            if cardList.count < 3 {
+                self.fetchNewCard(numberOfSongs: 3-cardList.count, cardFetchingHandler: { (fetched) in
+                    
+                })
+
+            }
+        }
+    }
     var playlist:NusicPlaylist! = nil
     var user: NusicUser! = nil;
     var likedTrackList:[NusicTrack] = [] {
         didSet {
             print("likedTrackList count = \(likedTrackList.count)")
-            sortTableView(by: songListTableViewHeader.currentSortElement)
             DispatchQueue.main.async {
                 self.songListTableView.reloadData()
                 self.songListTableView.layoutIfNeeded()
+                self.sortTableView(by: self.songListTableViewHeader.currentSortElement)
             }
         }
     }
@@ -105,6 +114,7 @@ class ShowSongViewController: NusicDefaultViewController {
     var sectionTitles: [String?] = []
     var sectionSongs: [[NusicTrack]] = []
     
+    //Firebase
     let reference: DatabaseReference = Database.database().reference()
     
     
@@ -281,14 +291,29 @@ class ShowSongViewController: NusicDefaultViewController {
        if let emotion = moodObject?.emotions.first?.basicGroup.rawValue.lowercased() {
             reference.child("moodTracks").child(self.user.userName).child(emotion).observe(.childAdded) { (dataSnapshot) in
                 let trackId = dataSnapshot.key as! String
-                self.likedTrackIdList.append(trackId)
-                self.reference.child("trackFeatures").child(trackId).observe(.value, with: { (childSnapshot) in
-                    if childSnapshot.exists() {
-                        var features = SpotifyTrackFeature()
-                        features.mapDictionary(featureDictionary: childSnapshot.value as! [String: AnyObject])
-                        self.trackFeatures.append(features)
+                if !self.likedTrackIdList.contains(trackId) {
+                    self.likedTrackIdList.append(trackId)
+                    self.reference.child("trackFeatures").child(trackId).observe(.value, with: { (childSnapshot) in
+                        if childSnapshot.exists() {
+                            var features = SpotifyTrackFeature()
+                            features.mapDictionary(featureDictionary: childSnapshot.value as! [String: AnyObject])
+                            self.trackFeatures.append(features)
+                        }
+                    })
+                }
+            }
+        
+            reference.child("moodTracks").child(self.user.userName).child(emotion).observe(.childRemoved) { (dataSnapshot) in
+                let trackId = dataSnapshot.key as! String
+                if self.likedTrackIdList.contains(trackId) {
+                    if let likedTrackIndex = self.likedTrackIdList.index(of: trackId) {
+                        self.likedTrackIdList.remove(at: likedTrackIndex)
                     }
-                })
+                    
+                    if let trackFeaturesIndex = self.trackFeatures.index(where: { $0.id == trackId }) {
+                        self.trackFeatures.remove(at: trackFeaturesIndex)
+                    }
+                }
             }
         }
     }
@@ -297,7 +322,6 @@ class ShowSongViewController: NusicDefaultViewController {
         
         currentMoodDyad = moodObject?.emotions.first?.basicGroup
         addMenuSwipeGestureRecognizer()
-        
         
     }
     
@@ -343,16 +367,6 @@ class ShowSongViewController: NusicDefaultViewController {
         }
         
         self.navigationItem.rightBarButtonItem = barButtonRight
-        
-        
-        let labelView = UILabel()
-        labelView.font = UIFont(name: "Futura", size: 20)
-        labelView.textColor = UIColor.white
-        if let currentMoodDyad = currentMoodDyad {
-            labelView.text = currentMoodDyad == EmotionDyad.unknown ? "" : "Mood: \(currentMoodDyad.rawValue)"
-        }
-        
-//        self.navigationItem.titleView = labelView
         
         let navItem = self.navigationItem
         navbar.items = [navItem]
@@ -588,8 +602,13 @@ class ShowSongViewController: NusicDefaultViewController {
 
 extension ShowSongViewController: UIGestureRecognizerDelegate {
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        print("shouldbegin called")
         return true
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
     }
     
     @objc func handleMenuScreenGesture(_ recognizer: UIPanGestureRecognizer) {
@@ -627,27 +646,6 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
             songListMenuProgress = 0
         }
         
-    }
-    
-    @objc func handleDismissSwipe(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
-        let touchPoint = gestureRecognizer.location(in: self.view)
-        let finalPoint = self.view.frame.width
-        let translation = gestureRecognizer.translation(in: self.view)
-        
-        if gestureRecognizer.state == .began {
-            initialSwipeLocation = touchPoint
-        } else if gestureRecognizer.state == .changed {
-            self.view.frame = CGRect(x: translation.x, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-            dismissProgress = CGFloat(fminf(fmaxf(Float(translation.x/finalPoint), 0.0), 1.0))
-        } else if gestureRecognizer.state == .cancelled || gestureRecognizer.state == .ended {
-            if dismissProgress > 0.5 {
-                backToSongPicker();
-            } else {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-                })
-            }
-        }
     }
     
 }
@@ -971,8 +969,6 @@ extension ShowSongViewController {
                     
                     ytTracks.append(nusicTrack);
                 }
-                //                print("index: \(index) ==== \(track.title) -> trackId = \(youtubeInfo?.trackId)")
-                
                 if index == tracks.count {
                     youtubeSearchHandler(ytTracks)
                 }
@@ -1032,7 +1028,12 @@ extension ShowSongViewController {
             self.addSongToCardPlaylist(index: startIndex, track: track)
         }
         DispatchQueue.main.async {
-            self.songCardView.reloadData();
+            if self.songCardView.currentCardIndex == 0 {
+                self.songCardView.reloadCardsInIndexRange(0..<3)
+            } else {
+                self.songCardView.reloadData();
+            }
+            
         }
     }
     
@@ -1055,7 +1056,6 @@ extension ShowSongViewController {
     
     func playCard(at index:Int) {
         if preferredPlayer == NusicPreferredPlayer.spotify {
-//            print("attempting to start track = \(cardList[index].trackInfo.songName)")
             actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.trackUri);
         }
     }
@@ -1064,8 +1064,6 @@ extension ShowSongViewController {
         
         let index = likedTrackList.count - indexPath.row-1
         let strIndex = String(index)
-        
-//        let track = likedTrackList[indexPath.row]
         let track = sectionSongs[indexPath.section][indexPath.row]
         
         let trackDict: [String: String] = [ strIndex : track.trackInfo.trackUri ]
@@ -1093,7 +1091,6 @@ extension ShowSongViewController {
     }
     
     fileprivate func addSongToCardPlaylist(index: Int? = nil, track: NusicTrack) {
-//        print("added track = \(track.trackInfo.songName)")
         if index != nil {
             self.cardList.insert(track, at: index!)
         } else {

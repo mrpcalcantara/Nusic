@@ -14,6 +14,7 @@ extension ShowSongViewController {
         songListTableView.delegate = self;
         songListTableView.dataSource = self;
         
+        songListTableView.canCancelContentTouches = true
         let view = UINib(nibName: SongTableViewCell.className, bundle: nil);
         songListTableView.register(view, forCellReuseIdentifier: SongTableViewCell.reuseIdentifier);
         
@@ -22,7 +23,6 @@ extension ShowSongViewController {
         
         songListTableViewHeader.setupView()
         songListTableViewHeader.delegate = self
-//        songListTableViewHeader.displayName.text = "TEST"
         setupView();
     }
     
@@ -69,6 +69,10 @@ extension ShowSongViewController {
     }
     
     func openMenu() {
+        if let parent = self.parent as? NusicPageViewController {
+            parent.deactivateDataSource()
+        }
+        
         isMenuOpen = true
         self.songListTableView.layoutIfNeeded()
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
@@ -92,6 +96,9 @@ extension ShowSongViewController {
     
     func closeMenu() {
 
+        if let parent = self.parent as? NusicPageViewController {
+            parent.activateDataSource()
+        }
         isMenuOpen = false
         
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: .curveLinear, animations: {
@@ -186,12 +193,6 @@ extension ShowSongViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50;
     }
- 
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let headerCell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SongTableViewHeader") as! SongTableViewHeader
-//        configure(headerCell: headerCell, at: section);
-//        return headerCell;
-//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let frontPosition = songCardView.currentCardIndex;
@@ -216,13 +217,9 @@ extension ShowSongViewController: UITableViewDelegate {
                 self.isSongLiked = false;
                 self.toggleLikeButtons();
                 DispatchQueue.main.async {
-                    var indexSet = IndexSet()
-                    indexSet.insert(indexPath.section)
-                    tableView.performBatchUpdates({
-                        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
-                        tableView.reloadSections(indexSet, with: UITableViewRowAnimation.fade)
-                    }, completion: nil)
+                    tableView.reloadData()
                 }
+                
             })
             
             

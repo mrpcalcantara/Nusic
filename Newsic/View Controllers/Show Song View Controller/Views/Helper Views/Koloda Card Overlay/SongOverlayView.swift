@@ -68,6 +68,12 @@ class SongOverlayView: OverlayView {
         return imageView
     }()
     
+    @IBOutlet lazy var suggestedSongIcon: UIImageView! = {
+        [unowned self] in
+        var imageView = UIImageView()
+        return imageView
+        }()
+    
     override var overlayState: SwipeResultDirection?  {
         didSet {
             switch overlayState {

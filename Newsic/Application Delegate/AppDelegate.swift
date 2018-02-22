@@ -42,6 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        if let notifInfo = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? [AnyHashable: Any] {
+            handleReceivedRemoteNotification(userInfo: notifInfo)
+        }
         // Setup Firebase
         FirebaseApp.configure();
         
@@ -179,14 +182,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         containerAppearance.shadowEnabled   = true
         containerAppearance.shadowColor     = UIColor.black
         
-        //        let overlayAppearance = PopupDialogOverlayView.appearance()
-        //
-        //        overlayAppearance.color       = UIColor.black
-        //        overlayAppearance.blurRadius  = 20
-        //        overlayAppearance.blurEnabled = true
-        //        overlayAppearance.liveBlur    = false
-        //        overlayAppearance.opacity     = 0.7
-        
         let buttonAppearance = DefaultButton.appearance()
         
         // Default button
@@ -242,6 +237,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         // With swizzling disabled you must let Messaging know about the message, for Analytics
         // Messaging.messaging().appDidReceiveMessage(userInfo)
+        
         // Print message ID.
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
@@ -258,13 +254,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
-        
-        // Print full message.
-        print(userInfo)
+        handleReceivedRemoteNotification(userInfo: userInfo)
         
         completionHandler()
     }
@@ -285,6 +275,27 @@ extension AppDelegate : MessagingDelegate {
     // To enable direct data messages, you can set Messaging.messaging().shouldEstablishDirectChannel to true.
     func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
         print("Received data message: \(remoteMessage.appData)")
+        
+    }
+    
+    func handleReceivedRemoteNotification(userInfo: [AnyHashable: Any]) {
+        // Print message ID.
+        //        let mainStoryboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        //        let initialViewController: NusicPageViewController = mainStoryboard.instantiateViewController(withIdentifier: "nusicPageViewController") as! NusicPageViewController
+        UserDefaults.standard.set(userInfo["spotifyTrackId"] as! String, forKey: "suggestedSpotifyTrackId")
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "nusicADayNotificationPushed"), object: nil)
+        print(userInfo["spotifyTrackId"])
+        if let messageID = userInfo[gcmMessageIDKey] {
+            print("Message ID: \(messageID)")
+        }
+        //
+        //        self.window = UIWindow(frame: UIScreen.main.bounds)
+        //        self.window?.rootViewController = initialViewController
+        //        self.window?.makeKeyAndVisible()
+        //
+        // Print full message.
+        print(userInfo)
     }
     // [END ios_10_data_message]
 }

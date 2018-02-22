@@ -14,15 +14,14 @@ extension SongPickerViewController {
     func setupCollectionCellViews() {
         
         let headerNib = UINib(nibName: CollectionViewHeader.className, bundle: nil)
-//        let view = UINib(nibName: MoodViewCell.className, bundle: nil);
         let view = UINib(nibName: MoodGenreListCell.className, bundle: nil);
         
         moodCollectionView.delegate = self;
         moodCollectionView.dataSource = self;
         moodCollectionView.allowsMultipleSelection = false;
         moodCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
-        moodCollectionView.register(view, forCellWithReuseIdentifier: "moodGenreListCell");
-        //        moodCollectionView.register(view, forCellWithReuseIdentifier: MoodViewCell.reuseIdentifier);
+        moodCollectionView.register(view, forCellWithReuseIdentifier: MoodGenreListCell.reuseIdentifier);
+        
         let moodLayout = moodCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         moodLayout.sectionHeadersPinToVisibleBounds = true
         let moodHeaderSize = CGSize(width: moodCollectionView.bounds.width, height: 45)
@@ -32,8 +31,7 @@ extension SongPickerViewController {
         genreCollectionView.dataSource = self;
         genreCollectionView.allowsMultipleSelection = true;
         genreCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
-        genreCollectionView.register(view, forCellWithReuseIdentifier: "moodGenreListCell");
-//        genreCollectionView.setCollectionViewLayout(NusicCollectionViewLayout(), animated: true)
+        genreCollectionView.register(view, forCellWithReuseIdentifier: MoodGenreListCell.reuseIdentifier);
         
         let genreLayout = genreCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
         genreLayout.sectionHeadersPinToVisibleBounds = true
@@ -42,11 +40,6 @@ extension SongPickerViewController {
         
         sectionGenreTitles = getSectionTitles()
         setupGenresPerSection()
-        
-        
-        
-        //Populate every section
-//        setupGenresPerSection()
         
     }
     
@@ -551,6 +544,7 @@ extension SongPickerViewController: MoodGenreListCellDelegate {
 //                                }, completion: nil)
                                 cell.trackList = tracks
                                 cell.addImages(urlList: tracks.map({ $0.thumbNailUrl }))
+                                
                                 self.fetchedSongsForMood[label] = tracks
                             }
                         }

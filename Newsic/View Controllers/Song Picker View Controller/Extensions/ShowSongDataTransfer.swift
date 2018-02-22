@@ -19,7 +19,7 @@ extension SongPickerViewController {
         let parent = self.parent as! NusicPageViewController
         let playerViewController = parent.showSongVC as! ShowSongViewController
         parent.removeViewControllerFromPageVC(viewController: playerViewController)
-        parent.addViewControllerToPageVC(viewController: playerViewController)
+        
         playerViewController.user = nusicUser;
         playerViewController.playlist = nusicPlaylist;
         playerViewController.spotifyHandler = spotifyHandler;
@@ -50,7 +50,7 @@ extension SongPickerViewController {
                 fetchedSongsForGenre.removeValue(forKey: genre)
             }
             
-            playerViewController.selectedGenreList = selectedGenres
+            playerViewController.selectedGenreList = selectedGenres.filter({ $0.key != EmotionDyad.unknown.rawValue })
         }
         playerViewController.selectedSongs = selectedTrackList
         playerViewController.trackFeatures.removeAll()
@@ -58,6 +58,7 @@ extension SongPickerViewController {
         playerViewController.playOnCellularData = nusicUser.settingValues.useMobileData
         
         playerViewController.newMoodOrGenre = true;
+        parent.addViewControllerToPageVC(viewController: playerViewController)
         parent.scrollToNextViewController()
 
     }

@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Application Delegate/AppDelegate.swift"
-            timestampString = "540807908.418366"
+            timestampString = "540987496.034012"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
             landmarkName = "messaging(_:didReceive:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/SongPickerViewController.swift"
-            timestampString = "540806896.420264"
+            timestampString = "540987496.0343029"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "260"
-            endingLineNumber = "260"
+            startingLineNumber = "267"
+            endingLineNumber = "267"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Application Delegate/AppDelegate.swift"
-            timestampString = "540807908.4191279"
+            timestampString = "540987496.0349129"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
             landmarkName = "application(_:open:sourceApplication:annotation:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Spotify Login View Controller/SpotifyLoginViewController.swift"
-            timestampString = "540725993.299197"
+            timestampString = "540987496.0349751"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "185"
-            endingLineNumber = "185"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
             landmarkName = "getSession()"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,7 +74,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Spotify Login View Controller/SpotifyLoginViewController.swift"
-            timestampString = "540725993.299383"
+            timestampString = "540987496.03517"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "137"
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Application Delegate/AppDelegate.swift"
-            timestampString = "540807908.419252"
+            timestampString = "540987496.035219"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
             landmarkName = "application(_:didFinishLaunchingWithOptions:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Spotify Login View Controller/SpotifyLoginViewController.swift"
-            timestampString = "540725993.2994519"
+            timestampString = "540987496.035271"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "67"
@@ -122,7 +122,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Application Delegate/AppDelegate.swift"
-            timestampString = "540807908.419317"
+            timestampString = "540987496.035314"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "39"
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Application Delegate/AppDelegate.swift"
-            timestampString = "540807908.419361"
+            timestampString = "540987496.03537"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
             landmarkName = "applicationDidReceiveMemoryWarning(_:)"
             landmarkType = "7">
             <Locations>
@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.71682"
+            timestampString = "540987496.035524"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
             landmarkName = "viewDidLayoutSubviews()"
             landmarkType = "7">
          </BreakpointContent>
@@ -234,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.717631"
+            timestampString = "540987496.0357521"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "179"
-            endingLineNumber = "179"
+            startingLineNumber = "189"
+            endingLineNumber = "189"
             landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.718258"
+            timestampString = "540987496.035834"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "669"
-            endingLineNumber = "669"
+            startingLineNumber = "667"
+            endingLineNumber = "667"
             landmarkName = "backToSongPicker()"
             landmarkType = "7">
          </BreakpointContent>
@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.718809"
+            timestampString = "540987496.035913"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "951"
-            endingLineNumber = "951"
+            startingLineNumber = "949"
+            endingLineNumber = "949"
             landmarkName = "getSongsForSelectedMood()"
             landmarkType = "7">
          </BreakpointContent>
@@ -282,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.719292"
+            timestampString = "540987496.035983"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
             landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -298,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.719804"
+            timestampString = "540987496.036064"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "207"
-            endingLineNumber = "207"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
             landmarkName = "viewDidDisappear(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -314,28 +314,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Helpers/Spotify/Classes/Browse/SpotifyBrowse.swift"
-            timestampString = "540812288.720304"
+            timestampString = "540987496.036135"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "57"
             endingLineNumber = "57"
             landmarkName = "fetchSpotifyRecommendations(for:numberOfSongs:moodObject:preferredTrackFeatures:selectedGenreList:market:artists:tracks:completionHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Models/Newsic/Track/NewsicTrack.swift"
-            timestampString = "540806896.422163"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
-            landmarkName = "saveData(saveCompleteHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -378,11 +362,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.720926"
+            timestampString = "540987496.036377"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
             landmarkName = "likedTrackIdList"
             landmarkType = "24">
             <Locations>
@@ -425,24 +409,8 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.721384"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "likedTrackList"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Views/Mood Cells/Cell Collection View/Genre Cell/MoodGenreCell.swift"
-            timestampString = "540812288.721844"
+            timestampString = "540987496.036458"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "81"
@@ -474,11 +442,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.722177"
+            timestampString = "540987496.036664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
             landmarkName = "trackFeatures"
             landmarkType = "24">
          </BreakpointContent>
@@ -490,11 +458,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.72264"
+            timestampString = "540987496.0367351"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
             landmarkName = "trackFeatures"
             landmarkType = "24">
          </BreakpointContent>
@@ -506,11 +474,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "540812288.723096"
+            timestampString = "540987496.0368069"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
             landmarkName = "manageButton(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -522,11 +490,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "540812288.723335"
+            timestampString = "540987496.036988"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
             landmarkName = "invalidateCellsLayout(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -538,11 +506,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "540812288.723431"
+            timestampString = "540987496.037046"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
+            startingLineNumber = "276"
+            endingLineNumber = "276"
             landmarkName = "reloadCellsData(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -554,11 +522,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "540812288.723519"
+            timestampString = "540987496.037087"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "525"
-            endingLineNumber = "525"
+            startingLineNumber = "518"
+            endingLineNumber = "518"
             landmarkName = "willDisplayMoodCell(cell:label:section:indexPath:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -570,11 +538,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "540812288.723605"
+            timestampString = "540987496.037127"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "379"
-            endingLineNumber = "379"
+            startingLineNumber = "372"
+            endingLineNumber = "372"
             landmarkName = "collectionView(_:didDeselectItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -586,11 +554,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "540812288.723688"
+            timestampString = "540987496.037167"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "541"
-            endingLineNumber = "541"
+            startingLineNumber = "534"
+            endingLineNumber = "534"
             landmarkName = "willDisplayMoodCell(cell:label:section:indexPath:)"
             landmarkType = "7">
             <Locations>
@@ -634,11 +602,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.72377"
+            timestampString = "540987496.037207"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
             landmarkName = "likedTrackIdList"
             landmarkType = "24">
          </BreakpointContent>
@@ -650,7 +618,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Helpers/Spotify/Classes/Browse/SpotifyBrowse.swift"
-            timestampString = "540812288.724242"
+            timestampString = "540987496.037273"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "54"
@@ -762,11 +730,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/Extensions/Koloda-SongCard.swift"
-            timestampString = "540812288.724683"
+            timestampString = "540987496.0373859"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "317"
-            endingLineNumber = "317"
+            startingLineNumber = "297"
+            endingLineNumber = "297"
             landmarkName = "handleFetchNewTracks(numberOfSongs:completionHandler:)"
             landmarkType = "7">
             <Locations>
@@ -810,11 +778,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/Extensions/Koloda-SongCard.swift"
-            timestampString = "540812288.724907"
+            timestampString = "540987496.037576"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "316"
-            endingLineNumber = "316"
+            startingLineNumber = "296"
+            endingLineNumber = "296"
             landmarkName = "handleFetchNewTracks(numberOfSongs:completionHandler:)"
             landmarkType = "7">
             <Locations>
@@ -858,11 +826,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.725004"
+            timestampString = "540987496.037632"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "795"
-            endingLineNumber = "795"
+            startingLineNumber = "793"
+            endingLineNumber = "793"
             landmarkName = "fetchNewCard(numberOfSongs:cardFetchingHandler:)"
             landmarkType = "7">
             <Locations>
@@ -874,11 +842,11 @@
                   moduleName = "Newsic"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/View%20Controllers/Show%20Song%20View%20Controller/ShowSongViewController.swift"
-                  timestampString = "540811550.644484"
+                  timestampString = "540985361.399938"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "795"
-                  endingLineNumber = "795"
+                  startingLineNumber = "793"
+                  endingLineNumber = "793"
                   offsetFromSymbolStart = "132">
                </Location>
                <Location
@@ -889,11 +857,11 @@
                   moduleName = "Newsic"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/View%20Controllers/Show%20Song%20View%20Controller/ShowSongViewController.swift"
-                  timestampString = "540811550.647759"
+                  timestampString = "540985361.401989"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "796"
-                  endingLineNumber = "796"
+                  startingLineNumber = "794"
+                  endingLineNumber = "794"
                   offsetFromSymbolStart = "36">
                </Location>
             </Locations>
@@ -906,11 +874,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.725456"
+            timestampString = "540987496.037703"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "792"
-            endingLineNumber = "792"
+            startingLineNumber = "790"
+            endingLineNumber = "790"
             landmarkName = "fetchNewCard(numberOfSongs:cardFetchingHandler:)"
             landmarkType = "7">
             <Locations>
@@ -954,11 +922,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.725912"
+            timestampString = "540987496.037771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1031"
-            endingLineNumber = "1031"
+            startingLineNumber = "1027"
+            endingLineNumber = "1027"
             landmarkName = "addSongsToCardList(for:tracks:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -970,11 +938,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.726338"
+            timestampString = "540987496.0378391"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "805"
-            endingLineNumber = "805"
+            startingLineNumber = "803"
+            endingLineNumber = "803"
             landmarkName = "fetchNewCardsFromSpotify(numberOfSongs:fetchedCardsHandler:)"
             landmarkType = "7">
             <Locations>
@@ -1018,11 +986,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.726756"
+            timestampString = "540987496.03791"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "925"
-            endingLineNumber = "925"
+            startingLineNumber = "923"
+            endingLineNumber = "923"
             landmarkName = "fetchNewCardNormal(numberOfSongs:cardFetchingHandler:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1034,11 +1002,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.727187"
+            timestampString = "540987496.037993"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "936"
-            endingLineNumber = "936"
+            startingLineNumber = "934"
+            endingLineNumber = "934"
             landmarkName = "fetchNewCardNormal(numberOfSongs:cardFetchingHandler:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1050,7 +1018,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Helpers/Spotify/Classes/Browse/SpotifyBrowse.swift"
-            timestampString = "540812288.72761"
+            timestampString = "540987496.038063"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "64"
@@ -1066,7 +1034,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Helpers/Spotify/Classes/Browse/SpotifyBrowse.swift"
-            timestampString = "540812288.727693"
+            timestampString = "540987496.038102"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "34"
@@ -1082,11 +1050,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "540812288.72777"
+            timestampString = "540987496.038168"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "921"
-            endingLineNumber = "921"
+            startingLineNumber = "919"
+            endingLineNumber = "919"
             landmarkName = "fetchNewCardNormal(numberOfSongs:cardFetchingHandler:)"
             landmarkType = "7">
             <Locations>
@@ -1121,6 +1089,294 @@
                   offsetFromSymbolStart = "48">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/Models/Newsic/Track/NewsicTrack.swift"
+            timestampString = "540987496.03824"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "deleteData(deleteCompleteHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/Models/Newsic/Track/NewsicTrack.swift"
+            timestampString = "540987496.038287"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "setupListeners()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/Models/Newsic/Track/NewsicTrack.swift"
+            timestampString = "540987496.038329"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "setupListeners()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Newsic.NusicTrack.setupListeners() -&gt; ()"
+                  moduleName = "Newsic"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/Models/Newsic/Track/NewsicTrack.swift"
+                  timestampString = "540967571.883883"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "2411">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (__ObjC.DataSnapshot) -&gt; () in Newsic.NusicTrack.setupListeners() -&gt; ()"
+                  moduleName = "Newsic"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/Models/Newsic/Track/NewsicTrack.swift"
+                  timestampString = "540967571.8860739"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "54"
+                  endingLineNumber = "54"
+                  offsetFromSymbolStart = "835">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
+            timestampString = "540987496.038535"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "505"
+            endingLineNumber = "505"
+            landmarkName = "previousTrackClicked(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/Page View Controller/NewsicPageViewController.swift"
+            timestampString = "540987496.0386029"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
+            timestampString = "540987496.038793"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "likedTrackList"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/View Controllers/Show Song View Controller/Views/Helper Views/Song Table View Cell/SongTableViewCell.swift"
+            timestampString = "540987496.038857"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "configure(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/ShowSongDataTransfer.swift"
+            timestampString = "540987496.039055"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "passDataToShowSong()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
+            timestampString = "540987496.039254"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/View Controllers/Song Picker View Controller/SongPickerViewController.swift"
+            timestampString = "540987496.039312"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "609"
+            endingLineNumber = "609"
+            landmarkName = "handleNotificationSong()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
+            timestampString = "540987496.039803"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "cardList"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Newsic.ShowSongViewController.cardList.didset : Swift.Array&lt;Newsic.NusicTrack&gt;"
+                  moduleName = "Newsic"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/View%20Controllers/Show%20Song%20View%20Controller/ShowSongViewController.swift"
+                  timestampString = "540985361.409771"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "180">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Bool) -&gt; () in Newsic.ShowSongViewController.cardList.didset : Swift.Array&lt;Newsic.NusicTrack&gt;"
+                  moduleName = "Newsic"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/View%20Controllers/Show%20Song%20View%20Controller/ShowSongViewController.swift"
+                  timestampString = "540985361.412971"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
+            timestampString = "540987496.039861"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "801"
+            endingLineNumber = "801"
+            landmarkName = "fetchNewCardsFromSpotify(numberOfSongs:fetchedCardsHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/Helpers/Spotify/Classes/Spotify.swift"
+            timestampString = "540985452.133639"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
+            landmarkName = "getGenreListString(numberOfSongs:hasList:selectedGenreList:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/Application Delegate/AppDelegate.swift"
+            timestampString = "540987496.039946"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "application(_:didFinishLaunchingWithOptions:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
