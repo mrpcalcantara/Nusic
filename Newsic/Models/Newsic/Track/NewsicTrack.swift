@@ -34,24 +34,6 @@ struct NusicTrack {
     func setupListeners() {
         
         //Save
-//        Database.database().reference().child("trackFeatures").child(userName).child(trackInfo.trackId!).observe(.childAdded) { (dataSnapshot) in
-//            if let moodInfo = self.moodInfo {
-//                for emotion in moodInfo.emotions {
-//                    self.reference.child(self.userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(self.trackInfo.trackId!).setValue(true)
-//                }
-//            }
-//        }
-        
-//        Database.database().reference().child("trackFeatures").queryOrdered(byChild: "users").observe(.childAdded) { (dataSnapshot) in
-//            if dataSnapshot.key == self.trackInfo.trackId {
-//                if let moodInfo = self.moodInfo {
-//                    for emotion in moodInfo.emotions {
-//                        self.reference.child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(self.userName).childByAutoId().setValue(self.trackInfo.trackId)
-//                    }
-//                }
-//            }
-//        }
-        
         Database.database().reference().child("likedTracks").child(userName).observe(.childAdded) { (dataSnapshot) in
             if dataSnapshot.key == self.trackInfo.trackId {
                 if let moodInfo = self.moodInfo {
@@ -62,6 +44,22 @@ struct NusicTrack {
                             .child(emotion.basicGroup.rawValue.lowercased())
                             .child(self.trackInfo.trackId)
                                 .setValue(true)
+                    }
+                }
+            }
+        }
+        
+        //Delete
+        Database.database().reference().child("likedTracks").child(userName).observe(.childRemoved) { (dataSnapshot) in
+            if dataSnapshot.key == self.trackInfo.trackId {
+                if let moodInfo = self.moodInfo {
+                    for emotion in moodInfo.emotions {
+                        Database.database().reference()
+                            .child("moodTracks")
+                            .child(self.userName)
+                            .child(emotion.basicGroup.rawValue.lowercased())
+                            .child(self.trackInfo.trackId)
+                            .removeValue()
                     }
                 }
             }
@@ -89,56 +87,26 @@ extension NusicTrack : FirebaseModel {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
         let dateString = dateFormatter.string(from: date)
         if let audioFeatures = trackInfo.audioFeatures {
-            if let moodInfo = moodInfo {
-                for emotion in moodInfo.emotions {
-                    var dict = audioFeatures.toDictionary();
+            var dict = audioFeatures.toDictionary();
+            
+            Database.database().reference().child("trackFeatures").child(trackInfo.trackId!).updateChildValues(dict) { (error, reference) in
+                if let error = error {
+                    saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
+                } else {
+                    print(reference)
                     
-                    Database.database().reference().child("trackFeatures").child(trackInfo.trackId!).updateChildValues(dict) { (error, reference) in
-                        if let error = error {
-                            saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
-                        } else {
-                            print(reference)
-                            
-                            
-                        }
-                    }
                     
-                    Database.database().reference().child("likedTracks").child(self.userName).child(self.trackInfo.trackId).child("likedOn").setValue(dateString as AnyObject)
                 }
-            } else {
-                var dict = audioFeatures.toDictionary();
-                dict["addedOn"] = dateString as AnyObject
-                self.reference.child(userName).child("moods").child(EmotionDyad.unknown.rawValue).child(trackInfo.trackId!).updateChildValues(dict) { (error, reference) in
-                        if let error = error {
-                            saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
-                        }
-                    }
-                }
+            }
+            
+            Database.database().reference().child("likedTracks").child(self.userName).child(self.trackInfo.trackId).child("likedOn").setValue(dateString as AnyObject)
             saveCompleteHandler(reference, nil)
         }
         
     }
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
-        if let moodInfo = moodInfo {
-            for emotion in moodInfo.emotions {
-                reference.child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).child(trackInfo.trackId!).removeValue(completionBlock: { (error, reference) in
-                    if let error = error {
-                        deleteCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
-                    }
-                })
-            }
-        } else {
-            //CYCLE BETWEEN ALL MOODS
-            for dyad in EmotionDyad.allValues {
-                
-                reference.child(userName).child("moods").child(dyad.rawValue.lowercased()).child(trackInfo.trackId!).removeValue(completionBlock: { (error, reference) in
-                    if let error = error {
-                        deleteCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
-                    }
-                })
-            }
-        }
+    Database.database().reference().child("likedTracks").child(self.userName).child(self.trackInfo.trackId).child("likedOn").removeValue()
         deleteCompleteHandler(reference, nil)
     }
     

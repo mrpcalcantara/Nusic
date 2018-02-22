@@ -51,6 +51,13 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TransparentAppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="aoX-tg-WGR">
+                    <rect key="frame" x="267" y="8" width="100" height="100"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="100" id="GTg-pW-xOZ"/>
+                        <constraint firstAttribute="width" secondItem="aoX-tg-WGR" secondAttribute="height" multiplier="1:1" id="toY-9m-BIp"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -61,12 +68,14 @@
                 <constraint firstItem="Bpb-0L-FI5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Nae-Ub-yV0"/>
                 <constraint firstItem="9Ap-LZ-SPa" firstAttribute="top" secondItem="LHE-Ez-3cc" secondAttribute="bottom" constant="8" id="Prn-tx-fzT"/>
                 <constraint firstItem="LHE-Ez-3cc" firstAttribute="top" secondItem="VG9-HF-Av8" secondAttribute="bottom" constant="8" id="QVh-5n-DdD"/>
+                <constraint firstItem="aoX-tg-WGR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="UCi-C9-Psn"/>
                 <constraint firstItem="VG9-HF-Av8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="WO0-vc-Il0"/>
                 <constraint firstItem="UU5-ZG-ypO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="Yf4-jA-QFQ"/>
                 <constraint firstItem="Bpb-0L-FI5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="bzx-E3-kVI"/>
                 <constraint firstItem="LHE-Ez-3cc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="cLY-lB-fDb"/>
                 <constraint firstItem="LHE-Ez-3cc" firstAttribute="top" secondItem="Bpb-0L-FI5" secondAttribute="bottom" constant="8" id="ddL-Vm-17P"/>
                 <constraint firstItem="9Ap-LZ-SPa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="dkw-Az-bCO"/>
+                <constraint firstAttribute="trailing" secondItem="aoX-tg-WGR" secondAttribute="trailing" constant="8" id="gVM-1W-p7u"/>
                 <constraint firstItem="LHE-Ez-3cc" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="hSk-bd-g9m"/>
                 <constraint firstAttribute="trailingMargin" secondItem="VG9-HF-Av8" secondAttribute="trailing" id="iRq-rq-Ocv"/>
                 <constraint firstAttribute="trailing" secondItem="Bpb-0L-FI5" secondAttribute="trailing" id="lwb-3z-Fxu"/>
@@ -78,9 +87,13 @@
                 <outlet property="genreLabel" destination="UU5-ZG-ypO" id="Nqj-Nf-D2B"/>
                 <outlet property="songArtist" destination="9Ap-LZ-SPa" id="3oZ-cN-J3f"/>
                 <outlet property="songTitle" destination="LHE-Ez-3cc" id="wlS-he-uQh"/>
+                <outlet property="suggestedSongIcon" destination="aoX-tg-WGR" id="Bty-XL-bzP"/>
                 <outlet property="youtubePlayer" destination="VG9-HF-Av8" id="x2o-Rk-PQF"/>
             </connections>
             <point key="canvasLocation" x="28.5" y="29.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="TransparentAppIcon" width="512" height="512"/>
+    </resources>
 </document>

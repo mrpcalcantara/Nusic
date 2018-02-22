@@ -94,12 +94,14 @@ class SongPickerViewController: NusicDefaultViewController {
     
     var loadingFinished: Bool = false {
         didSet {
-            FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
-                self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
-                self.sectionMoods = dyadList.map({ $0.value })
-                SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
+            if sectionMoods.count == 0 {
+                FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
+                    self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
+                    self.sectionMoods = dyadList.map({ $0.value })
+                    SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
+                }
             }
-            
+            handleNotificationSong()
         }
     }
     
@@ -121,15 +123,17 @@ class SongPickerViewController: NusicDefaultViewController {
                     UIView.animate(withDuration: 0.3, animations: {
                         self.searchButton.setTitle(self.isMoodCellSelected ? "Get Songs!" : "Random it up!", for: .normal)
                     }, completion: nil)
+                    self.view.layoutIfNeeded()
                 }
             } else {
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.3, animations: {
                         self.searchButton.setTitle("Get Songs!", for: .normal)
                     }, completion: nil)
+                    self.view.layoutIfNeeded()
                 }
             }
-            self.view.layoutIfNeeded()
+            
         }
     }
     
@@ -227,6 +231,9 @@ class SongPickerViewController: NusicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if loadingFinished {
+            
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -259,7 +266,7 @@ class SongPickerViewController: NusicDefaultViewController {
     
         if nusicUser == nil {
             DispatchQueue.main.async {
-                SwiftSpinner.show("Getting User..", animated: true)
+                SwiftSpinner.show("Loading..", animated: true)
             }
             
             extractInformationFromUser { (isFinished) in
@@ -270,6 +277,7 @@ class SongPickerViewController: NusicDefaultViewController {
             self.setupListMenu()
             self.setupSegmentedControl()
             self.setupNavigationBar()
+            self.setupNotificationHandlers()
         }
         
     }
@@ -376,6 +384,10 @@ class SongPickerViewController: NusicDefaultViewController {
         
     }
     
+    fileprivate func setupNotificationHandlers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNotificationSong), name: NSNotification.Name(rawValue: "nusicADayNotificationPushed"), object: nil)
+    }
+    
     @objc fileprivate func toggleMenu() {
         let parent = self.parent as! NusicPageViewController
         parent.scrollToViewController(index: 0)
@@ -448,10 +460,6 @@ class SongPickerViewController: NusicDefaultViewController {
                                         })
                                     } else {
                                         self.nusicUser = fbUser!
-                                        
-                                        DispatchQueue.main.async {
-                                            SwiftSpinner.show("Getting Favorite Genres..", animated: true);
-                                        }
                                         self.nusicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount, error) in
                                             if let error = error {
                                                 error.presentPopup(for: self)
@@ -597,6 +605,33 @@ class SongPickerViewController: NusicDefaultViewController {
         })
     }
     
+    @objc fileprivate func handleNotificationSong() {
+        
+        if let suggestedTrackId = UserDefaults.standard.string(forKey: "suggestedSpotifyTrackId") {
+            if let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController {
+                parent.scrollToViewController(index: 1)
+            }
+            self.isMoodSelected = false
+            
+            self.moodObject = NusicMood(emotions: [.init(basicGroup: .unknown, detailedEmotions: [], rating: 0)], isAmbiguous: false, sentiment: 0.5, date: Date(), associatedGenres: [], associatedTracks: [])
+            spotifyHandler.getTrackInfo(for: [suggestedTrackId], offset: 0, currentExtractedTrackList: [], trackInfoListHandler: { (tracks, error) in
+                if let error = error {
+                    error.presentPopup(for: self)
+                }
+                
+                if let track = tracks {
+                    UserDefaults.standard.removeObject(forKey: "suggestedSpotifyTrackId")
+                    UserDefaults.standard.synchronize()
+                    track.first?.suggestedSong = true
+                    self.selectedSongsForGenre[EmotionDyad.unknown.rawValue] = track
+                    DispatchQueue.main.async {
+                        self.passDataToShowSong()
+                    }
+                }
+                
+            })
+        }
+    }
 }
 
 

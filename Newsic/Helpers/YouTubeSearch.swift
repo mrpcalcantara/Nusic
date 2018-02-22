@@ -17,10 +17,7 @@ final class YouTubeSearch {
         let query = "\(artist) \(songName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
         let urlString = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=\(query)&type=video&maxResults=1&key=\(apiKey)"
-        
-//        print("URL called: \(urlString)");
         let url = URL(string: urlString);
-        //let url = URL(string: urlString);
         
         guard let ytUrl = url else { return; }
         
@@ -33,13 +30,8 @@ final class YouTubeSearch {
             }
             
             do {
-                
-                //let jsonResponse = try JSONSerialization.jsonObject(with: data, options: .allowFragments);
                 let jsonResponse = try JSONSerialization.jsonObject(with: data);
-                
-                //print("JSON = \(jsonResponse)")
                 let rootObject = jsonResponse as! [String: AnyObject]
-                //print("Root Object = \(rootObject)");
                 
                 let youtubeData = rootObject["items"] as? [[String: AnyObject]];
                 var youtubeItem: YouTubeResult? = nil;

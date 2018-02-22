@@ -152,8 +152,9 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
         let pageViewController = NusicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        
+        UIApplication.shared.keyWindow?.rootViewController = pageViewController
         self.present(pageViewController, animated: true, completion: {
+            
             self.removeFromParentViewController()
         })
     }

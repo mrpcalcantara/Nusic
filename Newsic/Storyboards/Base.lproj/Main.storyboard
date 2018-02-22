@@ -481,7 +481,7 @@
         <!--Nusic Page View Controller-->
         <scene sceneID="myP-Ue-yU6">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="q9d-7g-4cf" customClass="NusicPageViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="nusicPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="none" id="q9d-7g-4cf" customClass="NusicPageViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DJb-df-dVx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1370" y="-778"/>

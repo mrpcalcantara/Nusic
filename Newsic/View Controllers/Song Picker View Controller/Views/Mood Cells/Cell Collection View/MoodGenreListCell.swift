@@ -17,7 +17,7 @@ class MoodGenreListCell: UICollectionViewCell {
 
     @IBOutlet weak var listCollectionView: UICollectionView!
     
-    static let reuseIdentifier: String? = "moodGenreListCell"
+    static let reuseIdentifier: String = "moodGenreListCell"
     
     var items: [String]?
     weak var delegate: MoodGenreListCellDelegate?
