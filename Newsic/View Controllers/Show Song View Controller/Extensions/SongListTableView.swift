@@ -23,7 +23,26 @@ extension ShowSongViewController {
         
         songListTableViewHeader.setupView()
         songListTableViewHeader.delegate = self
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipeLeftFunc))
+        swipeLeft.direction = .left
+        swipeLeft.numberOfTouchesRequired = 2
+        
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(swipeRightFunc))
+        swipeRight.direction = .right
+        swipeRight.numberOfTouchesRequired = 2
+        
+        songListTableView.addGestureRecognizer(swipeLeft)
+        songListTableView.addGestureRecognizer(swipeRight)
         setupView();
+    }
+    
+    @objc func swipeLeftFunc() {
+        print("swiped left")
+    }
+    
+    @objc func swipeRightFunc() {
+        print("swiped right")
     }
     
     fileprivate func setupView() {

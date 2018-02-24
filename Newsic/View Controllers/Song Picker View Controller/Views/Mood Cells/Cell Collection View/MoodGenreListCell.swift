@@ -69,7 +69,7 @@ class MoodGenreListCell: UICollectionViewCell {
         self.listCollectionView.delegate = self;
         self.listCollectionView.dataSource = self;
         self.listCollectionView.allowsMultipleSelection = false;
-        self.listCollectionView.register(view, forCellWithReuseIdentifier: "moodGenreCell");
+        self.listCollectionView.register(view, forCellWithReuseIdentifier: MoodGenreCell.reuseIdentifier);
         let layout = ListCollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
 
@@ -129,16 +129,11 @@ extension MoodGenreListCell: UICollectionViewDataSource {
     
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        print("showing indexPath: \(indexPath)")
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "moodGenreCell", for: indexPath) as? MoodGenreCell {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MoodGenreCell.reuseIdentifier, for: indexPath) as? MoodGenreCell {
             cell.configure(text: items![indexPath.row])
-            
             cell.layoutIfNeeded()
-            
-//            delegate?.willDisplayCell(section: section!, indexPath: indexPath)
             return cell;
         }
-        
         return UICollectionViewCell();
     }
     

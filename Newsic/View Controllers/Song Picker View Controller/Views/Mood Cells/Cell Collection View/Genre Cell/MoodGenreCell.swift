@@ -13,7 +13,7 @@ class MoodGenreCell: UICollectionViewCell {
     @IBOutlet weak var moodGenreLabel: UILabel!
     @IBOutlet weak var backgroundImage: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    static let reuseIdentifier: String? = "moodGenreCell"
+    static let reuseIdentifier: String = "moodGenreCell"
     
     //View
     var currentImageIndex: Int = 0
