@@ -280,8 +280,8 @@ extension ShowSongViewController {
         })
     }
     
-    func addSongToPosition(at indexPath: IndexPath, position: Int) {
-        let nusicTrack = sectionSongs[indexPath.section][indexPath.row]
+    func addSongToPosition(track: NusicTrack, position: Int) {
+        let nusicTrack = track
         cardList.insert(nusicTrack, at: position);
         
         songCardView.insertCardAtIndexRange(position..<position+1, animated: false);

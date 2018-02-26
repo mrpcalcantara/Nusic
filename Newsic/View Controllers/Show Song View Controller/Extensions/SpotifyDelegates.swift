@@ -268,10 +268,10 @@ extension ShowSongViewController {
         player?.playSpotifyURI(spotifyTrackId, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             self.isPlaying = true;
             self.togglePausePlayIcon()
-            if (error != nil) {
-                print("error playing!, error : \(String(describing: error?.localizedDescription))")
-                self.actionPlaySpotifyTrack(spotifyTrackId: spotifyTrackId)
-            }
+//            if (error != nil) {
+//                print("error playing!, error : \(String(describing: error?.localizedDescription))")
+//                self.actionPlaySpotifyTrack(spotifyTrackId: spotifyTrackId)
+//            }
         })
     }
     

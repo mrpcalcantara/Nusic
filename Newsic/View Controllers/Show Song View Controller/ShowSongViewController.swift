@@ -36,14 +36,34 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     var playlist:NusicPlaylist! = nil
     var user: NusicUser! = nil;
+    var suggestedTrackList: [NusicTrack] = Array() {
+        didSet {
+            let parent = self.parent as! NusicPageViewController
+            let songListViewController = parent.songListVC as! SongListTabBarViewController
+            songListViewController.suggestedTrackList = suggestedTrackList
+        }
+    }
+    var suggestedTrackIdList = [String]() {
+        didSet {
+            if let appendedTrackId = suggestedTrackIdList.last {
+                fetchDataForLikedTrack(trackId: [appendedTrackId], handler: { (nusicTracks) in
+                    if let nusicTrack = nusicTracks.first {
+                        if !self.suggestedTrackList.contains(where: { (track) -> Bool in
+                            return track.trackInfo.trackId == nusicTrack.trackInfo.trackId
+                        }) {
+                            self.suggestedTrackList.append(nusicTrack)
+                        }
+                    }
+                })
+            }
+        }
+    }
     var likedTrackList:[NusicTrack] = [] {
         didSet {
             print("likedTrackList count = \(likedTrackList.count)")
-            DispatchQueue.main.async {
-                self.songListTableView.reloadData()
-                self.songListTableView.layoutIfNeeded()
-                self.sortTableView(by: self.songListTableViewHeader.currentSortElement)
-            }
+            let parent = self.parent as! NusicPageViewController
+            let songListViewController = parent.songListVC as! SongListTabBarViewController
+            songListViewController.likedTrackList = likedTrackList
         }
     }
     var likedTrackIdList = [String]() {
@@ -205,9 +225,6 @@ class ShowSongViewController: NusicDefaultViewController {
         } else {
             reloadNavigationBar()
             reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
-            if UIApplication.shared.statusBarOrientation == .portrait || UIApplication.shared.statusBarOrientation == .portraitUpsideDown {
-                closeMenu()
-            }
             if isPlayerMenuOpen {
                 togglePlayerMenu()
             }
@@ -245,16 +262,6 @@ class ShowSongViewController: NusicDefaultViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        if size.width > size.height {
-            removeHeaderGestureRecognizer(for: songListTableViewHeader)
-            removeMenuSwipeGestureRecognizer()
-            
-        } else {
-            addHeaderGestureRecognizer(for: songListTableViewHeader)
-            addMenuSwipeGestureRecognizer()
-        }
-        
-        closeMenu()
         if isPlayerMenuOpen {
             togglePlayerMenu(false)
         }
@@ -270,12 +277,12 @@ class ShowSongViewController: NusicDefaultViewController {
             setupMainView()
             setupMenu()
             setupCards()
-            setupTableView()
             setupSongs()
             setupPlayerMenu()
             setupNavigationBar()
             setupMoodLabel()
             setupFirebaseListeners()
+            setupSongListVC()
             if preferredPlayer == NusicPreferredPlayer.spotify {
                 setupSpotify()
                 setupCommandCenter()
@@ -288,9 +295,17 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     
     fileprivate func setupFirebaseListeners() {
+        
+        reference.child("suggestedTracks").child(self.user.userName).observe(.childAdded) { (dataSnapshot) in
+            let trackId = dataSnapshot.key
+            if !self.suggestedTrackIdList.contains(trackId) {
+                self.suggestedTrackIdList.append(trackId)
+            }
+        }
+            
        if let emotion = moodObject?.emotions.first?.basicGroup.rawValue.lowercased() {
             reference.child("moodTracks").child(self.user.userName).child(emotion).observe(.childAdded) { (dataSnapshot) in
-                let trackId = dataSnapshot.key as! String
+                let trackId = dataSnapshot.key
                 if !self.likedTrackIdList.contains(trackId) {
                     self.likedTrackIdList.append(trackId)
                     self.reference.child("trackFeatures").child(trackId).observe(.value, with: { (childSnapshot) in
@@ -304,7 +319,7 @@ class ShowSongViewController: NusicDefaultViewController {
             }
         
             reference.child("moodTracks").child(self.user.userName).child(emotion).observe(.childRemoved) { (dataSnapshot) in
-                let trackId = dataSnapshot.key as! String
+                let trackId = dataSnapshot.key
                 if self.likedTrackIdList.contains(trackId) {
                     if let likedTrackIndex = self.likedTrackIdList.index(of: trackId) {
                         self.likedTrackIdList.remove(at: likedTrackIndex)
@@ -321,7 +336,6 @@ class ShowSongViewController: NusicDefaultViewController {
     fileprivate func setupMainView() {
         
         currentMoodDyad = moodObject?.emotions.first?.basicGroup
-        addMenuSwipeGestureRecognizer()
         
     }
     
@@ -446,6 +460,16 @@ class ShowSongViewController: NusicDefaultViewController {
         cardTitle.layoutIfNeeded()
         addCardBorderLayer()
     }
+    
+    fileprivate func setupSongListVC() {
+        let parent = self.parent as! NusicPageViewController
+        let songListViewController = parent.songListVC as! SongListTabBarViewController
+        songListViewController.isMoodSelected = self.isMoodSelected
+        songListViewController.moodObject = self.moodObject
+        parent.removeViewControllerFromPageVC(viewController: songListViewController)
+        parent.addViewControllerToPageVC(viewController: songListViewController)
+    }
+    
     
     fileprivate func resetView() {
         if isPlayerMenuOpen {
@@ -610,58 +634,52 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return false
     }
-    
-    @objc func handleMenuScreenGesture(_ recognizer: UIPanGestureRecognizer) {
-        let translation = recognizer.translation(in: view);
-        let finalPoint = self.songListTableView.frame.width;
-        
-        if recognizer.state == .began {
-            shouldCompleteTransition = false
-        } else if recognizer.state == .changed {
-            
-            let translationX: CGFloat = translation.x
-            if translation.x > 0 {
-                self.tableViewLeadingConstraint.constant = self.view.frame.width/6 + translationX
-                self.tableViewTrailingConstraint.constant = translationX * -1
-                
-                songListMenuProgress = (translation.x)/finalPoint
-            } else {
-                self.tableViewLeadingConstraint.constant = self.view.frame.width + translationX
-                self.tableViewTrailingConstraint.constant = (self.view.frame.width) * (-5/6) - translationX
-                
-                songListMenuProgress = (translation.x * -1)/finalPoint;
-            }
-            
-            songListMenuProgress = CGFloat(fminf(fmaxf(Float(songListMenuProgress), 0.0), 1.0))
-            shouldCompleteTransition = translation.x > 0 && songListMenuProgress > CGFloat(0.25) ? true : false
-            self.view.layoutIfNeeded();
-            
-        } else if recognizer.state == .ended {
-            if shouldCompleteTransition {
-                closeMenu()
-            } else {
-                isMenuOpen = false;
-                toggleSongMenu()
-            }
-            songListMenuProgress = 0
-        }
-        
-    }
+//
+//    @objc func handleMenuScreenGesture(_ recognizer: UIPanGestureRecognizer) {
+//        let translation = recognizer.translation(in: view);
+//        let finalPoint = self.songListTableView.frame.width;
+//
+//        if recognizer.state == .began {
+//            shouldCompleteTransition = false
+//        } else if recognizer.state == .changed {
+//
+//            let translationX: CGFloat = translation.x
+//            if translation.x > 0 {
+//                self.tableViewLeadingConstraint.constant = self.view.frame.width/6 + translationX
+//                self.tableViewTrailingConstraint.constant = translationX * -1
+//
+//                songListMenuProgress = (translation.x)/finalPoint
+//            } else {
+//                self.tableViewLeadingConstraint.constant = self.view.frame.width + translationX
+//                self.tableViewTrailingConstraint.constant = (self.view.frame.width) * (-5/6) - translationX
+//
+//                songListMenuProgress = (translation.x * -1)/finalPoint;
+//            }
+//
+//            songListMenuProgress = CGFloat(fminf(fmaxf(Float(songListMenuProgress), 0.0), 1.0))
+//            shouldCompleteTransition = translation.x > 0 && songListMenuProgress > CGFloat(0.25) ? true : false
+//            self.view.layoutIfNeeded();
+//
+//        } else if recognizer.state == .ended {
+//            if shouldCompleteTransition {
+//                closeMenu()
+//            } else {
+//                isMenuOpen = false;
+//                toggleSongMenu()
+//            }
+//            songListMenuProgress = 0
+//        }
+//
+//    }
     
 }
 
 extension ShowSongViewController {
-    
+//
     @objc func toggleSongMenu() {
-        if !isMenuOpen {
-            openMenu();
-            if isPlayerMenuOpen {
-                togglePlayerMenu()
-            }
-        } else {
-            closeMenu();
+        if let parent = parent as? NusicPageViewController {
+            parent.scrollToNextViewController()
         }
-        songListMenuProgress = 0
     }
     
     @objc func backToSongPicker() {
@@ -1081,6 +1099,8 @@ extension ShowSongViewController {
                             return likedTrack.trackInfo == track.trackInfo
                         }) {
                             self.likedTrackList.remove(at: index)
+                            self.isSongLiked = false;
+                            self.toggleLikeButtons();
                         }
                         
                         removeTrackHandler(true);
@@ -1118,7 +1138,25 @@ extension ShowSongViewController {
         return true;
     }
 
+    func playSelectedCard(track: NusicTrack) {
+        let frontPosition = songCardView.currentCardIndex;
+        
+        isSongLiked = true; toggleLikeButtons();
+        addSongToPosition(track: track, position: frontPosition);
+        
+        if preferredPlayer == NusicPreferredPlayer.spotify {
+            actionPlaySpotifyTrack(spotifyTrackId: cardList[frontPosition].trackInfo.trackUri);
+        }
+    }
     
+    func containsTrack(trackId: String) -> Bool {
+        for track in likedTrackList {
+            if track.trackInfo.trackId == trackId {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 

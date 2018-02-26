@@ -14,7 +14,7 @@
         <array key="Futura.ttc">
             <string>Futura-Medium</string>
         </array>
-        <array key="Robot Crush.ttf">
+        <array key="Robot Crush.otf">
             <string>RobotCrush</string>
         </array>
     </customFonts>
@@ -446,6 +446,125 @@
             </objects>
             <point key="canvasLocation" x="2184.8000000000002" y="42.728635682158924"/>
         </scene>
+        <!--Suggested Song List View Controller-->
+        <scene sceneID="F8k-lq-YWn">
+            <objects>
+                <viewController id="g3C-6N-0E2" userLabel="Suggested Song List View Controller" customClass="SuggestedSongListViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hdJ-nC-QzK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BMG-7j-LcG">
+                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" id="RLm-NB-VX8" customClass="SongTableViewHeader" customModule="Newsic" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="songCell" id="jO9-Lc-Ds1">
+                                        <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jO9-Lc-Ds1" id="xt5-05-rqz">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="vsE-3Q-2WH" firstAttribute="trailing" secondItem="BMG-7j-LcG" secondAttribute="trailing" id="KDq-20-68I"/>
+                            <constraint firstItem="vsE-3Q-2WH" firstAttribute="bottom" secondItem="BMG-7j-LcG" secondAttribute="bottom" id="MmH-x4-Ncv"/>
+                            <constraint firstItem="BMG-7j-LcG" firstAttribute="leading" secondItem="vsE-3Q-2WH" secondAttribute="leading" id="h86-sH-KQr"/>
+                            <constraint firstItem="BMG-7j-LcG" firstAttribute="top" secondItem="vsE-3Q-2WH" secondAttribute="top" id="pAb-wu-g5c"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="vsE-3Q-2WH"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" tag="2" title="Suggested Songs" image="ButtonAppIcon" id="CMm-wd-TzO"/>
+                    <connections>
+                        <outlet property="suggestedSongListTableHeader" destination="RLm-NB-VX8" id="30t-ID-Y4a"/>
+                        <outlet property="suggestedSongListTableView" destination="BMG-7j-LcG" id="ufe-wO-2bn"/>
+                        <outlet property="suggestedSongListTableViewBottomConstraint" destination="MmH-x4-Ncv" id="JIh-cZ-l85"/>
+                        <outlet property="suggestedSongListTableViewLeadingConstraint" destination="h86-sH-KQr" id="1JO-N2-dMY"/>
+                        <outlet property="suggestedSongListTableViewTopConstraint" destination="pAb-wu-g5c" id="Iyb-HJ-kn9"/>
+                        <outlet property="suggestedSongListTableViewTrailingConstraint" destination="KDq-20-68I" id="Drq-nO-sIb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SDq-1A-MJL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3996" y="374"/>
+        </scene>
+        <!--Liked Song List View Controller-->
+        <scene sceneID="UFA-Pl-EUs">
+            <objects>
+                <viewController id="BHk-gT-gJ6" userLabel="Liked Song List View Controller" customClass="LikedSongListViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GI3-fm-guu">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="00K-be-OCw">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" id="za1-gR-2Po" customClass="SongTableViewHeader" customModule="Newsic" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="songCell" id="6hs-Ku-OIR">
+                                        <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6hs-Ku-OIR" id="hrK-bs-Oty">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="00K-be-OCw" firstAttribute="leading" secondItem="7AN-io-P8H" secondAttribute="leading" id="Kov-mu-ju1"/>
+                            <constraint firstItem="00K-be-OCw" firstAttribute="trailing" secondItem="7AN-io-P8H" secondAttribute="trailing" id="cQA-7Q-6BS"/>
+                            <constraint firstItem="00K-be-OCw" firstAttribute="top" secondItem="GI3-fm-guu" secondAttribute="top" id="l8E-K2-Be3"/>
+                            <constraint firstItem="7AN-io-P8H" firstAttribute="bottom" secondItem="00K-be-OCw" secondAttribute="bottom" id="mrk-0m-IFk"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="7AN-io-P8H"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" tag="1" title="Liked Songs" image="ThumbsUp" id="Ixv-Kl-w1l"/>
+                    <connections>
+                        <outlet property="songListTableView" destination="00K-be-OCw" id="NbZ-e1-yfy"/>
+                        <outlet property="songListTableViewBottomConstraint" destination="mrk-0m-IFk" id="nej-3K-gue"/>
+                        <outlet property="songListTableViewHeader" destination="za1-gR-2Po" id="DG8-qQ-BUV"/>
+                        <outlet property="songListTableViewLeadingConstraint" destination="Kov-mu-ju1" id="XdG-9F-e3p"/>
+                        <outlet property="songListTableViewTopConstraint" destination="l8E-K2-Be3" id="gPX-FY-Ok3"/>
+                        <outlet property="songListTableViewTrailingConstraint" destination="cQA-7Q-6BS" id="Es2-DE-rCh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9KH-mJ-Dc8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3996" y="-288"/>
+        </scene>
+        <!--Song List Tab Bar View Controller-->
+        <scene sceneID="tpm-c0-tX3">
+            <objects>
+                <tabBarController storyboardIdentifier="SongList" id="dYT-2l-N9Z" customClass="SongListTabBarViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0th-gz-ea0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="BHk-gT-gJ6" kind="relationship" relationship="viewControllers" id="qEl-mq-At4"/>
+                        <segue destination="g3C-6N-0E2" kind="relationship" relationship="viewControllers" id="lZe-iV-1O6"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gfk-Bp-c35" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3052" y="43"/>
+        </scene>
         <!--Nusic View Controller-->
         <scene sceneID="nR0-Mq-T1f">
             <objects>
@@ -526,8 +645,37 @@
             </objects>
             <point key="canvasLocation" x="594" y="43"/>
         </scene>
+        <!--Table View Controller-->
+        <scene sceneID="nMb-S5-8A4">
+            <objects>
+                <tableViewController id="V1A-ov-j7O" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="bcm-3E-gZe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="w42-74-1kl">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w42-74-1kl" id="nbW-RV-mkO">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="V1A-ov-j7O" id="txi-TC-mBp"/>
+                            <outlet property="delegate" destination="V1A-ov-j7O" id="flA-7v-I60"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="duh-wz-KGA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
     </scenes>
     <resources>
+        <image name="ButtonAppIcon" width="25" height="25"/>
         <image name="SpotifyLogin" width="244" height="44"/>
+        <image name="ThumbsUp" width="25" height="25"/>
     </resources>
 </document>

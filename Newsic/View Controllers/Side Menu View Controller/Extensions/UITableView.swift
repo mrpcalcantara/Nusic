@@ -8,6 +8,7 @@
 
 import UIKit
 import PopupDialog
+import SafariServices
 
 extension SideMenuViewController {
     func setupTableView() {
@@ -38,7 +39,7 @@ extension SideMenuViewController {
 extension SideMenuViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if settingsValues[indexPath.section][0] == NusicSettingsLabel.logout.rawValue {
+        if settingsValues[indexPath.section][0] == NusicSettingsLabel.logout.rawValue || settingsValues[indexPath.section][0] == NusicSettingsLabel.privacyPolicy.rawValue {
             cell.accessoryType = .none
         }
     }
@@ -72,6 +73,8 @@ extension SideMenuViewController : UITableViewDelegate {
             header.headerLabel.text = NusicSettingsTitle.playerSettings.rawValue
         case NusicSettingsLabel.useMobileData.rawValue:
             header.headerLabel.text = NusicSettingsTitle.connectionSettings.rawValue
+        case NusicSettingsLabel.privacyPolicy.rawValue:
+            header.headerLabel.text = NusicSettingsTitle.infoSettings.rawValue
         case NusicSettingsLabel.logout.rawValue:
             header.headerLabel.text = NusicSettingsTitle.actionSettings.rawValue
         case NusicSettingsLabel.spotifyQuality.rawValue:
@@ -107,8 +110,8 @@ extension SideMenuViewController : UITableViewDataSource {
             setupConnectionSettings(for: cell, title: title)
         case NusicSettingsLabel.logout.rawValue:
             setupActionSettings(for: cell, title: title)
-            
-            
+        case NusicSettingsLabel.privacyPolicy.rawValue:
+            setupInfoSettings(for: cell, title: title)
         default:
             return UITableViewCell()
         }
@@ -223,6 +226,21 @@ extension SideMenuViewController {
             
             cell.configureCell(title: title, value: bitrate.description(), icon: UIImage(named: "SpotifySoundQuality"), options: [buttonHigh, buttonNormal, buttonLow])
         }
+    }
+    
+    fileprivate func setupInfoSettings(for cell: SettingsCell, title: String) {
+        let buttonPrivacyPolicy = YBButton(frame: CGRect.zero, icon: #imageLiteral(resourceName: "ButtonAppIcon"), text: "Read the privacy policy")
+        let actionPrivacyPolicy = { () -> Void in
+//            cell.itemValue.text = buttonPrivacyPolicy.textLabel.text
+            if let url = URL(string: "https://www.iubenda.com/privacy-policy/81210825") {
+                let safariViewController = SFSafariViewController(url: url)
+                self.present(safariViewController, animated: true, completion: nil)
+            }
+            
+        }
+        buttonPrivacyPolicy.action = actionPrivacyPolicy
+        
+        cell.configureCell(title: title, value: "", icon: nil, options: [buttonPrivacyPolicy], centerText: true, alertText: "")
     }
     
 }

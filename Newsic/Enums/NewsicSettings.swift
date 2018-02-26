@@ -13,6 +13,7 @@ enum NusicSettingsTitle: String {
     case playerSettings = "Music Player"
     case connectionSettings = "Connection"
     case actionSettings = "Actions"
+    case infoSettings = "Informations"
 }
 
 enum NusicSettingsLabel: String {
@@ -20,4 +21,5 @@ enum NusicSettingsLabel: String {
     case preferredPlayer = "Preferred Player"
     case spotifyQuality = "Sound Quality"
     case logout = "Logout"
+    case privacyPolicy = "Privacy Policy"
 }

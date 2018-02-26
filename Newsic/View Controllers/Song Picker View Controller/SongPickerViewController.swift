@@ -395,7 +395,7 @@ class SongPickerViewController: NusicDefaultViewController {
     
     @objc fileprivate func goToShowSongVC() {
         let parent = self.parent as! NusicPageViewController
-        parent.scrollToViewController(index: parent.orderedViewControllers.count-1)
+        parent.scrollToNextViewController()
     }
     
     fileprivate func manageViewControllerShowSong() {
@@ -444,7 +444,7 @@ class SongPickerViewController: NusicDefaultViewController {
                                 let isPremium = self.spotifyHandler.user.product == SPTProduct.premium ? true : false
                                 let user = NusicUser(userName: username, displayName: displayName!, imageURL: profileImage, territory: territory, isPremium: isPremium)
                                 self.moodObject?.userName = username;
-                                self.spotifyPlaylistCheck();
+                                
                                 user.getUser(getUserHandler: { (fbUser, error) in
                                     if let error = error {
                                         error.presentPopup(for: self)
@@ -459,6 +459,7 @@ class SongPickerViewController: NusicDefaultViewController {
                                             }
                                         })
                                     } else {
+                                        self.spotifyPlaylistCheck();
                                         self.nusicUser = fbUser!
                                         self.nusicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount, error) in
                                             if let error = error {
@@ -574,7 +575,7 @@ class SongPickerViewController: NusicDefaultViewController {
                         } else {
                             if let isExisting = isExisting, !isExisting {
                                 self.createPlaylistSpotify()
-                                FirebaseDatabaseHelper.deleteAllTracks(user: self.nusicUser.userName, deleteTracksCompleteHandler: { (reference, error) in
+                                FirebaseDatabaseHelper.deleteAllTracks(user: self.spotifyHandler.user.canonicalUserName, deleteTracksCompleteHandler: { (reference, error) in
                                     
                                 })
                             }
