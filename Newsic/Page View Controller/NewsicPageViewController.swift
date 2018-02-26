@@ -15,6 +15,7 @@ class NusicPageViewController: UIPageViewController {
     var songPickerVC: UIViewController?
     var sideMenuVC: UIViewController?
     var showSongVC: UIViewController?
+    var songListVC: UITabBarController?
     private var backgroundImageView: UIImageView!
     
     private(set) lazy var orderedViewControllers: [UIViewController] = {
@@ -39,7 +40,8 @@ class NusicPageViewController: UIPageViewController {
             instantiateViewController(withIdentifier: "ShowSong")
         sideMenuVC = UIStoryboard(name: "Main", bundle: nil) .
             instantiateViewController(withIdentifier: "SideMenu")
-        
+        songListVC = UIStoryboard(name: "Main", bundle: nil) .
+            instantiateViewController(withIdentifier: "SongList") as! UITabBarController
         
         if let sideMenuVC = sideMenuVC {
             orderedViewControllers.insert(sideMenuVC, at: 0)

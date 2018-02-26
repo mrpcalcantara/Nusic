@@ -18,6 +18,7 @@ extension ShowSongViewController {
         showMore.alpha = 1
         showMore.translatesAutoresizingMaskIntoConstraints = false;
         
+        previousSong.contentMode = .center
         previousSong.setImage(UIImage(named: "ThumbsDown"), for: .normal)
         previousSong.isHidden = true
         previousSong.translatesAutoresizingMaskIntoConstraints = false;
@@ -26,10 +27,13 @@ extension ShowSongViewController {
         if pausePlay.image(for: .normal) == nil {
             pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
         }
-        
+
+        pausePlay.contentMode = .center
+        pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
         pausePlay.isHidden = true
         pausePlay.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         
+        nextSong.contentMode = .center
         nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
         nextSong.isHidden = true
         nextSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);

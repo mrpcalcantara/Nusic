@@ -67,6 +67,7 @@ class SideMenuViewController: NusicDefaultViewController {
             settingsValues.append([NusicSettingsLabel.spotifyQuality.rawValue])
         }
         settingsValues.append([NusicSettingsLabel.useMobileData.rawValue])
+        settingsValues.append([NusicSettingsLabel.privacyPolicy.rawValue])
         settingsValues.append([NusicSettingsLabel.logout.rawValue])
         
         

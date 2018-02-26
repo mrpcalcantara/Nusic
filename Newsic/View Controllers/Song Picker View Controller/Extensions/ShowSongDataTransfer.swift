@@ -18,7 +18,9 @@ extension SongPickerViewController {
         
         let parent = self.parent as! NusicPageViewController
         let playerViewController = parent.showSongVC as! ShowSongViewController
+        let likedTrackListVC = parent.songListVC as! SongListTabBarViewController
         parent.removeViewControllerFromPageVC(viewController: playerViewController)
+        parent.removeViewControllerFromPageVC(viewController: likedTrackListVC)
         
         playerViewController.user = nusicUser;
         playerViewController.playlist = nusicPlaylist;
