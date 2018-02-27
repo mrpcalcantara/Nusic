@@ -29,14 +29,7 @@ class LikedSongListViewController: UIViewController {
     var sectionSongs: [[NusicTrack]] = Array(Array())
     var likedTrackList:[NusicTrack] = [] {
         didSet {
-            print("likedTrackList count = \(likedTrackList.count)")
-            DispatchQueue.main.async {
-                if self.songListTableView != nil {
-                    self.songListTableView.reloadData()
-                    self.songListTableView.layoutIfNeeded()
-                    self.sortTableView(by: self.songListTableViewHeader.currentSortElement)
-                }
-            }
+            reloadTable()
         }
     }
     
@@ -49,18 +42,13 @@ class LikedSongListViewController: UIViewController {
             self.tabBarVC = parent
         }
         setupLikedSongListVC()
-        
+        reloadTable()
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if songListTableViewTopConstraint != nil {
-            songListTableViewTopConstraint.isActive = false
-            songListTableView.topAnchor.constraint(equalTo: (tabBarVC?.navbar.bottomAnchor)!).isActive = true
-        }
-        
-        sortTableView(by: songListTableViewHeader.currentSortElement)
+        reloadTable()
     }
 
     override func didReceiveMemoryWarning() {
@@ -71,5 +59,14 @@ class LikedSongListViewController: UIViewController {
     func setupLikedSongListVC() {
         self.view.backgroundColor = .clear
         setupTableView()
+    }
+    
+    func reloadTable() {
+        DispatchQueue.main.async {
+            if self.songListTableView != nil {
+                self.songListTableView.reloadData()
+                self.sortTableView(by: self.songListTableViewHeader.currentSortElement)
+            }
+        }
     }
 }

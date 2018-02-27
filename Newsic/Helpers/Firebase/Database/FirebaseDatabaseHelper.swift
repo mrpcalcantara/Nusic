@@ -115,7 +115,7 @@ class FirebaseDatabaseHelper {
                                 features.mapDictionary(featureDictionary: childSnapshot.value as! [String: AnyObject])
                                 trackFeatures.append(features)
                                 index += 1
-                                if index == dataSnapshot.childrenCount - 1 {
+                                if index >= dataSnapshot.childrenCount - 1 {
                                     fetchTrackFeaturesHandler(trackFeatures)
                                 }
                             }

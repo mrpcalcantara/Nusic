@@ -22,6 +22,7 @@ extension SuggestedSongListViewController {
         suggestedSongListTableView.register(headerView, forHeaderFooterViewReuseIdentifier: SongTableViewSectionHeader.reuseIdentifier)
         
         suggestedSongListTableHeader.setupView()
+        suggestedSongListTableHeader.isUserInteractionEnabled = false
         suggestedSongListTableHeader.delegate = self
         
         
@@ -50,16 +51,25 @@ extension SuggestedSongListViewController {
         suggestedSongListTableView.isHidden = false
         suggestedSongListTableView.rowHeight = UITableViewAutomaticDimension
         suggestedSongListTableView.estimatedRowHeight = 90.0
+        suggestedSongListTableView.sectionHeaderHeight = UITableViewAutomaticDimension
         suggestedSongListTableView.tableFooterView = UIView();
-        let image = UIImage(named: "SongMenuBackgroundPattern")
-        if let image = image {
-            //            suggestedSongListTableView.backgroundColor = UIColor(patternImage: image);
-            suggestedSongListTableView.backgroundColor = .clear
+        suggestedSongListTableView.backgroundColor = .clear
+        
+        suggestedSongListTableHeader.configureSuggestedList()
+        
+    }
+    
+    func getHeaderString(date: Date) -> String {
+        let timeInterval = date.timeIntervalSinceNow*(-1)
+        let oneDay:Double = 60*60*24 // 1 day to seconds
+        let twoDays:Double = oneDay*2
+        if timeInterval < oneDay {
+            return "Today"
+        } else if timeInterval > oneDay && timeInterval < twoDays {
+            return "Yesterday"
+        } else {
+            return date.toString(dateFormat: "dd MMMM yyyy")
         }
-        
-        
-        suggestedSongListTableHeader.configure(isMoodSelected: false, emotion: nil)
-        
     }
     
 }
@@ -75,11 +85,29 @@ extension SuggestedSongListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let track = suggestedSongList[indexPath.section]
+        if let cell = tableView.cellForRow(at: indexPath) as? SongTableViewCell {
+            cell.setColor(color: .clear)
+            print(cell)
+        }
+        var track = suggestedSongList[indexPath.section]
+        track.setSuggestedValue(value: false, suggestedHandler: nil);
+        suggestedSongList[indexPath.section] = track
+        updateBadgeCount()
         tabBarVC?.playSelectedCard(track: track)
         tableView.deselectRow(at: indexPath, animated: true);
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SongTableViewSectionHeader.reuseIdentifier) as? SongTableViewSectionHeader else { return UIView(); }
+        
+        var text = ""
+        if let suggestionDate = suggestedSongList[section].suggestionInfo?.suggestionDate {
+            text = getHeaderString(date: suggestionDate)
+        }
+        cell.configure(text: text)
+        
+        return cell
+    }
 }
 
 extension SuggestedSongListViewController: UITableViewDataSource {
@@ -101,17 +129,13 @@ extension SuggestedSongListViewController: UITableViewDataSource {
         return regCell;
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return sectionTitles[section]
-        return "sectionTitle"
-    }
-    
 }
 
 extension SuggestedSongListViewController : SongTableViewHeaderDelegate {
     func touchedHeader() {
         
     }
+    
 }
 
 

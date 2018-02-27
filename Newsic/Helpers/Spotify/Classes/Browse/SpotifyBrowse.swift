@@ -108,7 +108,15 @@ extension Spotify {
                 for track in trackList {
                     let trackName = track["name"] as! String;
                     let uri = track["uri"] as! String;
-                    let id = track["id"] as! String;
+                    var id = ""
+                    if let fetchedTrackId = track["id"] as? String {
+                        id = fetchedTrackId
+                    }
+                    
+                    var linkedTrackId = id
+                    if let linkedFrom:[String: AnyObject] = track["linked_from"] as? [String: AnyObject] {
+                        linkedTrackId = linkedFrom["id"] as! String
+                    }
                     var songExternalHref = ""
                     if let trackHref = track["external_urls"] as? [String: AnyObject] {
                         songExternalHref = trackHref["spotify"] as! String
@@ -121,7 +129,7 @@ extension Spotify {
                     let artistUri = artists.count > 0 ? artists[0]["uri"] as! String : "Unknown URI";
                     let title = "\(artistName) - \(trackName)"
                     
-                    let spotifyObject = SpotifyTrack(title: title, thumbNailUrl: hqImage, trackUri: uri, trackId: id, songName: trackName, songHref: songExternalHref, artist: SpotifyArtist(artistName: artistName, uri: artistUri, id: Spotify.transformToID(type: .artist, uri: artistUri)), audioFeatures: nil);
+                    let spotifyObject = SpotifyTrack(title: title, thumbNailUrl: hqImage, trackUri: uri, trackId: id, linkedFromTrackId: linkedTrackId, songName: trackName, songHref: songExternalHref, artist: SpotifyArtist(artistName: artistName, uri: artistUri, id: Spotify.transformToID(type: .artist, uri: artistUri)), audioFeatures: nil);
                     spotifyResults.append(spotifyObject);
                     
                 }

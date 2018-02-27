@@ -23,19 +23,21 @@ extension SongPickerViewController {
     }
     
     func reloadListMenu() {
-        var newY:CGFloat = 0
-        if !listMenuView.isShowing {
-            newY = self.view.frame.height
-        } else {
-            if listMenuView.isOpen {
-                newY = self.view.frame.height/2
+        if listMenuView != nil {
+            var newY:CGFloat = 0
+            if !listMenuView.isShowing {
+                newY = self.view.frame.height
             } else {
-                newY = self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
+                if listMenuView.isOpen {
+                    newY = self.view.frame.height/2
+                } else {
+                    newY = self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
+                }
             }
+            listMenuView.maxY = self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
+            listMenuView.frame = CGRect(x: listMenuView.frame.origin.x, y: newY, width: self.view.frame.width, height: listMenuView.frame.height)
+            listMenuView.reloadView()
         }
-        listMenuView.maxY = self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
-        listMenuView.frame = CGRect(x: listMenuView.frame.origin.x, y: newY, width: self.view.frame.width, height: listMenuView.frame.height)
-        listMenuView.reloadView()
     }
     
 }

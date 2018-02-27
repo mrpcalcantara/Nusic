@@ -18,6 +18,7 @@ enum FirebaseErrorCodeDescription : String {
     case getLikedTracks = "An error occurred while fetching your liked tracks."
     case saveLikedTracks = "An error occurred while saving your liked tracks."
     case deleteLikedTracks = "An error occurred while deleting your liked tracks."
+    case setSuggestedSong = "An error occurred while updating your suggested tracks."
     
     //Mood
     case getMoodInfo = "An error occurred while fetching your saved mood information."

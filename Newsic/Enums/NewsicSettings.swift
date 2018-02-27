@@ -21,5 +21,6 @@ enum NusicSettingsLabel: String {
     case preferredPlayer = "Preferred Player"
     case spotifyQuality = "Sound Quality"
     case logout = "Logout"
+    case deleteAccount = "Delete Account"
     case privacyPolicy = "Privacy Policy"
 }

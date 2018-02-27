@@ -40,19 +40,30 @@ class ShowSongViewController: NusicDefaultViewController {
         didSet {
             let parent = self.parent as! NusicPageViewController
             let songListViewController = parent.songListVC as! SongListTabBarViewController
+            self.suggestedTrackList.sort(by: { (track1, track2) -> Bool in
+                return (track1.suggestionInfo?.suggestionDate)! > (track2.suggestionInfo?.suggestionDate)!
+            })
             songListViewController.suggestedTrackList = suggestedTrackList
         }
     }
-    var suggestedTrackIdList = [String]() {
+    var suggestedTrackIdList = [[String : NusicSuggestion]]() {
         didSet {
-            if let appendedTrackId = suggestedTrackIdList.last {
+            if let appendedTrackId = suggestedTrackIdList.last?.keys.first {
                 fetchDataForLikedTrack(trackId: [appendedTrackId], handler: { (nusicTracks) in
-                    if let nusicTrack = nusicTracks.first {
-                        if !self.suggestedTrackList.contains(where: { (track) -> Bool in
-                            return track.trackInfo.trackId == nusicTrack.trackInfo.trackId
+                    if var nusicTrack = nusicTracks.first {
+                        if let index = self.suggestedTrackIdList.index(where: { (dict) -> Bool in
+                            return dict.keys.first == appendedTrackId
                         }) {
-                            self.suggestedTrackList.append(nusicTrack)
+                            if let suggestionInfo = self.suggestedTrackIdList[index].first?.value {
+                                nusicTrack.suggestionInfo = suggestionInfo
+                                nusicTrack.trackInfo.suggestedSong = true
+                            }
                         }
+                        
+                        if let index = self.suggestedTrackList.index(where: { $0.trackInfo.trackId == nusicTrack.trackInfo.trackId }) {
+                            self.suggestedTrackList.remove(at: index)
+                        }
+                        self.suggestedTrackList.append(nusicTrack)
                     }
                 })
             }
@@ -97,11 +108,7 @@ class ShowSongViewController: NusicDefaultViewController {
     var selectedSongs: [SpotifyTrack]? = nil
     var currentPlayingTrack: SpotifyTrack?
     var playedSongsHistory: [SpotifyTrack]? = []
-    var trackFeatures: [SpotifyTrackFeature] = Array() {
-        didSet {
-            print("trackFeatures count = \(trackFeatures.count)")
-        }
-    }
+    var trackFeatures: [SpotifyTrackFeature] = Array()
     var searchBasedOnArtist: SpotifyArtist?
     var searchBasedOnTrack: SpotifyTrack?
     var searchBasedOnGenres: [String: Int]?
@@ -295,11 +302,44 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     
     fileprivate func setupFirebaseListeners() {
-        
+        removeFirebaseListeners();
         reference.child("suggestedTracks").child(self.user.userName).observe(.childAdded) { (dataSnapshot) in
+            var isNewSuggestion = false
+            var suggestionDate = Date()
+            if let dict = dataSnapshot.value as? [String: AnyObject] {
+                if let newSuggestionValue = dict["isNewSuggestion"] as? NSNumber {
+                    isNewSuggestion = Bool(truncating: newSuggestionValue)
+                }
+                if let suggestionDateValue = dict["suggestedOn"] as? String {
+                    suggestionDate = Date().fromString(dateString: suggestionDateValue, dateFormat: "yyyy-MM-dd'T'HH:mm:ss+hhmm")
+                }
+            }
             let trackId = dataSnapshot.key
-            if !self.suggestedTrackIdList.contains(trackId) {
-                self.suggestedTrackIdList.append(trackId)
+            let trackDict = [trackId:NusicSuggestion(isNewSuggestion: isNewSuggestion, suggestionDate: suggestionDate)]
+            if !self.suggestedTrackIdList.contains(where: {$0.keys.contains(trackId)}) {
+                self.suggestedTrackIdList.append(trackDict)
+            }
+        }
+        
+        
+        reference.child("suggestedTracks").child(self.user.userName).observe(.childChanged) { (dataSnapshot) in
+            var isNewSuggestion = false
+            var suggestionDate = Date()
+            if let dict = dataSnapshot.value as? [String: AnyObject] {
+                if let newSuggestionValue = dict["isNewSuggestion"] as? NSNumber {
+                    isNewSuggestion = Bool(truncating: newSuggestionValue)
+                }
+                if let suggestionDateValue = dict["suggestedOn"] as? String {
+                    suggestionDate = Date().fromString(dateString: suggestionDateValue, dateFormat: "yyyy-MM-dd'T'HH:mm:ss+hhmm")
+                }
+            }
+            let trackId = dataSnapshot.key
+            let trackDict = [trackId:NusicSuggestion(isNewSuggestion: isNewSuggestion, suggestionDate: suggestionDate)]
+            if let index = self.suggestedTrackIdList.index(where: { (dict) -> Bool in
+                return dict.keys.contains(trackId)
+            }) {
+                self.suggestedTrackIdList.remove(at: index);
+                self.suggestedTrackIdList.append(trackDict)
             }
         }
             
@@ -330,6 +370,13 @@ class ShowSongViewController: NusicDefaultViewController {
                     }
                 }
             }
+        }
+    }
+    
+    fileprivate func removeFirebaseListeners() {
+        reference.child("suggestedTracks").child(self.user.userName).removeAllObservers()
+        if let emotion = moodObject?.emotions.first?.basicGroup.rawValue.lowercased() {
+            reference.child("moodTracks").child(self.user.userName).child(emotion).removeAllObservers()
         }
     }
     
@@ -1078,34 +1125,18 @@ extension ShowSongViewController {
         }
     }
     
-    func removeTrackFromLikedTracks(indexPath: IndexPath, removeTrackHandler: @escaping (Bool) -> ()) {
+    func removeTrackFromLikedTracks(track:NusicTrack, indexPath: IndexPath, removeTrackHandler: @escaping (Bool) -> ()) {
         
         let index = likedTrackList.count - indexPath.row-1
         let strIndex = String(index)
-        let track = sectionSongs[indexPath.section][indexPath.row]
-        
         let trackDict: [String: String] = [ strIndex : track.trackInfo.trackUri ]
         spotifyHandler.removeTrackFromPlaylist(playlistId: playlist.id!, tracks: trackDict) { (didRemove, error) in
             if let error = error {
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.removeTrack.rawValue)
             } else {
-                track.deleteData(deleteCompleteHandler: { (ref, error) in
-                    if error != nil {
-                        removeTrackHandler(false)
-                        print("ERROR DELETING TRACK");
-                    } else {
-                        self.sectionSongs[indexPath.section].remove(at: indexPath.row)
-                        if let index = self.likedTrackList.index(where: { (likedTrack) -> Bool in
-                            return likedTrack.trackInfo == track.trackInfo
-                        }) {
-                            self.likedTrackList.remove(at: index)
-                            self.isSongLiked = false;
-                            self.toggleLikeButtons();
-                        }
-                        
-                        removeTrackHandler(true);
-                    }
-                })
+                self.isSongLiked = false;
+                self.toggleLikeButtons();
+                removeTrackHandler(true)
             }
         }
     }

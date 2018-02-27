@@ -19,18 +19,29 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bdc-7d-Hjf">
                     <rect key="frame" x="0.0" y="0.0" width="888" height="361"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="UF8-01-iuK">
-                            <rect key="frame" x="16" y="24" width="856" height="313"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vYf-ah-HA0">
+                            <rect key="frame" x="0.0" y="0.0" width="888" height="361"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="UF8-01-iuK">
+                                    <rect key="frame" x="16" y="170.5" width="864" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="UF8-01-iuK" secondAttribute="trailing" constant="8" id="YKu-FG-k8Q"/>
+                                <constraint firstItem="UF8-01-iuK" firstAttribute="centerY" secondItem="vYf-ah-HA0" secondAttribute="centerY" id="ghr-Jq-ChQ"/>
+                                <constraint firstItem="UF8-01-iuK" firstAttribute="leading" secondItem="vYf-ah-HA0" secondAttribute="leading" constant="16" id="vXQ-IL-n2Q"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="UF8-01-iuK" firstAttribute="top" secondItem="bdc-7d-Hjf" secondAttribute="topMargin" constant="16" id="3wM-gG-uTG"/>
-                        <constraint firstAttribute="bottomMargin" secondItem="UF8-01-iuK" secondAttribute="bottom" constant="16" id="9pc-PE-Q10"/>
-                        <constraint firstAttribute="trailingMargin" secondItem="UF8-01-iuK" secondAttribute="trailing" constant="8" id="QfH-96-rGX"/>
-                        <constraint firstItem="UF8-01-iuK" firstAttribute="leading" secondItem="bdc-7d-Hjf" secondAttribute="leadingMargin" constant="8" id="top-Ws-TVi"/>
+                        <constraint firstAttribute="trailing" secondItem="vYf-ah-HA0" secondAttribute="trailing" id="3eV-Z3-T0H"/>
+                        <constraint firstItem="vYf-ah-HA0" firstAttribute="top" secondItem="bdc-7d-Hjf" secondAttribute="top" id="4r8-78-6gW"/>
+                        <constraint firstItem="vYf-ah-HA0" firstAttribute="leading" secondItem="bdc-7d-Hjf" secondAttribute="leading" id="MDx-74-wMb"/>
+                        <constraint firstAttribute="bottom" secondItem="vYf-ah-HA0" secondAttribute="bottom" id="Vfu-nF-ZvK"/>
                     </constraints>
                 </view>
             </subviews>
@@ -44,6 +55,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="background" destination="vYf-ah-HA0" id="V94-Ub-f0Q"/>
                 <outlet property="displayName" destination="UF8-01-iuK" id="nKB-IS-V1T"/>
             </connections>
             <point key="canvasLocation" x="274" y="-209.5"/>

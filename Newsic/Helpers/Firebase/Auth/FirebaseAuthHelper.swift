@@ -93,4 +93,14 @@ class FirebaseAuthHelper {
             }).resume()
         }
     }
+
+    class func deleteUserData(userId: String) {
+        if let user = Auth.auth().currentUser {
+            user.delete(completion: { (error) in
+                if let error = error {
+                    print(error)
+                }
+            })
+        }
+    }
 }
