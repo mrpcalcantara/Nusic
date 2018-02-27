@@ -19,6 +19,7 @@ class SpotifyTrack: Hashable {
     var thumbNailUrl: String!;
     var smallThumbNailUrl: String!;
     var trackId: String!;
+    var linkedFromTrackId: String!;
     var trackUri: String!;
     var songName: String!;
     var songHref: String!;
@@ -27,12 +28,13 @@ class SpotifyTrack: Hashable {
     var audioFeatures: SpotifyTrackFeature? = nil
     var suggestedSong: Bool? = false
     
-    init(title: String? = "", thumbNail: UIImage? = nil, thumbNailUrl: String? = "", smallThumbNailUrl: String? = "", trackUri: String? = "", trackId: String, songName: String? = "", songHref: String? = "", artist: SpotifyArtist?, addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?, suggestedSong: Bool? = false) {
+    init(title: String? = "", thumbNail: UIImage? = nil, thumbNailUrl: String? = "", smallThumbNailUrl: String? = "", trackUri: String? = "", trackId: String, linkedFromTrackId: String? = "", songName: String? = "", songHref: String? = "", artist: SpotifyArtist?, addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?, suggestedSong: Bool? = false) {
         self.title = title;
         self.thumbNailUrl = thumbNailUrl;
         self.smallThumbNailUrl = smallThumbNailUrl
         self.trackUri = trackUri;
         self.trackId = trackId;
+        self.linkedFromTrackId = linkedFromTrackId
         self.songName = songName;
         self.songHref = songHref
         self.artist = artist!

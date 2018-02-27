@@ -36,6 +36,7 @@ class NusicUser: Iterable {
         
         self.getImage(imageURL: imageURL!);
         self.reference = Database.database().reference();
+        setupListeners()
     }
     
     func getImage(imageURL: String) {
@@ -51,6 +52,21 @@ class NusicUser: Iterable {
 }
 
 extension NusicUser: FirebaseModel {
+    
+    func setupListeners() {
+        
+        //Delete
+        Database.database().reference().child("users").child(userName).observe(.childRemoved) { (dataSnapshot) in
+            Database.database().reference().child("settings").child(self.userName).removeValue()
+            Database.database().reference().child("playlists").child(self.userName).removeValue()
+            Database.database().reference().child("suggestedSongs").child(self.userName).removeValue()
+            Database.database().reference().child("moodTracks").child(self.userName).removeValue()
+            Database.database().reference().child("likedTracks").child(self.userName).removeValue()
+            Database.database().reference().child("genres").child(self.userName).removeValue()
+            FirebaseAuthHelper.deleteUserData(userId: self.userName)
+            UserDefaults.standard.removeObject(forKey: "SpotifySession")
+        }
+    }
     
     internal func getData(getCompleteHandler: @escaping (NSDictionary?, NusicError?) -> ()) {
         reference.child("users").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
@@ -78,7 +94,6 @@ extension NusicUser: FirebaseModel {
             }
             
         }
-        //        reference.child(userName).child(self.id!).updateChildValues(dict);
     }
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {

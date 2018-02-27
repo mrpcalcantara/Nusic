@@ -10,15 +10,22 @@ import Foundation
 
 extension Date {
     
-    func toString() -> String {
+    func toString(dateFormat: String? = "yyyyMMdd") -> String {
         let formatter = DateFormatter();
-        formatter.dateFormat = "yyyyMMdd"
+        formatter.dateFormat = dateFormat!
         return formatter.string(from: self)
     }
     
-    func fromString(dateString: String) -> Date {
+    func fromString(dateString: String, dateFormat: String? = "yyyyMMdd") -> Date {
         let formatter = DateFormatter();
-        formatter.dateFormat = "yyyyMMdd"
+        formatter.dateFormat = dateFormat!
+        
+//        if let timezoneHours = Int(String(dateFormat?.suffix(4)))  {
+//            
+//            formatter.timeZone = TimeZone(secondsFromGMT: <#T##Int#>)
+//        }
+//        
+        
         return formatter.date(from: dateString)!;
     }
 }

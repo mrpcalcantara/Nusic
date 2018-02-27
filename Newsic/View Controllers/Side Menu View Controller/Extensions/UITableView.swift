@@ -100,7 +100,7 @@ extension SideMenuViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseIdentifier, for: indexPath) as? SettingsCell else { fatalError("Unexpected Table View Cell") }
         
-        let title = settingsValues[indexPath.section][0]
+        let title = settingsValues[indexPath.section][indexPath.row]
         switch title {
         case NusicSettingsLabel.preferredPlayer.rawValue:
             setupPlayerSettings(for: cell, title: title)
@@ -110,6 +110,8 @@ extension SideMenuViewController : UITableViewDataSource {
             setupConnectionSettings(for: cell, title: title)
         case NusicSettingsLabel.logout.rawValue:
             setupActionSettings(for: cell, title: title)
+        case NusicSettingsLabel.deleteAccount.rawValue:
+            setupDeleteAccountSettings(for: cell, title: title)
         case NusicSettingsLabel.privacyPolicy.rawValue:
             setupInfoSettings(for: cell, title: title)
         default:
@@ -198,6 +200,29 @@ extension SideMenuViewController {
         buttonDismiss.action = actionDismiss
         
         cell.configureCell(title: title, value: "", icon: nil, options: [buttonLogout, buttonDismiss], centerText: true, alertText: "Are you sure?")
+        
+    }
+    
+    fileprivate func setupDeleteAccountSettings(for cell: SettingsCell, title: String) {
+        let buttonDeleteAccount = YBButton(frame: CGRect.zero, icon: UIImage(named: "CheckmarkIcon"), text: "Yes")
+        let actionDeleteAccount = { () -> Void in
+            self.nusicUser?.deleteUser(deleteUserHandler: { (isDeleted, error) in
+                if let error = error {
+                    error.presentPopup(for: self)
+                }
+                self.logoutUser();
+            })
+            cell.itemValue.text = buttonDeleteAccount.textLabel.text
+        }
+        buttonDeleteAccount.action = actionDeleteAccount
+        
+        let buttonDismiss = YBButton(frame: CGRect.zero, icon: UIImage(named: "WrongIcon"), text: "No")
+        let actionDismiss = { () -> Void in
+            cell.alertController?.dismiss()
+        }
+        buttonDismiss.action = actionDismiss
+        
+        cell.configureCell(title: title, value: "", icon: nil, options: [buttonDeleteAccount, buttonDismiss], centerText: true, alertText: "Are you sure? All the data will be permanently deleted. This action cannot be undone.")
         
     }
     

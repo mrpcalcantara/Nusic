@@ -19,14 +19,16 @@ struct NusicTrack {
         }
     }
     var moodInfo: NusicMood?;
+    var suggestionInfo: NusicSuggestion?
     var reference: DatabaseReference! = Database.database().reference()
     
-    init(trackInfo: SpotifyTrack, moodInfo: NusicMood?, userName: String, youtubeInfo: YouTubeResult? = nil) {
+    init(trackInfo: SpotifyTrack, moodInfo: NusicMood?, userName: String, youtubeInfo: YouTubeResult? = nil, suggestionInfo: NusicSuggestion? = NusicSuggestion()) {
         self.trackInfo = trackInfo;
         self.moodInfo = moodInfo;
         let firebaseUsername = userName.replaceSymbols(symbol: ".", with: "-")
         self.userName = firebaseUsername
         self.youtubeInfo = youtubeInfo;
+        self.suggestionInfo = suggestionInfo
         self.reference = Database.database().reference().child("likedTracks");
         setupListeners()
     }
@@ -42,7 +44,7 @@ struct NusicTrack {
                             .child("moodTracks")
                             .child(self.userName)
                             .child(emotion.basicGroup.rawValue.lowercased())
-                            .child(self.trackInfo.trackId)
+                            .child(self.trackInfo.linkedFromTrackId)
                                 .setValue(true)
                     }
                 }
@@ -51,15 +53,15 @@ struct NusicTrack {
         
         //Delete
         Database.database().reference().child("likedTracks").child(userName).observe(.childRemoved) { (dataSnapshot) in
-            if dataSnapshot.key == self.trackInfo.trackId {
+            if dataSnapshot.key == self.trackInfo.linkedFromTrackId {
                 if let moodInfo = self.moodInfo {
                     for emotion in moodInfo.emotions {
                         Database.database().reference()
                             .child("moodTracks")
                             .child(self.userName)
                             .child(emotion.basicGroup.rawValue.lowercased())
-                            .child(self.trackInfo.trackId)
-                            .removeValue()
+                            .child(self.trackInfo.linkedFromTrackId)
+                            .setValue(nil)
                     }
                 }
             }
@@ -99,31 +101,25 @@ extension NusicTrack : FirebaseModel {
                 }
             }
             
-            Database.database().reference().child("likedTracks").child(self.userName).child(self.trackInfo.trackId).child("likedOn").setValue(dateString as AnyObject)
+            Database.database().reference().child("likedTracks").child(self.userName).child(self.trackInfo.linkedFromTrackId).child("likedOn").setValue(dateString as AnyObject)
             saveCompleteHandler(reference, nil)
         }
         
     }
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
-    Database.database().reference().child("likedTracks").child(self.userName).child(self.trackInfo.trackId).child("likedOn").removeValue()
+        Database.database().reference().child("likedTracks").child(self.userName).child(self.trackInfo.linkedFromTrackId).child("likedOn").removeValue()
         deleteCompleteHandler(reference, nil)
     }
     
-//    func getAddedMoods() {
-//        let dispatchGroup = DispatchGroup()
-//        let emotions: [String] = []
-//        
-//        dispatchGroup.enter()
-//        FirebaseDatabaseHelper.fetchAllMoods(user: self.userName) { (dyads, error) in
-//            self.getData(getCompleteHandler: { (dict, error) in
-//                <#code#>
-//            })
-//            dispatchGroup.leave()
-//        }
-//        
-//        dispatchGroup.wait()
-//    }
-    
+    mutating func setSuggestedValue(value: Bool, suggestedHandler: ((DatabaseReference?, NusicError?) -> ())?) {
+        suggestionInfo?.isNewSuggestion = false
+        Database.database().reference().child("suggestedTracks").child(self.userName).child(self.trackInfo.linkedFromTrackId).child("isNewSuggestion").setValue(0) { (error, reference) in
+            if let error = error {
+                suggestedHandler?(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.setSuggestedSong.rawValue, systemError: error))
+            }
+            suggestedHandler?(reference,nil);
+        }
+    }
     
 }

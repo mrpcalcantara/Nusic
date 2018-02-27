@@ -24,11 +24,7 @@ class SuggestedSongListViewController: UIViewController {
     //Data variables
     var suggestedSongList:[NusicTrack] = Array() {
         didSet {
-            DispatchQueue.main.async {
-                if self.suggestedSongListTableView != nil {
-                    self.suggestedSongListTableView.reloadData()
-                }
-            }
+            reloadTable()
         }
     }
     
@@ -40,19 +36,37 @@ class SuggestedSongListViewController: UIViewController {
             self.tabBarVC = parent
         }
         self.view.backgroundColor = .clear
+        updateBadgeCount()
         setupTableView()
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadTable()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func setupFirebaseListeners() {
-        
+
+    func reloadTable() {
+        DispatchQueue.main.async {
+            if self.suggestedSongListTableView != nil {
+                self.updateBadgeCount()
+                self.suggestedSongListTableView.reloadData()
+            }
+        }
     }
 
+    func updateBadgeCount() {
+        self.tabBarItem.badgeValue = String(suggestedSongList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
+        if self.tabBarItem.badgeValue == "0" {
+            self.tabBarItem.badgeValue = nil
+        }
+    }
+    
     /*
     // MARK: - Navigation
 

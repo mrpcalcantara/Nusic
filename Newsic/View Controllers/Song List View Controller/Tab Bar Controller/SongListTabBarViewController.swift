@@ -82,6 +82,8 @@ class SongListTabBarViewController: UITabBarController {
     }
     
     func setupTabBarController() {
+        self.delegate = self
+        
         self.view.backgroundColor = .clear
         
         if let parent = self.parent as? NusicPageViewController {
@@ -95,6 +97,9 @@ class SongListTabBarViewController: UITabBarController {
                 setupViewController(viewController: viewController)
             }
         }
+        
+        self.tabBar.tintColor = NusicDefaults.foregroundThemeColor
+        self.tabBar.barTintColor = NusicDefaults.blackColor
     }
     
     func setupViewController(viewController: UIViewController) {
@@ -120,6 +125,9 @@ class SongListTabBarViewController: UITabBarController {
         self.suggestedSongListVC?.suggestedSongList = suggestedTrackList
     }
 
+    func updateSuggestedBadge(count: Int) {
+        
+    }
     /*
     // MARK: - Navigation
 
@@ -141,11 +149,33 @@ class SongListTabBarViewController: UITabBarController {
         }
     }
     
-    func removeTrackFromLikedTracks(indexPath: IndexPath) {
-        showSongVC?.removeTrackFromLikedTracks(indexPath: indexPath, removeTrackHandler: { (isRemoved) in
+    func removeTrackFromLikedTracks(track: NusicTrack, indexPath: IndexPath) {
+        
+        showSongVC?.removeTrackFromLikedTracks(track: track, indexPath: indexPath, removeTrackHandler: { (isRemoved) in
+            track.deleteData(deleteCompleteHandler: { (ref, error) in
+                if error != nil {
+                    print("ERROR DELETING TRACK");
+                } else {
+                    if let index = self.likedTrackList.index(where: { (likedTrack) -> Bool in
+                        return likedTrack.trackInfo == track.trackInfo
+                    }) {
+                        self.likedTrackList.remove(at: index)
+                    }
+                }
+            })
             DispatchQueue.main.async {
                 self.likedSongListVC?.songListTableView.reloadData()
             }
         })
     }
+}
+
+extension SongListTabBarViewController: UITabBarControllerDelegate {
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if let viewController = viewController as? SuggestedSongListViewController {
+            viewController.tabBarItem.badgeValue = String(viewController.suggestedSongList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
+        }
+    }
+    
 }

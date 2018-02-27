@@ -12,6 +12,7 @@ import UIKit
 
 class SongTableViewSectionHeader: UITableViewHeaderFooterView {
 
+    @IBOutlet weak var background: UIView!
     @IBOutlet weak var displayName: UILabel!
     
     static let reuseIdentifier: String = "SongTableViewHeader"
@@ -22,18 +23,28 @@ class SongTableViewSectionHeader: UITableViewHeaderFooterView {
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        loadFromNib()
+//        loadFromNib()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+//
+//        loadFromNib()
     }
     
     fileprivate func loadFromNib() {
-        let contentView = UINib(nibName: self.className, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SongTableViewHeader
+        let contentView = UINib(nibName: self.className, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SongTableViewSectionHeader
+        contentView.displayName.textColor = NusicDefaults.foregroundThemeColor
         self.displayName = contentView.displayName
-        contentView.backgroundColor = .clear
+        contentView.background.backgroundColor = NusicDefaults.blackColor
         self.addSubview(contentView)
+    }
+    
+    func configure(text: String) {
+        self.contentView.backgroundColor = NusicDefaults.blackColor
+        self.background.backgroundColor = NusicDefaults.blackColor
+        self.displayName.textColor = NusicDefaults.foregroundThemeColor
+        self.displayName.text = text
     }
     
 }

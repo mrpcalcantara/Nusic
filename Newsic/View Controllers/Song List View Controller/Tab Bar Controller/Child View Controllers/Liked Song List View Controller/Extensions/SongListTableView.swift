@@ -50,6 +50,7 @@ extension LikedSongListViewController {
         songListTableView.isHidden = false
         songListTableView.rowHeight = UITableViewAutomaticDimension
         songListTableView.estimatedRowHeight = 90.0
+        songListTableView.estimatedSectionHeaderHeight = 60
         songListTableView.tableFooterView = UIView();
         let image = UIImage(named: "SongMenuBackgroundPattern")
         if let image = image {
@@ -58,7 +59,7 @@ extension LikedSongListViewController {
         }
         
         let emotion = moodObject?.emotions.first?.basicGroup.rawValue
-        songListTableViewHeader.configure(isMoodSelected: isMoodSelected, emotion: emotion)
+        songListTableViewHeader.configureLikedList(isMoodSelected: isMoodSelected, emotion: emotion)
         
     }
     
@@ -80,10 +81,22 @@ extension LikedSongListViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true);
     }
 
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SongTableViewSectionHeader.reuseIdentifier) as? SongTableViewSectionHeader else { return UIView(); }
+        
+        if let text = sectionTitles[section] {
+            cell.configure(text: text)
+        }
+        
+        return cell
+    }
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "\u{267A}") { (action, indexPath) in
             // delete item at indexPath
-            self.tabBarVC?.removeTrackFromLikedTracks(indexPath: indexPath)
+            let track = self.sectionSongs[indexPath.section][indexPath.row]
+            self.tabBarVC?.removeTrackFromLikedTracks(track: track, indexPath: indexPath)
+            self.sectionSongs[indexPath.section].remove(at: indexPath.row)
         }
         return [delete]
     }
@@ -107,10 +120,6 @@ extension LikedSongListViewController: UITableViewDataSource {
         }
         regCell.configure(for: sectionSongs[indexPath.section][indexPath.row])
         return regCell;
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionTitles[section]
     }
     
     func sortTableView(by type: SpotifyType) {

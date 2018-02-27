@@ -16,6 +16,8 @@ class SongTableViewCell: UITableViewCell {
     
     static let reuseIdentifier: String = "songCell"
     
+    var isSuggestedSong: Bool = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -32,10 +34,20 @@ class SongTableViewCell: UITableViewCell {
         self.albumImage.contentMode = .scaleAspectFit
         self.albumImage.image = track.trackInfo.thumbNail;
         self.artistLabel.text = track.trackInfo.artist.artistName;
-        self.artistLabel.textColor = NusicDefaults.foregroundThemeColor
+        self.artistLabel.textColor = NusicDefaults.whiteColor
         self.trackLabel.text = track.trackInfo.songName;
-        self.trackLabel.textColor = NusicDefaults.foregroundThemeColor
+        self.trackLabel.textColor = NusicDefaults.whiteColor
         self.backgroundColor = .clear
+        if let isNew = track.suggestionInfo?.isNewSuggestion, isNew {
+            self.backgroundColor = NusicDefaults.foregroundThemeColor.withAlphaComponent(0.5)
+        }
+        
         self.layoutIfNeeded()
+    }
+    
+    func setColor(color: UIColor) {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
+            self.backgroundColor = color
+        }, completion: nil)
     }
 }

@@ -444,7 +444,7 @@ class SongPickerViewController: NusicDefaultViewController {
                                 let isPremium = self.spotifyHandler.user.product == SPTProduct.premium ? true : false
                                 let user = NusicUser(userName: username, displayName: displayName!, imageURL: profileImage, territory: territory, isPremium: isPremium)
                                 self.moodObject?.userName = username;
-                                
+                                self.spotifyPlaylistCheck();
                                 user.getUser(getUserHandler: { (fbUser, error) in
                                     if let error = error {
                                         error.presentPopup(for: self)
@@ -459,7 +459,7 @@ class SongPickerViewController: NusicDefaultViewController {
                                             }
                                         })
                                     } else {
-                                        self.spotifyPlaylistCheck();
+                                        
                                         self.nusicUser = fbUser!
                                         self.nusicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount, error) in
                                             if let error = error {

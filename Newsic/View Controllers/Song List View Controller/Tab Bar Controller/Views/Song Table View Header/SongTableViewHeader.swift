@@ -34,43 +34,52 @@ class SongTableViewHeader: UIView {
         super.init(coder: aDecoder)
     }
     
-    func configure(isMoodSelected: Bool, emotion: String?) {
+    func configureLikedList(isMoodSelected: Bool, emotion: String?) {
         if isMoodSelected {
             self.displayName.text = "Mood: \(emotion!)"
         } else {
             self.displayName.text = "Liked in Nusic"
         }
         
+        
+        
+        
+        
+    }
+    
+    func configureSuggestedList() {
+        setImages(images: [#imageLiteral(resourceName: "ButtonAppIcon")])
+        sortElementImageView.image = sortImages[0]
+        self.displayName.text = "Suggested by Nusic"
+        
         self.layer.shadowColor = UIColor.black.cgColor;
         self.layer.shadowOffset = CGSize(width: 1, height: -1);
         self.layer.shadowRadius = 3.0;
         self.layer.shadowOpacity = 1;
         
-        let gradient = CAGradientLayer()
-        gradient.frame.size = CGSize(width: self.bounds.width, height: 10)
-        let stopColor = UIColor.clear.cgColor
-        let startColor = UIColor.clear.cgColor
-        
-        gradient.colors = [stopColor,startColor]
-        gradient.locations = [0.0,0.4]
-        self.layer.addSublayer(gradient)
     }
     
     
     func setupView() {
         loadFromNib()
         self.frame.size = CGSize(width: 200, height: 100)
-        self.backgroundColor = .clear
+        
+        self.backgroundColor = NusicDefaults.blackColor.withAlphaComponent(0.5)
+        self.layer.shadowColor = UIColor.black.cgColor;
+        self.layer.shadowOffset = CGSize(width: 1, height: -1);
+        self.layer.shadowRadius = 3.0;
+        self.layer.shadowOpacity = 1;
         sortElementImageView.image = sortImages[0]
+        
         setupGestureRecognizer()
     }
     
     fileprivate func loadFromNib() {
         let contentView = UINib(nibName: self.className, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SongTableViewHeader
-//        contentView.autoresizesSubviews = true
         contentView.frame.size = self.frame.size
+        contentView.displayName.textColor = NusicDefaults.foregroundThemeColor
         self.displayName = contentView.displayName
-        contentView.sortElementImageView.tintColor = UIColor.gray
+        contentView.sortElementImageView.tintColor = NusicDefaults.foregroundThemeColor
         self.sortElementImageView = contentView.sortElementImageView
         contentView.backgroundColor = .clear
         self.addSubview(contentView)

@@ -64,6 +64,17 @@ extension Spotify {
                         }
                         artists.removeLast(); artists.removeLast();
                         
+                        var trackId = ""
+                        if let fetchedTrackId = track["id"] as? String {
+                            trackId = fetchedTrackId
+                        }
+                        
+                        var linkedTrackId = trackId
+                        if let linkedFrom:[String: AnyObject] = track["linked_from"] as? [String: AnyObject] {
+                            linkedTrackId = linkedFrom["id"] as! String
+                        }
+                        
+                        
                         var songExternalHref = ""
                         if let trackHref = track["external_urls"] as? [String: AnyObject] {
                             songExternalHref = trackHref["spotify"] as! String
@@ -71,10 +82,9 @@ extension Spotify {
                         
                         let albumImage = imageInfo[1]["url"] as? String;
                         if let trackName = track["name"] as? String,
-                            let trackId = track["id"] as? String,
                             let trackUri = track["uri"] as? String,
                             let albumImage = albumImage {
-                            let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, songHref: songExternalHref, artist: SpotifyArtist(artistName: artists, uri: artistUri, id: artistId), audioFeatures: nil);
+                            let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, linkedFromTrackId: linkedTrackId, songName: trackName, songHref: songExternalHref, artist: SpotifyArtist(artistName: artists, uri: artistUri, id: artistId), audioFeatures: nil);
                             spotifyTrackList.append(track);
                         }
                     }
@@ -226,13 +236,22 @@ extension Spotify {
                         if let trackHref = trackInfo["external_urls"] as? [String: AnyObject] {
                             songExternalHref = trackHref["spotify"] as! String
                         }
+                        
+                        var trackId = ""
+                        if let fetchedTrackId = trackInfo["id"] as? String {
+                            trackId = fetchedTrackId
+                        }
+                        
+                        var linkedTrackId = trackId
+                        if let linkedFrom:[String: AnyObject] = trackInfo["linked_from"] as? [String: AnyObject] {
+                            linkedTrackId = linkedFrom["id"] as! String
+                        }
                         //print(artists)
                         let albumImage = imageInfo[1]["url"] as? String;
                         if let trackName = trackInfo["name"] as? String,
-                            let trackId = trackInfo["id"] as? String,
                             let trackUri = trackInfo["uri"] as? String,
                             let albumImage = albumImage {
-                            let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, songName: trackName, songHref: songExternalHref, artist: SpotifyArtist(artistName: artists, uri: artistUri, id: artistId), addedAt: dateAdded, audioFeatures: nil);
+                            let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, linkedFromTrackId: linkedTrackId, songName: trackName, songHref: songExternalHref, artist: SpotifyArtist(artistName: artists, uri: artistUri, id: artistId), addedAt: dateAdded, audioFeatures: nil);
                             currentList.append(track);
                         }
                     }
