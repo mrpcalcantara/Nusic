@@ -72,6 +72,21 @@ extension SuggestedSongListViewController {
         }
     }
     
+    func setupBackgroundView() {
+        if sectionTitles.count == 0 {
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: suggestedSongListTableView.bounds.width, height: suggestedSongListTableView.bounds.height))
+            label.text = "No Nusic suggestions so far. One new suggestion will appear daily!"
+            label.numberOfLines = 3
+            label.textColor = UIColor.lightText
+            label.textAlignment = .center
+            suggestedSongListTableView.backgroundView = label
+            suggestedSongListTableView.separatorStyle = .none
+        } else {
+            suggestedSongListTableView.backgroundView = nil
+            suggestedSongListTableView.separatorStyle = .singleLine
+        }
+    }
+    
 }
 
 extension SuggestedSongListViewController: UITableViewDelegate {
@@ -89,9 +104,9 @@ extension SuggestedSongListViewController: UITableViewDelegate {
             cell.setColor(color: .clear)
             print(cell)
         }
-        var track = suggestedSongList[indexPath.section]
+        var track = sectionSongs[indexPath.section][indexPath.row]
         track.setSuggestedValue(value: false, suggestedHandler: nil);
-        suggestedSongList[indexPath.section] = track
+        sectionSongs[indexPath.section][indexPath.row] = track
         updateBadgeCount()
         tabBarVC?.playSelectedCard(track: track)
         tableView.deselectRow(at: indexPath, animated: true);
@@ -100,11 +115,9 @@ extension SuggestedSongListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SongTableViewSectionHeader.reuseIdentifier) as? SongTableViewSectionHeader else { return UIView(); }
         
-        var text = ""
-        if let suggestionDate = suggestedSongList[section].suggestionInfo?.suggestionDate {
-            text = getHeaderString(date: suggestionDate)
-        }
-        cell.configure(text: text)
+        let date = Date();
+        let formattedDate = date.fromString(dateString: sectionTitles[section], dateFormat: "dd-MM-yyyy")
+        cell.configure(text: getHeaderString(date: formattedDate))
         
         return cell
     }
@@ -113,11 +126,11 @@ extension SuggestedSongListViewController: UITableViewDelegate {
 extension SuggestedSongListViewController: UITableViewDataSource {
     
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return suggestedSongList.count;
+        return sectionTitles.count;
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1;
+        return sectionSongs[section].count;
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -125,7 +138,7 @@ extension SuggestedSongListViewController: UITableViewDataSource {
         guard let regCell = tableView.dequeueReusableCell(withIdentifier: SongTableViewCell.reuseIdentifier, for: indexPath) as? SongTableViewCell else {
             fatalError("Unexpected Index Path")
         }
-        regCell.configure(for: suggestedSongList[indexPath.section])
+        regCell.configure(for: sectionSongs[indexPath.section][indexPath.row])
         return regCell;
     }
     

@@ -533,7 +533,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="7AN-io-P8H"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="1" title="Liked Songs" image="ThumbsUp" id="Ixv-Kl-w1l"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="Liked Songs" image="ThumbsUpHighlighted" id="Ixv-Kl-w1l"/>
                     <connections>
                         <outlet property="songListTableView" destination="00K-be-OCw" id="NbZ-e1-yfy"/>
                         <outlet property="songListTableViewBottomConstraint" destination="mrk-0m-IFk" id="nej-3K-gue"/>
@@ -676,6 +676,6 @@
     <resources>
         <image name="ButtonAppIcon" width="25" height="25"/>
         <image name="SpotifyLogin" width="244" height="44"/>
-        <image name="ThumbsUp" width="25" height="25"/>
+        <image name="ThumbsUpHighlighted" width="25" height="25"/>
     </resources>
 </document>

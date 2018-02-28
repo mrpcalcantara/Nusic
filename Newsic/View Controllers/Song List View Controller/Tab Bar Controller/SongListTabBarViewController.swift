@@ -30,6 +30,9 @@ class SongListTabBarViewController: UITabBarController {
     }
     var suggestedTrackList:[NusicTrack] = Array() {
         didSet {
+            self.suggestedTrackList.sort(by: { (track1, track2) -> Bool in
+                return (track1.suggestionInfo?.suggestionDate)! > (track2.suggestionInfo?.suggestionDate)!
+            })
             if let suggestedSongListVC = suggestedSongListVC {
                 suggestedSongListVC.suggestedSongList = suggestedTrackList
             }
@@ -123,11 +126,9 @@ class SongListTabBarViewController: UITabBarController {
     
     func setupSuggestedSongListVC() {
         self.suggestedSongListVC?.suggestedSongList = suggestedTrackList
+        self.suggestedSongListVC?.updateBadgeCount()
     }
 
-    func updateSuggestedBadge(count: Int) {
-        
-    }
     /*
     // MARK: - Navigation
 

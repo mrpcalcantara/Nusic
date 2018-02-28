@@ -261,6 +261,8 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
             titleLabel.textAlignment = .center
             titleLabel.autoresizingMask = [.flexibleRightMargin, .flexibleLeftMargin]
             titleLabel.textColor = titleTextColor
+            titleLabel.adjustsFontSizeToFitWidth = true
+            titleLabel.minimumScaleFactor = 0.1
             containerView.addSubview(titleLabel)
             
             let line = UIView(frame: CGRect(x: 0, y: titleLabel.frame.height, width: viewWidth, height: 1))
@@ -421,10 +423,6 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
         button.addTarget(self, action: #selector(buttonTapped(button:)), for: UIControlEvents.touchUpInside)
         buttons.append(button)
     }
-    
-//    public func addButton(title:String, action: () -> Void) {
-//        addButton(nil, title: title, action: action)
-//    }
     
     public func addButton(title:String, target:AnyObject, selector:Selector) {
         addButton(icon: nil, title: title, target: target, selector: selector)

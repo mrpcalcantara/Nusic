@@ -121,7 +121,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        UIApplication.shared.applicationIconBadgeNumber = 0
         print("APP WILL ENTER FOREGROUND")
     }
 
@@ -246,6 +245,25 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         // Print full message.
         print(userInfo)
         
+        if UIApplication.shared.applicationState == .active {
+            if let rootVC = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController {
+                setupPopupDialogAppearance()
+                let alert = PopupDialog(title: "Test", message: "test message")
+                let action1 = { () -> Void in
+                    self.handleReceivedRemoteNotification(userInfo: userInfo)
+                }
+                
+                let action2 = { () -> Void in
+                    alert.dismiss(animated: true, completion: nil)
+                }
+                let button1 = PopupDialogButton(title: "Show Me!", action: action1)
+                let button2 = PopupDialogButton(title: "Cancel", action: action2)
+                alert.addButtons([button1, button2])
+                
+                rootVC.present(alert, animated: true, completion: nil)
+            }
+        }
+        
         // Change this to your preferred presentation option
         completionHandler([])
     }
@@ -282,6 +300,7 @@ extension AppDelegate : MessagingDelegate {
         // Print message ID.
         //        let mainStoryboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         //        let initialViewController: NusicPageViewController = mainStoryboard.instantiateViewController(withIdentifier: "nusicPageViewController") as! NusicPageViewController
+        UIApplication.shared.applicationIconBadgeNumber += 1
         UserDefaults.standard.set(userInfo["spotifyTrackId"] as! String, forKey: "suggestedSpotifyTrackId")
         UserDefaults.standard.synchronize()
         NotificationCenter.default.post(name: Notification.Name(rawValue: "nusicADayNotificationPushed"), object: nil)
