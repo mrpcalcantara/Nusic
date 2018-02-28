@@ -28,17 +28,29 @@ class SuggestedSongListViewController: UIViewController {
         }
     }
     
+    //Table view data
+    var sectionTitles:[String] = Array() {
+        didSet {
+            setupBackgroundView()
+        }
+    }
+    var sectionSongs:[[NusicTrack]] = Array(Array())
+    
+    //Parent reference
     var tabBarVC: SongListTabBarViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Do any additional setup after loading the view.
         if let parent = parent as? SongListTabBarViewController {
             self.tabBarVC = parent
         }
         self.view.backgroundColor = .clear
         updateBadgeCount()
+        setupTableViewData()
         setupTableView()
-        // Do any additional setup after loading the view.
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,10 +62,30 @@ class SuggestedSongListViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func setupTableViewData() {
+        sectionTitles.removeAll()
+        sectionSongs.removeAll()
+        for track in suggestedSongList {
+            if let date = track.suggestionInfo?.suggestionDate {
+                let dateString = date.toString(dateFormat: "dd-MM-yyyy")
+                //Check if array contains suggestion date ( only date, no time considered )
+                if !sectionTitles.contains(dateString) {
+                    sectionTitles.append(dateString)
+                    sectionSongs.append([track])
+                } else {
+                    if let titleIndex = sectionTitles.index(of: dateString) {
+                        sectionSongs[titleIndex].append(track);
+                    }
+                }
+            }
+        }
+    }
 
     func reloadTable() {
         DispatchQueue.main.async {
             if self.suggestedSongListTableView != nil {
+                self.setupTableViewData()
                 self.updateBadgeCount()
                 self.suggestedSongListTableView.reloadData()
             }
@@ -65,16 +97,13 @@ class SuggestedSongListViewController: UIViewController {
         if self.tabBarItem.badgeValue == "0" {
             self.tabBarItem.badgeValue = nil
         }
+        
+        if let badgeValue = self.tabBarItem.badgeValue, let intValue = Int(badgeValue) {
+            UIApplication.shared.applicationIconBadgeNumber = intValue
+        } else {
+            UIApplication.shared.applicationIconBadgeNumber = 0
+        }
+        
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

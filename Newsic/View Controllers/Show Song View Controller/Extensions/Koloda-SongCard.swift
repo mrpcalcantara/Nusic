@@ -209,6 +209,9 @@ extension ShowSongViewController: KolodaViewDataSource {
 extension ShowSongViewController {
     
     func setupCards() {
+        
+        songCardView.delegate = nil;
+        songCardView.dataSource = nil;
         songCardView.delegate = self;
         songCardView.dataSource = self;
         
@@ -268,6 +271,7 @@ extension ShowSongViewController {
                             SwiftSpinner.hide()
                             error.presentPopup(for: self)
                         }
+//                        self.likedTrackIdList.append(track.trackInfo.trackId)
 //                        self.likedTrackList.insert(track, at: 0);
                         DispatchQueue.main.async {
                             self.songListTableView.reloadData();

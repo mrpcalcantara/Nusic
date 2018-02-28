@@ -63,7 +63,8 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             print("track started");
             
             if let currentTrack = currentTrack {
-                let currentNusicTrack = self.cardList[self.songCardView.currentCardIndex]
+                var currentNusicTrack = self.cardList[self.songCardView.currentCardIndex]
+                currentNusicTrack.setSuggestedValue(value: false, suggestedHandler: nil)
                 
                 if currentNusicTrack.trackInfo.audioFeatures == nil {
                     currentNusicTrack.trackInfo.audioFeatures = SpotifyTrackFeature()
@@ -93,7 +94,6 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         }
     }
     
-
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
         DispatchQueue.main.async {
             self.hideLikeButtons()
@@ -268,10 +268,9 @@ extension ShowSongViewController {
         player?.playSpotifyURI(spotifyTrackId, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             self.isPlaying = true;
             self.togglePausePlayIcon()
-//            if (error != nil) {
-//                print("error playing!, error : \(String(describing: error?.localizedDescription))")
-//                self.actionPlaySpotifyTrack(spotifyTrackId: spotifyTrackId)
-//            }
+            if (error != nil) {
+                self.actionPlaySpotifyTrack(spotifyTrackId: spotifyTrackId)
+            }
         })
     }
     

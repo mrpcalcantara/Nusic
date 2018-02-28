@@ -522,11 +522,11 @@ class SongPickerViewController: NusicDefaultViewController {
                         if error != nil {
                             genreExtractionHandler(false)
                         }
-                        DispatchQueue.main.async {
-                            SwiftSpinner.show("Extracting Genres..", animated: true)
-                        }
+                        
                         self.spotifyHandler.getAllGenresForArtists(results, offset: 0, artistGenresHandler: { (artistList, error) in
-                            
+                            DispatchQueue.main.async {
+                                SwiftSpinner.show("Extracting Genres..", animated: true)
+                            }
                             DispatchQueue.main.async {
                                 if let artistList = artistList {
                                     for artist in artistList {
@@ -609,8 +609,8 @@ class SongPickerViewController: NusicDefaultViewController {
     @objc fileprivate func handleNotificationSong() {
         
         if let suggestedTrackId = UserDefaults.standard.string(forKey: "suggestedSpotifyTrackId") {
-            if let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController {
-                parent.scrollToViewController(index: 1)
+            if let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController, let songPickerVC = parent.songPickerVC {
+                parent.scrollToViewController(viewController: songPickerVC)
             }
             self.isMoodSelected = false
             

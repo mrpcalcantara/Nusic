@@ -41,10 +41,6 @@ class SongTableViewHeader: UIView {
             self.displayName.text = "Liked in Nusic"
         }
         
-        
-        
-        
-        
     }
     
     func configureSuggestedList() {
@@ -63,7 +59,6 @@ class SongTableViewHeader: UIView {
     func setupView() {
         loadFromNib()
         self.frame.size = CGSize(width: 200, height: 100)
-        
         self.backgroundColor = NusicDefaults.blackColor.withAlphaComponent(0.5)
         self.layer.shadowColor = UIColor.black.cgColor;
         self.layer.shadowOffset = CGSize(width: 1, height: -1);

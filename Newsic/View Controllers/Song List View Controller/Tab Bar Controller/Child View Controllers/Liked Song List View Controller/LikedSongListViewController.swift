@@ -21,18 +21,29 @@ class LikedSongListViewController: UIViewController {
     @IBOutlet weak var songListTableViewLeadingConstraint: NSLayoutConstraint!
     
     //Data Variables
-    var moodObject: NusicMood?
+    var moodObject: NusicMood? {
+        didSet {
+            let emotion = moodObject?.emotions.first?.basicGroup.rawValue
+            songListTableViewHeader.configureLikedList(isMoodSelected: isMoodSelected, emotion: emotion)
+        }
+    }
     var isMoodSelected: Bool = false
-    
-    //Table View
-    var sectionTitles: [String?] = Array()
-    var sectionSongs: [[NusicTrack]] = Array(Array())
     var likedTrackList:[NusicTrack] = [] {
         didSet {
             reloadTable()
         }
     }
     
+    //Table view data
+    var sectionTitles: [String?] = Array() {
+        didSet {
+            setupBackgroundView()
+        }
+    }
+    var sectionSongs: [[NusicTrack]] = Array(Array())
+    
+    
+    //Parent reference
     var tabBarVC: SongListTabBarViewController?
     
     

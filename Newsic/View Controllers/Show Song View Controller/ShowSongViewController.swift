@@ -38,12 +38,12 @@ class ShowSongViewController: NusicDefaultViewController {
     var user: NusicUser! = nil;
     var suggestedTrackList: [NusicTrack] = Array() {
         didSet {
-            let parent = self.parent as! NusicPageViewController
-            let songListViewController = parent.songListVC as! SongListTabBarViewController
-            self.suggestedTrackList.sort(by: { (track1, track2) -> Bool in
-                return (track1.suggestionInfo?.suggestionDate)! > (track2.suggestionInfo?.suggestionDate)!
-            })
-            songListViewController.suggestedTrackList = suggestedTrackList
+            DispatchQueue.main.async {
+                if let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController {
+                    let songListViewController = parent.songListVC as! SongListTabBarViewController
+                    songListViewController.suggestedTrackList = self.suggestedTrackList
+                }
+            }
         }
     }
     var suggestedTrackIdList = [[String : NusicSuggestion]]() {

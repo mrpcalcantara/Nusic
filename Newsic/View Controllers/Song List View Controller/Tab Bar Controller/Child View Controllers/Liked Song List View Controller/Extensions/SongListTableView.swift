@@ -52,15 +52,25 @@ extension LikedSongListViewController {
         songListTableView.estimatedRowHeight = 90.0
         songListTableView.estimatedSectionHeaderHeight = 60
         songListTableView.tableFooterView = UIView();
-        let image = UIImage(named: "SongMenuBackgroundPattern")
-        if let image = image {
-//            songListTableView.backgroundColor = UIColor(patternImage: image);
-            songListTableView.backgroundColor = .clear
+        songListTableView.backgroundColor = .clear
+        
+        
+        
+    }
+    
+    func setupBackgroundView() {
+        if sectionTitles.count == 0 {
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: songListTableView.bounds.width, height: songListTableView.bounds.height))
+            label.text = "No tracks have been liked so far. Like a song to add to your list!"
+            label.numberOfLines = 3
+            label.textColor = UIColor.lightText
+            label.textAlignment = .center
+            songListTableView.backgroundView = label
+            songListTableView.separatorStyle = .none
+        } else {
+            songListTableView.backgroundView = nil
+            songListTableView.separatorStyle = .singleLine
         }
-        
-        let emotion = moodObject?.emotions.first?.basicGroup.rawValue
-        songListTableViewHeader.configureLikedList(isMoodSelected: isMoodSelected, emotion: emotion)
-        
     }
     
 }

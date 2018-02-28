@@ -222,8 +222,8 @@ extension SideMenuViewController {
         }
         buttonDismiss.action = actionDismiss
         
-        cell.configureCell(title: title, value: "", icon: nil, options: [buttonDeleteAccount, buttonDismiss], centerText: true, alertText: "Are you sure? All the data will be permanently deleted. This action cannot be undone.")
-        
+        cell.configureCell(title: title, value: "", icon: nil, options: [buttonDeleteAccount, buttonDismiss], centerText: true, alertText: "Are you sure? This action cannot be undone.")
+        cell.itemDescription.textColor = UIColor.red
     }
     
     fileprivate func setupSpotifySettings(for cell: SettingsCell, title: String) {

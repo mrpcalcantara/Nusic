@@ -43,13 +43,8 @@ extension NusicPlaylist : FirebaseModel {
     
     internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         let dict = ["name" : self.name!]
-        
-//        reference.child(userName).child(self.id!).setValue(dict) { (error, reference) in
-//            saveCompleteHandler(reference, error)
-//        }
         reference.child(userName).child(self.id!).setValue(dict);
         saveCompleteHandler(reference, nil)
-//        reference.child(userName).child(self.id!).updateChildValues(dict);
     }
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
@@ -75,11 +70,6 @@ extension NusicPlaylist : FirebaseModel {
                     self.name = nameDict["name"]
                 }
                 getPlaylistHandler(self, nil);
-                /*
-                let id = convertedDict["id"] as! String;
-                let name = converted
-                let playlist = NusicPlaylist(name: <#T##String#>, id: id, userName: userName)
-                */
             }
         }
     }

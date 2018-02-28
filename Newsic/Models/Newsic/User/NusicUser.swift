@@ -59,7 +59,7 @@ extension NusicUser: FirebaseModel {
         Database.database().reference().child("users").child(userName).observe(.childRemoved) { (dataSnapshot) in
             Database.database().reference().child("settings").child(self.userName).removeValue()
             Database.database().reference().child("playlists").child(self.userName).removeValue()
-            Database.database().reference().child("suggestedSongs").child(self.userName).removeValue()
+            Database.database().reference().child("suggestedTracks").child(self.userName).removeValue()
             Database.database().reference().child("moodTracks").child(self.userName).removeValue()
             Database.database().reference().child("likedTracks").child(self.userName).removeValue()
             Database.database().reference().child("genres").child(self.userName).removeValue()
