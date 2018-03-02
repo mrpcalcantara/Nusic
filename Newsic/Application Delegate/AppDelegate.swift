@@ -246,9 +246,28 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         print(userInfo)
         
         if UIApplication.shared.applicationState == .active {
-            if let rootVC = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController {
-                setupPopupDialogAppearance()
-                let alert = PopupDialog(title: "Test", message: "test message")
+            if let rootVC = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController,
+                let aps = userInfo["aps"] as? [String: AnyObject],
+                let alert = aps["alert"] as? [String: AnyObject],
+                let title = alert["title"] as? String,
+                let message = alert["body"] as? String {
+                
+                let alert = PopupDialog(title: title, message: message)
+                if let viewC = alert.viewController as? PopupDialogDefaultViewController {
+                    setupPopupDialogAppearance()
+                    
+                    let dialogAppearance = PopupDialogDefaultView.appearance()
+                    viewC.titleFont            = UIFont(name: "Futura", size: 16)!
+                    viewC.titleColor           = UIColor(white: 1, alpha: 1)
+                    viewC.titleTextAlignment   = .center
+                    viewC.messageFont          = UIFont(name: "Futura", size: 16)!
+                    viewC.messageColor         = UIColor(white: 0.6, alpha: 1)
+                    viewC.messageTextAlignment = .center
+
+                }
+                
+                
+                print()
                 let action1 = { () -> Void in
                     self.handleReceivedRemoteNotification(userInfo: userInfo)
                 }
@@ -257,7 +276,16 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
                     alert.dismiss(animated: true, completion: nil)
                 }
                 let button1 = PopupDialogButton(title: "Show Me!", action: action1)
+                button1.titleFont      = UIFont(name: "Futura", size: 16)!
+                button1.titleColor     = NusicDefaults.foregroundThemeColor
+                button1.buttonColor    = UIColor(white: 0.15, alpha: 1)
+                button1.separatorColor = UIColor(white: 0.9, alpha: 1)
+                
                 let button2 = PopupDialogButton(title: "Cancel", action: action2)
+                button2.titleFont      = UIFont(name: "Futura", size: 16)!
+                button2.titleColor     = NusicDefaults.foregroundThemeColor
+                button2.buttonColor    = UIColor(white: 0.15, alpha: 1)
+                button2.separatorColor = UIColor(white: 0.9, alpha: 1)
                 alert.addButtons([button1, button2])
                 
                 rootVC.present(alert, animated: true, completion: nil)

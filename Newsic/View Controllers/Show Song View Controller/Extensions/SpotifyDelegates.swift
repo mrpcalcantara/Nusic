@@ -57,7 +57,6 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             self.present(dialog, animated: true, completion: nil)
         } else {
             // WORKAROUND : Reload data to correctly show Album Images in Table View. Otherwise, they're downloaded but not correctly loaded in the image view.
-            self.songListTableView.reloadData()
             let currentTrack = audioStreaming.metadata.currentTrack;
             
             print("track started");

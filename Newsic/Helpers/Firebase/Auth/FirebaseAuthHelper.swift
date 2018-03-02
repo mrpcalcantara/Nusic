@@ -13,6 +13,8 @@ class FirebaseAuthHelper {
     
     static let generateCustomTokenUrl = "https://us-central1-newsic-54b6e.cloudfunctions.net/generateCustomToken"
     static let addAPNSTokenUrl = "https://us-central1-newsic-54b6e.cloudfunctions.net/addAPNSToken"
+//    static let generateCustomTokenUrl = "http://localhost:5000/newsic-54b6e/us-central1/generateCustomToken"
+
     
     class func handleSpotifyLogin(accessToken: String, user: SPTUser, loginCompletionHandler: @escaping (User?, NusicError?) -> ()) {
         
