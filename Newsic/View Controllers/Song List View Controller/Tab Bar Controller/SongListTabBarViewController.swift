@@ -128,16 +128,6 @@ class SongListTabBarViewController: UITabBarController {
         self.suggestedSongListVC?.suggestedSongList = suggestedTrackList
         self.suggestedSongListVC?.updateBadgeCount()
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     @objc func moveToShowSongVC() {
         (parent as! NusicPageViewController).scrollToPreviousViewController();

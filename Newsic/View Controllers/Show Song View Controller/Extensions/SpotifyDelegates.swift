@@ -64,7 +64,9 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             
             if let currentTrack = currentTrack {
                 var currentNusicTrack = self.cardList[self.songCardView.currentCardIndex]
-                currentNusicTrack.setSuggestedValue(value: false, suggestedHandler: nil)
+                if let isNewSuggestion = currentNusicTrack.suggestionInfo?.isNewSuggestion, isNewSuggestion == true {
+                    currentNusicTrack.setSuggestedValue(value: false, suggestedHandler: nil)
+                }
                 
                 if currentNusicTrack.trackInfo.audioFeatures == nil {
                     currentNusicTrack.trackInfo.audioFeatures = SpotifyTrackFeature()

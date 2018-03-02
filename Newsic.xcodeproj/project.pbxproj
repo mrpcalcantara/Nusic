@@ -64,6 +64,8 @@
 		8C3166C42043BEA600380460 /* SongListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3166C32043BEA600380460 /* SongListTableView.swift */; };
 		8C3166C62043CDBD00380460 /* SongListTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3166C52043CDBD00380460 /* SongListTabBarViewController.swift */; };
 		8C321EA2202BFD6600E529A8 /* NusicTypeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C321EA1202BFD6600E529A8 /* NusicTypeSearch.swift */; };
+		8C35F95A204916EB00857EF7 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C35F959204916EB00857EF7 /* UIBarButtonItem.swift */; };
+		8C35F95C2049214A00857EF7 /* BadgeBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C35F95B2049214A00857EF7 /* BadgeBarButtonItem.swift */; };
 		8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3654BE1F551ABE006C12D9 /* OverlayView.xib */; };
 		8C3654C11F551B16006C12D9 /* SongOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3654C01F551B16006C12D9 /* SongOverlayView.swift */; };
 		8C3914EF20008A70004AF43B /* SpotifyRecommendationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3914EE20008A70004AF43B /* SpotifyRecommendationType.swift */; };
@@ -374,6 +376,8 @@
 		8C3166C32043BEA600380460 /* SongListTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongListTableView.swift; sourceTree = "<group>"; };
 		8C3166C52043CDBD00380460 /* SongListTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListTabBarViewController.swift; sourceTree = "<group>"; };
 		8C321EA1202BFD6600E529A8 /* NusicTypeSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NusicTypeSearch.swift; sourceTree = "<group>"; };
+		8C35F959204916EB00857EF7 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
+		8C35F95B2049214A00857EF7 /* BadgeBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeBarButtonItem.swift; sourceTree = "<group>"; };
 		8C3654BE1F551ABE006C12D9 /* OverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
 		8C3654C01F551B16006C12D9 /* SongOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongOverlayView.swift; sourceTree = "<group>"; };
 		8C3914EE20008A70004AF43B /* SpotifyRecommendationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyRecommendationType.swift; sourceTree = "<group>"; };
@@ -817,6 +821,7 @@
 				8CD7344A1FEB69A7009B461F /* NSObject.swift */,
 				8C7C41EC1FFCC2FF0051845D /* Bool.swift */,
 				8C2B05E7200C6EFC00BA525C /* ArrayString.swift */,
+				8C35F959204916EB00857EF7 /* UIBarButtonItem.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -1308,6 +1313,7 @@
 				8C268B571FD0086E00BB4C6F /* NewsicCustomLayer.swift */,
 				8C626E991FE77F9900BF0E08 /* NewsicScrollView.swift */,
 				8C21F9561FE7B7E400B5F94E /* NewsicView.swift */,
+				8C35F95B2049214A00857EF7 /* BadgeBarButtonItem.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1874,12 +1880,14 @@
 				8CA40DF51F8B7C8200C95B9D /* SpotifyArtists.swift in Sources */,
 				8C7C0A431FEA768D0077B109 /* CL-NewsicButton.swift in Sources */,
 				8C2D05E5201EE7FA00518B68 /* MoodGenreListCell.swift in Sources */,
+				8C35F95A204916EB00857EF7 /* UIBarButtonItem.swift in Sources */,
 				8C0C1E9F1F61343900CF8516 /* Date.swift in Sources */,
 				8C27011B1FDA46090044D10F /* ConnectivityStatus.swift in Sources */,
 				8C936DEC200F63A200A96B10 /* FirebaseAuth.swift in Sources */,
 				8CA40DF71F8B7C8700C95B9D /* SpotifyPlaylists.swift in Sources */,
 				8C4FBD7A1F59456200712873 /* Emotion.swift in Sources */,
 				8C5B18F21FCBBEF400EBFAE1 /* CollectionViewHeader.swift in Sources */,
+				8C35F95C2049214A00857EF7 /* BadgeBarButtonItem.swift in Sources */,
 				8C7C41EB1FFC99D60051845D /* UITableView.swift in Sources */,
 				8C2847292043EE26006A9B5C /* SuggestedSongListViewController.swift in Sources */,
 				8C3A6F1B1FCD769C00BA7981 /* ShowSongDataTransfer.swift in Sources */,

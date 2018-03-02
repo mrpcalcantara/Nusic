@@ -42,6 +42,9 @@ class ShowSongViewController: NusicDefaultViewController {
                 if let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController {
                     let songListViewController = parent.songListVC as! SongListTabBarViewController
                     songListViewController.suggestedTrackList = self.suggestedTrackList
+                    
+                    let text = self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count
+                    self.updateBadgeIcon(count: text)
                 }
             }
         }
@@ -141,6 +144,26 @@ class ShowSongViewController: NusicDefaultViewController {
     var sectionTitles: [String?] = []
     var sectionSongs: [[NusicTrack]] = []
     
+    //Navigation Bar
+    var rightBarButtonItem: UIBarButtonItem? {
+        didSet {
+            let icon = UIImage(named: "MusicNote")?.withRenderingMode(.alwaysTemplate)
+            let iconSize = CGRect(origin: CGPoint.zero, size: icon!.size)
+            let iconButton = UIButton(frame: iconSize)
+            iconButton.setBackgroundImage(icon, for: .normal)
+            rightBarButtonItem?.customView = iconButton
+            rightBarButtonItem?.customView?.transform = CGAffineTransform(scaleX: 0, y: 0)
+            
+            UIView.animate(withDuration: 1, delay: 0.5, usingSpringWithDamping: 0.5, initialSpringVelocity: 10, options: [.allowUserInteraction, .autoreverse, .repeat, .curveEaseInOut], animations: {
+                self.rightBarButtonItem?.customView?.transform = CGAffineTransform.identity
+            }, completion: nil)
+            
+            iconButton.addTarget(self, action: #selector(toggleSongMenu), for: .touchUpInside)
+            
+            self.navbar.items?.first?.rightBarButtonItem = self.rightBarButtonItem
+        }
+    }
+    
     //Firebase
     let reference: DatabaseReference = Database.database().reference()
     
@@ -219,6 +242,8 @@ class ShowSongViewController: NusicDefaultViewController {
         
         if newMoodOrGenre {
             self.viewDidLoad()
+        } else {
+            
         }
     }
     
@@ -419,7 +444,10 @@ class ShowSongViewController: NusicDefaultViewController {
         let barButtonLeft = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(backToSongPicker));
         self.navigationItem.leftBarButtonItem = barButtonLeft
         
-        let barButtonRight = UIBarButtonItem(image: UIImage(named: "MusicNote"), style: .plain, target: self, action: #selector(toggleSongMenu));
+//        let barButtonRight = UIBarButtonItem(image: UIImage(named: "MusicNote"), style: .plain, target: self, action: #selector(toggleSongMenu));
+        let text = self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count
+        let barButtonRight = BadgeBarButtonItem(image: (UIImage(named: "MusicNote")?.withRenderingMode(.alwaysTemplate))!, badgeText: String(text), target: self, action: #selector(toggleSongMenu))
+        updateBadgeIcon(count: text)
         
         if UIApplication.shared.statusBarOrientation.isLandscape {
             barButtonRight.isEnabled = false
@@ -448,10 +476,15 @@ class ShowSongViewController: NusicDefaultViewController {
     
     fileprivate func reloadNavigationBar() {
         if navbar != nil {
+            
+            //Reload Left Bar Button
             let barButtonLeft = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(backToSongPicker));
             self.navigationItem.leftBarButtonItem = barButtonLeft
             
-            let barButtonRight = UIBarButtonItem(image: UIImage(named: "MusicNote"), style: .plain, target: self, action: #selector(toggleSongMenu));
+            //Reload Right Bar Button
+            let text = self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count
+            let barButtonRight = BadgeBarButtonItem(image: (UIImage(named: "MusicNote")?.withRenderingMode(.alwaysTemplate))!, badgeText: nil, target: self, action: #selector(toggleSongMenu))
+            updateBadgeIcon(count: text)
             
             if UIApplication.shared.statusBarOrientation.isLandscape {
                 barButtonRight.isEnabled = false
@@ -468,9 +501,7 @@ class ShowSongViewController: NusicDefaultViewController {
             if let currentMoodDyad = currentMoodDyad {
                 labelView.text = currentMoodDyad == EmotionDyad.unknown ? "" : "Mood: \(currentMoodDyad.rawValue)"
             }
-            
-            //        self.navigationItem.titleView = labelView
-            
+
             let navItem = self.navigationItem
             navbar.items = [navItem]
         }
@@ -666,6 +697,18 @@ class ShowSongViewController: NusicDefaultViewController {
             self.songProgressTrailingConstraint.constant = 0
             self.songCardTrailingConstraint.constant = -8
             
+        }
+    }
+    
+    func updateBadgeIcon(count: Int) {
+        if let items = self.navbar.items, items.count > 0 {
+            let text = count > 0 ? String(count) : nil
+            (self.navbar.items?.first?.rightBarButtonItem as! BadgeBarButtonItem).badgeText = text
+            if text == nil {
+                (self.navbar.items?.first?.rightBarButtonItem as! BadgeBarButtonItem).badgeLabel.isHidden = true
+            } else {
+                (self.navbar.items?.first?.rightBarButtonItem as! BadgeBarButtonItem).badgeLabel.isHidden = false
+            }
         }
     }
     
