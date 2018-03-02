@@ -204,25 +204,38 @@ extension SideMenuViewController {
     }
     
     fileprivate func setupDeleteAccountSettings(for cell: SettingsCell, title: String) {
-        let buttonDeleteAccount = YBButton(frame: CGRect.zero, icon: UIImage(named: "CheckmarkIcon"), text: "Yes")
-        let actionDeleteAccount = { () -> Void in
-            self.nusicUser?.deleteUser(deleteUserHandler: { (isDeleted, error) in
-                if let error = error {
-                    error.presentPopup(for: self)
-                }
-                self.logoutUser();
-            })
-            cell.itemValue.text = buttonDeleteAccount.textLabel.text
-        }
-        buttonDeleteAccount.action = actionDeleteAccount
-        
         let buttonDismiss = YBButton(frame: CGRect.zero, icon: UIImage(named: "WrongIcon"), text: "No")
         let actionDismiss = { () -> Void in
             cell.alertController?.dismiss()
         }
         buttonDismiss.action = actionDismiss
         
-        cell.configureCell(title: title, value: "", icon: nil, options: [buttonDeleteAccount, buttonDismiss], centerText: true, alertText: "Are you sure? This action cannot be undone.")
+        let buttonDeleteAccount = YBButton(frame: CGRect.zero, icon: UIImage(named: "CheckmarkIcon"), text: "Yes")
+        
+        let actionDelete: () -> Void = {
+            cell.alertController?.dismiss()
+            
+            let actionConfirmDelete = { () -> Void in
+                self.nusicUser?.deleteUser(deleteUserHandler: { (isDeleted, error) in
+                    if let error = error {
+                        error.presentPopup(for: self)
+                    }
+                    self.logoutUser();
+                })
+            }
+            buttonDeleteAccount.action = actionConfirmDelete
+            
+            let basedOnAlertController = NusicAlertController(title: "Are you REALLY sure?", message: nil, style: YBAlertControllerStyle.ActionSheet)
+            basedOnAlertController.addButton(icon: #imageLiteral(resourceName: "CheckmarkIcon"), title: "Yes, REALLY!", action: actionConfirmDelete)
+            basedOnAlertController.addButton(icon: #imageLiteral(resourceName: "WrongIcon"), title: "No, not really..", action: actionDismiss)
+            cell.alertController?.dismissCompletion({ (isCompleted) in
+                basedOnAlertController.show()
+            })
+        }
+        
+        buttonDeleteAccount.action = actionDelete
+        
+        cell.configureCell(title: title, value: "", icon: nil, options: [buttonDeleteAccount, buttonDismiss], centerText: true, alertText: "Are you sure? Deleting your account is definitive.")
         cell.itemDescription.textColor = UIColor.red
     }
     

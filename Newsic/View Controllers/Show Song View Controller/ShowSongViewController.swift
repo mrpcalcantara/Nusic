@@ -215,8 +215,6 @@ class ShowSongViewController: NusicDefaultViewController {
     
     //Storyboard Elements
     @IBOutlet weak var songCardView: SongKolodaView!
-    @IBOutlet weak var songListTableView: UITableView!
-    @IBOutlet weak var songListTableViewHeader: SongTableViewHeader!
     @IBOutlet weak var trackStackView: UIStackView!
     @IBOutlet weak var previousSong: UIButton!
     @IBOutlet weak var pausePlay: UIButton!
@@ -242,9 +240,8 @@ class ShowSongViewController: NusicDefaultViewController {
         
         if newMoodOrGenre {
             self.viewDidLoad()
-        } else {
-            
         }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -256,7 +253,7 @@ class ShowSongViewController: NusicDefaultViewController {
             _ = checkConnectivity()
         } else {
             reloadNavigationBar()
-            reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
+//            reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
             if isPlayerMenuOpen {
                 togglePlayerMenu()
             }
@@ -281,7 +278,7 @@ class ShowSongViewController: NusicDefaultViewController {
         
         if screenRotated {
             reloadNavigationBar()
-            reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
+//            reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
             screenRotated = false
         }
         
@@ -449,11 +446,11 @@ class ShowSongViewController: NusicDefaultViewController {
         let barButtonRight = BadgeBarButtonItem(image: (UIImage(named: "MusicNote")?.withRenderingMode(.alwaysTemplate))!, badgeText: String(text), target: self, action: #selector(toggleSongMenu))
         updateBadgeIcon(count: text)
         
-        if UIApplication.shared.statusBarOrientation.isLandscape {
-            barButtonRight.isEnabled = false
-        } else {
-            barButtonRight.isEnabled = true
-        }
+//        if UIApplication.shared.statusBarOrientation.isLandscape {
+//            barButtonRight.isEnabled = false
+//        } else {
+//            barButtonRight.isEnabled = true
+//        }
         
         self.navigationItem.rightBarButtonItem = barButtonRight
         
@@ -485,12 +482,12 @@ class ShowSongViewController: NusicDefaultViewController {
             let text = self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count
             let barButtonRight = BadgeBarButtonItem(image: (UIImage(named: "MusicNote")?.withRenderingMode(.alwaysTemplate))!, badgeText: nil, target: self, action: #selector(toggleSongMenu))
             updateBadgeIcon(count: text)
-            
-            if UIApplication.shared.statusBarOrientation.isLandscape {
-                barButtonRight.isEnabled = false
-            } else {
-                barButtonRight.isEnabled = true
-            }
+//
+//            if UIApplication.shared.statusBarOrientation.isLandscape {
+//                barButtonRight.isEnabled = false
+//            } else {
+//                barButtonRight.isEnabled = true
+//            }
             
             self.navigationItem.rightBarButtonItem = barButtonRight
             
@@ -511,9 +508,6 @@ class ShowSongViewController: NusicDefaultViewController {
         
         self.view.sendSubview(toBack: trackStackView)
         self.view.sendSubview(toBack: songCardView)
-        songListTableView.layer.zPosition = 1
-        self.songListTableView.tableHeaderView?.frame = CGRect(x: (self.songListTableView.tableHeaderView?.frame.origin.x)!, y: -8, width: (self.songListTableView.tableHeaderView?.frame.width)!, height: (self.songListTableView.tableHeaderView?.frame.height)!)
-        
         fetchLikedTracks()
         
     }
@@ -684,9 +678,6 @@ class ShowSongViewController: NusicDefaultViewController {
             self.showMoreCenterXConstraint.constant = -size.width*(1/6)
             self.nextTrackCenterXConstraint.constant = -size.width*(1/6)
             self.songProgressTrailingConstraint.constant = -size.width*(1/3)
-            self.tableViewLeadingConstraint.constant = size.width*(2/3)
-            self.tableViewTrailingConstraint.constant = 0
-            songListTableView.isUserInteractionEnabled = true
         } else {
             self.dislikeSongCenterXConstraint.constant = 0
             self.previousTrackCenterXConstraint.constant = 0
@@ -724,43 +715,6 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return false
     }
-//
-//    @objc func handleMenuScreenGesture(_ recognizer: UIPanGestureRecognizer) {
-//        let translation = recognizer.translation(in: view);
-//        let finalPoint = self.songListTableView.frame.width;
-//
-//        if recognizer.state == .began {
-//            shouldCompleteTransition = false
-//        } else if recognizer.state == .changed {
-//
-//            let translationX: CGFloat = translation.x
-//            if translation.x > 0 {
-//                self.tableViewLeadingConstraint.constant = self.view.frame.width/6 + translationX
-//                self.tableViewTrailingConstraint.constant = translationX * -1
-//
-//                songListMenuProgress = (translation.x)/finalPoint
-//            } else {
-//                self.tableViewLeadingConstraint.constant = self.view.frame.width + translationX
-//                self.tableViewTrailingConstraint.constant = (self.view.frame.width) * (-5/6) - translationX
-//
-//                songListMenuProgress = (translation.x * -1)/finalPoint;
-//            }
-//
-//            songListMenuProgress = CGFloat(fminf(fmaxf(Float(songListMenuProgress), 0.0), 1.0))
-//            shouldCompleteTransition = translation.x > 0 && songListMenuProgress > CGFloat(0.25) ? true : false
-//            self.view.layoutIfNeeded();
-//
-//        } else if recognizer.state == .ended {
-//            if shouldCompleteTransition {
-//                closeMenu()
-//            } else {
-//                isMenuOpen = false;
-//                toggleSongMenu()
-//            }
-//            songListMenuProgress = 0
-//        }
-//
-//    }
     
 }
 
@@ -882,7 +836,12 @@ extension ShowSongViewController {
             self.setupSongs();
         } else {
             self.getYouTubeResults(tracks: selectedSongs!, youtubeSearchHandler: { (tracks) in
-                self.cardList = tracks
+                var nusicTracks:[NusicTrack] = Array()
+                for var track in tracks {
+                    track.suggestionInfo?.isNewSuggestion = track.trackInfo.suggestedSong
+                    nusicTracks.append(track)
+                }
+                self.cardList = nusicTracks
                 DispatchQueue.main.async {
                     self.songCardView.reloadData()
                     self.showSwiftSpinner(text: "Done!", duration: 2)
@@ -1136,11 +1095,12 @@ extension ShowSongViewController {
             self.addSongToCardPlaylist(index: startIndex, track: track)
         }
         DispatchQueue.main.async {
-            if self.songCardView.currentCardIndex == 0 {
-                self.songCardView.reloadCardsInIndexRange(0..<3)
-            } else {
-                self.songCardView.reloadData();
-            }
+            self.songCardView.reloadData();
+//            if self.songCardView.currentCardIndex == 0 {
+//                self.songCardView.reloadCardsInIndexRange(0..<3)
+//            } else {
+//                
+//            }
             
         }
     }

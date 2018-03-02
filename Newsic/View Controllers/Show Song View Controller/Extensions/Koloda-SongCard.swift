@@ -115,9 +115,6 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
-        DispatchQueue.main.async {
-            self.songListTableView.reloadData()
-        }
         presentedCardIndex = index
         let cardView = koloda.viewForCard(at: index) as! SongOverlayView
         if isPlayerMenuOpen {
@@ -270,11 +267,6 @@ extension ShowSongViewController {
                         if let error = error {
                             SwiftSpinner.hide()
                             error.presentPopup(for: self)
-                        }
-//                        self.likedTrackIdList.append(track.trackInfo.trackId)
-//                        self.likedTrackList.insert(track, at: 0);
-                        DispatchQueue.main.async {
-                            self.songListTableView.reloadData();
                         }
                         
                     });
