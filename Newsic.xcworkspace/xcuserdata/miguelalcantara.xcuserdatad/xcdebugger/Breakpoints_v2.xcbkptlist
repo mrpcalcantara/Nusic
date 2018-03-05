@@ -10,12 +10,60 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/SongPickerViewController.swift"
-            timestampString = "541673498.967185"
+            timestampString = "541938816.269442"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "612"
-            endingLineNumber = "612"
-            landmarkName = "handleNotificationSong()"
+            startingLineNumber = "397"
+            endingLineNumber = "397"
+            landmarkName = "goToShowSongVC()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/Helpers/Spotify/Classes/Tracks/SpotifyTracks.swift"
+            timestampString = "541930236.0046721"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "getTrackInfo(for:offset:currentExtractedTrackList:trackInfoListHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/Helpers/Spotify/Classes/Tracks/SpotifyTracks.swift"
+            timestampString = "541930236.004866"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "getTrackInfo(for:offset:currentExtractedTrackList:trackInfoListHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/View Controllers/Song List View Controller/Tab Bar Controller/Views/Song Table View Cell/SongTableViewCell.swift"
+            timestampString = "541929815.211941"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "configure(for:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +74,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "541675736.670314"
+            timestampString = "541938816.269856"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "suggestedTrackList"
+            startingLineNumber = "1020"
+            endingLineNumber = "1020"
+            landmarkName = "getYouTubeResults(tracks:youtubeSearchHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
+            timestampString = "541938816.270087"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "likedTrackIdList"
             landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,125 +105,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Newsic/Application Delegate/AppDelegate.swift"
-            timestampString = "541675736.670444"
+            filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
+            timestampString = "541938816.270146"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
-            landmarkName = "handleReceivedRemoteNotification(userInfo:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Application Delegate/AppDelegate.swift"
-            timestampString = "541675736.6705199"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "303"
-            endingLineNumber = "303"
-            landmarkName = "userNotificationCenter(_:didReceive:withCompletionHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Application Delegate/AppDelegate.swift"
-            timestampString = "541675736.6705869"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "323"
-            endingLineNumber = "323"
-            landmarkName = "messaging(_:didReceive:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Application Delegate/AppDelegate.swift"
-            timestampString = "541675736.670651"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
-            landmarkName = "userNotificationCenter(_:willPresent:withCompletionHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Application Delegate/AppDelegate.swift"
-            timestampString = "541675736.6707259"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "291"
-            endingLineNumber = "291"
-            landmarkName = "userNotificationCenter(_:willPresent:withCompletionHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Song List View Controller/Tab Bar Controller/Child View Controllers/Suggested Song List View Controller/SuggestedSongListViewController.swift"
-            timestampString = "541501754.987692"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Song List View Controller/Tab Bar Controller/Child View Controllers/Suggested Song List View Controller/SuggestedSongListViewController.swift"
-            timestampString = "541501754.9881769"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "setupTableViewData()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Song List View Controller/Tab Bar Controller/Child View Controllers/Liked Song List View Controller/Extensions/SongListTableView.swift"
-            timestampString = "541501754.988314"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
-            landmarkName = "setupView()"
+            startingLineNumber = "734"
+            endingLineNumber = "734"
+            landmarkName = "fetchDataForLikedTrack(trackId:handler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -170,60 +122,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "541675736.670947"
+            timestampString = "541938816.2701989"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "696"
-            endingLineNumber = "696"
-            landmarkName = "updateBadgeIcon(count:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Views/BadgeBarButtonItem.swift"
-            timestampString = "541665236.827311"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
-            landmarkName = "badgeText"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Song List View Controller/Tab Bar Controller/SongListTabBarViewController.swift"
-            timestampString = "541665236.8273619"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "128"
-            endingLineNumber = "128"
-            landmarkName = "setupSuggestedSongListVC()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Show Song View Controller/Extensions/SpotifyDelegates.swift"
-            timestampString = "541675736.671122"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "audioStreaming(_:didStartPlayingTrack:)"
+            startingLineNumber = "735"
+            endingLineNumber = "735"
+            landmarkName = "fetchDataForLikedTrack(trackId:handler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -234,12 +138,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "541675736.671194"
+            timestampString = "541938816.270249"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1148"
-            endingLineNumber = "1148"
-            landmarkName = "addSongToCardPlaylist(index:track:)"
+            startingLineNumber = "301"
+            endingLineNumber = "301"
+            landmarkName = "setupShowSongVC()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -249,46 +153,14 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
-            timestampString = "541675736.671259"
+            filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/ShowSongDataTransfer.swift"
+            timestampString = "541934093.950426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "845"
-            endingLineNumber = "845"
-            landmarkName = "fetchYouTubeInfo()"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "passDataToShowSong()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Array&lt;Newsic.NusicTrack&gt;) -&gt; () in Newsic.ShowSongViewController.(fetchYouTubeInfo in _6F475F258377F311BF24729AAF5175A6)() -&gt; ()"
-                  moduleName = "Newsic"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/View%20Controllers/Show%20Song%20View%20Controller/ShowSongViewController.swift"
-                  timestampString = "541673949.843492"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "845"
-                  endingLineNumber = "845"
-                  offsetFromSymbolStart = "2724">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in closure #1 (Swift.Array&lt;Newsic.NusicTrack&gt;) -&gt; () in Newsic.ShowSongViewController.(fetchYouTubeInfo in _6F475F258377F311BF24729AAF5175A6)() -&gt; ()"
-                  moduleName = "Newsic"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/View%20Controllers/Show%20Song%20View%20Controller/ShowSongViewController.swift"
-                  timestampString = "541673949.845482"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "846"
-                  endingLineNumber = "846"
-                  offsetFromSymbolStart = "28">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -297,13 +169,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Newsic/Application Delegate/AppDelegate.swift"
-            timestampString = "541675736.671322"
+            filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/ShowSongDataTransfer.swift"
+            timestampString = "541934559.805405"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "270"
-            endingLineNumber = "270"
-            landmarkName = "userNotificationCenter(_:willPresent:withCompletionHandler:)"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "passDataToShowSong()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/View Controllers/Song Picker View Controller/SongPickerViewController.swift"
+            timestampString = "541938816.270334"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "465"
+            endingLineNumber = "465"
+            landmarkName = "extractInformationFromUser(extractionHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

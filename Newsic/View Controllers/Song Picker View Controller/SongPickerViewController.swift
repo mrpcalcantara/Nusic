@@ -169,6 +169,7 @@ class SongPickerViewController: NusicDefaultViewController {
     //Actions
     
     @IBAction func getNewSong(_ sender: Any) {
+        isMoodSelected = nusicControl.selectedIndex == 0 ? true : false
         if !isMoodSelected {
             var nusicMood = NusicMood();
             nusicMood.emotions = [Emotion(basicGroup: .unknown, detailedEmotions: [], rating: 0)]
@@ -459,27 +460,21 @@ class SongPickerViewController: NusicDefaultViewController {
                                             }
                                         })
                                     } else {
-                                        
                                         self.nusicUser = fbUser!
-                                        self.nusicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount, error) in
-                                            if let error = error {
-                                                error.presentPopup(for: self)
-                                            }
-                                            if let dbGenreCount = dbGenreCount {
-                                                if dbGenreCount.count > 0 {
-                                                    self.spotifyHandler.genreCount = dbGenreCount;
-                                                    self.nusicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
-                                                        if let error = error {
-                                                            error.presentPopup(for: self)
-                                                        }
-                                                    });
+                                        //TEMPORARY: Due to the DB restructure, migrate data if user version is < 1.1
+                                        if self.nusicUser.version == "1.0" {
+                                            FirebaseDatabaseHelper.migrateData(userId: self.nusicUser.userName, migrationCompletionHandler: { (success, error) in
+                                                if let error = error {
+                                                    error.presentPopup(for: self)
                                                 } else {
-                                                    self.spotifyHandler.genreCount = Spotify.getAllValuesDict()
+                                                    self.fetchFavoriteGenres()
                                                 }
-                                                
-                                                self.loadingFinished = true;
-                                            }
-                                        })
+                                            })
+                                        } else {
+                                            self.fetchFavoriteGenres()
+                                        }
+                                        
+                                        
                                     }
                                 })
                             }
@@ -633,6 +628,29 @@ class SongPickerViewController: NusicDefaultViewController {
             })
         }
     }
+
+    fileprivate func fetchFavoriteGenres() {
+        self.nusicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount, error) in
+            if let error = error {
+                error.presentPopup(for: self)
+            }
+            if let dbGenreCount = dbGenreCount {
+                if dbGenreCount.count > 0 {
+                    self.spotifyHandler.genreCount = dbGenreCount;
+                    self.nusicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
+                        if let error = error {
+                            error.presentPopup(for: self)
+                        }
+                    });
+                } else {
+                    self.spotifyHandler.genreCount = Spotify.getAllValuesDict()
+                }
+                
+                self.loadingFinished = true;
+            }
+        })
+    }
+
 }
 
 

@@ -12,31 +12,15 @@ import Firebase
 
 class FirebaseDatabaseHelper {
     
+    static let migrateDataUrl = "https://us-central1-newsic-54b6e.cloudfunctions.net/migrateData"
+//    static let migrateDataUrl = "http://localhost:5000/newsic-54b6e/us-central1/migrateData"
+    
     class func detectFirebaseConnectivity(connectivityHandler: @escaping (Bool) -> ()) {
         let connectedRef = Database.database().reference(withPath: ".info/connected")
         connectedRef.observe(.value, with: { snapshot in
             connectivityHandler(snapshot.value as! Bool)
         })
     }
-    
-//    class func fetchAllMoods(user: String, fetchMoodsHandler: @escaping([EmotionDyad], NusicError?) -> ()) {
-//        Database.database().reference().child("emotions").observeSingleEvent(of: .value, with: { (dataSnapshot) in
-//            if let values = dataSnapshot.value as? [String : AnyObject] {
-//                var dyadList: [EmotionDyad] = []
-//                for key in values.keys {
-//                    if let dyad = EmotionDyad(rawValue: key.capitalizingFirstLetter()) {
-//                        dyadList.append(dyad);
-//                    }
-//
-//                }
-//                fetchMoodsHandler(dyadList.sorted(by: { (dyad1, dyad2) -> Bool in
-//                    return dyad1.rawValue < dyad2.rawValue
-//                }), nil)
-//            }
-//        }) { (error) in
-//            fetchMoodsHandler(EmotionDyad.allValues, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: "", systemError: error))
-//        }
-//    }
     
     class func fetchAllMoods(user: String, fetchMoodsHandler: @escaping([EmotionCategory:[EmotionDyad]], NusicError?) -> ()) {
         Database.database().reference().child("emotions").observeSingleEvent(of: .value, with: { (dataSnapshot) in
@@ -130,6 +114,39 @@ class FirebaseDatabaseHelper {
                 }
                 
             }
+    }
+    
+    class func migrateData(userId: String, migrationCompletionHandler: @escaping (Bool?, NusicError?) -> ()) {
+        
+        let firebaseMigrateDataURL = migrateDataUrl
+        
+        var urlComponents = URLComponents(string: firebaseMigrateDataURL)
+        //
+        urlComponents?.queryItems = []
+        let username = userId.replaceSymbols(symbol: ".", with: "-")
+        urlComponents?.queryItems?.insert(URLQueryItem(name: "uid", value: username), at: 0)
+        
+        let urlRequest = URLRequest(url: (urlComponents?.url)!)
+        
+        URLSession.shared.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
+            if let error = error {
+                migrationCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.serverError, nusicErrorDescription: FirebaseErrorCodeDescription.migrateDataToken.rawValue, systemError: error));
+            } else {
+                do {
+                    let parsedData = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
+                    if let success = parsedData["success"] as? Bool {
+                        migrationCompletionHandler(success, nil)
+                    } else {
+                        migrationCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.migrateDataToken.rawValue, systemError: error))
+                    }
+                    
+                    
+                } catch {
+                    migrationCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.migrateDataToken.rawValue, systemError: error))
+                }
+                
+            }
+        }).resume()
     }
     
 }

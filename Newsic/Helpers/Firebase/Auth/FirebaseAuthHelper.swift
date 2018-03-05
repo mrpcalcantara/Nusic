@@ -47,7 +47,6 @@ class FirebaseAuthHelper {
                     var nusicError: NusicError? = nil
                     if let firebaseToken = firebaseToken {
                         Auth.auth().signIn(withCustomToken: firebaseToken, completion: { (user, error) in
-                            
                             if let error = error {
                                 nusicError = NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error)
                             }
