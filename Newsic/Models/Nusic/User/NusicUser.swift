@@ -16,6 +16,7 @@ class NusicUser: Iterable {
             userName.replace(symbol: ".", with: "-")
         }
     }
+    var version: String?
     var displayName: String
     var territory: String
     var profileImage: UIImage?
@@ -24,7 +25,7 @@ class NusicUser: Iterable {
     var settingValues: NusicUserSettings
     var reference: DatabaseReference!
     
-    init(userName: String, displayName: String? = "", imageURL: String? = "", territory: String? = "", favoriteGenres: [NusicGenre]? = nil, isPremium: Bool? = false, settingValues: NusicUserSettings? = NusicUserSettings()) {
+    init(version: String? = "1.1",userName: String, displayName: String? = "", imageURL: String? = "", territory: String? = "", favoriteGenres: [NusicGenre]? = nil, isPremium: Bool? = false, settingValues: NusicUserSettings? = NusicUserSettings()) {
         let firebaseUsername = userName.replaceSymbols(symbol: ".", with: "-")
         self.userName = firebaseUsername
         self.displayName = displayName!;
@@ -33,7 +34,7 @@ class NusicUser: Iterable {
         self.isPremium = isPremium
         self.settingValues = settingValues!;
         self.settingValues.preferredPlayer = isPremium! ? NusicPreferredPlayer.spotify : NusicPreferredPlayer.youtube
-        
+        self.version = version!
         self.getImage(imageURL: imageURL!);
         self.reference = Database.database().reference();
         setupListeners()
@@ -83,7 +84,8 @@ extension NusicUser: FirebaseModel {
         let dictionary = ["canonicalUserName": userName,
                           "displayName": displayName,
                           "territory": territory,
-                          "isPremium": isPremium! ? 1 : 0] as [String : Any]
+                          "isPremium": isPremium! ? 1 : 0,
+                          "version": version] as [String : Any]
         
         
         reference.child("users").child(userName).updateChildValues(dictionary) { (error, reference) in
@@ -135,6 +137,10 @@ extension NusicUser: FirebaseModel {
                     
                     getUserHandler(self, error);
                 })
+                self.version = "1.0"
+                if let version = dictionary["version"] as? String {
+                    self.version = version
+                }
                 
                 
             } else {

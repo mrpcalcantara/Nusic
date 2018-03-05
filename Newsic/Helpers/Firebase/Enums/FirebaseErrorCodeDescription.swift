@@ -2,6 +2,7 @@ enum FirebaseErrorCodeDescription : String {
     
     //Login
     case getCustomToken = "An error occurred while trying to login to the database."
+    case migrateDataToken = "An error occurred while trying to manage the new data. Please close the app and try again."
     
     //User
     case getUser = "An error occurred while getting the user information."

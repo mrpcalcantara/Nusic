@@ -1245,7 +1245,7 @@
 			isa = PBXGroup;
 			children = (
 				8C2877431FDE4CB600772269 /* YouTube */,
-				8CA40DFA1F8B7DC400C95B9D /* Newsic */,
+				8CA40DFA1F8B7DC400C95B9D /* Nusic */,
 				8C0C1E931F60F6F700CF8516 /* Mood Hacker */,
 				8C0C1E921F60F6D000CF8516 /* Spotify */,
 			);
@@ -1367,7 +1367,7 @@
 			path = Browse;
 			sourceTree = "<group>";
 		};
-		8CA40DFA1F8B7DC400C95B9D /* Newsic */ = {
+		8CA40DFA1F8B7DC400C95B9D /* Nusic */ = {
 			isa = PBXGroup;
 			children = (
 				8C26C3581FE510D300365142 /* Playlist */,
@@ -1377,7 +1377,7 @@
 				8C26C3541FE510C200365142 /* Mood */,
 				8C26C3531FE510B700365142 /* User */,
 			);
-			path = Newsic;
+			path = Nusic;
 			sourceTree = "<group>";
 		};
 		8CB529DA1F8373FB00C8050F /* Mood Cells */ = {
