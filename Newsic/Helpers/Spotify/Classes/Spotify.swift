@@ -24,7 +24,7 @@ class Spotify {
     static let searchMusicForGenresUrl: String! = ""
     var auth: SPTAuth! = SPTAuth.defaultInstance();
     var user: SPTUser! = nil;
-    var genreCount: [String: Int] = [:]
+    var genreCount: [String: Int] = Spotify.getAllValuesDict()
     
     func getGenreForTrack(trackId: String, trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
         getTrackArtist(trackId: trackId) { (fetchedArtistId, error) in
@@ -242,7 +242,7 @@ class Spotify {
     }
     
     func getGenreCount(for artistList: [SpotifyArtist]) -> [String: Int] {
-        var countDictionary:[String: Int] = genreCount;
+        var countDictionary:[String: Int] = [:];
         
         for artist in artistList {
             if let subGenres = artist.subGenres {
