@@ -13,7 +13,6 @@ import Firebase
 class FirebaseDatabaseHelper {
     
     static let migrateDataUrl = "https://us-central1-newsic-54b6e.cloudfunctions.net/migrateData"
-//    static let migrateDataUrl = "http://localhost:5000/newsic-54b6e/us-central1/migrateData"
     
     class func detectFirebaseConnectivity(connectivityHandler: @escaping (Bool) -> ()) {
         let connectedRef = Database.database().reference(withPath: ".info/connected")

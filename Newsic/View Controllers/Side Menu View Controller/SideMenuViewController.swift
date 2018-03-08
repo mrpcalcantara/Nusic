@@ -11,6 +11,9 @@ import PopupDialog
 
 class SideMenuViewController: NusicDefaultViewController {
     
+    //Storyboard elements
+    @IBOutlet weak var settingsTableView: UITableView!
+    @IBOutlet weak var navigationBar: UINavigationBar!
     
     //Local variables
     var navbar: UINavigationBar?
@@ -23,8 +26,6 @@ class SideMenuViewController: NusicDefaultViewController {
     var nusicUser: NusicUser?
     var settings: NusicUserSettings?
     var settingsValues:[[String]]!
-    
-    @IBOutlet weak var settingsTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -41,19 +42,16 @@ class SideMenuViewController: NusicDefaultViewController {
     }
     
     override func viewDidLoad() {
-        
         super.viewDidLoad();
         setupSettingsArray()
         setupTableView()
-//        setupNavigationBar()
-        
+        setupNavigationBar()
         settings = nusicUser?.settingValues
-        
     }
     
     override func viewDidLayoutSubviews() {
+        settingsTableView.reloadData()
         super.viewDidLayoutSubviews();
-        setupNavigationBar()
     }
    
     @objc func dismissMenu() {
@@ -72,34 +70,16 @@ class SideMenuViewController: NusicDefaultViewController {
     }
     
     fileprivate func setupNavigationBar() {
-        if navbar != nil {
-            navbar?.removeFromSuperview()
-        }
-        navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
-        if let navbar = navbar {
-            navbar.barStyle = .default
-            navbar.translatesAutoresizingMaskIntoConstraints = false
-            let button = UIButton(type: .system)
-            button.setImage(UIImage(named: "MoodIcon"), for: .normal)
-            button.addTarget(self, action: #selector(dismissMenu), for: .touchUpInside)
-            let barButton = UIBarButtonItem(customView: button);
-            self.navigationItem.rightBarButtonItem = barButton
-            
-            let navItem = self.navigationItem
-            navbar.items = [navItem]
-            if !self.view.subviews.contains(navbar) {
-                self.view.addSubview(navbar)
-            }
-            NSLayoutConstraint.activate([
-                navbar.widthAnchor.constraint(equalToConstant: self.view.frame.width),
-                navbar.heightAnchor.constraint(equalToConstant: 44),
-                navbar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
-                navbar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0),
-                navbar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0)
-                ])
-            
-            self.view.layoutIfNeeded()
-        }
+
+        navigationBar.barStyle = .default
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "MoodIcon"), for: .normal)
+        button.addTarget(self, action: #selector(dismissMenu), for: .touchUpInside)
+        let barButton = UIBarButtonItem(customView: button);
+        self.navigationItem.rightBarButtonItem = barButton
+        
+        let navItem = self.navigationItem
+        navigationBar.items = [navItem]
     }
 
     func logoutUser() {

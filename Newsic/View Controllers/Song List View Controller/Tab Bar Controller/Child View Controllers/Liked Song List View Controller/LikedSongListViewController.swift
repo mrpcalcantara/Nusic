@@ -75,8 +75,8 @@ class LikedSongListViewController: UIViewController {
     func reloadTable() {
         DispatchQueue.main.async {
             if self.songListTableView != nil {
-                self.songListTableView.reloadData()
                 self.sortTableView(by: self.songListTableViewHeader.currentSortElement)
+                self.songListTableView.reloadData()
             }
         }
     }

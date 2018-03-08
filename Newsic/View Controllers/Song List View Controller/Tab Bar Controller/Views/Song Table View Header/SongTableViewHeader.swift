@@ -44,7 +44,7 @@ class SongTableViewHeader: UIView {
     }
     
     func configureSuggestedList() {
-        setImages(images: [#imageLiteral(resourceName: "ButtonAppIcon")])
+        setImages(images: [#imageLiteral(resourceName: "TransparentAppIcon")])
         sortElementImageView.image = sortImages[0]
         self.displayName.text = "Suggested by Nusic"
         
@@ -59,13 +59,13 @@ class SongTableViewHeader: UIView {
     func setupView() {
         loadFromNib()
         self.frame.size = CGSize(width: 200, height: 100)
-        self.backgroundColor = NusicDefaults.blackColor.withAlphaComponent(0.5)
+        self.backgroundColor = NusicDefaults.clearColor
         self.layer.shadowColor = UIColor.black.cgColor;
         self.layer.shadowOffset = CGSize(width: 1, height: -1);
         self.layer.shadowRadius = 3.0;
         self.layer.shadowOpacity = 1;
         sortElementImageView.image = sortImages[0]
-        
+        self.addBlurEffect(style: .dark, alpha: 1)
         setupGestureRecognizer()
     }
     
