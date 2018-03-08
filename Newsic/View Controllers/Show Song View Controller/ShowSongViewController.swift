@@ -72,10 +72,12 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     var likedTrackList:[NusicTrack] = [] {
         didSet {
-            print("likedTrackList count = \(likedTrackList.count)")
-            let parent = self.parent as! NusicPageViewController
-            let songListViewController = parent.songListVC as! SongListTabBarViewController
-            songListViewController.likedTrackList = likedTrackList
+            DispatchQueue.main.async {
+                if let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController {
+                    let songListViewController = parent.songListVC as! SongListTabBarViewController
+                    songListViewController.likedTrackList = self.likedTrackList
+                }
+            }
         }
     }
     var likedTrackIdList = [String]() {
@@ -225,6 +227,7 @@ class ShowSongViewController: NusicDefaultViewController {
     @IBOutlet weak var songDurationLabel: UILabel!
     @IBOutlet weak var songElapsedTime: UILabel!
     @IBOutlet weak var cardTitle: UILabel!
+    @IBOutlet weak var navigationBar: UINavigationBar!
     
     
     override func viewDidLoad() {
@@ -250,7 +253,7 @@ class ShowSongViewController: NusicDefaultViewController {
             showSwiftSpinner()
             _ = checkConnectivity()
         } else {
-            reloadNavigationBar()
+//            reloadNavigationBar()
 //            reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
             if isPlayerMenuOpen {
                 togglePlayerMenu()
@@ -275,7 +278,7 @@ class ShowSongViewController: NusicDefaultViewController {
         super.viewDidLayoutSubviews();
         
         if screenRotated {
-            reloadNavigationBar()
+//            reloadNavigationBar()
 //            reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
             screenRotated = false
         }
@@ -429,65 +432,46 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     
     fileprivate func setupNavigationBar() {
-        if navbar != nil {
-            navbar.removeFromSuperview()
-        }
-        navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
-        navbar.barStyle = .default
-        navbar.translatesAutoresizingMaskIntoConstraints = false
-        
+        navigationBar.barStyle = .default
         let barButtonLeft = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(backToSongPicker));
         self.navigationItem.leftBarButtonItem = barButtonLeft
-
+        
         let text:String? = self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count > 0 ? String(self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count) : nil
         let barButtonRight = BadgeBarButtonItem(image: (UIImage(named: "MusicNote")?.withRenderingMode(.alwaysTemplate))!, badgeText: text, target: self, action: #selector(toggleSongMenu))
         updateBadgeIcon(count: self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
-        
         self.navigationItem.rightBarButtonItem = barButtonRight
         
         let navItem = self.navigationItem
-        navbar.items = [navItem]
-        
-        if !self.view.subviews.contains(navbar) {
-            self.view.addSubview(navbar)
-        }
-        NSLayoutConstraint.activate([
-            navbar.widthAnchor.constraint(equalToConstant: self.view.frame.width),
-            navbar.heightAnchor.constraint(equalToConstant: 44),
-            navbar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
-            navbar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0),
-            navbar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0)
-            ])
-        
+        navigationBar.items = [navItem]
         self.view.layoutIfNeeded()
     }
-    
-    fileprivate func reloadNavigationBar() {
-        if navbar != nil {
-            
-            //Reload Left Bar Button
-            let barButtonLeft = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(backToSongPicker));
-            self.navigationItem.leftBarButtonItem = barButtonLeft
-            
-            //Reload Right Bar Button
-            let text:String? = self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count > 0 ? String(self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count) : nil
-            let barButtonRight = BadgeBarButtonItem(image: (UIImage(named: "MusicNote")?.withRenderingMode(.alwaysTemplate))!, badgeText: text, target: self, action: #selector(toggleSongMenu))
-            updateBadgeIcon(count: self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
-
-            self.navigationItem.rightBarButtonItem = barButtonRight
-            
-            
-            let labelView = UILabel()
-            labelView.font = UIFont(name: "Futura", size: 20)
-            labelView.textColor = UIColor.white
-            if let currentMoodDyad = currentMoodDyad {
-                labelView.text = currentMoodDyad == EmotionDyad.unknown ? "" : "Mood: \(currentMoodDyad.rawValue)"
-            }
-
-            let navItem = self.navigationItem
-            navbar.items = [navItem]
-        }
-    }
+//    
+//    fileprivate func reloadNavigationBar() {
+//        if navbar != nil {
+//            
+//            //Reload Left Bar Button
+//            let barButtonLeft = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(backToSongPicker));
+//            self.navigationItem.leftBarButtonItem = barButtonLeft
+//            
+//            //Reload Right Bar Button
+//            let text:String? = self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count > 0 ? String(self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count) : nil
+//            let barButtonRight = BadgeBarButtonItem(image: (UIImage(named: "MusicNote")?.withRenderingMode(.alwaysTemplate))!, badgeText: text, target: self, action: #selector(toggleSongMenu))
+//            updateBadgeIcon(count: self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
+//
+//            self.navigationItem.rightBarButtonItem = barButtonRight
+//            
+//            
+//            let labelView = UILabel()
+//            labelView.font = UIFont(name: "Futura", size: 20)
+//            labelView.textColor = UIColor.white
+//            if let currentMoodDyad = currentMoodDyad {
+//                labelView.text = currentMoodDyad == EmotionDyad.unknown ? "" : "Mood: \(currentMoodDyad.rawValue)"
+//            }
+//
+//            let navItem = self.navigationItem
+//            navbar.items = [navItem]
+//        }
+//    }
     
     fileprivate func setupMenu() {
         

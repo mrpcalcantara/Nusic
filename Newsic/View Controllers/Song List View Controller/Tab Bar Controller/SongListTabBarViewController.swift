@@ -50,6 +50,11 @@ class SongListTabBarViewController: UITabBarController {
         // Do any additional setup after loading the view.
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupChildViewControllers()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -95,14 +100,18 @@ class SongListTabBarViewController: UITabBarController {
             }
         }
         
+        setupChildViewControllers()
+        
+        self.tabBar.tintColor = NusicDefaults.foregroundThemeColor
+        self.tabBar.barTintColor = NusicDefaults.blackColor
+    }
+    
+    func setupChildViewControllers() {
         if let viewControllers = self.viewControllers {
             for viewController in viewControllers {
                 setupViewController(viewController: viewController)
             }
         }
-        
-        self.tabBar.tintColor = NusicDefaults.foregroundThemeColor
-        self.tabBar.barTintColor = NusicDefaults.blackColor
     }
     
     func setupViewController(viewController: UIViewController) {
@@ -151,12 +160,15 @@ class SongListTabBarViewController: UITabBarController {
                         return likedTrack.trackInfo == track.trackInfo
                     }) {
                         self.likedTrackList.remove(at: index)
+                        
+                        DispatchQueue.main.async {
+                            self.likedSongListVC?.sortTableView(by: (self.likedSongListVC?.songListTableViewHeader.currentSortElement)!)
+                            self.likedSongListVC?.songListTableView.reloadData()
+                        }
                     }
                 }
             })
-            DispatchQueue.main.async {
-                self.likedSongListVC?.songListTableView.reloadData()
-            }
+            
         })
     }
 }

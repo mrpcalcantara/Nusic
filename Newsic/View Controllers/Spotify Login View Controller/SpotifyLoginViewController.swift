@@ -25,12 +25,18 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     var loadFullTitle: Bool = false {
         didSet {
             if loadFullTitle {
+//                self.nusicLabelCenterYConstraint.constant = self.nusicFullTitle.frame.origin.y - self.nusicLabl.frame.origin.y
+//                self.nusicLabelCenterXConstraint.constant = self.nusicFullTitle.frame.origin.x - self.nusicLabl.frame.origin.x
+                self.nusicLabl.layer.removeAllAnimations()
+                self.nusicLabl.transform = CGAffineTransform(scaleX: 2, y: 2)
+                self.view.layoutIfNeeded()
                 UIView.animate(withDuration: 2, delay: 1, options: .curveEaseInOut, animations: {
+                    self.nusicLabl.alpha = 0.5
                     self.nusicFullTitle.alpha = 1
                     self.view.layoutIfNeeded()
                 }) { (isCompleted) in
-                    self.nusicLabl.transform = CGAffineTransform.identity
-                    self.nusicLabl.layer.removeAllAnimations()
+                    
+                    
                 }
             } else {
                 self.nusicFullTitle.alpha = 0
@@ -45,7 +51,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     @IBOutlet weak var loginButtonCenterXConstraint: NSLayoutConstraint!
     
     //Nusic Label
-    @IBOutlet weak var nusicLabelCenterYConstraint: NSLayoutConstraint!
     @IBOutlet weak var nusicLabelCenterXConstraint: NSLayoutConstraint!
     
     //Objects for extracting User and Genres
@@ -68,6 +73,9 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         super.viewDidLoad();
         setupBackground()
         setupSpotify()
+        self.view.bringSubview(toFront: loginButton)
+        self.view.bringSubview(toFront: nusicFullTitle)
+        self.view.layoutIfNeeded()
         
         gotToken = UserDefaults.standard.object(forKey: "SpotifySession") as AnyObject != nil
         checkFirebaseConnectivity()
@@ -79,11 +87,12 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(setupSpotify), name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(notificationResetLogin), name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
-    
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
+        UIApplication.shared.keyWindow?.rootViewController = self
         if toActivateTimer {
             activateTimer()
         }
@@ -92,7 +101,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.nusicLabelCenterYConstraint.constant = 0
         self.nusicLabelCenterXConstraint.constant = 0
         self.view.layoutIfNeeded()
         loadFullTitle = false
@@ -247,14 +255,12 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     fileprivate func resetViewLogin() {
         deactivateTimer()
+        self.nusicLabl.transform = CGAffineTransform.identity
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
-            self.nusicLabelCenterYConstraint.constant = self.nusicFullTitle.frame.origin.y - self.nusicLabl.frame.origin.y
-            self.nusicLabelCenterXConstraint.constant = self.nusicFullTitle.frame.origin.x - self.nusicLabl.frame.origin.x
-            self.view.layoutIfNeeded()
+            self.nusicLabl.alpha = 0
         }) { (isCompleted) in
             self.loadFullTitle = true
         }
-        
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
             self.loginButton.alpha = 1;
             self.view.layoutIfNeeded()

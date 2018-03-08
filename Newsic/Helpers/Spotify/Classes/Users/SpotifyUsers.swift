@@ -20,10 +20,7 @@ extension Spotify {
             } else {
                 completion(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError))
             }
-            
-            
-            
-            
+           
         }
         
     }

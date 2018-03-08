@@ -53,7 +53,8 @@ extension SideMenuViewController : UITableViewDelegate {
         } else {
             cell.alertController?.show()
         }
-        cell.setSelected(false, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+//        cell.setSelected(false, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

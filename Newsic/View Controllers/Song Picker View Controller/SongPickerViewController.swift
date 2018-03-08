@@ -164,6 +164,7 @@ class SongPickerViewController: NusicDefaultViewController {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var userProfileImageView: UIImageView!
     @IBOutlet weak var logoutButton: UIButton!
+    @IBOutlet weak var navigationBar: UINavigationBar!
     
     
     //Actions
@@ -239,14 +240,14 @@ class SongPickerViewController: NusicDefaultViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated);
-        if nusicControl.selectedIndex == 1 {
+        if nusicControl.selectedIndex == 1 && listMenuView.chosenGenres.count > 0 {
             hideChoiceMenu()
         }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         viewRotated = true
-        if nusicControl.selectedIndex == 1 {
+        if nusicControl.selectedIndex == 1 && listMenuView.chosenGenres.count > 0 {
             hideChoiceMenu()
         }
     }
@@ -299,10 +300,7 @@ class SongPickerViewController: NusicDefaultViewController {
     }
     
     fileprivate func setupNavigationBar(image: UIImage? = UIImage(named: "SettingsIcon")) {
-        navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
-        
-        navbar.barStyle = .default
-        navbar.translatesAutoresizingMaskIntoConstraints = false
+        navigationBar.barStyle = .default
         
         let leftBarButton = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
         
@@ -327,45 +325,23 @@ class SongPickerViewController: NusicDefaultViewController {
         self.navigationItem.titleView = nusicControl
         
         let navItem = self.navigationItem
-        
-        navbar.items = [navItem]
-        
-        if !self.view.subviews.contains(navbar) {
-            self.view.addSubview(navbar)
-        }
-        NSLayoutConstraint.activate([
-            navbar.widthAnchor.constraint(equalToConstant: self.view.frame.width),
-            navbar.heightAnchor.constraint(equalToConstant: 44),
-            navbar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
-            navbar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0),
-            navbar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            
-            ])
-        
+        navigationBar.items = [navItem]
         self.view.layoutIfNeeded()
         
     }
     
     fileprivate func reloadNavigationBar(image: UIImage? = UIImage(named: "SettingsIcon")) {
-        if navbar != nil {
-            let barButton = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
-            self.navigationItem.leftBarButtonItem = barButton
+        if let pageViewController = parent as? NusicPageViewController {
             
-            if let pageViewController = parent as? NusicPageViewController {
-                let showSongImage = UIImage(named: "PreferredPlayer")?.withRenderingMode(.alwaysTemplate)
-                let barButton = UIBarButtonItem(image: showSongImage, style: .plain, target: self, action: #selector(goToShowSongVC));
-                if pageViewController.orderedViewControllers.contains(pageViewController.showSongVC!) {
-                    barButton.tintColor = UIColor.white
-                    barButton.isEnabled = true
-                } else {
-                    barButton.tintColor = UIColor.gray
-                    barButton.isEnabled = false
-                }
-                self.navigationItem.rightBarButtonItem = barButton
+            if pageViewController.orderedViewControllers.contains(pageViewController.showSongVC!) {
+                navigationBar.topItem?.rightBarButtonItem?.tintColor = UIColor.white
+                navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
+            } else {
+                navigationBar.topItem?.rightBarButtonItem?.tintColor = UIColor.gray
+                navigationBar.topItem?.rightBarButtonItem?.isEnabled = false
             }
-            let navItem = self.navigationItem
-            navbar.items = [navItem]
-            self.view.layoutIfNeeded()
+            
+            
         }
     }
     

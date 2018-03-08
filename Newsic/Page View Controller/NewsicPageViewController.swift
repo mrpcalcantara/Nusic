@@ -27,6 +27,11 @@ class NusicPageViewController: UIPageViewController {
         self.backgroundImageView?.frame = self.view.frame
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,6 +58,7 @@ class NusicPageViewController: UIPageViewController {
         
         for view in view.subviews {
             if let myView = view as? UIScrollView {
+//                myView.bounces = false
                 myView.delaysContentTouches = false
             }
         }
@@ -136,21 +142,10 @@ class NusicPageViewController: UIPageViewController {
      */
     func scrollToViewController(viewController: UIViewController,
                                         direction: UIPageViewControllerNavigationDirection = .forward) {
-//        if !(viewController is ShowSongViewController) {
-//
-//        }
-//        self.pageViewController(self, willTransitionTo: [viewController])
-//        self.pageViewController(self, viewControllerAfter: viewController)
         setViewControllers([viewController],
                            direction: direction,
                            animated: true,
-                           completion: { (finished) -> Void in
-                            // Setting the view controller programmatically does not fire
-                            // any delegate methods, so we have to manually notify the
-                            // 'nusicDelegate' of the new index.
-                            self.notifyNusicDelegateOfNewIndex()
-                            
-        })
+                           completion: nil)
     }
     
     /**

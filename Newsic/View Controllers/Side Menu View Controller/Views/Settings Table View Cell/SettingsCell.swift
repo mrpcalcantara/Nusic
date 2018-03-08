@@ -56,8 +56,9 @@ class SettingsCell: UITableViewCell {
         self.backgroundColor = NusicDefaults.deselectedColor
         self.selectionStyle = .none
         if !self.subviews.contains(where: { (view) -> Bool in
-            return view.tag == 1
+            return view.tag == 111
         }) {
+//            self.removeBlurEffect()
             self.addBlurEffect(style: .dark, alpha: 0.2)
         }
         

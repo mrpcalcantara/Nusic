@@ -25,7 +25,7 @@ class NusicUser: Iterable {
     var settingValues: NusicUserSettings
     var reference: DatabaseReference!
     
-    init(version: String? = "1.1",userName: String, displayName: String? = "", imageURL: String? = "", territory: String? = "", favoriteGenres: [NusicGenre]? = nil, isPremium: Bool? = false, settingValues: NusicUserSettings? = NusicUserSettings()) {
+    init(version: String? = "1.1", userName: String, displayName: String? = "", imageURL: String? = "", territory: String? = "", favoriteGenres: [NusicGenre]? = nil, isPremium: Bool? = false, settingValues: NusicUserSettings? = NusicUserSettings()) {
         let firebaseUsername = userName.replaceSymbols(symbol: ".", with: "-")
         self.userName = firebaseUsername
         self.displayName = displayName!;

@@ -244,6 +244,7 @@
 		8C64F45D1F56C9540006B644 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C64F45C1F56C9540006B644 /* Spotify.swift */; };
 		8C77714B201C59CA004A5455 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C77714A201C59CA004A5455 /* GoogleService-Info.plist */; };
 		8C77714D201C7945004A5455 /* Koloda-SongCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C77714C201C7945004A5455 /* Koloda-SongCard.swift */; };
+		8C78FBC8204FF77000B4F480 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C78FBC7204FF77000B4F480 /* Default-568h@2x.png */; };
 		8C7989351FEA16160079A99D /* MusicChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7989331FEA16160079A99D /* MusicChoiceCell.swift */; };
 		8C7989361FEA16160079A99D /* MusicChoiceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7989341FEA16160079A99D /* MusicChoiceCell.xib */; };
 		8C7989391FEA17050079A99D /* NewsicDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7989381FEA17050079A99D /* NewsicDefaults.swift */; };
@@ -420,6 +421,7 @@
 		8C6D595320329AAA009D10AE /* Newsic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Newsic.entitlements; sourceTree = "<group>"; };
 		8C77714A201C59CA004A5455 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8C77714C201C7945004A5455 /* Koloda-SongCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Koloda-SongCard.swift"; sourceTree = "<group>"; };
+		8C78FBC7204FF77000B4F480 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		8C7989331FEA16160079A99D /* MusicChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicChoiceCell.swift; sourceTree = "<group>"; };
 		8C7989341FEA16160079A99D /* MusicChoiceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MusicChoiceCell.xib; sourceTree = "<group>"; };
 		8C7989381FEA17050079A99D /* NewsicDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicDefaults.swift; sourceTree = "<group>"; };
@@ -1148,6 +1150,7 @@
 		8C90E8551F53D838002B135F = {
 			isa = PBXGroup;
 			children = (
+				8C78FBC7204FF77000B4F480 /* Default-568h@2x.png */,
 				8C90E8601F53D838002B135F /* Newsic */,
 				8C90E85F1F53D838002B135F /* Products */,
 				80C2490ADB34F83C5098F8DF /* Pods */,
@@ -1579,6 +1582,7 @@
 				8C3C34F92036EA070092B953 /* license.txt in Resources */,
 				8C3C34FA2036EA070092B953 /* SettingsHeader.xib in Resources */,
 				8C3C34FB2036EA070092B953 /* Robot Crush Italic.otf in Resources */,
+				8C78FBC8204FF77000B4F480 /* Default-568h@2x.png in Resources */,
 				8C3C34FC2036EA070092B953 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2049,7 +2053,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "Newsic copy-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Newsic/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -2083,7 +2087,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "Newsic copy-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Newsic/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (

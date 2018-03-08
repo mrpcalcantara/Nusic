@@ -103,10 +103,12 @@ extension LikedSongListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: "\u{267A}") { (action, indexPath) in
-            // delete item at indexPath
-            let track = self.sectionSongs[indexPath.section][indexPath.row]
-            self.tabBarVC?.removeTrackFromLikedTracks(track: track, indexPath: indexPath)
-            self.sectionSongs[indexPath.section].remove(at: indexPath.row)
+            DispatchQueue.main.async {
+                // delete item at indexPath
+                let track = self.sectionSongs[indexPath.section][indexPath.row]
+                self.sectionSongs[indexPath.section].remove(at: indexPath.row)
+                self.tabBarVC?.removeTrackFromLikedTracks(track: track, indexPath: indexPath)
+            }
         }
         return [delete]
     }
@@ -160,7 +162,6 @@ extension LikedSongListViewController: UITableViewDataSource {
                 return str != "" || !list.contains(str)
             }).removeDuplicates().sorted()
             sectionTitles = sortedList
-            
             sectionSongs = sortedList.map({ (genre) in
                 return likedTrackList.filter({ (track) -> Bool in
                     if let subGenres = track.trackInfo.artist.subGenres {
@@ -179,8 +180,8 @@ extension LikedSongListViewController: UITableViewDataSource {
 
 extension LikedSongListViewController : SongTableViewHeaderDelegate {
     func touchedHeader() {
-        sortTableView(by: songListTableViewHeader.currentSortElement)
         DispatchQueue.main.async {
+            self.sortTableView(by: self.songListTableViewHeader.currentSortElement)
             self.songListTableView.reloadData()
         }
     }
