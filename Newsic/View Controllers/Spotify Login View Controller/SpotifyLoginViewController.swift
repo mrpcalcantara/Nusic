@@ -25,8 +25,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     var loadFullTitle: Bool = false {
         didSet {
             if loadFullTitle {
-//                self.nusicLabelCenterYConstraint.constant = self.nusicFullTitle.frame.origin.y - self.nusicLabl.frame.origin.y
-//                self.nusicLabelCenterXConstraint.constant = self.nusicFullTitle.frame.origin.x - self.nusicLabl.frame.origin.x
                 self.nusicLabl.layer.removeAllAnimations()
                 self.nusicLabl.transform = CGAffineTransform(scaleX: 2, y: 2)
                 self.view.layoutIfNeeded()
@@ -63,8 +61,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
        
         toActivateTimer = true
         safariViewController = SFSafariViewController(url: loginUrl!);
-        (UIApplication.shared.delegate as! AppDelegate).safariViewController = safariViewController;
-        
         self.present(safariViewController, animated: true, completion: nil)
         
     }
@@ -168,6 +164,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     }
 
     @objc fileprivate func setupSpotify() {
+        safariViewController?.dismiss(animated: true, completion: nil)
         gotToken = false
         auth.clientID = Spotify.clientId;
         auth.redirectURL = URL(string: Spotify.redirectURI!);
@@ -182,6 +179,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     }
     
     @objc fileprivate func updateAfterFirstLogin(notification: Notification) {
+        safariViewController?.dismiss(animated: true, completion: nil)
         gotToken = notification.object as! Bool
         getSession();
     }

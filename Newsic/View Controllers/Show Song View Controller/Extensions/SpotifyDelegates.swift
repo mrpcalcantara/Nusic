@@ -39,7 +39,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: String!) {
-        
+        self.isPlaying = true
         if Connectivity.isConnectedToNetwork() == .connectedCellular && !playOnCellularData! {
             let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
             
@@ -62,7 +62,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             print("track started");
             
             if let currentTrack = currentTrack {
-                var currentNusicTrack = self.cardList[self.songCardView.currentCardIndex]
+                var currentNusicTrack = self.cardList[songCardView.currentCardIndex]
                 if let isNewSuggestion = currentNusicTrack.suggestionInfo?.isNewSuggestion, isNewSuggestion == true {
                     currentNusicTrack.setSuggestedValue(value: false, suggestedHandler: nil)
                 }
@@ -99,8 +99,8 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         DispatchQueue.main.async {
             self.hideLikeButtons()
         }
-        koloda(songCardView, didSwipeCardAt: presentedCardIndex, in: .left)
-        songCardView.swipe(.left);
+        self.isPlaying = false
+        songCardView.swipe(.left, force: true)
         if UIApplication.shared.applicationState == .background {
             presentedCardIndex += 1
             playCard(at: presentedCardIndex)
@@ -221,7 +221,7 @@ extension ShowSongViewController {
     
     @objc func actionNextSong() {
         player?.playbackDelegate.audioStreaming!(player, didStopPlayingTrack: currentPlayingTrack?.trackUri)
-        songCardView.swipe(.left)
+        songCardView.swipe(.left, force: true)
     }
     
     @objc func seekSong(interval: Float) {
@@ -343,11 +343,10 @@ extension ShowSongViewController {
                 return UIImage()
             })
         }
-       
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+        
+        DispatchQueue.main.async {
             MPNowPlayingInfoCenter.default().nowPlayingInfo = trackInfo as [String : AnyObject]
         }
-        
         
     }
   

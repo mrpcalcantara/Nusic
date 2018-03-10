@@ -263,6 +263,7 @@ extension ShowSongViewController {
                 if var trackFeatures = trackFeatures {
                     trackFeatures.youtubeId = track.youtubeInfo?.trackId;
                     track.trackInfo.audioFeatures = trackFeatures;
+                    track.isLiked = true
                     track.saveData(saveCompleteHandler: { (reference, error) in
                         if let error = error {
                             SwiftSpinner.hide()

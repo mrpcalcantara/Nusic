@@ -9,7 +9,7 @@
 import Foundation
 import FirebaseDatabase
 
-struct NusicTrack {
+class NusicTrack {
     
     var youtubeInfo: YouTubeResult?
     var trackInfo: SpotifyTrack
@@ -20,15 +20,17 @@ struct NusicTrack {
     }
     var moodInfo: NusicMood?;
     var suggestionInfo: NusicSuggestion?
+    var isLiked: Bool?
     var reference: DatabaseReference! = Database.database().reference()
     
-    init(trackInfo: SpotifyTrack, moodInfo: NusicMood?, userName: String, youtubeInfo: YouTubeResult? = nil, suggestionInfo: NusicSuggestion? = NusicSuggestion()) {
+    init(trackInfo: SpotifyTrack, moodInfo: NusicMood?, userName: String, youtubeInfo: YouTubeResult? = nil, suggestionInfo: NusicSuggestion? = NusicSuggestion(), isLiked: Bool? = false) {
         self.trackInfo = trackInfo;
         self.moodInfo = moodInfo;
         let firebaseUsername = userName.replaceSymbols(symbol: ".", with: "-")
         self.userName = firebaseUsername
         self.youtubeInfo = youtubeInfo;
         self.suggestionInfo = suggestionInfo
+        self.isLiked = isLiked
         self.reference = Database.database().reference().child("likedTracks");
         setupListeners()
     }
@@ -37,8 +39,8 @@ struct NusicTrack {
         
         //Save
         Database.database().reference().child("likedTracks").child(userName).observe(.childAdded) { (dataSnapshot) in
-            if dataSnapshot.key == self.trackInfo.trackId {
-                if let moodInfo = self.moodInfo {
+            if dataSnapshot.key == self.trackInfo.linkedFromTrackId {
+                if let moodInfo = self.moodInfo, self.isLiked! {
                     for emotion in moodInfo.emotions {
                         Database.database().reference()
                             .child("moodTracks")
@@ -46,6 +48,22 @@ struct NusicTrack {
                             .child(emotion.basicGroup.rawValue.lowercased())
                             .child(self.trackInfo.linkedFromTrackId)
                                 .setValue(true)
+                    }
+                }
+            }
+        }
+        
+        //Update
+        Database.database().reference().child("likedTracks").child(userName).observe(.childChanged) { (dataSnapshot) in
+            if dataSnapshot.key == self.trackInfo.linkedFromTrackId {
+                if let moodInfo = self.moodInfo {
+                    for emotion in moodInfo.emotions {
+                        Database.database().reference()
+                            .child("moodTracks")
+                            .child(self.userName)
+                            .child(emotion.basicGroup.rawValue.lowercased())
+                            .child(self.trackInfo.linkedFromTrackId)
+                            .setValue(true)
                     }
                 }
             }
@@ -84,6 +102,7 @@ extension NusicTrack : FirebaseModel {
     }
     
     internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
+        
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
@@ -112,7 +131,7 @@ extension NusicTrack : FirebaseModel {
         deleteCompleteHandler(reference, nil)
     }
     
-    mutating func setSuggestedValue(value: Bool, suggestedHandler: ((DatabaseReference?, NusicError?) -> ())?) {
+    func setSuggestedValue(value: Bool, suggestedHandler: ((DatabaseReference?, NusicError?) -> ())?) {
         suggestionInfo?.isNewSuggestion = false
         Database.database().reference().child("suggestedTracks").child(self.userName).child(self.trackInfo.linkedFromTrackId).child("isNewSuggestion").setValue(0) { (error, reference) in
             if let error = error {
@@ -120,6 +139,10 @@ extension NusicTrack : FirebaseModel {
             }
             suggestedHandler?(reference,nil);
         }
+    }
+    
+    func setSongLiked(value: Bool) {
+        self.isLiked = value
     }
     
 }
