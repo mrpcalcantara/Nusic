@@ -153,7 +153,6 @@
 		8CB529E11F8375D900C8050F /* MoodCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB529E01F8375D900C8050F /* MoodCollectionView.swift */; };
 		8CC6E7161F54044800846080 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6E7151F54044800846080 /* Int.swift */; };
 		8CC6E71F1F5510C300846080 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6E71E1F5510C300846080 /* UIViewController.swift */; };
-		8CC991D91FDA86050028F33A /* GoogleService-InfoBKP.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CC991D81FDA86050028F33A /* GoogleService-InfoBKP.plist */; };
 		8CCC55341F66587A005090A4 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC55331F66587A005090A4 /* UIImage.swift */; };
 		8CCC55361F67975F005090A4 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC55351F67975F005090A4 /* Double.swift */; };
 		8CD0C7271FD541D90095A309 /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD0C7261FD541D90095A309 /* URLSession.swift */; };
@@ -333,7 +332,6 @@
 		8CC6E7151F54044800846080 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		8CC6E71A1F550F8500846080 /* Newsic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Newsic-Bridging-Header.h"; sourceTree = "<group>"; };
 		8CC6E71E1F5510C300846080 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
-		8CC991D81FDA86050028F33A /* GoogleService-InfoBKP.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-InfoBKP.plist"; sourceTree = "<group>"; };
 		8CCC55331F66587A005090A4 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		8CCC55351F67975F005090A4 /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		8CD0C7261FD541D90095A309 /* URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
@@ -1087,7 +1085,6 @@
 				8C3C35062036EC7E0092B953 /* PROD */,
 				8C3C35052036EC7A0092B953 /* DEV */,
 				8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */,
-				8CC991D81FDA86050028F33A /* GoogleService-InfoBKP.plist */,
 				8C90E86D1F53D838002B135F /* Info.plist */,
 			);
 			path = "Supporting Files";
@@ -1403,7 +1400,6 @@
 				8C5E02A8201707A800413DBB /* Synthetic Sharps.otf in Resources */,
 				8C5E02B22017217700413DBB /* Robot Crush.otf in Resources */,
 				8C2847242043DC3B006A9B5C /* GoogleService-Info.plist in Resources */,
-				8CC991D91FDA86050028F33A /* GoogleService-InfoBKP.plist in Resources */,
 				8C77714B201C59CA004A5455 /* GoogleService-Info.plist in Resources */,
 				8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */,
 				8C90E86C1F53D838002B135F /* LaunchScreen.storyboard in Resources */,

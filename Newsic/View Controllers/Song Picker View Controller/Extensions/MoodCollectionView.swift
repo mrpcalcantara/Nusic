@@ -195,12 +195,6 @@ extension SongPickerViewController {
                     } else {
                         return nil
                     }
-                    if sectionGenreTitles.index(of: genre) == nil {
-                        sectionGenreTitles.append(genre);
-                        sectionGenreTitles.sort()
-                        
-                    }
-                    
                 }
             }
         }

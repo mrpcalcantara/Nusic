@@ -37,6 +37,7 @@ class SongTableViewSectionHeader: UITableViewHeaderFooterView {
         contentView.displayName.textColor = NusicDefaults.foregroundThemeColor
         self.displayName = contentView.displayName
         contentView.background.backgroundColor = NusicDefaults.blackColor
+        contentView.removeBlurEffect()
         contentView.addBlurEffect(style: .dark, alpha: 1)
         self.addSubview(contentView)
     }
@@ -44,6 +45,7 @@ class SongTableViewSectionHeader: UITableViewHeaderFooterView {
     func configure(text: String) {
         self.contentView.backgroundColor = NusicDefaults.clearColor
         self.background.backgroundColor = NusicDefaults.clearColor
+        self.removeBlurEffect()
         self.addBlurEffect(style: .dark, alpha: 1)
         self.displayName.textColor = NusicDefaults.foregroundThemeColor
         self.displayName.text = text
