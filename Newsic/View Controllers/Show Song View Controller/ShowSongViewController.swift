@@ -82,17 +82,26 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     var likedTrackIdList = [String]() {
         didSet {
-            if let appendedTrackId = likedTrackIdList.last {
-                fetchDataForLikedTrack(trackId: [appendedTrackId], handler: { (nusicTracks) in
-                    if let nusicTrack = nusicTracks.first {
-                        if !self.likedTrackList.contains(where: { (track) -> Bool in
-                            return track.trackInfo.trackId == nusicTrack.trackInfo.trackId
-                        }) {
-                            self.likedTrackList.append(nusicTrack)
+            
+            // Added track
+            if oldValue.count < likedTrackIdList.count {
+                if let appendedTrackId = likedTrackIdList.last {
+                    fetchDataForLikedTrack(trackId: [appendedTrackId], handler: { (nusicTracks) in
+                        if let nusicTrack = nusicTracks.first {
+                            if !self.likedTrackList.contains(where: { (track) -> Bool in
+                                return track.trackInfo.trackId == nusicTrack.trackInfo.trackId
+                            }) {
+                                self.likedTrackList.append(nusicTrack)
+                            }
                         }
-                    }
-                })
+                    })
+                }
             }
+            // Removed Track
+            else {
+                
+            }
+            
         }
     }
     var preferredPlayer: NusicPreferredPlayer?
@@ -384,8 +393,11 @@ class ShowSongViewController: NusicDefaultViewController {
             reference.child("moodTracks").child(self.user.userName).child(emotion).observe(.childRemoved) { (dataSnapshot) in
                 let trackId = dataSnapshot.key
                 if self.likedTrackIdList.contains(trackId) {
-                    if let likedTrackIndex = self.likedTrackIdList.index(of: trackId) {
-                        self.likedTrackIdList.remove(at: likedTrackIndex)
+                    if let likedTrackIdIndex = self.likedTrackIdList.index(of: trackId) {
+                        if let likedTrackIndex = self.likedTrackList.index(where: { $0.trackInfo.linkedFromTrackId == trackId }) {
+                            self.likedTrackList.remove(at: likedTrackIndex)
+                        }
+                        self.likedTrackIdList.remove(at: likedTrackIdIndex)
                     }
                     
                     if let trackFeaturesIndex = self.trackFeatures.index(where: { $0.id == trackId }) {
@@ -445,33 +457,6 @@ class ShowSongViewController: NusicDefaultViewController {
         navigationBar.items = [navItem]
         self.view.layoutIfNeeded()
     }
-//    
-//    fileprivate func reloadNavigationBar() {
-//        if navbar != nil {
-//            
-//            //Reload Left Bar Button
-//            let barButtonLeft = UIBarButtonItem(image: UIImage(named: "MoodIcon"), style: .plain, target: self, action: #selector(backToSongPicker));
-//            self.navigationItem.leftBarButtonItem = barButtonLeft
-//            
-//            //Reload Right Bar Button
-//            let text:String? = self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count > 0 ? String(self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count) : nil
-//            let barButtonRight = BadgeBarButtonItem(image: (UIImage(named: "MusicNote")?.withRenderingMode(.alwaysTemplate))!, badgeText: text, target: self, action: #selector(toggleSongMenu))
-//            updateBadgeIcon(count: self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
-//
-//            self.navigationItem.rightBarButtonItem = barButtonRight
-//            
-//            
-//            let labelView = UILabel()
-//            labelView.font = UIFont(name: "Futura", size: 20)
-//            labelView.textColor = UIColor.white
-//            if let currentMoodDyad = currentMoodDyad {
-//                labelView.text = currentMoodDyad == EmotionDyad.unknown ? "" : "Mood: \(currentMoodDyad.rawValue)"
-//            }
-//
-//            let navItem = self.navigationItem
-//            navbar.items = [navItem]
-//        }
-//    }
     
     fileprivate func setupMenu() {
         
@@ -570,7 +555,7 @@ class ShowSongViewController: NusicDefaultViewController {
     @IBAction func previousTrackClicked(_ sender: UIButton) {
         
         sender.animateClick();
-        songCardView.revertAction();
+        actionPreviousSong()
         
     }
     
@@ -784,10 +769,11 @@ extension ShowSongViewController {
             } else {
                 self.getYouTubeResults(tracks: nusicTracks, youtubeSearchHandler: { (tracks) in
                     self.cardList = tracks
+                    self.initialLoadDone = true
                     DispatchQueue.main.async {
                         self.songCardView.reloadData()
                         self.showSwiftSpinner(text: "Done!", duration: 2)
-                        self.initialLoadDone = true
+                        
                     }
                     
                     

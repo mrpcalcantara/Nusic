@@ -65,6 +65,7 @@ class SongTableViewHeader: UIView {
         self.layer.shadowRadius = 3.0;
         self.layer.shadowOpacity = 1;
         sortElementImageView.image = sortImages[0]
+        self.removeBlurEffect()
         self.addBlurEffect(style: .dark, alpha: 1)
         setupGestureRecognizer()
     }
