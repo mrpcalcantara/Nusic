@@ -9,7 +9,7 @@
 import Foundation
 import FirebaseDatabase
 
-struct NusicMood: FirebaseModel, Iterable {
+class NusicMood: FirebaseModel, Iterable {
     
     var emotions: [Emotion];
     var sentiment: Double;
@@ -86,13 +86,13 @@ struct NusicMood: FirebaseModel, Iterable {
         }
     }
     
-    func getTrackListForEmotionGenre(getAssociatedTrackHandler: @escaping ([String: SpotifyTrackFeature]?, NusicError?) -> ()) {
-        let count = emotions.count;
-        var index = 0;
+    final func getTrackListForEmotionGenre(getAssociatedTrackHandler: @escaping ([String: SpotifyTrackFeature]?, NusicError?) -> ()) {
+        let count = emotions.count
+        var index = 0
         for emotion in emotions {
             reference.child("likedTracks").child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
                 let value = dataSnapshot.value as? [String: AnyObject];
-                var iterator = value?.makeIterator();
+                var iterator = value?.makeIterator()
                 
                 let element = iterator?.next()
                 var extractedGenres:[String:SpotifyTrackFeature] = [:]
@@ -100,25 +100,25 @@ struct NusicMood: FirebaseModel, Iterable {
                 while element != nil {
                     if let element = element {
                         let key = element.key
-                        var value = SpotifyTrackFeature();
-                        value.mapDictionary(featureDictionary: (element.value as? [String: AnyObject])!)
-                        extractedGenres[key] = value;
+                        if let dict = element.value as? [String: AnyObject] {
+                            extractedGenres[key] = SpotifyTrackFeature(featureDictionary: dict)
+                        }
                     }
                 }
                 
                 index += 1;
                 if index == count {
-                    getAssociatedTrackHandler(extractedGenres, nil);
+                    getAssociatedTrackHandler(extractedGenres, nil)
                 }
                 
             }, withCancel: { (error) in
-                getAssociatedTrackHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackListForEmotion.rawValue, systemError: error));
+                getAssociatedTrackHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackListForEmotion.rawValue, systemError: error))
             })
         }
         
     }
     
-    func getTrackIdListForEmotionGenre(getAssociatedTrackHandler: @escaping ([String]?, NusicError?) -> ()) {
+    final func getTrackIdListForEmotionGenre(getAssociatedTrackHandler: @escaping ([String]?, NusicError?) -> ()) {
         let count = emotions.count;
         var index = 0;
         for emotion in emotions {
@@ -148,16 +148,13 @@ struct NusicMood: FirebaseModel, Iterable {
         //getAssociatedTrackHandler(nil)
     }
     
-    func getDefaultTrackFeatures(getDefaultTrackFeaturesHandler: @escaping ([SpotifyTrackFeature]?, NusicError?) -> ()) {
+    final func getDefaultTrackFeatures(getDefaultTrackFeaturesHandler: @escaping ([SpotifyTrackFeature]?, NusicError?) -> ()) {
         for emotion in emotions {
             reference.child("emotions").child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
-                let value = dataSnapshot.value as? [String: AnyObject];
-                var extractedTrackFeatures:[SpotifyTrackFeature] = []
-                var feature = SpotifyTrackFeature();
-                if value != nil {
-                    feature.mapDictionary(featureDictionary: value!);
+                var extractedTrackFeatures:[SpotifyTrackFeature] = Array()
+                if let value = dataSnapshot.value as? [String: AnyObject] {
+                    extractedTrackFeatures.append(SpotifyTrackFeature(featureDictionary: value));
                 }
-                extractedTrackFeatures.append(feature);
                 getDefaultTrackFeaturesHandler(extractedTrackFeatures, nil);
             }, withCancel: { (error) in
                 getDefaultTrackFeaturesHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackFeatures.rawValue, systemError: error));
@@ -165,7 +162,7 @@ struct NusicMood: FirebaseModel, Iterable {
         }
     }
     
-    func getTrackFeaturesForEmotionGenre(getTrackFeaturesHandler: @escaping ([SpotifyTrackFeature]?, NusicError?) -> ()) {
+    final func getTrackFeaturesForEmotionGenre(getTrackFeaturesHandler: @escaping ([SpotifyTrackFeature]?, NusicError?) -> ()) {
         let count = emotions.count;
         var index = 0;
         for emotion in emotions {
@@ -178,10 +175,8 @@ struct NusicMood: FirebaseModel, Iterable {
                 var extractedTrackFeatures:[SpotifyTrackFeature] = []
                 
                 while element != nil {
-                    if let element = element {
-                        var value = SpotifyTrackFeature();
-                        value.mapDictionary(featureDictionary: (element.value as? [String: AnyObject])!)
-                        extractedTrackFeatures.append(value);
+                    if let element = element, let dict = element.value as? [String: AnyObject] {
+                        extractedTrackFeatures.append(SpotifyTrackFeature(featureDictionary: dict));
                     }
                     element = iterator?.next();
                 }
@@ -198,7 +193,7 @@ struct NusicMood: FirebaseModel, Iterable {
         
     }
     
-    func getTrackIdAndFeaturesForEmotion(trackIdAndFeaturesHandler: @escaping ([String]?, [SpotifyTrackFeature]?, NusicError?) -> ()) {
+    final func getTrackIdAndFeaturesForEmotion(trackIdAndFeaturesHandler: @escaping ([String]?, [SpotifyTrackFeature]?, NusicError?) -> ()) {
         getTrackIdListForEmotionGenre { (genres, error) in
             if genres != nil && genres!.count > 0 {
                 self.getTrackFeaturesForEmotionGenre(getTrackFeaturesHandler: { (trackFeatures, error) in

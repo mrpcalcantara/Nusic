@@ -62,7 +62,7 @@ class SpotifyTrack: Hashable {
     
     required init(from decoder: Decoder) throws {
         
-        var container = try decoder.container(keyedBy: TrackCodingKeys.self)
+        let container = try decoder.container(keyedBy: TrackCodingKeys.self)
         songName = try container.decode(String.self, forKey: .songName)
         trackId = try container.decode(String.self, forKey: .trackId)
         trackUri = try container.decode(String.self, forKey: .trackUri)
@@ -126,7 +126,7 @@ class SpotifyTrack: Hashable {
             lhs.suggestedSong == rhs.suggestedSong
     }
     
-    func setImage() {
+    private func setImage() {
         let image = UIImage()
         image.downloadImage(from: URL(string: thumbNailUrl)!) { (image) in
             self.thumbNail = image;

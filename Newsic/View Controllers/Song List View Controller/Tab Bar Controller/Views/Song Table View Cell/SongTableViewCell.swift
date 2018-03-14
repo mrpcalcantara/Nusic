@@ -30,7 +30,7 @@ class SongTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configure(for track: NusicTrack) {
+    final func configure(for track: NusicTrack) {
         self.albumImage.contentMode = .scaleAspectFit
         self.albumImage.image = track.trackInfo.thumbNail;
         self.artistLabel.text = track.trackInfo.artist.namesToString();
@@ -45,7 +45,7 @@ class SongTableViewCell: UITableViewCell {
         self.layoutIfNeeded()
     }
     
-    func setColor(color: UIColor) {
+    final func setColor(color: UIColor) {
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
             self.backgroundColor = color
         }, completion: nil)

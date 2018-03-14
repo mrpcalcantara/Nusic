@@ -62,7 +62,7 @@ class MoodGenreListCell: UICollectionViewCell {
         
     }
     
-    func configure(for items: [String], section: Int, nusicType: NusicTypeSearch) {
+    final func configure(for items: [String], section: Int, nusicType: NusicTypeSearch) {
         let view = UINib(nibName: MoodGenreCell.className, bundle: nil);
         
         self.listCollectionView.backgroundColor = NusicDefaults.deselectedColor

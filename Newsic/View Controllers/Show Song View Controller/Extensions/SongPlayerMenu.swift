@@ -10,7 +10,7 @@ import UIKit
 
 extension ShowSongViewController {
         
-    func setupPlayerMenu() {
+    final func setupPlayerMenu() {
         setupConstraints(for: self.view.frame.size)
         
         showMore.setImage(UIImage(named: "ShowMore")?.withRenderingMode(.alwaysTemplate), for: .normal)
@@ -65,7 +65,7 @@ extension ShowSongViewController {
         self.view.layoutIfNeeded()
     }
     
-    func reloadPlayerMenu(for size: CGSize) {
+    final func reloadPlayerMenu(for size: CGSize) {
         setupConstraints(for: size)
         self.view.layoutIfNeeded()
     }
@@ -88,10 +88,10 @@ extension ShowSongViewController {
             }
             self.toggleLikeButtons();
             self.trackStackView.alpha = 0.9;
-            if let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as? SongOverlayView {
-                cardView.genreLabel.alpha = 0
-                cardView.songArtist.alpha = 0
-            }
+//            if let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as? SongOverlayView {
+//                cardView.genreLabel.alpha = 0
+//                cardView.songArtist.alpha = 0
+//            }
             
         }
         
@@ -141,10 +141,10 @@ extension ShowSongViewController {
                 if self.preferredPlayer == NusicPreferredPlayer.spotify {
                     self.songProgressView.alpha = 0
                 }
-                if let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as? SongOverlayView {
-                    cardView.genreLabel.alpha = 1
-                    cardView.songArtist.alpha = 1
-                }
+//                if let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as? SongOverlayView {
+//                    cardView.genreLabel.alpha = 1
+//                    cardView.songArtist.alpha = 1
+//                }
             }, completion: { (isCompleted) in
                 self.previousSong.isHidden = true
                 self.pausePlay.isHidden = true
@@ -191,7 +191,7 @@ extension ShowSongViewController {
         isPlayerMenuOpen = false
     }
     
-    func togglePlayerMenu(_ animated: Bool? = true) {
+    final func togglePlayerMenu(_ animated: Bool? = true) {
         if isPlayerMenuOpen {
             closePlayerMenu(animated: animated!)
             
@@ -201,7 +201,7 @@ extension ShowSongViewController {
         
     }
     
-    func hideButtons() {
+    final func hideButtons() {
         
         self.previousSong.isHidden = true
         self.pausePlay.isHidden = true
@@ -233,7 +233,7 @@ extension ShowSongViewController {
         self.view.layoutIfNeeded();
     }
     
-    func toggleLikeButtons() {
+    final func toggleLikeButtons() {
         if !self.isSongLiked {
             showLikeButtons()
         } else {
@@ -241,7 +241,7 @@ extension ShowSongViewController {
         }
     }
     
-    func showLikeButtons() {
+    final func showLikeButtons() {
         DispatchQueue.main.async {
             self.previousSong.alpha = 1
             self.previousSong.isUserInteractionEnabled = true
@@ -251,7 +251,7 @@ extension ShowSongViewController {
         
     }
     
-    func hideLikeButtons() {
+    final func hideLikeButtons() {
         DispatchQueue.main.async {
             self.previousSong.alpha = 0.25
             self.previousSong.isUserInteractionEnabled = false
@@ -260,20 +260,20 @@ extension ShowSongViewController {
         }
     }
     
-    func setupSongProgress(duration: Float) {
+    final func setupSongProgress(duration: Float) {
         let currentDuration = Int(duration)
         setupSlider(duration: duration)
         updateElapsedTime(elapsedTime: 0, duration: duration)
         songDurationLabel.text = convertElapsedSecondsToTime(interval: currentDuration);
     }
     
-    func updateElapsedTime(elapsedTime: Float, duration: Float ) {
+    final func updateElapsedTime(elapsedTime: Float, duration: Float ) {
         songElapsedTime.text = convertElapsedSecondsToTime(interval: Int(elapsedTime))
         let durationLeft = convertElapsedSecondsToTime(interval: Int(elapsedTime-duration))
         songDurationLabel.text = !durationLeft.contains("-") ? "-\(durationLeft)" : durationLeft
     }
     
-    func setupSlider(duration: Float) {
+    final func setupSlider(duration: Float) {
         songProgressSlider.maximumValue = duration
         songProgressSlider.minimumValue = 0
         songProgressSlider.setValue(0, animated: true)

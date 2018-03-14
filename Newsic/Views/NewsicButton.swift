@@ -66,7 +66,7 @@ class NusicButton: UIButton {
         }
     }
     
-    func setBackgroundColor(color: UIColor, forState: UIControlState) {
+    private func setBackgroundColor(color: UIColor, forState: UIControlState) {
         UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
 
         UIGraphicsGetCurrentContext()!.setFillColor(color.cgColor)

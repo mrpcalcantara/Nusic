@@ -42,12 +42,9 @@ extension NusicArtist: FirebaseModel {
     }
     
     internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
-//        let dict = ["name" : self.name]
-//        reference.child(userName).child(self.id!).updateChildValues(dict) { (error, reference) in
-//            saveCompleteHandler(reference, error)
-//        }
-        //        reference.child(userName).child(self.id!).updateChildValues(dict);
+        saveCompleteHandler(nil, nil)
     }
+    
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         reference.child(userName).removeValue { (error, databaseReference) in

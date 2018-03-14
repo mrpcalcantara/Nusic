@@ -10,7 +10,7 @@ import UIKit
 
 extension LikedSongListViewController {
     
-    func setupTableView() {
+    final func setupTableView() {
         songListTableView.delegate = self;
         songListTableView.dataSource = self;
         
@@ -36,7 +36,7 @@ extension LikedSongListViewController {
         songListTableView.backgroundColor = .clear
     }
     
-    func setupBackgroundView() {
+    final func setupBackgroundView() {
         if sectionTitles.count == 0 {
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: songListTableView.bounds.width, height: songListTableView.bounds.height))
             label.text = "No tracks have been liked so far. Like a song to add to your list!"
@@ -112,7 +112,7 @@ extension LikedSongListViewController: UITableViewDataSource {
         return regCell;
     }
     
-    func sortTableView(by type: SpotifyType) {
+    final func sortTableView(by type: SpotifyType) {
         switch type {
         case .artist:
             sectionTitles = likedTrackList.map { String($0.trackInfo.artist.namesToString().capitalizingFirstLetter().first!) }.getFirstLetterArray(removeDuplicates: true).sorted()

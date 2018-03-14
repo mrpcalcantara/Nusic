@@ -57,6 +57,11 @@ class SpotifyTrackFeature: Hashable {
         self.youtubeId         = youtubeId
     }
     
+    convenience init(featureDictionary: [String: AnyObject]) {
+        self.init()
+        self.mapDictionary(featureDictionary: featureDictionary)
+    }
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: TrackFeatureKeys.self)
         
@@ -105,7 +110,7 @@ class SpotifyTrackFeature: Hashable {
                 lhs.youtubeId == rhs.youtubeId
     }
     
-    func toDictionary() -> [String: AnyObject] {
+    final func toDictionary() -> [String: AnyObject] {
         var featureDictionary: [String: AnyObject] = [:]
         
         featureDictionary["acousticness"] = self.acousticness as AnyObject
@@ -131,7 +136,7 @@ class SpotifyTrackFeature: Hashable {
         return featureDictionary;
     }
     
-    func mapDictionary(featureDictionary: [String: AnyObject]) {
+    final func mapDictionary(featureDictionary: [String: AnyObject]) {
         
         self.acousticness      = featureDictionary["acousticness"] as? Double
         self.analysisUrl       = featureDictionary["analysis_url"] as? String

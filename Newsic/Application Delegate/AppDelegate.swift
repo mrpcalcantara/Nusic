@@ -254,9 +254,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
                 
                 let alert = PopupDialog(title: title, message: message)
                 if let viewC = alert.viewController as? PopupDialogDefaultViewController {
-                    setupPopupDialogAppearance()
-                    
-                    let dialogAppearance = PopupDialogDefaultView.appearance()
                     viewC.titleFont            = UIFont(name: "Futura", size: 16)!
                     viewC.titleColor           = UIColor(white: 1, alpha: 1)
                     viewC.titleTextAlignment   = .center
@@ -266,8 +263,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 
                 }
                 
-                
-                print()
                 let action1 = { () -> Void in
                     self.handleReceivedRemoteNotification(userInfo: userInfo)
                 }
@@ -311,39 +306,20 @@ extension AppDelegate : MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         print("Firebase registration token: \(fcmToken)")
         fcmTokenId = fcmToken
-        // TODO: If necessary send token to application server.
-        // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
-    // [END refresh_token]
     
-    // [START ios_10_data_message]
-    // Receive data messages on iOS 10+ directly from FCM (bypassing APNs) when the app is in the foreground.
-    // To enable direct data messages, you can set Messaging.messaging().shouldEstablishDirectChannel to true.
     func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
         print("Received data message: \(remoteMessage.appData)")
-        
     }
     
     func handleReceivedRemoteNotification(userInfo: [AnyHashable: Any]) {
-        // Print message ID.
-        //        let mainStoryboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        //        let initialViewController: NusicPageViewController = mainStoryboard.instantiateViewController(withIdentifier: "nusicPageViewController") as! NusicPageViewController
         UIApplication.shared.applicationIconBadgeNumber += 1
         UserDefaults.standard.set(userInfo["spotifyTrackId"] as! String, forKey: "suggestedSpotifyTrackId")
         UserDefaults.standard.synchronize()
         NotificationCenter.default.post(name: Notification.Name(rawValue: "nusicADayNotificationPushed"), object: nil)
-        print(userInfo["spotifyTrackId"])
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }
-        //
-        //        self.window = UIWindow(frame: UIScreen.main.bounds)
-        //        self.window?.rootViewController = initialViewController
-        //        self.window?.makeKeyAndVisible()
-        //
-        // Print full message.
-        print(userInfo)
     }
-    // [END ios_10_data_message]
 }
 

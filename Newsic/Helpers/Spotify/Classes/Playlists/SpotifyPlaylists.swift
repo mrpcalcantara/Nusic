@@ -8,7 +8,7 @@
 
 extension Spotify {
     
-    func getAllPlaylists(for pageRequest: URLRequest? = nil, currentPlaylistList: [SPTPartialPlaylist]? = nil, fetchedPlaylistsHandler: @escaping ([SPTPartialPlaylist], NusicError?) -> ()) {
+    final func getAllPlaylists(for pageRequest: URLRequest? = nil, currentPlaylistList: [SPTPartialPlaylist]? = nil, fetchedPlaylistsHandler: @escaping ([SPTPartialPlaylist], NusicError?) -> ()) {
         
         var nextPagePlaylistList = currentPlaylistList == nil ? [] : currentPlaylistList;
         
@@ -42,18 +42,12 @@ extension Spotify {
                 
                 
             } else {
-                switch statusCode {
-                case 400...499:
-                    fetchedPlaylistsHandler([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                case 500...599:
-                    fetchedPlaylistsHandler([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                default: fetchedPlaylistsHandler([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                }
+                fetchedPlaylistsHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
             }
         })
     }
     
-    func checkPlaylistExists(playlistId: String, playlistExistHandler: @escaping(Bool?, NusicError?) -> ()) {
+    final func checkPlaylistExists(playlistId: String, playlistExistHandler: @escaping(Bool?, NusicError?) -> ()) {
         self.getAllPlaylists { (playListList, error) in
             if let error = error {
                 playlistExistHandler(nil, error);
@@ -67,7 +61,7 @@ extension Spotify {
         }
     }
     
-    func createNusicPlaylist(playlistName: String, playlistCreationHandler: @escaping(Bool?, NusicPlaylist?, NusicError?) -> ()) {
+    final func createNusicPlaylist(playlistName: String, playlistCreationHandler: @escaping(Bool?, NusicPlaylist?, NusicError?) -> ()) {
         let username: String! = auth.session.canonicalUsername
         let accessToken: String! = auth.session.accessToken!
         let url = "https://api.spotify.com/v1/users/\(username!)/playlists"
@@ -91,14 +85,7 @@ extension Spotify {
                     let nusicPlaylist = NusicPlaylist(name : playlistName, id: playlistId, userName: username)
                     playlistCreationHandler(true, nusicPlaylist, nil)
                 } else {
-                    switch statusCode {
-                    case 400...499:
-                        playlistCreationHandler(false, nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                    case 500...599:
-                        playlistCreationHandler(false, nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                    default: playlistCreationHandler(false, nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError))
-                        ;
-                    }
+                    playlistCreationHandler(false, nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
                 }
             } catch {
                 playlistCreationHandler(false, nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError))

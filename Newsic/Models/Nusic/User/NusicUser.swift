@@ -40,7 +40,7 @@ class NusicUser: Iterable {
         setupListeners()
     }
     
-    func getImage(imageURL: String) {
+    private func getImage(imageURL: String) {
         let image = UIImage();
         if imageURL != "" {
             let url = URL(string: imageURL)
@@ -54,7 +54,7 @@ class NusicUser: Iterable {
 
 extension NusicUser: FirebaseModel {
     
-    func setupListeners() {
+    private func setupListeners() {
         
         //Delete
         Database.database().reference().child("users").child(userName).observe(.childRemoved) { (dataSnapshot) in
@@ -85,7 +85,7 @@ extension NusicUser: FirebaseModel {
                           "displayName": displayName,
                           "territory": territory,
                           "isPremium": isPremium! ? 1 : 0,
-                          "version": version] as [String : Any]
+                          "version": version as Any] as [String : Any]
         
         
         reference.child("users").child(userName).updateChildValues(dictionary) { (error, reference) in
@@ -109,14 +109,14 @@ extension NusicUser: FirebaseModel {
         }
     }
     
-    func getUser(getUserHandler: @escaping (NusicUser?, NusicError?) -> ()) {
+    final func getUser(getUserHandler: @escaping (NusicUser?, NusicError?) -> ()) {
         getData { (dictionary, error) in
             if let dictionary = dictionary, dictionary.count > 1 {
                 self.userName = dictionary["canonicalUserName"] as? String ?? self.userName
                 
                 self.displayName = dictionary["displayName"] as? String ?? self.displayName
                 if let isPremiumValue = dictionary["isPremium"] as? NSNumber {
-                    self.isPremium = Bool(truncating: isPremiumValue) ?? self.isPremium
+                    self.isPremium = Bool(truncating: isPremiumValue)
                 }
                 
                 if let territory = dictionary["territory"] as? String {
@@ -152,7 +152,7 @@ extension NusicUser: FirebaseModel {
         }
     }
     
-    func saveUser(saveUserHandler: @escaping (Bool?, NusicError?) -> ()) {
+    final func saveUser(saveUserHandler: @escaping (Bool?, NusicError?) -> ()) {
         saveData { (databaseReference, error) in
             if let error = error {
                 saveUserHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveUser.rawValue, systemError: error))
@@ -164,7 +164,7 @@ extension NusicUser: FirebaseModel {
         }
     }
     
-    func deleteUser(deleteUserHandler: @escaping (Bool?, NusicError?) -> ()) {
+    final func deleteUser(deleteUserHandler: @escaping (Bool?, NusicError?) -> ()) {
         deleteData { (databaseReference, error) in
             if let error = error {
                 deleteUserHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteUser.rawValue, systemError: error))
@@ -174,7 +174,7 @@ extension NusicUser: FirebaseModel {
         }
     }
     
-    func getFavoriteGenres(getGenresHandler: @escaping ([String: Int]?, NusicError?) -> ()) {
+    final func getFavoriteGenres(getGenresHandler: @escaping ([String: Int]?, NusicError?) -> ()) {
         let closureSelf = self;
 //        reference.child("genres").child(userName).observe(.value, with: { (dataSnapshot) in
         reference.child("genres").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
@@ -203,7 +203,7 @@ extension NusicUser: FirebaseModel {
         })
     }
     
-    func saveFavoriteGenres(saveGenresHandler: @escaping (Bool?, NusicError?) -> ()) {
+    final func saveFavoriteGenres(saveGenresHandler: @escaping (Bool?, NusicError?) -> ()) {
         if let favoriteGenres = favoriteGenres {
             var dict:[String: Int] = [:]
             for genre in favoriteGenres {
@@ -219,7 +219,7 @@ extension NusicUser: FirebaseModel {
         }
     }
     
-    func deleteFavoriteGenres(deleteGenresHandler: @escaping (Bool?, NusicError?) -> ()) {
+    final func deleteFavoriteGenres(deleteGenresHandler: @escaping (Bool?, NusicError?) -> ()) {
         Database.database().reference().child("genres").child(userName).removeValue { (error, reference) in
             if let error = error {
                 deleteGenresHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteFavoriteGenres.rawValue, systemError: error))
@@ -229,7 +229,7 @@ extension NusicUser: FirebaseModel {
         }
     }
     
-    func updateGenreCount(for genre: String, updateGenreHandler: @escaping (Bool?, NusicError?) -> ()) {
+    final func updateGenreCount(for genre: String, updateGenreHandler: @escaping (Bool?, NusicError?) -> ()) {
         if favoriteGenres == nil {
             self.favoriteGenres = []
         }
@@ -264,7 +264,7 @@ extension NusicUser: FirebaseModel {
     //Settings
     //----------------
     
-    func getSettings(fetchSettingsHandler: @escaping (NusicUserSettings?, NusicError?) -> ()) {
+    final func getSettings(fetchSettingsHandler: @escaping (NusicUserSettings?, NusicError?) -> ()) {
         reference.child("settings").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
             let dictionary = dataSnapshot.value as? NSDictionary
             if let dictionary = dictionary {
@@ -297,7 +297,7 @@ extension NusicUser: FirebaseModel {
         }
     }
     
-    func saveSettings(saveSettingsHandler: @escaping(Bool, NusicError?) -> ()) {
+    final func saveSettings(saveSettingsHandler: @escaping(Bool, NusicError?) -> ()) {
         let spotify = settingValues.spotifySettings?.toDictionary()
         let dictionary = ["preferredPlayer": settingValues.preferredPlayer?.rawValue,
                           "useMobileData": settingValues.useMobileData! ? 1 : 0,

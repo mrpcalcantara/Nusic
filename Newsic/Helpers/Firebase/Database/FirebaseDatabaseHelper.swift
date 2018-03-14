@@ -77,11 +77,6 @@ class FirebaseDatabaseHelper {
         }
     }
     
-    private class func fetchAllDataForDelete(user: String, fetchAllDataHandler: @escaping ([[String: AnyObject]]) -> ()) {
-        let user = NusicUser(userName: user)
-    
-    }
-    
     class func fetchTrackFeatures(for user: String, moodObject: NusicMood, fetchTrackFeaturesHandler: @escaping ([SpotifyTrackFeature]?) -> ()) {
         var trackFeatures = [SpotifyTrackFeature]()
         var index = 0
@@ -94,9 +89,7 @@ class FirebaseDatabaseHelper {
                         let trackId = (child as! DataSnapshot).key
                         reference.child("trackFeatures").child(trackId).observeSingleEvent(of: .value, with: { (childSnapshot) in
                             if childSnapshot.exists() {
-                                var features = SpotifyTrackFeature()
-                                features.mapDictionary(featureDictionary: childSnapshot.value as! [String: AnyObject])
-                                trackFeatures.append(features)
+                                trackFeatures.append(SpotifyTrackFeature(featureDictionary: childSnapshot.value as! [String: AnyObject]))
                             }
                             index += 1
                             if index >= dataSnapshot.childrenCount - 1 {

@@ -8,7 +8,7 @@
 
 extension Spotify {
     
-    func getTrackInfo(for trackList: [String], offset: Int, currentExtractedTrackList: [SpotifyTrack], trackInfoListHandler: @escaping([SpotifyTrack]?, NusicError?) -> ()) {
+    final func getTrackInfo(for trackList: [String], offset: Int, currentExtractedTrackList: [SpotifyTrack], trackInfoListHandler: @escaping([SpotifyTrack]?, NusicError?) -> ()) {
         
         if trackList.count <= 0 {
             return;
@@ -63,20 +63,14 @@ extension Spotify {
                         trackInfoListHandler(sortedList, nil);
                     }
                 } else {
-                    switch statusCode {
-                    case 400...499:
-                        trackInfoListHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                    case 500...599:
-                        trackInfoListHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                    default: trackInfoListHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                    }
+                    trackInfoListHandler(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
                 }
             })
             
         } catch { }
     }
     
-    func getTrackDetails(trackId: String, fetchedTrackDetailsHandler: @escaping (SpotifyTrackFeature?, NusicError?) -> () ) {
+    final func getTrackDetails(trackId: String, fetchedTrackDetailsHandler: @escaping (SpotifyTrackFeature?, NusicError?) -> () ) {
         do {
             let trackUrl = URL(string: "spotify:track:\(trackId)")!
             var trackFeaturesRequest = try SPTTrack.createRequest(forTrack: trackUrl, withAccessToken: auth.session.accessToken!, market: self.user.territory)
@@ -89,13 +83,7 @@ extension Spotify {
                         fetchedTrackDetailsHandler(decodedTrackFeatures, nil)
                     }
                 } else {
-                    switch statusCode {
-                    case 400...499:
-                        fetchedTrackDetailsHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                    case 500...599:
-                        fetchedTrackDetailsHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                    default: fetchedTrackDetailsHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                    }
+                    fetchedTrackDetailsHandler(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
                 }
             })
         } catch {
@@ -104,7 +92,7 @@ extension Spotify {
         }
     }
     
-    func getTrackArtist(trackId: String, fetchedTrackArtistHandler: @escaping (String?, NusicError?) -> () ) {
+    final func getTrackArtist(trackId: String, fetchedTrackArtistHandler: @escaping (String?, NusicError?) -> () ) {
         do {
             let trackUrl = URL(string: "spotify:track:\(trackId)")!
             let trackRequest = try SPTTrack.createRequest(forTrack: trackUrl, withAccessToken: auth.session.accessToken!, market: self.user.territory)
@@ -121,13 +109,7 @@ extension Spotify {
                     }
                     
                 } else {
-                    switch statusCode {
-                    case 400...499:
-                        fetchedTrackArtistHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError));
-                    case 500...599:
-                        fetchedTrackArtistHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError));
-                    default: fetchedTrackArtistHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                    }
+                    fetchedTrackArtistHandler(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
                 }
             })
         } catch {
@@ -136,8 +118,7 @@ extension Spotify {
         }
     }
     
-    
-    func getAllTracksForPlaylist(playlistId: String, fetchGenres: Bool? = true, nextTrackPageRequest: URLRequest? = nil, currentTrackList: [SpotifyTrack]? = nil, fetchedPlaylistTracks: @escaping([SpotifyTrack]?, NusicError?) -> ()) {
+    final func getAllTracksForPlaylist(playlistId: String, fetchGenres: Bool? = true, nextTrackPageRequest: URLRequest? = nil, currentTrackList: [SpotifyTrack]? = nil, fetchedPlaylistTracks: @escaping([SpotifyTrack]?, NusicError?) -> ()) {
         
         let userId = auth.session.canonicalUsername;
         var currentList: [SpotifyTrack] = currentTrackList != nil ? currentTrackList! : [];
@@ -154,10 +135,11 @@ extension Spotify {
             if isSuccess {
                 do {
                     let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
-                    let trackList = jsonObject["items"] as! [[String:AnyObject]];
+                    let trackList = jsonObject["items"] as! [[String:AnyObject]]
                     for track in trackList {
-                        
-                        if let trackData = try? JSONSerialization.data(withJSONObject: track, options: JSONSerialization.WritingOptions.prettyPrinted) {
+                        if
+                            let trackChild = track["track"] as? [String : AnyObject],
+                            let trackData = try? JSONSerialization.data(withJSONObject: trackChild, options: JSONSerialization.WritingOptions.prettyPrinted) {
                             if let decodedTrack = try? JSONDecoder().decode(SpotifyTrack.self, from: trackData) {
                                 currentList.append(decodedTrack);
                             }
@@ -181,7 +163,7 @@ extension Spotify {
                         
                         
                         if fetchGenres! {
-                            let spotifyArtistList = sortedList.map({ $0.artist.map({ $0.uri }) }) as! [String]
+                            let spotifyArtistList = sortedList.flatMap({ $0.artist.map({ $0.uri }) }) as! [String]
                             self.getAllGenresForArtists(spotifyArtistList, offset: 0, artistGenresHandler: { (fetchedArtistList, error) in
                                 if let error = error {
                                     fetchedPlaylistTracks(nil, error)
@@ -201,25 +183,17 @@ extension Spotify {
                         } else {
                             fetchedPlaylistTracks(sortedList, nil);
                         }
-                        
-                        
                     }
                 } catch { }
                 
             } else {
-                switch statusCode {
-                case 400...499:
-                    fetchedPlaylistTracks(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                case 500...599:
-                    fetchedPlaylistTracks(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                default: fetchedPlaylistTracks(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                }
+                fetchedPlaylistTracks(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
             }
         })
         
     }
     
-    func addTracksToPlaylist(playlistId: String, trackId: String, addTrackHandler: @escaping(Bool, NusicError?) -> ()) {
+    final func addTracksToPlaylist(playlistId: String, trackId: String, addTrackHandler: @escaping(Bool, NusicError?) -> ()) {
         let username: String! = auth.session.canonicalUsername!
         let accessToken: String! = auth.session.accessToken!
         let urlString = "https://api.spotify.com/v1/users/\(username!)/playlists/\(playlistId)/tracks?uris=\(trackId)"
@@ -237,24 +211,12 @@ extension Spotify {
             if isSuccess {
                 addTrackHandler(true, nil);
             } else {
-                switch statusCode {
-                case 400...499:
-                    addTrackHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                case 500...599:
-                    addTrackHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                default: addTrackHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                }
+                addTrackHandler(false, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
             }
         })
-//        do {
-//            
-//        } catch {
-//            addTrackHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-//            print("error creating request adding track \(trackId) to playlist \(playlistId)");
-//        }
     }
     
-    func removeTrackFromPlaylist(playlistId: String, tracks: [String: String], removeTrackHandler: @escaping(Bool, NusicError?) -> ()) {
+    final func removeTrackFromPlaylist(playlistId: String, tracks: [String: String], removeTrackHandler: @escaping(Bool, NusicError?) -> ()) {
         let username: String! = auth.session.canonicalUsername!
         let accessToken: String! = auth.session.accessToken!
         let url = "https://api.spotify.com/v1/users/\(username!)/playlists/\(playlistId)/tracks"
@@ -271,7 +233,6 @@ extension Spotify {
         
         while element != nil {
             if let element = element {
-//                tracksToRemove += "{\"positions\":[\(element.key)],\"uri\":\"\(element.value)\"},"
                 tracksToRemove += "{\"uri\":\"\(element.value)\"},"
             }
             element = iterator.next();
@@ -286,25 +247,13 @@ extension Spotify {
             if isSuccess {
                 removeTrackHandler(true, nil);
             } else {
-                switch statusCode {
-                case 400...499:
-                    removeTrackHandler(true, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError));
-                case 500...599:
-                    removeTrackHandler(true, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError));
-                default: removeTrackHandler(true, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                }
+                removeTrackHandler(true, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
             }
         })
-//        do {
-//            
-//        } catch {
-//            removeTrackHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-//            print("error creating request deleting track from playlist \(playlistId)");
-//        }
     }
     
-    func isTrackInPlaylist(trackId: String, playlistId: String, checkTrackHandler: @escaping (Bool) -> ()) {
-        getAllTracksForPlaylist(playlistId: playlistId) { (trackList, error) in
+    final func isTrackInPlaylist(trackId: String, playlistId: String, checkTrackHandler: @escaping (Bool) -> ()) {
+        getAllTracksForPlaylist(playlistId: playlistId, fetchGenres: false) { (trackList, error) in
             if let trackList = trackList {
                 let containsTrack = trackList.contains(where: { (playlistTrack) -> Bool in
                     return playlistTrack.trackId == trackId

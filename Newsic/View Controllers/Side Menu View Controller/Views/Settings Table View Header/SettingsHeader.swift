@@ -47,7 +47,7 @@ class SettingsHeader: NusicView {
         self.addSubview(contentView)
     }
     
-    func configure(image: UIImage? = nil, imageURL: String? = nil, username: String) {
+    final func configure(image: UIImage? = nil, imageURL: String? = nil, username: String) {
         loadFromNib()
         
         self.backgroundColor = UIColor.clear

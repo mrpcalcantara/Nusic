@@ -30,7 +30,6 @@ class ShowSongViewController: NusicDefaultViewController {
                 self.fetchNewCard(numberOfSongs: 3-cardList.count, cardFetchingHandler: { (fetched) in
                     
                 })
-
             }
         }
     }
@@ -51,7 +50,7 @@ class ShowSongViewController: NusicDefaultViewController {
         didSet {
             if let appendedTrackId = suggestedTrackIdList.last?.keys.first {
                 fetchDataForLikedTrack(trackId: [appendedTrackId], handler: { (nusicTracks) in
-                    if var nusicTrack = nusicTracks.first {
+                    if let nusicTrack = nusicTracks.first {
                         if let index = self.suggestedTrackIdList.index(where: { (dict) -> Bool in
                             return dict.keys.first == appendedTrackId
                         }) {
@@ -381,10 +380,8 @@ class ShowSongViewController: NusicDefaultViewController {
                 if !self.likedTrackIdList.contains(trackId) {
                     self.likedTrackIdList.append(trackId)
                     self.reference.child("trackFeatures").child(trackId).observe(.value, with: { (childSnapshot) in
-                        if childSnapshot.exists() {
-                            var features = SpotifyTrackFeature()
-                            features.mapDictionary(featureDictionary: childSnapshot.value as! [String: AnyObject])
-                            self.trackFeatures.append(features)
+                        if childSnapshot.exists(), let dict = childSnapshot.value as? [String: AnyObject] {
+                            self.trackFeatures.append(SpotifyTrackFeature(featureDictionary: dict))
                         }
                     })
                 }
@@ -591,7 +588,7 @@ class ShowSongViewController: NusicDefaultViewController {
         
     }
     
-    func showSwiftSpinner(delay: Double? = nil, text: String? = nil, duration: Double? = nil) {
+    final func showSwiftSpinner(delay: Double? = nil, text: String? = nil, duration: Double? = nil) {
         
         var spinnerText = ""
         if let text = text {
@@ -611,7 +608,7 @@ class ShowSongViewController: NusicDefaultViewController {
             }
             
         } else {
-            if let currentMoodDyad = moodObject?.emotions.first?.basicGroup {
+            if (moodObject?.emotions.first?.basicGroup) != nil {
                 spinnerText = "Loading..."
                 SwiftSpinner.show(spinnerText, animated: true).addTapHandler({
                     self.goToPreviousViewController()
@@ -621,7 +618,7 @@ class ShowSongViewController: NusicDefaultViewController {
         }
     }
     
-    func setupConstraints(for size: CGSize) {
+    final func setupConstraints(for size: CGSize) {
         //Landscape
         if size.width > size.height {
             self.songCardTrailingConstraint.constant = -size.width*(1/3)
@@ -645,7 +642,7 @@ class ShowSongViewController: NusicDefaultViewController {
         }
     }
     
-    func updateBadgeIcon(count: Int) {
+    final func updateBadgeIcon(count: Int) {
         if let items = self.navbar.items, items.count > 0 {
             let text = count > 0 ? String(count) : nil
             (self.navbar.items?.first?.rightBarButtonItem as! BadgeBarButtonItem).badgeText = text
@@ -674,17 +671,17 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
 
 extension ShowSongViewController {
 //
-    @objc func toggleSongMenu() {
+    @objc final func toggleSongMenu() {
         if let parent = parent as? NusicPageViewController {
             parent.scrollToNextViewController()
         }
     }
     
-    @objc func backToSongPicker() {
+    @objc final func backToSongPicker() {
         goToPreviousViewController()
     }
     
-    @objc func updateAuthObject() {
+    @objc final func updateAuthObject() {
         self.auth = (UIApplication.shared.delegate as! AppDelegate).auth
     }
     
@@ -793,7 +790,7 @@ extension ShowSongViewController {
         } else {
             self.getYouTubeResults(tracks: selectedSongs!, youtubeSearchHandler: { (tracks) in
                 var nusicTracks:[NusicTrack] = Array()
-                for var track in tracks {
+                for track in tracks {
                     track.suggestionInfo?.isNewSuggestion = track.trackInfo.suggestedSong
                     nusicTracks.append(track)
                 }
@@ -819,7 +816,7 @@ extension ShowSongViewController {
         
     }
     
-    func fetchNewCardsFromSpotify(numberOfSongs: Int? = 1, fetchedCardsHandler: @escaping ([NusicTrack]) -> ()) {
+    final func fetchNewCardsFromSpotify(numberOfSongs: Int? = 1, fetchedCardsHandler: @escaping ([NusicTrack]) -> ()) {
         switch musicSearchType {
         case NusicTrackSearch.normal:
             fetchNewCardNormal(numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
@@ -1006,7 +1003,7 @@ extension ShowSongViewController {
         }
     }
     
-    func updateCurrentGenresAndFeatures(updateGenresFeaturesHandler: @escaping ([String]?, [SpotifyTrackFeature]?) -> ()) {
+    final func updateCurrentGenresAndFeatures(updateGenresFeaturesHandler: @escaping ([String]?, [SpotifyTrackFeature]?) -> ()) {
         getGenresAndFeaturesForMoods(genresFeaturesHandler: { (genres, trackFeatures) in
             if let genres = genres {
                 self.moodObject?.associatedGenres = genres
@@ -1052,22 +1049,16 @@ extension ShowSongViewController {
         })
     }
     
-    func addSongsToCardList(for startIndex: Int?, tracks: [NusicTrack]) {
+    final func addSongsToCardList(for startIndex: Int?, tracks: [NusicTrack]) {
         for track in tracks {
             self.addSongToCardPlaylist(index: startIndex, track: track)
         }
         DispatchQueue.main.async {
             self.songCardView.reloadData();
-//            if self.songCardView.currentCardIndex == 0 {
-//                self.songCardView.reloadCardsInIndexRange(0..<3)
-//            } else {
-//                
-//            }
-            
         }
     }
     
-    func getNextSong() {
+    final func getNextSong() {
         let handler: (Bool) -> Void = { didHandle in
             if self.songCardView.countOfVisibleCards < 3 || !didHandle {
                 self.fetchNewCard(cardFetchingHandler: nil)
@@ -1084,13 +1075,13 @@ extension ShowSongViewController {
         }
     }
     
-    func playCard(at index:Int) {
+    final func playCard(at index:Int) {
         if preferredPlayer == NusicPreferredPlayer.spotify {
             actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.trackUri);
         }
     }
     
-    func removeTrackFromLikedTracks(track:NusicTrack, indexPath: IndexPath, removeTrackHandler: @escaping (Bool) -> ()) {
+    final func removeTrackFromLikedTracks(track:NusicTrack, indexPath: IndexPath, removeTrackHandler: @escaping (Bool) -> ()) {
         
         let index = likedTrackList.count - indexPath.row-1
         let strIndex = String(index)
@@ -1134,7 +1125,7 @@ extension ShowSongViewController {
         return true;
     }
 
-    func playSelectedCard(track: NusicTrack) {
+    final func playSelectedCard(track: NusicTrack) {
         let frontPosition = songCardView.currentCardIndex;
         
         isSongLiked = true; toggleLikeButtons();
@@ -1145,7 +1136,7 @@ extension ShowSongViewController {
         }
     }
     
-    func containsTrack(trackId: String) -> Bool {
+    final func containsTrack(trackId: String) -> Bool {
         for track in likedTrackList {
             if track.trackInfo.trackId == trackId {
                 return true;

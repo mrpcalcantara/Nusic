@@ -27,7 +27,7 @@ class CollectionViewHeader: UICollectionReusableView {
         // Initialization code
     }
     
-    func configure(label: String) {
+    final func configure(label: String) {
         self.sectionHeaderLabel.text = label
         self.sectionHeaderLabel.textColor = NusicDefaults.foregroundThemeColor
         self.addBlurEffect(style: .dark, alpha: 1);

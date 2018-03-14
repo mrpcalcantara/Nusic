@@ -54,7 +54,7 @@ class SideMenuViewController: NusicDefaultViewController {
         super.viewDidLayoutSubviews();
     }
    
-    @objc func dismissMenu() {
+    @objc private func dismissMenu() {
         let vc = self.parent as! NusicPageViewController
         vc.scrollToViewController(index: 1)
     }
@@ -82,7 +82,7 @@ class SideMenuViewController: NusicDefaultViewController {
         navigationBar.items = [navItem]
     }
 
-    func logoutUser() {
+    final func logoutUser() {
         
         UserDefaults.standard.removeObject(forKey: "SpotifySession");
         UserDefaults.standard.synchronize();
