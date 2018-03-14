@@ -17,7 +17,7 @@ extension Spotify {
         var currentTrackList:[String] = []
         let checkLimit = currentExtractedTrackList.count-offset
         
-        
+        //Spotify Limitation
         if checkLimit > 50 {
             currentTrackList = Array(trackList[offset...offset+49]);
         } else {
@@ -41,52 +41,13 @@ extension Spotify {
                     let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
                     let extractedTrackList = jsonObject["tracks"] as! [[String:AnyObject]];
                     for track in extractedTrackList {
-                        let artistInfo = track["artists"] as! [[String: AnyObject]]
-                        let albumInfo = track["album"] as! [String: AnyObject]
-                        let imageInfo = albumInfo["images"] as! [[String: AnyObject]]
-                        var artists = ""
-                        let index = 0
-                        let artistCount = artistInfo.count
-                        var artistId = ""
-                        var artistUri = ""
                         
-                        for artist in artistInfo {
-                            if let artistName = artist["name"] as? String, let id = artist["id"] as? String, let uri = artist["uri"] as? String {
-                                artists += "\(artistName)"
-                                if index <= artistCount - 1 {
-                                    artists += ", ";
-                                }
-                                artistId = id
-                                artistUri = uri
-                                
+                        if let trackData = try? JSONSerialization.data(withJSONObject: track, options: JSONSerialization.WritingOptions.prettyPrinted) {
+                            if let decodedTrack = try? JSONDecoder().decode(SpotifyTrack.self, from: trackData) {
+                                spotifyTrackList.append(decodedTrack);
                             }
-                            
-                        }
-                        artists.removeLast(); artists.removeLast();
-                        
-                        var trackId = ""
-                        if let fetchedTrackId = track["id"] as? String {
-                            trackId = fetchedTrackId
                         }
                         
-                        var linkedTrackId = trackId
-                        if let linkedFrom:[String: AnyObject] = track["linked_from"] as? [String: AnyObject] {
-                            linkedTrackId = linkedFrom["id"] as! String
-                        }
-                        
-                        
-                        var songExternalHref = ""
-                        if let trackHref = track["external_urls"] as? [String: AnyObject] {
-                            songExternalHref = trackHref["spotify"] as! String
-                        }
-                        
-                        let albumImage = imageInfo[1]["url"] as? String;
-                        if let trackName = track["name"] as? String,
-                            let trackUri = track["uri"] as? String,
-                            let albumImage = albumImage {
-                            let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, linkedFromTrackId: linkedTrackId, songName: trackName, songHref: songExternalHref, artist: SpotifyArtist(artistName: artists, uri: artistUri, id: artistId), audioFeatures: nil);
-                            spotifyTrackList.append(track);
-                        }
                     }
                     
                     let nextPage = jsonObject["next"] as? String
@@ -124,13 +85,8 @@ extension Spotify {
             executeSpotifyCall(with: trackFeaturesRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
                 if isSuccess {
-                    do {
-                        let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
-                        var spotifyTrackFeature = SpotifyTrackFeature()
-                        spotifyTrackFeature.mapDictionary(featureDictionary: jsonObject);
-                        fetchedTrackDetailsHandler(spotifyTrackFeature, nil)
-                    } catch {
-                        print("error parsing track features for track \(trackId)");
+                    if let decodedTrackFeatures = try? JSONDecoder().decode(SpotifyTrackFeature.self, from: data!) {
+                        fetchedTrackDetailsHandler(decodedTrackFeatures, nil)
                     }
                 } else {
                     switch statusCode {
@@ -198,62 +154,15 @@ extension Spotify {
             if isSuccess {
                 do {
                     let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
-                    let artistList = jsonObject["items"] as! [[String:AnyObject]];
-                    for artist in artistList {
-                        let trackInfo = artist["track"] as! [String: AnyObject]
-                        let artistInfo = trackInfo["artists"] as! [[String: AnyObject]]
-                        let albumInfo = trackInfo["album"] as! [String: AnyObject]
-                        let imageInfo = albumInfo["images"] as! [[String: AnyObject]]
-                        let addedAt = artist["added_at"] as! String
+                    let trackList = jsonObject["items"] as! [[String:AnyObject]];
+                    for track in trackList {
                         
-                        let dateFormatter = DateFormatter();
-                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-                        
-                        let dateAdded = dateFormatter.date(from: addedAt)
-                        
-                        var artists = ""
-                        var artistId = ""
-                        var artistUri = ""
-                        let index = 0
-                        let artistCount = artistInfo.count
-                        for artist in artistInfo {
-                            if let artistName = artist["name"] as? String, let id = artist["id"] as? String, let uri = artist["uri"] as? String {
-                                artists += "\(artistName)"
-                                if index <= artistCount - 1 {
-                                    artists += ", ";
-                                }
-                                artistId = id
-                                artistUri = uri
-                                
+                        if let trackData = try? JSONSerialization.data(withJSONObject: track, options: JSONSerialization.WritingOptions.prettyPrinted) {
+                            if let decodedTrack = try? JSONDecoder().decode(SpotifyTrack.self, from: trackData) {
+                                currentList.append(decodedTrack);
                             }
-                            
                         }
                         
-                        
-                        artists.removeLast(); artists.removeLast();
-                        
-                        var songExternalHref = ""
-                        if let trackHref = trackInfo["external_urls"] as? [String: AnyObject] {
-                            songExternalHref = trackHref["spotify"] as! String
-                        }
-                        
-                        var trackId = ""
-                        if let fetchedTrackId = trackInfo["id"] as? String {
-                            trackId = fetchedTrackId
-                        }
-                        
-                        var linkedTrackId = trackId
-                        if let linkedFrom:[String: AnyObject] = trackInfo["linked_from"] as? [String: AnyObject] {
-                            linkedTrackId = linkedFrom["id"] as! String
-                        }
-                        //print(artists)
-                        let albumImage = imageInfo[1]["url"] as? String;
-                        if let trackName = trackInfo["name"] as? String,
-                            let trackUri = trackInfo["uri"] as? String,
-                            let albumImage = albumImage {
-                            let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, linkedFromTrackId: linkedTrackId, songName: trackName, songHref: songExternalHref, artist: SpotifyArtist(artistName: artists, uri: artistUri, id: artistId), addedAt: dateAdded, audioFeatures: nil);
-                            currentList.append(track);
-                        }
                     }
                     
                     let nextPage = jsonObject["next"] as? String
@@ -272,7 +181,7 @@ extension Spotify {
                         
                         
                         if fetchGenres! {
-                            let spotifyArtistList = sortedList.map({ $0.artist.uri }) as! [String]
+                            let spotifyArtistList = sortedList.map({ $0.artist.map({ $0.uri }) }) as! [String]
                             self.getAllGenresForArtists(spotifyArtistList, offset: 0, artistGenresHandler: { (fetchedArtistList, error) in
                                 if let error = error {
                                     fetchedPlaylistTracks(nil, error)
@@ -280,9 +189,9 @@ extension Spotify {
                                     if let fetchedArtistList = fetchedArtistList {
                                         for artist in fetchedArtistList {
                                             if let index = sortedList.index(where: { (track) -> Bool in
-                                                return track.artist.uri == artist.uri
+                                                return track.artist.map({$0.uri}).contains(where: { $0 == artist.uri })
                                             }) {
-                                                sortedList[index].artist = artist
+                                                sortedList[index].artist.updateArtist(artist: artist)
                                             }
                                         }
                                     }

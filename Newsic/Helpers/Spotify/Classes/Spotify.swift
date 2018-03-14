@@ -10,7 +10,7 @@ import Foundation
 
 class Spotify {
     
-    fileprivate var genreList:[String] = ["acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "children", "chill", "classical", "club", "comedy", "country", "dance", "dancehall", "death-metal", "deep-house", "detroit-techno", "disco", "disney", "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic", "emo", "folk", "forro", "french", "funk", "garage", "german", "gospel", "goth", "grindcore", "groove", "grunge", "guitar", "happy", "hard-rock", "hardcore", "hardstyle", "heavy-metal", "hip-hop", "holidays", "honky-tonk", "house", "idm", "indian", "indie", "indie-pop", "industrial", "iranian", "j-dance", "j-idol", "j-pop", "j-rock", "jazz", "k-pop", "kids", "latin", "latino", "malay", "mandopop", "metal", "metal-misc", "metalcore", "minimal-techno", "movies", "mpb", "new-age", "new-release", "opera", "pagode", "party", "philippines-opm", "piano", "pop", "pop-film", "post-dubstep", "power-pop", "progressive-house", "psych-rock", "punk", "punk-rock", "r-n-b", "rainy-day", "reggae", "reggaeton", "road-trip", "rock", "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes", "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish", "study", "summer", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music"]
+    fileprivate static var genreList:[String] = ["acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "children", "chill", "classical", "club", "comedy", "country", "dance", "dancehall", "death-metal", "deep-house", "detroit-techno", "disco", "disney", "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic", "emo", "folk", "forro", "french", "funk", "garage", "german", "gospel", "goth", "grindcore", "groove", "grunge", "guitar", "happy", "hard-rock", "hardcore", "hardstyle", "heavy-metal", "hip-hop", "holidays", "honky-tonk", "house", "idm", "indian", "indie", "indie-pop", "industrial", "iranian", "j-dance", "j-idol", "j-pop", "j-rock", "jazz", "k-pop", "kids", "latin", "latino", "malay", "mandopop", "metal", "metal-misc", "metalcore", "minimal-techno", "movies", "mpb", "new-age", "new-release", "opera", "pagode", "party", "philippines-opm", "piano", "pop", "pop-film", "post-dubstep", "power-pop", "progressive-house", "psych-rock", "punk", "punk-rock", "r-n-b", "rainy-day", "reggae", "reggaeton", "road-trip", "rock", "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes", "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish", "study", "summer", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music"]
     static let swapURL: String! = "https://newsic-spotifytokenrefresh.herokuapp.com/swap"
     static let refreshURL: String! = "https://newsic-spotifytokenrefresh.herokuapp.com/refresh"
     static let redirectURI: String! = "newsic://callback"
@@ -106,88 +106,24 @@ class Spotify {
         tempo = tempo/Double(trackCount);
         valence = valence/Double(trackCount);
         
-        return SpotifyTrackFeature(acousticness: acousticness, analysisUrl: nil, danceability: danceability, durationMs: nil, energy: energy, id: nil, instrumentalness: instrumentalness, key: nil, liveness: liveness, loudness: loudness, mode: nil, speechiness: speechiness, tempo: tempo, timeSignature: nil, trackHref: nil, type: nil, uri: nil, valence: valence, genre: nil, youtubeId: nil)
+        return SpotifyTrackFeature(acousticness: acousticness, analysisUrl: nil, danceability: danceability, durationMs: nil, energy: energy, id: nil, instrumentalness: instrumentalness, key: nil, liveness: liveness, loudness: loudness, mode: nil, speechiness: speechiness, tempo: tempo, timeSignature: nil, trackHref: nil, type: nil, uri: nil, valence: valence, youtubeId: nil)
         
     }
     
     
     func getAverageTrackFeaturesRandomized(preferredTrackFeatures: [SpotifyTrackFeature]) -> [String: AnyObject] {
-        let trackCount = Double(preferredTrackFeatures.count)
         var emotionValues:[String: AnyObject] = [:]
+        let trackFeatures = getAverageTrackFeatures(preferredTrackFeatures: preferredTrackFeatures)
         
-        var acousticness:Double = 0
-        var danceability:Double = 0
-        var energy:Double = 0
-        var instrumentalness:Double = 0
-        var liveness:Double = 0
-        var loudness:Double = 0
-        var speechiness:Double = 0
-        var tempo:Double = 0
-        var valence:Double = 0
-        
-        
-        
-        for trackFeatures in preferredTrackFeatures {
-            
-            acousticness = trackFeatures.acousticness != nil ? acousticness + trackFeatures.acousticness! : 0
-            danceability = trackFeatures.danceability != nil ? danceability + trackFeatures.danceability! : 0
-            energy = trackFeatures.energy != nil ? energy + trackFeatures.energy! : 0
-            instrumentalness = trackFeatures.instrumentalness != nil ? instrumentalness + trackFeatures.instrumentalness! : 0
-            liveness = trackFeatures.liveness != nil ? liveness + trackFeatures.liveness! : 0
-            loudness = trackFeatures.loudness != nil ? loudness - trackFeatures.loudness! : 0
-            speechiness = trackFeatures.speechiness != nil ? speechiness + trackFeatures.speechiness! : 0
-            tempo = trackFeatures.tempo != nil ?  tempo + trackFeatures.tempo! : 0
-            valence = trackFeatures.valence != nil ? valence + trackFeatures.valence! : 0
-        }
-        
-        var trackFeatures = getAverageTrackFeatures(preferredTrackFeatures: preferredTrackFeatures)
-        
-        
-        trackFeatures.acousticness!.randomInRange(value: trackFeatures.acousticness!, range: 0.2, acceptNegativeValues: false)
-        trackFeatures.danceability!.randomInRange(value: trackFeatures.danceability!, range: 0.2, acceptNegativeValues: false)
-        trackFeatures.energy!.randomInRange(value: trackFeatures.energy!, range: 0.2, acceptNegativeValues: false)
-        trackFeatures.instrumentalness!.randomInRange(value: trackFeatures.instrumentalness!, range: 0.2, acceptNegativeValues: false)
-        trackFeatures.liveness!.randomInRange(value: trackFeatures.liveness!, range: 0.2, acceptNegativeValues: false)
-        trackFeatures.loudness!.randomInRange(value: trackFeatures.loudness!, range: 3, acceptNegativeValues: true)
-        trackFeatures.speechiness!.randomInRange(value: trackFeatures.speechiness!, range: 0.2, acceptNegativeValues: false)
-        trackFeatures.tempo!.randomInRange(value: trackFeatures.tempo!, range: 100, acceptNegativeValues: false, maxValue: 250)
-        trackFeatures.valence!.randomInRange(value: trackFeatures.valence!, range: 0.2, acceptNegativeValues: false)
-        
-        if preferredTrackFeatures.first?.acousticness != nil {
-            emotionValues["acousticness"] = acousticness as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.danceability != nil {
-            emotionValues["danceability"] = danceability as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.energy != nil {
-            emotionValues["energy"] = energy as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.instrumentalness != nil {
-            emotionValues["instrumentalness"] = instrumentalness as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.liveness != nil {
-            emotionValues["liveness"] = liveness as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.loudness != nil {
-            emotionValues["loudness"] = loudness as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.speechiness != nil {
-            emotionValues["speechiness"] = speechiness as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.tempo != nil {
-            emotionValues["tempo"] = tempo as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.valence != nil {
-            emotionValues["valence"] = valence as AnyObject
-        }
+        emotionValues["acousticness"] = trackFeatures.acousticness!.randomInRange(value: trackFeatures.acousticness!, range: 0.2, acceptNegativeValues: false) as AnyObject
+        emotionValues["danceability"] = trackFeatures.danceability!.randomInRange(value: trackFeatures.danceability!, range: 0.2, acceptNegativeValues: false) as AnyObject
+        emotionValues["energy"] = trackFeatures.energy!.randomInRange(value: trackFeatures.energy!, range: 0.2, acceptNegativeValues: false) as AnyObject
+        emotionValues["instrumentalness"] = trackFeatures.instrumentalness!.randomInRange(value: trackFeatures.instrumentalness!, range: 0.2, acceptNegativeValues: false) as AnyObject
+        emotionValues["liveness"] = trackFeatures.liveness!.randomInRange(value: trackFeatures.liveness!, range: 0.2, acceptNegativeValues: false) as AnyObject
+        emotionValues["loudness"] = trackFeatures.loudness!.randomInRange(value: trackFeatures.loudness!, range: 3, acceptNegativeValues: true) as AnyObject
+        emotionValues["speechiness"] = trackFeatures.speechiness!.randomInRange(value: trackFeatures.speechiness!, range: 0.2, acceptNegativeValues: false) as AnyObject
+        emotionValues["tempo"] = trackFeatures.tempo!.randomInRange(value: trackFeatures.tempo!, range: 100, acceptNegativeValues: false, maxValue: 250) as AnyObject
+        emotionValues["valence"] = trackFeatures.valence!.randomInRange(value: trackFeatures.valence!, range: 0.2, acceptNegativeValues: false) as AnyObject
         
         return emotionValues;
     }
@@ -247,7 +183,7 @@ class Spotify {
         for artist in artistList {
             if let subGenres = artist.subGenres {
                 for subGenre in subGenres {
-                    if genreList.contains(subGenre) {
+                    if Spotify.genreList.contains(subGenre) {
                         if countDictionary.index(forKey: subGenre) != nil {
                             countDictionary.updateValue(countDictionary[subGenre]!+1, forKey: subGenre)
                         } else {
@@ -262,18 +198,7 @@ class Spotify {
         return genreCount;
     }
     
-    func filterSpotifyGenres(genres: [String]) -> [String] {
-        
-        var filteredList: [String] = []
-        for genre in genres {
-            for listedGenre in genreList {
-                if genre.lowercased().range(of: listedGenre.lowercased()) != nil && !filteredList.contains(listedGenre) {
-                    filteredList.append(listedGenre)
-                }
-            }
-        }
-        return filteredList;
-    }
+    
     
     func getGenreListString(numberOfSongs:Int, hasList: Bool, selectedGenreList:[String: Int]? = nil) -> String {
         var hasList = hasList
@@ -415,6 +340,25 @@ class Spotify {
         } else {
             return artistName.lowercased()
         }
+    }
+    
+    static func getFirstArtist(from list: [String]) -> String {
+        if let firstElement = list.first {
+            return firstElement
+        }
+        return ""
+    }
+    
+    static func filterSpotifyGenres(genres: [String]) -> [String] {
         
+        var filteredList: [String] = []
+        for genre in genres {
+            for listedGenre in genreList {
+                if genre.lowercased().range(of: listedGenre.lowercased()) != nil && !filteredList.contains(listedGenre) {
+                    filteredList.append(listedGenre)
+                }
+            }
+        }
+        return filteredList;
     }
 }

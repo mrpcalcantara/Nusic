@@ -115,10 +115,11 @@ extension LikedSongListViewController: UITableViewDataSource {
     func sortTableView(by type: SpotifyType) {
         switch type {
         case .artist:
-            sectionTitles = likedTrackList.map { String($0.trackInfo.artist.artistName.capitalizingFirstLetter().first!) }.getFirstLetterArray(removeDuplicates: true).sorted()
+            sectionTitles = likedTrackList.map { String($0.trackInfo.artist.namesToString().capitalizingFirstLetter().first!) }.getFirstLetterArray(removeDuplicates: true).sorted()
+            
             sectionSongs = sectionTitles.map({ (firstLetter) in
                 return likedTrackList.filter({ (track) -> Bool in
-                    return track.trackInfo.artist.artistName.first?.description == firstLetter
+                    return track.trackInfo.artist.namesToString().first?.description == firstLetter
                 })
             })
         case .track:
@@ -130,10 +131,7 @@ extension LikedSongListViewController: UITableViewDataSource {
             })
         case .genre:
             let list = likedTrackList.map({ (track) -> String in
-                if let subGenres = track.trackInfo.artist.subGenres {
-                    return subGenres.first!.capitalizingFirstLetter()
-                }
-                return ""
+                return track.trackInfo.artist.listArtistsGenres().first!.capitalizingFirstLetter()
             })
             
             let sortedList = list.filter({ (str) -> Bool in
@@ -142,10 +140,7 @@ extension LikedSongListViewController: UITableViewDataSource {
             sectionTitles = sortedList
             sectionSongs = sortedList.map({ (genre) in
                 return likedTrackList.filter({ (track) -> Bool in
-                    if let subGenres = track.trackInfo.artist.subGenres {
-                        return subGenres.contains(genre.lowercased())
-                    }
-                    return false
+                    return track.trackInfo.artist.listArtistsGenres().contains(genre.lowercased())
                 })
             })
         default:

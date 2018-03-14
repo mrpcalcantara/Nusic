@@ -121,7 +121,7 @@ class ShowSongViewController: NusicDefaultViewController {
     var currentPlayingTrack: SpotifyTrack?
     var playedSongsHistory: [SpotifyTrack]? = []
     var trackFeatures: [SpotifyTrackFeature] = Array()
-    var searchBasedOnArtist: SpotifyArtist?
+    var searchBasedOnArtist: [SpotifyArtist]?
     var searchBasedOnTrack: SpotifyTrack?
     var searchBasedOnGenres: [String: Int]?
     
@@ -695,17 +695,18 @@ extension ShowSongViewController {
             } else {
                 if let spotifyTracks = spotifyTracks {
                     
-                    let spotifyArtistList = spotifyTracks.map({ $0.artist.uri }) as! [String]
+                    let spotifyArtistList = spotifyTracks.map({ $0.artist.first?.uri }) as! [String]
                     self.spotifyHandler.getAllGenresForArtists(spotifyArtistList, offset: 0, artistGenresHandler: { (fetchedArtistList, error) in
                         if let error = error {
                             error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getGenresForTrackList.rawValue)
                         } else {
                             if let fetchedArtistList = fetchedArtistList {
                                 for artist in fetchedArtistList {
+                                    
                                     if let index = spotifyTracks.index(where: { (track) -> Bool in
-                                        return track.artist.uri == artist.uri
+                                        return track.artist.map({$0.uri}).contains(where: { $0 == artist.uri })
                                     }) {
-                                        spotifyTracks[index].artist = artist
+                                        spotifyTracks[index].artist.updateArtist(artist: artist)
                                     }
                                 }
                             }
@@ -839,32 +840,37 @@ extension ShowSongViewController {
         }
     }
     
-    fileprivate func fetchNewCardArtist(basedOnArtist: SpotifyArtist? = nil, numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
-        var artist: SpotifyArtist = SpotifyArtist()
+    fileprivate func fetchNewCardArtist(basedOnArtist: [SpotifyArtist]? = nil, numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
+        var artists = [SpotifyArtist]()
         if basedOnArtist != nil {
-            artist = basedOnArtist!
+            artists = basedOnArtist!
         } else {
-            if let currentArtist = currentPlayingTrack?.artist {
-                artist = currentArtist
+            
+            if let artistList = currentPlayingTrack?.artist {
+                for listedArtist in artistList {
+                    artists.append(listedArtist)
+                }
             }
         }
         
-        if artist.id != nil {
-            self.spotifyHandler.fetchRecommendations(for: .artist, numberOfSongs: numberOfSongs, market: user.territory, artists: [artist]) { (results, error) in
-                if let error = error {
-                    error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
-                }
-                
-                self.getYouTubeResults(tracks: results, youtubeSearchHandler: { (tracks) in
-                    if let cardFetchingHandler = cardFetchingHandler {
-                        cardFetchingHandler(tracks);
-                    }
-                })
-                
+        self.spotifyHandler.fetchRecommendations(for: .artist, numberOfSongs: numberOfSongs, market: user.territory, artists: artists) { (results, error) in
+            if let error = error {
+                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
             }
-        } else {
-            cardFetchingHandler!([])
+            
+            self.getYouTubeResults(tracks: results, youtubeSearchHandler: { (tracks) in
+                if let cardFetchingHandler = cardFetchingHandler {
+                    cardFetchingHandler(tracks);
+                }
+            })
+            
         }
+        
+//        if artist.id != nil {
+//
+//        } else {
+//            cardFetchingHandler!([])
+//        }
         
         
     }
@@ -981,22 +987,23 @@ extension ShowSongViewController {
         var index = 0
         var ytTracks: [NusicTrack] = []
         for track in tracks {
-            YouTubeSearch.getSongInfo(artist: Spotify.getFirstArtist(artistName: track.artist.artistName), songName: track.songName, completionHandler: { (youtubeInfo) in
-                index += 1
-                if let currentIndex = tracks.index(where: { (currentTrack) -> Bool in
-                    return currentTrack.trackId == track.trackId
-                }) {
-                    
-                    let nusicTrack = NusicTrack(trackInfo: tracks[currentIndex], moodInfo: self.moodObject, userName: self.user.userName, youtubeInfo: youtubeInfo);
-                    
-                    ytTracks.append(nusicTrack);
-                }
-                if index == tracks.count {
-                    youtubeSearchHandler(ytTracks)
-                }
-            })
+            if let firstArtist = track.artist.first?.artistName {
+                YouTubeSearch.getSongInfo(artist: firstArtist, songName: track.songName, completionHandler: { (youtubeInfo) in
+                    index += 1
+                    if let currentIndex = tracks.index(where: { (currentTrack) -> Bool in
+                        return currentTrack.trackId == track.trackId
+                    }) {
+                        
+                        let nusicTrack = NusicTrack(trackInfo: tracks[currentIndex], moodInfo: self.moodObject, userName: self.user.userName, youtubeInfo: youtubeInfo);
+                        
+                        ytTracks.append(nusicTrack);
+                    }
+                    if index == tracks.count {
+                        youtubeSearchHandler(ytTracks)
+                    }
+                })
+            }
         }
-        
     }
     
     func updateCurrentGenresAndFeatures(updateGenresFeaturesHandler: @escaping ([String]?, [SpotifyTrackFeature]?) -> ()) {
