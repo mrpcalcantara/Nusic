@@ -103,7 +103,6 @@ struct NusicMood: FirebaseModel, Iterable {
                         var value = SpotifyTrackFeature();
                         value.mapDictionary(featureDictionary: (element.value as? [String: AnyObject])!)
                         extractedGenres[key] = value;
-                        //extractedGenres.append([element.key: element.value])
                     }
                 }
                 

@@ -26,20 +26,14 @@ extension Spotify {
                 if isSuccess {
                     do {
                         let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
-                        //let rootObjectTest = try SPTFollow.followingResult(from: data!, with: response)
-                        
                         let rootElement = jsonObject["artists"] as! [String: AnyObject];
                         let items = rootElement["items"] as! [[String: AnyObject]];
-                        //var artistsList = currentArtistList;
                         for artist in items {
-                            let name = artist["name"] as! String
-                            let popularity = artist["popularity"] as! Int
-                            let uri = artist["uri"] as! String
-                            let subGenres = self.filterSpotifyGenres(genres: artist["genres"] as! [String]);
-                            let id = artist["id"] as! String
-                            if subGenres.count > 0 {
-                                let artist = SpotifyArtist(artistName: name, subGenres: subGenres, popularity: popularity, uri: uri, id: id);
-                                currentArtistList.append(artist);
+                            
+                            if let artistData = try? JSONSerialization.data(withJSONObject: artist, options: JSONSerialization.WritingOptions.prettyPrinted) {
+                                if let decodedArtist = try? JSONDecoder().decode(SpotifyArtist.self, from: artistData) {
+                                    currentArtistList.append(decodedArtist);
+                                }
                             }
                         }
                         
@@ -169,18 +163,13 @@ extension Spotify {
                             let items =  jsonObject["artists"] as! [[String: AnyObject]];
 
                             for artist in items {
-                                let name = artist["name"] as! String
-                                let popularity = artist["popularity"] as! Int
-                                let uri = artist["uri"] as! String
-                                let subGenres = self.filterSpotifyGenres(genres: artist["genres"] as! [String]);
-                                let id = artist["id"] as! String
-                                if subGenres.count > 0 {
-                                    let artist = SpotifyArtist(artistName: name, subGenres: subGenres, popularity: popularity, uri: uri, id: id);
-                                    spotifyFollowedArtistList.append(artist);
+                                if let artistData = try? JSONSerialization.data(withJSONObject: artist, options: JSONSerialization.WritingOptions.prettyPrinted) {
+                                    if let decodedArtist = try? JSONDecoder().decode(SpotifyArtist.self, from: artistData) {
+                                        spotifyFollowedArtistList.append(decodedArtist);
+                                    }
                                 }
                             }
                             
-                            _ = !hasNext
                             if hasNext {
                                 self.getAllGenresForArtists(artistList, offset: nextOffset, currentFollowedArtistList: spotifyFollowedArtistList, artistGenresHandler: { (spotifyArtistList, nil) in
                                     artistGenresHandler(spotifyArtistList, nil)

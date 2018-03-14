@@ -23,12 +23,12 @@ class SpotifyTrack: Hashable {
     var trackUri: String!;
     var songName: String!;
     var songHref: String!;
-    var artist: SpotifyArtist;
+    var artist: [SpotifyArtist];
     var addedAt: Date?!
     var audioFeatures: SpotifyTrackFeature? = nil
     var suggestedSong: Bool? = false
     
-    init(title: String? = "", thumbNail: UIImage? = nil, thumbNailUrl: String? = "", smallThumbNailUrl: String? = "", trackUri: String? = "", trackId: String, linkedFromTrackId: String? = "", songName: String? = "", songHref: String? = "", artist: SpotifyArtist?, addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?, suggestedSong: Bool? = false) {
+    init(title: String? = "", thumbNail: UIImage? = nil, thumbNailUrl: String? = "", smallThumbNailUrl: String? = "", trackUri: String? = "", trackId: String, linkedFromTrackId: String? = "", songName: String? = "", songHref: String? = "", artist: [SpotifyArtist]?, addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?, suggestedSong: Bool? = false) {
         self.title = title;
         self.thumbNailUrl = thumbNailUrl;
         self.smallThumbNailUrl = smallThumbNailUrl
@@ -57,7 +57,59 @@ class SpotifyTrack: Hashable {
     }
     
     convenience init() {
-        self.init(trackId: "", artist: SpotifyArtist(), audioFeatures: nil)
+        self.init(trackId: "", artist: [SpotifyArtist](), audioFeatures: nil)
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        var container = try decoder.container(keyedBy: TrackCodingKeys.self)
+        songName = try container.decode(String.self, forKey: .songName)
+        trackId = try container.decode(String.self, forKey: .trackId)
+        trackUri = try container.decode(String.self, forKey: .trackUri)
+        if let date = try container.decodeIfPresent(String.self, forKey: .addedAt) {
+            let dateFormatter = DateFormatter();
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+            let dateAdded = dateFormatter.date(from: date)
+            addedAt = dateAdded
+        }
+        
+        //artist
+        var artists = try container.nestedUnkeyedContainer(forKey: .artists)
+        artist = [SpotifyArtist]()
+        while !artists.isAtEnd {
+            let artist = try! artists.decode(SpotifyArtist.self)
+            self.artist.append(artist)
+        }
+        let album = try container.nestedContainer(keyedBy: AlbumKeys.self, forKey: .album)
+        var images = try album.nestedUnkeyedContainer(forKey: .images)
+        var imageArray = [String]()
+        while !images.isAtEnd {
+            let image = try images.nestedContainer(keyedBy: ImageKeys.self)
+            imageArray.append(try image.decode(String.self, forKey: .url))
+        }
+        if imageArray.count > 1 {
+            thumbNailUrl = imageArray[1];
+            if let url = URL(string: thumbNailUrl) {
+                UIImage().downloadImage(from: url) { (image) in
+                    self.thumbNail = image;
+                }
+            }
+        }
+        
+        let href = try container.nestedContainer(keyedBy: ExternalHrefKey.self, forKey: .external_urls)
+        if let songHref = try href.decodeIfPresent(String.self, forKey: .songHref) {
+            self.songHref = songHref
+        }
+        
+        
+        if let linkedFrom = try? container.nestedContainer(keyedBy: LinkedFromCodingKey.self, forKey: .linked_from) {
+            if let linkedFromTrackId = try linkedFrom.decodeIfPresent(String.self, forKey: .linkedFromTrackId) {
+                self.linkedFromTrackId = linkedFromTrackId
+            }
+        } else {
+            self.linkedFromTrackId = trackId
+        }
+        
     }
     
     static func ==(lhs: SpotifyTrack, rhs: SpotifyTrack) -> Bool {
@@ -80,5 +132,45 @@ class SpotifyTrack: Hashable {
             self.thumbNail = image;
         }
     }
-
+    
+    
+    
+    
+    
 }
+
+extension SpotifyTrack: Decodable {
+    enum TrackCodingKeys: String, CodingKey {
+        case trackUri = "uri"
+        case trackId = "id"
+        case songName = "name"
+        case addedAt = "added_at"
+        case artists
+        case album
+        case external_urls
+        case linked_from
+    }
+    
+    enum AlbumKeys: String, CodingKey {
+        case images
+    }
+    
+    enum ImageKeys: CodingKey {
+        case height
+        case width
+        case url
+    }
+    
+    enum ThumbnailCodingKeys: String, CodingKey {
+        case thumbNailUrl = "url"
+    }
+    
+    enum ExternalHrefKey: String, CodingKey {
+        case songHref = "spotify"
+    }
+    
+    enum LinkedFromCodingKey: String, CodingKey {
+        case linkedFromTrackId = "id"
+    }
+}
+

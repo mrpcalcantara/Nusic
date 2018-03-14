@@ -55,7 +55,7 @@ extension ShowSongViewController: KolodaViewDelegate {
             
             let actionArtist: () -> Void = {
                 self.musicSearchType = .artist
-                self.searchBasedOnArtist = self.currentPlayingTrack?.artist != nil ? self.currentPlayingTrack?.artist : nil
+                self.searchBasedOnArtist = self.currentPlayingTrack?.artist != nil ? self.currentPlayingTrack?.artist : []
                 self.showSwiftSpinner(text: "Fetching tracks..")
                 self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
                 self.showMore.transform = CGAffineTransform.identity;
@@ -72,12 +72,7 @@ extension ShowSongViewController: KolodaViewDelegate {
             }
             
             let actionGenre: () -> Void = {
-                let dict = self.currentPlayingTrack?.artist.listDictionary()
-                let count: Int? = dict?.count
-                if let count = count, count > 0 {
-                    self.searchBasedOnGenres = dict!
-                }
-                
+                self.searchBasedOnGenres = self.currentPlayingTrack?.artist.getGenresForArtists()
                 self.showSwiftSpinner(text: "Fetching tracks..")
                 self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
                 self.musicSearchType = .genre
@@ -180,9 +175,9 @@ extension ShowSongViewController: KolodaViewDataSource {
         let view = UINib(nibName: "OverlayView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SongOverlayView
         
         //print("index = \(index) -> artist = \(self.cardList[index].trackInfo.artist!) and songName = \(self.cardList[index].trackInfo.songName!)");
-        view.songArtist.text = self.cardList[index].trackInfo.artist.artistName
+        view.songArtist.text = self.cardList[index].trackInfo.artist.namesToString()
         view.songTitle.text = self.cardList[index].trackInfo.songName;
-        view.genreLabel.text = self.cardList[index].trackInfo.artist.listGenres()
+        view.genreLabel.text = self.cardList[index].trackInfo.artist.allArtistsGenresToString()
         view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
         view.suggestedSongIcon.isHidden = !self.cardList[index].trackInfo.suggestedSong!
         
@@ -237,18 +232,15 @@ extension ShowSongViewController {
                         SwiftSpinner.hide()
                         error.presentPopup(for: self, description: SpotifyErrorCodeDescription.addTrack.rawValue)
                     } else {
-                        if let genres = track.trackInfo.artist.subGenres {
-                            for genre in genres {
-                                self.user.updateGenreCount(for: genre, updateGenreHandler: { (isUpdated, error) in
-                                    if let error = error {
-                                        SwiftSpinner.hide()
-                                        error.presentPopup(for: self)
-                                    }
-                                    
-                                })
-                            }
+                        for genre in track.trackInfo.artist.listArtistsGenres() {
+                            self.user.updateGenreCount(for: genre, updateGenreHandler: { (isUpdated, error) in
+                                if let error = error {
+                                    SwiftSpinner.hide()
+                                    error.presentPopup(for: self)
+                                }
+                                
+                            })
                         }
-                        
                     }
                     
                 })

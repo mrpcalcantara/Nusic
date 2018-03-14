@@ -33,7 +33,7 @@ class SongTableViewCell: UITableViewCell {
     func configure(for track: NusicTrack) {
         self.albumImage.contentMode = .scaleAspectFit
         self.albumImage.image = track.trackInfo.thumbNail;
-        self.artistLabel.text = track.trackInfo.artist.artistName;
+        self.artistLabel.text = track.trackInfo.artist.namesToString();
         self.artistLabel.textColor = NusicDefaults.whiteColor
         self.trackLabel.text = track.trackInfo.songName;
         self.trackLabel.textColor = NusicDefaults.whiteColor

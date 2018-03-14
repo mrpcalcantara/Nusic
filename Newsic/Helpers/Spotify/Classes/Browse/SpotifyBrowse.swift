@@ -106,44 +106,22 @@ extension Spotify {
                 let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
                 let trackList = jsonObject["tracks"] as! [[String: AnyObject]]
                 for track in trackList {
-                    let trackName = track["name"] as! String;
-                    let uri = track["uri"] as! String;
-                    var id = ""
-                    if let fetchedTrackId = track["id"] as? String {
-                        id = fetchedTrackId
+                    if let trackData = try? JSONSerialization.data(withJSONObject: track, options: JSONSerialization.WritingOptions.prettyPrinted) {
+                        if let decodedTrack = try? JSONDecoder().decode(SpotifyTrack.self, from: trackData) {
+                            spotifyResults.append(decodedTrack);
+                        }
                     }
-                    
-                    var linkedTrackId = id
-                    if let linkedFrom:[String: AnyObject] = track["linked_from"] as? [String: AnyObject] {
-                        linkedTrackId = linkedFrom["id"] as! String
-                    }
-                    var songExternalHref = ""
-                    if let trackHref = track["external_urls"] as? [String: AnyObject] {
-                        songExternalHref = trackHref["spotify"] as! String
-                    }
-                    let album = track["album"] as! [String: AnyObject];
-                    let images = album["images"] as! [[String: AnyObject]];
-                    let hqImage = images.count > 0 ? images[1]["url"] as! String : ""
-                    let artists = track["artists"] as! [[String: AnyObject]];
-                    let artistName = artists.count > 0 ? artists[0]["name"] as! String : "Unknown Artist";
-                    let artistUri = artists.count > 0 ? artists[0]["uri"] as! String : "Unknown URI";
-                    let title = "\(artistName) - \(trackName)"
-                    
-                    let spotifyObject = SpotifyTrack(title: title, thumbNailUrl: hqImage, trackUri: uri, trackId: id, linkedFromTrackId: linkedTrackId, songName: trackName, songHref: songExternalHref, artist: SpotifyArtist(artistName: artistName, uri: artistUri, id: Spotify.transformToID(type: .artist, uri: artistUri)), audioFeatures: nil);
-                    spotifyResults.append(spotifyObject);
                     
                 }
-                var artistUriList: [String] = []
-                for result in spotifyResults {
-                    artistUriList.append(result.artist.uri!);
-                }
+                let artistUriList = spotifyResults.flatMap({ $0.artist.map({ $0.uri! }) })
                 self.getAllGenresForArtists(artistUriList, offset: 0, artistGenresHandler: { (artistList, error) in
                     if let artistList = artistList {
                         for artist in artistList {
                             if let artistIndex = spotifyResults.index(where: { (track) -> Bool in
-                                return track.artist.uri == artist.uri
+                                return track.artist.map({$0.uri}).contains(where: { $0 == artist.uri })
+//                                return track.artist.uri == artist.uri
                             }) {
-                                spotifyResults[artistIndex].artist = artist;
+                                spotifyResults[artistIndex].artist.updateArtist(artist: artist)
                             }
                         }
                     }

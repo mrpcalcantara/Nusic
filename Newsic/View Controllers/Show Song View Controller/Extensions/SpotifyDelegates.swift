@@ -29,7 +29,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
             songProgressSlider.value = currentPosition
             updateElapsedTime(elapsedTime: currentPosition, duration: Float(currentTrack.duration))
             let thumbNail = currentPlayingTrack.thumbNail != nil ? currentPlayingTrack.thumbNail : nil
-            self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.artistName, albumArt: thumbNail, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+            self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.namesToString(), albumArt: thumbNail, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
         }
         
     }
@@ -78,7 +78,7 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
                     let imageURL = URL(string: imageURL)!
                     let image = UIImage(); image.downloadImage(from: imageURL) { (image) in
                         self.currentPlayingTrack?.thumbNail = image
-                        if let songName = self.currentPlayingTrack?.songName, let artistName = self.currentPlayingTrack?.artist.artistName {
+                        if let songName = self.currentPlayingTrack?.songName, let artistName = self.currentPlayingTrack?.artist.namesToString() {
                             self.updateNowPlayingCenter(title: songName, artist: artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
                             DispatchQueue.main.async {
                                 self.toggleLikeButtons()

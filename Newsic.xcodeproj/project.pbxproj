@@ -42,6 +42,7 @@
 		8C2847292043EE26006A9B5C /* SuggestedSongListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2847282043EE26006A9B5C /* SuggestedSongListViewController.swift */; };
 		8C28472B2043F616006A9B5C /* SuggestedSongListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28472A2043F616006A9B5C /* SuggestedSongListTableView.swift */; };
 		8C2877451FDE4CC200772269 /* YoutubeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2877441FDE4CC200772269 /* YoutubeResult.swift */; };
+		8C28C5322058D64600441E70 /* ArtistArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28C5312058D64600441E70 /* ArtistArray.swift */; };
 		8C2911AE1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */; };
 		8C291A7B1FD6561800E568EF /* FirebaseErrorCodeDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C291A7A1FD6561800E568EF /* FirebaseErrorCodeDescription.swift */; };
 		8C29A54E2021703B00148178 /* Emotions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C29A54D2021703B00148178 /* Emotions.swift */; };
@@ -215,6 +216,7 @@
 		8C2847282043EE26006A9B5C /* SuggestedSongListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedSongListViewController.swift; sourceTree = "<group>"; };
 		8C28472A2043F616006A9B5C /* SuggestedSongListTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedSongListTableView.swift; sourceTree = "<group>"; };
 		8C2877441FDE4CC200772269 /* YoutubeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeResult.swift; sourceTree = "<group>"; };
+		8C28C5312058D64600441E70 /* ArtistArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistArray.swift; sourceTree = "<group>"; };
 		8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicSegmentedControlDelegate.swift; sourceTree = "<group>"; };
 		8C291A7A1FD6561800E568EF /* FirebaseErrorCodeDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseErrorCodeDescription.swift; sourceTree = "<group>"; };
 		8C29A54D2021703B00148178 /* Emotions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Emotions.swift; sourceTree = "<group>"; };
@@ -681,6 +683,7 @@
 			children = (
 				8C7A58401FD7A0D3006A2E43 /* SPTAuth.swift */,
 				8C58ACEC1FFE202500E68FD5 /* SPTBitrate.swift */,
+				8C28C5312058D64600441E70 /* ArtistArray.swift */,
 			);
 			path = Spotify;
 			sourceTree = "<group>";
@@ -1567,6 +1570,7 @@
 				8C5B18F21FCBBEF400EBFAE1 /* CollectionViewHeader.swift in Sources */,
 				8C35F95C2049214A00857EF7 /* BadgeBarButtonItem.swift in Sources */,
 				8C7C41EB1FFC99D60051845D /* UITableView.swift in Sources */,
+				8C28C5322058D64600441E70 /* ArtistArray.swift in Sources */,
 				8C2847292043EE26006A9B5C /* SuggestedSongListViewController.swift in Sources */,
 				8C3A6F1B1FCD769C00BA7981 /* ShowSongDataTransfer.swift in Sources */,
 				8C26C35A1FE517F600365142 /* NewsicUserSettings.swift in Sources */,
