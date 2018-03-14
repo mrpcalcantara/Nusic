@@ -38,7 +38,7 @@ class MusicChoiceCell: UICollectionViewCell {
         choiceLabel.minimumScaleFactor = 0.1
     }
     
-    func configure(with text: String) {
+    final func configure(with text: String) {
         setupLabel(with: text)
         setupView()
     }

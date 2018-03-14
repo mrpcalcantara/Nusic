@@ -26,7 +26,7 @@ class Spotify {
     var user: SPTUser! = nil;
     var genreCount: [String: Int] = Spotify.getAllValuesDict()
     
-    func getGenreForTrack(trackId: String, trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
+    private func getGenreForTrack(trackId: String, trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
         getTrackArtist(trackId: trackId) { (fetchedArtistId, error) in
             if error != nil {
                 trackGenreHandler(nil, error)
@@ -40,7 +40,7 @@ class Spotify {
         }
     }
     
-    func getGenresForTrackList(trackIdList: [String], trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
+    final func getGenresForTrackList(trackIdList: [String], trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
         let count = trackIdList.count;
         var index = 0
         var allGenres:[String] = [];
@@ -66,118 +66,7 @@ class Spotify {
         }
     }
     
-    func getAverageTrackFeatures(preferredTrackFeatures: [SpotifyTrackFeature]) -> SpotifyTrackFeature {
-        
-        let trackCount = Double(preferredTrackFeatures.count)
-        var emotionValues:[String: AnyObject] = [:]
-        
-        var acousticness:Double = 0
-        var danceability:Double = 0
-        var energy:Double = 0
-        var instrumentalness:Double = 0
-        var liveness:Double = 0
-        var loudness:Double = 0
-        var speechiness:Double = 0
-        var tempo:Double = 0
-        var valence:Double = 0
-        
-        
-        
-        for trackFeatures in preferredTrackFeatures {
-            
-            acousticness = trackFeatures.acousticness != nil ? acousticness + trackFeatures.acousticness! : 0
-            danceability = trackFeatures.danceability != nil ? danceability + trackFeatures.danceability! : 0
-            energy = trackFeatures.energy != nil ? energy + trackFeatures.energy! : 0
-            instrumentalness = trackFeatures.instrumentalness != nil ? instrumentalness + trackFeatures.instrumentalness! : 0
-            liveness = trackFeatures.liveness != nil ? liveness + trackFeatures.liveness! : 0
-            loudness = trackFeatures.loudness != nil ? loudness - trackFeatures.loudness! : 0
-            speechiness = trackFeatures.speechiness != nil ? speechiness + trackFeatures.speechiness! : 0
-            tempo = trackFeatures.tempo != nil ?  tempo + trackFeatures.tempo! : 0
-            valence = trackFeatures.valence != nil ? valence + trackFeatures.valence! : 0
-        }
-        
-        acousticness = (acousticness/Double(trackCount));
-        danceability = danceability/Double(trackCount);
-        energy = energy/Double(trackCount);
-        instrumentalness = instrumentalness/Double(trackCount);
-        liveness = liveness/Double(trackCount);
-        loudness = loudness/Double(trackCount);
-        speechiness = speechiness/Double(trackCount);
-        tempo = tempo/Double(trackCount);
-        valence = valence/Double(trackCount);
-        
-        return SpotifyTrackFeature(acousticness: acousticness, analysisUrl: nil, danceability: danceability, durationMs: nil, energy: energy, id: nil, instrumentalness: instrumentalness, key: nil, liveness: liveness, loudness: loudness, mode: nil, speechiness: speechiness, tempo: tempo, timeSignature: nil, trackHref: nil, type: nil, uri: nil, valence: valence, youtubeId: nil)
-        
-    }
-    
-    
-    func getAverageTrackFeaturesRandomized(preferredTrackFeatures: [SpotifyTrackFeature]) -> [String: AnyObject] {
-        var emotionValues:[String: AnyObject] = [:]
-        let trackFeatures = getAverageTrackFeatures(preferredTrackFeatures: preferredTrackFeatures)
-        
-        emotionValues["acousticness"] = trackFeatures.acousticness!.randomInRange(value: trackFeatures.acousticness!, range: 0.2, acceptNegativeValues: false) as AnyObject
-        emotionValues["danceability"] = trackFeatures.danceability!.randomInRange(value: trackFeatures.danceability!, range: 0.2, acceptNegativeValues: false) as AnyObject
-        emotionValues["energy"] = trackFeatures.energy!.randomInRange(value: trackFeatures.energy!, range: 0.2, acceptNegativeValues: false) as AnyObject
-        emotionValues["instrumentalness"] = trackFeatures.instrumentalness!.randomInRange(value: trackFeatures.instrumentalness!, range: 0.2, acceptNegativeValues: false) as AnyObject
-        emotionValues["liveness"] = trackFeatures.liveness!.randomInRange(value: trackFeatures.liveness!, range: 0.2, acceptNegativeValues: false) as AnyObject
-        emotionValues["loudness"] = trackFeatures.loudness!.randomInRange(value: trackFeatures.loudness!, range: 3, acceptNegativeValues: true) as AnyObject
-        emotionValues["speechiness"] = trackFeatures.speechiness!.randomInRange(value: trackFeatures.speechiness!, range: 0.2, acceptNegativeValues: false) as AnyObject
-        emotionValues["tempo"] = trackFeatures.tempo!.randomInRange(value: trackFeatures.tempo!, range: 100, acceptNegativeValues: false, maxValue: 250) as AnyObject
-        emotionValues["valence"] = trackFeatures.valence!.randomInRange(value: trackFeatures.valence!, range: 0.2, acceptNegativeValues: false) as AnyObject
-        
-        return emotionValues;
-    }
-    
-    func trackFeaturesToString(features: [String: AnyObject]) -> String {
-        var result = "&"
-        var iterator = features.makeIterator();
-        
-        var nextElement = iterator.next();
-        
-        while nextElement != nil {
-            if let element = nextElement {
-                let key = element.key
-                let value = element.value as! Double
-                
-                result += "target_\(key)=\(value.roundToDecimalPlaces(places: 3))&"
-            }
-            
-            
-            nextElement = iterator.next();
-        }
-        
-//        let index = result.index(before: result.endIndex);
-//        return result.substring(to: index);
-        result.removeLast()
-        return result;
-    }
-    
-    func getRandomGenreBasedOnPercentage(hasGenreListForEmotion: Bool, selectedGenreList: [String: Int]? = nil) -> String{
-        let sortedKeys: [(key: String, value:Int)];
-        if selectedGenreList == nil {
-            sortedKeys = genreCount.sorted(by: { $0.value > $1.value })
-        } else {
-            sortedKeys = (selectedGenreList?.sorted(by: { $0.value > $1.value }))!;
-        }
-        
-        var percentagesString: [String] = []
-        let percentageRate:Double = hasGenreListForEmotion ? 50 : 100
-        
-        
-        for keyValue in sortedKeys {
-            let percentage = (Double(keyValue.value)/Double(sortedKeys.count))*percentageRate
-            let percentageInt = Int(percentage)
-            for _ in 0..<percentageInt {
-                percentagesString.append(keyValue.key)
-            }
-        }
-        
-        let randomIndex = Int.random(range: 1..<percentagesString.count);
-        return percentagesString[randomIndex];
-        
-    }
-    
-    func getGenreCount(for artistList: [SpotifyArtist]) -> [String: Int] {
+    final func getGenreCount(for artistList: [SpotifyArtist]) -> [String: Int] {
         var countDictionary:[String: Int] = [:];
         
         for artist in artistList {
@@ -199,63 +88,7 @@ class Spotify {
     }
     
     
-    
-    func getGenreListString(numberOfSongs:Int, hasList: Bool, selectedGenreList:[String: Int]? = nil) -> String {
-        var hasList = hasList
-        var index = 0
-        var genres = ""
-        var genreListCount = 0
-        var totalCount = genreListCount
-        var selectedGenreList = selectedGenreList
-        
-        if let selectedGenreList = selectedGenreList, selectedGenreList.count > 0 {
-            genreListCount = selectedGenreList.count
-        } else {
-            hasList = false
-            selectedGenreList = nil
-            if genreCount.count < numberOfSongs && genreCount.count > 0 {
-                var list: String = ""
-                for keyValue in genreCount {
-                    if index > 4 {
-                        break;
-                    }
-                    index += 1
-                    list.append("\(keyValue.key),")
-                }
-                list.removeLast()
-                return list
-                
-            } else {
-                genreListCount = numberOfSongs
-            }
-        }
-        
-        totalCount = genreListCount
-        
-        //NOTE: Spotify recommendations max seed genres is 5. This is a workaround by fixing the max count to 5.
-        if numberOfSongs > 5 && genreListCount > 5 {
-           totalCount = 5
-        }
-        
-        while index < totalCount {
-            var separator = ","
-            if index == totalCount-1 {
-                separator = ""
-            }
-            var genre = getRandomGenreBasedOnPercentage(hasGenreListForEmotion: hasList, selectedGenreList: selectedGenreList);
-            genre = genre.replacingOccurrences(of: " ", with: "-")
-            if !genres.contains(genre) {
-                genres += "\(genre)\(separator)"
-            } else {
-                index -= 1;
-            }
-            
-            index += 1;
-        }
-        return genres;
-    }
-    
-    func getRefreshToken(currentSession: SPTSession, refreshTokenCompletionHandler: @escaping (Bool) -> ()) {
+    private func getRefreshToken(currentSession: SPTSession, refreshTokenCompletionHandler: @escaping (Bool) -> ()) {
         let userDefaults = UserDefaults.standard;
         SPTAuth.defaultInstance().renewSession(currentSession, callback: { (error, session) in
             if error == nil {
@@ -274,7 +107,7 @@ class Spotify {
         })
     }
     
-    func executeSpotifyCall(with request: URLRequest, retryNumber: Int? = 3, retryAfter: Int? = 2, spotifyCallCompletionHandler: @escaping (Data?, HTTPURLResponse?, Error?, Bool) -> ()) {
+    final func executeSpotifyCall(with request: URLRequest, retryNumber: Int? = 3, retryAfter: Int? = 2, spotifyCallCompletionHandler: @escaping (Data?, HTTPURLResponse?, Error?, Bool) -> ()) {
         let session = URLSession.shared;
         session.executeCall(with: request) { (data, response, error, isSuccess) in
             let statusCode = response?.statusCode
@@ -350,10 +183,9 @@ class Spotify {
     }
     
     static func filterSpotifyGenres(genres: [String]) -> [String] {
-        
         var filteredList: [String] = []
         for genre in genres {
-            for listedGenre in genreList {
+            for listedGenre in Spotify.genreList {
                 if genre.lowercased().range(of: listedGenre.lowercased()) != nil && !filteredList.contains(listedGenre) {
                     filteredList.append(listedGenre)
                 }

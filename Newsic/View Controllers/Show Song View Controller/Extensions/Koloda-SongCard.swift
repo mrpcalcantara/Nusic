@@ -169,7 +169,7 @@ extension ShowSongViewController: KolodaViewDataSource {
         return Bundle.main.loadNibNamed("OverlayView", owner: self, options: nil)?[0] as? SongOverlayView
     }
     
-    func configure(index: Int) -> UIView {
+    final func configure(index: Int) -> UIView {
         
         
         let view = UINib(nibName: "OverlayView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SongOverlayView
@@ -200,7 +200,7 @@ extension ShowSongViewController: KolodaViewDataSource {
 
 extension ShowSongViewController {
     
-    func setupCards() {
+    final func setupCards() {
         
         songCardView.delegate = nil;
         songCardView.dataSource = nil;
@@ -215,7 +215,7 @@ extension ShowSongViewController {
         
     }
     
-    @objc func likeTrack(in index: Int) {
+    @objc final func likeTrack(in index: Int) {
         guard cardList.count > 0, containsTrack(trackId: cardList[presentedCardIndex].trackInfo.trackId) == false else { return; }
         let likedCardIndex = presentedCardIndex
         DispatchQueue.main.async {
@@ -252,7 +252,7 @@ extension ShowSongViewController {
                 SwiftSpinner.hide()
                 error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue)
             } else {
-                if var trackFeatures = trackFeatures {
+                if let trackFeatures = trackFeatures {
                     trackFeatures.youtubeId = track.youtubeInfo?.trackId;
                     track.trackInfo.audioFeatures = trackFeatures;
                     track.isLiked = true
@@ -269,7 +269,7 @@ extension ShowSongViewController {
         })
     }
     
-    func addSongToPosition(track: NusicTrack, position: Int) {
+    final func addSongToPosition(track: NusicTrack, position: Int) {
         let nusicTrack = track
         cardList.insert(nusicTrack, at: position);
         
@@ -277,11 +277,11 @@ extension ShowSongViewController {
         songCardView.delegate?.koloda(songCardView, didShowCardAt: position)
     }
     
-    func getCurrentCardView() -> SongOverlayView {
+    final func getCurrentCardView() -> SongOverlayView {
         return songCardView.viewForCard(at: songCardView.currentCardIndex) as! SongOverlayView
     }
     
-    func handleFetchNewTracks(numberOfSongs: Int, completionHandler: ((Bool) -> ())?) {
+    private func handleFetchNewTracks(numberOfSongs: Int, completionHandler: ((Bool) -> ())?) {
         fetchNewCardsFromSpotify(numberOfSongs: numberOfSongs) { (tracks) in
             DispatchQueue.main.async {
                 self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
@@ -293,7 +293,7 @@ extension ShowSongViewController {
         }
     }
     
-    func removeCardBorderLayer() {
+    private func removeCardBorderLayer() {
         if let index = self.view.layer.sublayers?.index(where: { (layer) -> Bool in
             return layer.name == "cardBorder"
         }) {
@@ -302,7 +302,7 @@ extension ShowSongViewController {
         }
     }
     
-    func addCardBorderLayer() {
+    final func addCardBorderLayer() {
         removeCardBorderLayer()
         var frame = trackStackView.frame
         frame.origin = CGPoint(x: (frame.origin.x) - 4 , y: (frame.origin.y) - 4)

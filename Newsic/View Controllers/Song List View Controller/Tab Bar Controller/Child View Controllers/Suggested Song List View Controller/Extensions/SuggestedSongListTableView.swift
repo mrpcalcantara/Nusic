@@ -10,7 +10,7 @@ import UIKit
 
 extension SuggestedSongListViewController {
     
-    func setupTableView() {
+    final func setupTableView() {
         suggestedSongListTableView.delegate = self;
         suggestedSongListTableView.dataSource = self;
         
@@ -25,26 +25,7 @@ extension SuggestedSongListViewController {
         suggestedSongListTableHeader.isUserInteractionEnabled = false
         suggestedSongListTableHeader.delegate = self
         
-        
-        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipeLeftFunc))
-        swipeLeft.direction = .left
-        swipeLeft.numberOfTouchesRequired = 2
-        
-        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(swipeRightFunc))
-        swipeRight.direction = .right
-        swipeRight.numberOfTouchesRequired = 2
-        
-        suggestedSongListTableView.addGestureRecognizer(swipeLeft)
-        suggestedSongListTableView.addGestureRecognizer(swipeRight)
         setupView();
-    }
-    
-    @objc func swipeLeftFunc() {
-        print("swiped left")
-    }
-    
-    @objc func swipeRightFunc() {
-        print("swiped right")
     }
     
     fileprivate func setupView() {
@@ -59,7 +40,7 @@ extension SuggestedSongListViewController {
         
     }
     
-    func getHeaderString(date: Date) -> String {
+    private func getHeaderString(date: Date) -> String {
         let timeInterval = date.timeIntervalSinceNow*(-1)
         let oneDay:Double = 60*60*24 // 1 day to seconds
         let twoDays:Double = oneDay*2
@@ -72,7 +53,7 @@ extension SuggestedSongListViewController {
         }
     }
     
-    func setupBackgroundView() {
+    final func setupBackgroundView() {
         if sectionTitles.count == 0 {
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: suggestedSongListTableView.bounds.width, height: suggestedSongListTableView.bounds.height))
             label.text = "No Nusic suggestions so far. One new suggestion will appear daily!"
@@ -104,7 +85,7 @@ extension SuggestedSongListViewController: UITableViewDelegate {
             cell.setColor(color: .clear)
             print(cell)
         }
-        var track = sectionSongs[indexPath.section][indexPath.row]
+        let track = sectionSongs[indexPath.section][indexPath.row]
         track.setSuggestedValue(value: false, suggestedHandler: nil);
         sectionSongs[indexPath.section][indexPath.row] = track
         updateBadgeCount()

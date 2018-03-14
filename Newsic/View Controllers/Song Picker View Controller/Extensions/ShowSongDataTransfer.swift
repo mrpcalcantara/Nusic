@@ -10,7 +10,7 @@ import UIKit
 
 extension SongPickerViewController {
     
-    func passDataToShowSong() {
+    final func passDataToShowSong() {
         
         if SPTAudioStreamingController.sharedInstance().loggedIn {
             SPTAudioStreamingController.sharedInstance().logout()

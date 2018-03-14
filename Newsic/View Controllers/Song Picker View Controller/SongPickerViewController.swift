@@ -172,9 +172,9 @@ class SongPickerViewController: NusicDefaultViewController {
     @IBAction func getNewSong(_ sender: Any) {
         isMoodSelected = nusicControl.selectedIndex == 0 ? true : false
         if !isMoodSelected {
-            var nusicMood = NusicMood();
+            let nusicMood = NusicMood()
             nusicMood.emotions = [Emotion(basicGroup: .unknown, detailedEmotions: [], rating: 0)]
-            self.moodObject = nusicMood;
+            self.moodObject = nusicMood
         }
         
         if selectedIndexPathForMood != nil {
@@ -632,7 +632,7 @@ class SongPickerViewController: NusicDefaultViewController {
 
 extension SongPickerViewController: UIGestureRecognizerDelegate {
     
-    @objc func panCollectionViews(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc final func panCollectionViews(_ gestureRecognizer: UIPanGestureRecognizer) {
         let translation = gestureRecognizer.translation(in: gestureRecognizer.view!)
         let divisor = gestureRecognizer.view != nil ? gestureRecognizer.view!.frame.width : 200
         var progress = (translation.x / divisor )

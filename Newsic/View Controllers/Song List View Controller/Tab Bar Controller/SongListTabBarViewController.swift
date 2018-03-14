@@ -89,7 +89,7 @@ class SongListTabBarViewController: UITabBarController {
         
     }
     
-    func setupTabBarController() {
+    private func setupTabBarController() {
         self.delegate = self
         
         self.view.backgroundColor = .clear
@@ -106,7 +106,7 @@ class SongListTabBarViewController: UITabBarController {
         self.tabBar.barTintColor = NusicDefaults.blackColor
     }
     
-    func setupChildViewControllers() {
+    private func setupChildViewControllers() {
         if let viewControllers = self.viewControllers {
             for viewController in viewControllers {
                 setupViewController(viewController: viewController)
@@ -114,7 +114,7 @@ class SongListTabBarViewController: UITabBarController {
         }
     }
     
-    func setupViewController(viewController: UIViewController) {
+    private func setupViewController(viewController: UIViewController) {
         switch viewController.className {
         case LikedSongListViewController.className:
             self.likedSongListVC = viewController as? LikedSongListViewController
@@ -127,29 +127,29 @@ class SongListTabBarViewController: UITabBarController {
         }
     }
     
-    func setupLikedSongListVC() {
+    private func setupLikedSongListVC() {
         self.likedSongListVC?.isMoodSelected = isMoodSelected
         self.likedSongListVC?.likedTrackList = likedTrackList
         self.likedSongListVC?.moodObject = moodObject
     }
     
-    func setupSuggestedSongListVC() {
+    private func setupSuggestedSongListVC() {
         self.suggestedSongListVC?.suggestedSongList = suggestedTrackList
         self.suggestedSongListVC?.updateBadgeCount()
     }
     
-    @objc func moveToShowSongVC() {
+    @objc private func moveToShowSongVC() {
         (parent as! NusicPageViewController).scrollToPreviousViewController();
     }
 
-    func playSelectedCard(track: NusicTrack) {
+    final func playSelectedCard(track: NusicTrack) {
         showSongVC?.playSelectedCard(track: track);
         if let parent = parent as? NusicPageViewController {
             parent.scrollToPreviousViewController()
         }
     }
     
-    func removeTrackFromLikedTracks(track: NusicTrack, indexPath: IndexPath) {
+    final func removeTrackFromLikedTracks(track: NusicTrack, indexPath: IndexPath) {
         
         showSongVC?.removeTrackFromLikedTracks(track: track, indexPath: indexPath, removeTrackHandler: { (isRemoved) in
             track.deleteData(deleteCompleteHandler: { (ref, error) in

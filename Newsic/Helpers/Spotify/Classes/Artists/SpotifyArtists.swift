@@ -8,7 +8,7 @@
 
 extension Spotify {
     
-    func getFollowedArtistsForUser(user: SPTUser, artistList:[SpotifyArtist]? = nil, searchFollowedUrl: String? = nil, followedArtistsHandler: @escaping([SpotifyArtist], NusicError?) -> ()) {
+    final func getFollowedArtistsForUser(user: SPTUser, artistList:[SpotifyArtist]? = nil, searchFollowedUrl: String? = nil, followedArtistsHandler: @escaping([SpotifyArtist], NusicError?) -> ()) {
         do {
             var currentArtistList: [SpotifyArtist] = artistList == nil ? [] : artistList!
             
@@ -49,13 +49,7 @@ extension Spotify {
                         print("error parsing data in followed artists");
                     }
                 } else {
-                    switch statusCode {
-                    case 400...499:
-                        followedArtistsHandler([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                    case 500...599:
-                        followedArtistsHandler([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                    default: followedArtistsHandler([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                    }
+                    followedArtistsHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
                 }
             })
         } catch {
@@ -64,7 +58,7 @@ extension Spotify {
         
     }
     
-    func getAllArtistsForPlaylist(userId: String, playlistId: String, nextTrackPageRequest: URLRequest? = nil, currentArtistList: [String]? = nil, fetchedPlaylistArtists: @escaping([String], NusicError?) -> ()) {
+    final func getAllArtistsForPlaylist(userId: String, playlistId: String, nextTrackPageRequest: URLRequest? = nil, currentArtistList: [String]? = nil, fetchedPlaylistArtists: @escaping([String], NusicError?) -> ()) {
         
         var currentList: [String] = currentArtistList != nil ? currentArtistList! : [];
         var pageRequest = nextTrackPageRequest;
@@ -106,20 +100,14 @@ extension Spotify {
                         }
                     } catch { }
                 } else {
-                    switch statusCode {
-                    case 400...499:
-                        fetchedPlaylistArtists([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                    case 500...599:
-                        fetchedPlaylistArtists([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                    default: fetchedPlaylistArtists([], NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                    }
+                    fetchedPlaylistArtists([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
                 }
             })
             
         }
     }
     
-    func getAllGenresForArtists(_ artistList: [String], offset: Int, currentFollowedArtistList: [SpotifyArtist]? = nil, artistGenresHandler: @escaping([SpotifyArtist]?, NusicError?) -> ()) {
+    final func getAllGenresForArtists(_ artistList: [String], offset: Int, currentFollowedArtistList: [SpotifyArtist]? = nil, artistGenresHandler: @escaping([SpotifyArtist]?, NusicError?) -> ()) {
         
         if artistList.count <= 0 {
             artistGenresHandler(nil, nil);
@@ -184,13 +172,7 @@ extension Spotify {
                         print("error parsing data in followed artists");
                     }
                 } else {
-                    switch statusCode {
-                    case 400...499:
-                        artistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                    case 500...599:
-                        artistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                    default: artistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                    }
+                    artistGenresHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
                 }
             })
             
@@ -200,7 +182,7 @@ extension Spotify {
         
     }
     
-    func getGenresForArtist(artistId: String, fetchedArtistGenresHandler: @escaping ([String]?, NusicError?) -> () ) {
+    final func getGenresForArtist(artistId: String, fetchedArtistGenresHandler: @escaping ([String]?, NusicError?) -> () ) {
         do {
             
             let trackUrl = URL(string: "spotify:artist:\(artistId)")!
@@ -217,13 +199,7 @@ extension Spotify {
                         print("error parsing artist genres for artist \(artistId)");
                     }
                 } else {
-                    switch statusCode {
-                    case 400...499:
-                        fetchedArtistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                    case 500...599:
-                        fetchedArtistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                    default: fetchedArtistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                    }
+                    fetchedArtistGenresHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
                 }
             })
         } catch { fetchedArtistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));

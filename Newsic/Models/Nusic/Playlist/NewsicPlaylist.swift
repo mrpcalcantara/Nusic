@@ -58,7 +58,7 @@ extension NusicPlaylist : FirebaseModel {
         }
     }
     
-    func getPlaylist(getPlaylistHandler: @escaping(NusicPlaylist?, NusicError?) -> ()) {
+    final func getPlaylist(getPlaylistHandler: @escaping(NusicPlaylist?, NusicError?) -> ()) {
         getData { (dict, error) in
             if error != nil || dict == nil {
                 getPlaylistHandler(nil, error)
@@ -74,7 +74,7 @@ extension NusicPlaylist : FirebaseModel {
         }
     }
     
-    func addNewPlaylist(addNewPlaylistHandler: @escaping (Bool?, NusicError?) -> ()) {
+    final func addNewPlaylist(addNewPlaylistHandler: @escaping (Bool?, NusicError?) -> ()) {
         deleteData { (reference, error) in
             self.saveData(saveCompleteHandler: { (reference, error) in
                 if let error = error {

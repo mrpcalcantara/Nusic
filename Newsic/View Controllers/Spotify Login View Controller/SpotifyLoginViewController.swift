@@ -73,7 +73,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         self.view.bringSubview(toFront: nusicFullTitle)
         self.view.layoutIfNeeded()
         
-        gotToken = UserDefaults.standard.object(forKey: "SpotifySession") as AnyObject != nil
         checkFirebaseConnectivity()
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
@@ -112,7 +111,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         
     }
     
-    @objc func fireErrorPopup() {
+    @objc final func fireErrorPopup() {
         let popup = NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: "Unable to connect. Please try again later.");
         popup.presentPopup(for: self);
     }

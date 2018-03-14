@@ -11,14 +11,13 @@ import UIKit
 @objc protocol ChoiceListDelegate: class {
     func didTapGenre(value: String)
     func didRemoveGenres()
-    func didTapMood(value: String)
+//    func didTapMood(value: String)
     func didTapHeader(willOpen: Bool)
     func didPanHeader(_ translationX: CGFloat, _ translationY: CGFloat)
     func willMove(to point:CGPoint, animated: Bool)
     func getSongs()
     func isEmpty()
     func isNotEmpty()
-//    @objc optional func didFinishPanHeader()
 }
 
 class ChoiceListView: NusicView {
@@ -125,7 +124,7 @@ class ChoiceListView: NusicView {
         self.frame.size = CGSize(width: self.frame.width, height: (UIApplication.shared.keyWindow?.frame.height)! - self.frame.origin.y)
     }
     
-    func reloadView() {
+    final func reloadView() {
         setupArrow()
         toggleArrow()
         removeBezierPaths()
@@ -144,7 +143,7 @@ class ChoiceListView: NusicView {
         
     }
     
-    @objc func toggleListMenu() {
+    @objc final func toggleListMenu() {
         isOpen = !isOpen
         manageToggleView()
         lastPanPoint = self.frame.origin
@@ -152,7 +151,7 @@ class ChoiceListView: NusicView {
         
     }
     
-    @objc func handleListMenuPan(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc final func handleListMenuPan(_ gestureRecognizer: UIPanGestureRecognizer) {
         let translation = gestureRecognizer.translation(in: self)
         self.frame.size = CGSize(width: self.frame.width, height: maxY)
         switch gestureRecognizer.state {
@@ -180,7 +179,7 @@ class ChoiceListView: NusicView {
         }
     }
     
-    func animateMove(to point:CGPoint) {
+    final func animateMove(to point:CGPoint) {
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.frame.origin.y = point.y
             //HACK: Resizing the frame of the view so the collection view resizes along and the user is able to scroll to the end.
@@ -193,7 +192,7 @@ class ChoiceListView: NusicView {
         
     }
     
-    func insertChosenGenre(value: String) {
+    final func insertChosenGenre(value: String) {
         if chosenGenres.count == 0 {
             delegate?.isNotEmpty()
         }
@@ -205,13 +204,13 @@ class ChoiceListView: NusicView {
         }, completion: nil)
     }
     
-    func emptyGenres() {
+    final func emptyGenres() {
         chosenGenres.removeAll()
         choiceCollectionView.reloadData()
         delegate?.didRemoveGenres()
     }
     
-    func emptyMoods() {
+    final func emptyMoods() {
         chosenMoods.removeAll()
         choiceCollectionView.reloadData()
     }

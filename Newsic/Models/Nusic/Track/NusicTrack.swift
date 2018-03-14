@@ -35,7 +35,7 @@ class NusicTrack {
         setupListeners()
     }
     
-    func setupListeners() {
+    private func setupListeners() {
         
         //Save
         Database.database().reference().child("likedTracks").child(userName).observe(.childAdded) { (dataSnapshot) in
@@ -108,7 +108,7 @@ extension NusicTrack : FirebaseModel {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
         let dateString = dateFormatter.string(from: date)
         if let audioFeatures = trackInfo.audioFeatures {
-            var dict = audioFeatures.toDictionary();
+            let dict = audioFeatures.toDictionary();
             
             Database.database().reference().child("trackFeatures").child(trackInfo.trackId!).updateChildValues(dict) { (error, reference) in
                 if let error = error {
@@ -131,7 +131,7 @@ extension NusicTrack : FirebaseModel {
         deleteCompleteHandler(reference, nil)
     }
     
-    func setSuggestedValue(value: Bool, suggestedHandler: ((DatabaseReference?, NusicError?) -> ())?) {
+    final func setSuggestedValue(value: Bool, suggestedHandler: ((DatabaseReference?, NusicError?) -> ())?) {
         suggestionInfo?.isNewSuggestion = false
         Database.database().reference().child("suggestedTracks").child(self.userName).child(self.trackInfo.linkedFromTrackId).child("isNewSuggestion").setValue(0) { (error, reference) in
             if let error = error {
@@ -141,7 +141,7 @@ extension NusicTrack : FirebaseModel {
         }
     }
     
-    func setSongLiked(value: Bool) {
+    final func setSongLiked(value: Bool) {
         self.isLiked = value
     }
     

@@ -22,7 +22,7 @@ class NusicDefaultViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func showLoginErrorPopup() {
+    final func showLoginErrorPopup() {
         SwiftSpinner.hide()
         let popupDialog = PopupDialog(title: "Error", message: "Unable to connect. Please, try to login again.")
         popupDialog.transitionStyle = .zoomIn
@@ -40,13 +40,13 @@ class NusicDefaultViewController: UIViewController {
         self.present(popupDialog, animated: true, completion: nil)
     }
     
-    func goToPreviousViewController() {
+    final func goToPreviousViewController() {
         if let parent = self.parent as? NusicPageViewController {
             parent.scrollToPreviousViewController()
         }
     }
     
-    func goToNextViewController() {
+    final func goToNextViewController() {
         if let parent = self.parent as? NusicPageViewController {
             parent.scrollToNextViewController()
         }

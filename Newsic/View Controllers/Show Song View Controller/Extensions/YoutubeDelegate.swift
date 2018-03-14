@@ -11,7 +11,7 @@ import PopupDialog
 
 extension ShowSongViewController: YTPlayerViewDelegate {
     
-    func setupYTPlayer(for view: SongOverlayView, with videoId: String) {
+    final func setupYTPlayer(for view: SongOverlayView, with videoId: String) {
         view.youtubePlayer.delegate = self;
         UIView.animate(withDuration: 0.3) {
             view.albumImage.alpha = 0
@@ -19,7 +19,7 @@ extension ShowSongViewController: YTPlayerViewDelegate {
         loadVideo(for: view, with: videoId)
     }
     
-    func loadVideo(for view: SongOverlayView, with videoId: String) {
+    private func loadVideo(for view: SongOverlayView, with videoId: String) {
         let playerVars: [String : Any] = [
             "playsinline" : 1,
             "showinfo" : 0,
@@ -31,7 +31,7 @@ extension ShowSongViewController: YTPlayerViewDelegate {
         view.youtubePlayer.load(withVideoId: videoId, playerVars: playerVars)
     }
     
-    func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
+    final func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
         if Connectivity.isConnectedToNetwork() == .connectedCellular && !playOnCellularData! {
             let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
             
@@ -59,7 +59,7 @@ extension ShowSongViewController: YTPlayerViewDelegate {
         playerView.playVideo();
     }
     
-    func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
+    final func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
         if state == .playing {
             self.isPlaying = true
             self.togglePausePlayIcon()
@@ -71,26 +71,26 @@ extension ShowSongViewController: YTPlayerViewDelegate {
         } 
     }
     
-    func playerView(_ playerView: YTPlayerView, receivedError error: YTPlayerError) {
+    final func playerView(_ playerView: YTPlayerView, receivedError error: YTPlayerError) {
         
     }
     
-    func ytSeekTo(seconds: Float) {
+    final func ytSeekTo(seconds: Float) {
         let card = getCurrentCardView()
         card.youtubePlayer.seek(toSeconds: seconds, allowSeekAhead: true);
     }
     
-    func ytPauseTrack() {
+    private func ytPauseTrack() {
         let card = getCurrentCardView()
         card.youtubePlayer.pauseVideo()
     }
     
-    func ytPlayTrack() {
+    final func ytPlayTrack() {
         let card = getCurrentCardView()
         card.youtubePlayer.playVideo()
     }
     
-    func ytPausePlay() {
+    final func ytPausePlay() {
         self.isPlaying = !self.isPlaying
         
         if isPlaying {

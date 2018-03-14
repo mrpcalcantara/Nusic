@@ -239,10 +239,10 @@ extension NusicPageViewController: UIPageViewControllerDelegate {
         notifyNusicDelegateOfNewIndex()
         
     }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-        self.pageViewController(self, viewControllerAfter: pendingViewControllers.first!)
-    }
+//    
+//    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+//        self.pageViewController(self, viewControllerAfter: pendingViewControllers.first!)
+//    }
     
 }
 

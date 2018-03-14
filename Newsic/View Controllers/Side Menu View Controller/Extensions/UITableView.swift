@@ -11,7 +11,7 @@ import PopupDialog
 import SafariServices
 
 extension SideMenuViewController {
-    func setupTableView() {
+    final func setupTableView() {
         settingsTableView.delegate = self;
         settingsTableView.dataSource = self;
         
@@ -159,7 +159,8 @@ extension SideMenuViewController {
                 }
                 buttonYoutube.action = actionYoutube
                 
-                cell.configureCell(title: title, value: str.description(), icon: UIImage(named: "PreferredPlayer"), options: [buttonSpotify, buttonYoutube], enableCell: enablePlayerSwitch!)
+                cell.configure(title: title, value: str.description(), icon: UIImage(named: "PreferredPlayer"))
+                cell.alertController?.configure(options: [buttonSpotify, buttonYoutube])
                 
             }
         }
@@ -182,7 +183,8 @@ extension SideMenuViewController {
             }
             buttonOff.action = actionOff
             
-            cell.configureCell(title: title, value: useMobileData.toString(), icon: UIImage(named: "MobileData"), options: [buttonOn, buttonOff])
+            cell.configure(title: title, value: useMobileData.toString(), icon: UIImage(named: "MobileData"))
+            cell.alertController?.configure(options: [buttonOn, buttonOff])
         }
     }
     
@@ -200,7 +202,8 @@ extension SideMenuViewController {
         }
         buttonDismiss.action = actionDismiss
         
-        cell.configureCell(title: title, value: "", icon: nil, options: [buttonLogout, buttonDismiss], centerText: true, alertText: "Are you sure?")
+        cell.configure(title: title, value: "", icon: nil, centerText: true)
+        cell.alertController?.configure(options: [buttonLogout, buttonDismiss], alertText: "Are you sure?")
         
     }
     
@@ -236,7 +239,8 @@ extension SideMenuViewController {
         
         buttonDeleteAccount.action = actionDelete
         
-        cell.configureCell(title: title, value: "", icon: nil, options: [buttonDeleteAccount, buttonDismiss], centerText: true, alertText: "Are you sure? Deleting your account is definitive.")
+        cell.configure(title: title, value: "", icon: nil, centerText: true)
+        cell.alertController?.configure(options: [buttonDeleteAccount, buttonDismiss], alertText: "Are you sure? Deleting your account is definitive.")
         cell.itemDescription.textColor = UIColor.red
     }
     
@@ -263,14 +267,14 @@ extension SideMenuViewController {
             }
             buttonLow.action = actionLow
             
-            cell.configureCell(title: title, value: bitrate.description(), icon: UIImage(named: "SpotifySoundQuality"), options: [buttonHigh, buttonNormal, buttonLow])
+            cell.configure(title: title, value: bitrate.description(), icon: UIImage(named: "SpotifySoundQuality"))
+            cell.alertController?.configure(options: [buttonHigh, buttonNormal, buttonLow])
         }
     }
     
     fileprivate func setupInfoSettings(for cell: SettingsCell, title: String) {
         let buttonPrivacyPolicy = YBButton(frame: CGRect.zero, icon: #imageLiteral(resourceName: "ButtonAppIcon"), text: "Read the privacy policy")
         let actionPrivacyPolicy = { () -> Void in
-//            cell.itemValue.text = buttonPrivacyPolicy.textLabel.text
             if let url = URL(string: "https://www.iubenda.com/privacy-policy/81210825") {
                 let safariViewController = SFSafariViewController(url: url)
                 self.present(safariViewController, animated: true, completion: nil)
@@ -279,7 +283,8 @@ extension SideMenuViewController {
         }
         buttonPrivacyPolicy.action = actionPrivacyPolicy
         
-        cell.configureCell(title: title, value: "", icon: nil, options: [buttonPrivacyPolicy], centerText: true, alertText: "")
+        cell.configure(title: title, value: "", icon: nil, centerText: true)
+        cell.alertController?.configure(options: [buttonPrivacyPolicy], alertText: "")
     }
     
 }

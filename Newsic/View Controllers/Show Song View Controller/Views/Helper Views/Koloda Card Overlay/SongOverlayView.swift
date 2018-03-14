@@ -121,11 +121,11 @@ class SongOverlayView: OverlayView {
         
     }
     
-    func setupViewForSpotify() {
+    final func setupViewForSpotify() {
         self.youtubePlayer.alpha = 0
     }
     
-    func setupViewForYoutube() {
+    final func setupViewForYoutube() {
         self.albumImage.alpha = 0
     }
     

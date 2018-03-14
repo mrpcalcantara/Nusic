@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SpotifyArtist: Hashable, Decodable {
+class SpotifyArtist: Hashable {
     var hashValue: Int {
         return (uri?.hashValue)!
     }
@@ -62,7 +62,7 @@ class SpotifyArtist: Hashable, Decodable {
         return isEqual
     }
     
-    func listGenres(showPrefix: Bool? = true) -> String {
+    final func listGenres(showPrefix: Bool? = true) -> String {
         if let subGenres = subGenres {
             var genreList = ""
             for genre in subGenres {
@@ -77,7 +77,7 @@ class SpotifyArtist: Hashable, Decodable {
         return ""
     }
     
-    func listDictionary() -> [String: Int] {
+    final func listDictionary() -> [String: Int] {
         var dict: [String: Int] = [:]
         let genres = listGenres(showPrefix: false).split(separator: ",")
         for genre in genres {
@@ -86,6 +86,10 @@ class SpotifyArtist: Hashable, Decodable {
         
         return dict
     }
+    
+}
+
+extension SpotifyArtist: Decodable {
     
     enum ArtistKeys: String, CodingKey {
         case id
@@ -96,4 +100,3 @@ class SpotifyArtist: Hashable, Decodable {
     }
     
 }
-

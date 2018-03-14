@@ -59,7 +59,7 @@ class MoodGenreCell: UICollectionViewCell {
         self.activityIndicator.stopAnimating()
     }
     
-    func configure(text: String) {
+    final func configure(text: String) {
         
         DispatchQueue.main.async {
             self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -76,6 +76,7 @@ class MoodGenreCell: UICollectionViewCell {
             self.activityIndicator.hidesWhenStopped = true
             
             if let imageList = self.imageList, imageList.count > 0 {
+                self.backgroundImage.image = imageList[self.currentImageIndex]
                 self.setTimer()
             } else {
                 
@@ -84,7 +85,7 @@ class MoodGenreCell: UICollectionViewCell {
         }
     }
     
-    func addImages(urlList: [String]) {
+    final func addImages(urlList: [String]) {
         imageUrlList = Array(urlList.prefix(2))
         var count = 0
         var downloadedImageList: [UIImage] = Array()
@@ -106,11 +107,11 @@ class MoodGenreCell: UICollectionViewCell {
         }
     }
     
-    func selectCell() {
+    final func selectCell() {
         setPathSelectAnimation()
     }
     
-    func deselectCell() {
+    final func deselectCell() {
         setPathDeselectAnimation()
     }
     

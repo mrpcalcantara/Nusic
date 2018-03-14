@@ -10,7 +10,7 @@ import Foundation
 
 extension URLSession {
     
-    func executeCall(with request: URLRequest, retryNumber: Int? = 3, retryAfter: Int? = 10, completionHandler: @escaping (Data?, HTTPURLResponse?, Error?, Bool) -> ()) {
+    final func executeCall(with request: URLRequest, retryNumber: Int? = 3, retryAfter: Int? = 10, completionHandler: @escaping (Data?, HTTPURLResponse?, Error?, Bool) -> ()) {
         var retryNumberLeft = retryNumber!
         
         let session = URLSession.shared;

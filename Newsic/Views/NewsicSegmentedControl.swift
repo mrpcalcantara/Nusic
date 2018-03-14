@@ -46,35 +46,15 @@ class NusicSegmentedControl: UIControl {
         }
     }
     
-    @IBInspectable var selectedLabelColor : UIColor = NusicDefaults.foregroundThemeColor {
-        didSet {
-            setSelectedColors()
-        }
-    }
-    
-    @IBInspectable var unselectedLabelColor : UIColor = UIColor.clear {
-        didSet {
-            setSelectedColors()
-        }
-    }
-    
-    @IBInspectable var thumbColor : UIColor = NusicDefaults.foregroundThemeColor {
-        didSet {
-            setSelectedColors()
-        }
-    }
-    
+    @IBInspectable var selectedLabelColor : UIColor = NusicDefaults.foregroundThemeColor
+    @IBInspectable var unselectedLabelColor : UIColor = UIColor.clear
+    @IBInspectable var thumbColor : UIColor = NusicDefaults.foregroundThemeColor
     @IBInspectable var borderColor : UIColor = NusicDefaults.foregroundThemeColor {
         didSet {
             layer.borderColor = borderColor.cgColor
         }
     }
-    
-    @IBInspectable var font : UIFont! = UIFont.systemFont(ofSize: 12) {
-        didSet {
-            setFont()
-        }
-    }
+    @IBInspectable var font : UIFont! = UIFont.systemFont(ofSize: 12)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -89,18 +69,7 @@ class NusicSegmentedControl: UIControl {
     
     func setupView(){
         
-//        let containerEffect = UIBlurEffect(style: .dark)
-//        let containerView = UIVisualEffectView(effect: containerEffect)
-//        containerView.alpha = 0.9
-//        containerView.frame = self.bounds
-//
-//        containerView.isUserInteractionEnabled = false // Edit: so that subview simply passes the event through to the button
-//
-//        self.insertSubview(containerView, at: 0)
-//
-//        layer.cornerRadius = frame.height / 2
         layer.cornerRadius = 22
-//        layer.borderColor = UIColor(white: 1.0, alpha: 0.5).cgColor
         layer.borderWidth = 1
         
         backgroundColor = UIColor.clear
@@ -113,7 +82,7 @@ class NusicSegmentedControl: UIControl {
         addDragGesture()
     }
     
-    func setupLabels(){
+    private func setupLabels(){
         
         for label in labels {
             label.removeFromSuperview()
@@ -176,7 +145,7 @@ class NusicSegmentedControl: UIControl {
         return false
     }
     
-    func displayNewSelectedIndex(){
+    private func displayNewSelectedIndex(){
         for item in labels {
             item.backgroundColor = unselectedLabelColor
         }
@@ -190,7 +159,7 @@ class NusicSegmentedControl: UIControl {
         }, completion: nil)
     }
     
-    func addIndividualItemConstraints(items: [UIView], mainView: UIView, padding: CGFloat) {
+    private func addIndividualItemConstraints(items: [UIView], mainView: UIView, padding: CGFloat) {
         
         var index = 0;
         for button in items {
@@ -235,26 +204,6 @@ class NusicSegmentedControl: UIControl {
         }
     }
     
-    func setSelectedColors(){
-        /*
-        for item in labels {
-            item.backgroundColor = unselectedLabelColor
-        }
-        
-        if labels.count > 0 {
-            labels[0].backgroundColor = selectedLabelColor
-        }
-        */
-        //thumbView.backgroundColor = thumbColor
-    }
-    
-    func setFont(){
-        /*
-        for item in labels {
-            item.font = font
-        }
-        */
-    }
     
     // MARK: Tap gestures
     private func addTapGesture() {

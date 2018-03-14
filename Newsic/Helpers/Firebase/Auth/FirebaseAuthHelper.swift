@@ -63,34 +63,30 @@ class FirebaseAuthHelper {
     }
 
     class func addApnsDeviceToken(apnsToken: String, userId: String, apnsTokenCompletionHandler: @escaping (Bool?, NusicError?) -> ()) {
-        let firebaseAddAPNSUrl = addAPNSTokenUrl
+        var urlComponents = URLComponents(string: addAPNSTokenUrl)
+        //
+        urlComponents?.queryItems = []
+        urlComponents?.queryItems?.insert(URLQueryItem(name: "deviceToken", value: apnsToken), at: 0)
+        let username = userId.replaceSymbols(symbol: ".", with: "-")
+        urlComponents?.queryItems?.insert(URLQueryItem(name: "uid", value: username), at: 0)
         
-        if let firebaseUrl = URL(string: firebaseAddAPNSUrl) {
-            var urlComponents = URLComponents(string: firebaseAddAPNSUrl)
-            //
-            urlComponents?.queryItems = []
-            urlComponents?.queryItems?.insert(URLQueryItem(name: "deviceToken", value: apnsToken), at: 0)
-            let username = userId.replaceSymbols(symbol: ".", with: "-")
-            urlComponents?.queryItems?.insert(URLQueryItem(name: "uid", value: username), at: 0)
-            
-            let urlRequest = URLRequest(url: (urlComponents?.url)!)
-            
-            URLSession.shared.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
-                if let error = error {
-                    apnsTokenCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.serverError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error));
-                } else {
-                    do {
-                        let parsedData = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
-                        let respData = parsedData["success"] as? Bool
-                        apnsTokenCompletionHandler(respData, nil)
-                        
-                    } catch {
-                        apnsTokenCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error))
-                    }
+        let urlRequest = URLRequest(url: (urlComponents?.url)!)
+        
+        URLSession.shared.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
+            if let error = error {
+                apnsTokenCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.serverError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error));
+            } else {
+                do {
+                    let parsedData = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
+                    let respData = parsedData["success"] as? Bool
+                    apnsTokenCompletionHandler(respData, nil)
                     
+                } catch {
+                    apnsTokenCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error))
                 }
-            }).resume()
-        }
+                
+            }
+        }).resume()
     }
 
     class func deleteUserData(userId: String) {

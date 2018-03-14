@@ -8,7 +8,7 @@
 
 extension Spotify {
     
-    func getUser(completion: @escaping(SPTUser?, NusicError?) -> ()) {
+    final func getUser(completion: @escaping(SPTUser?, NusicError?) -> ()) {
         SPTUser.requestCurrentUser(withAccessToken: auth.session.accessToken) { (error, results) in
             if error != nil {
                 let error = NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError)

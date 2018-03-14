@@ -63,7 +63,7 @@ class SuggestedSongListViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setupTableViewData() {
+    final func setupTableViewData() {
         sectionTitles.removeAll()
         sectionSongs.removeAll()
         for track in suggestedSongList {
@@ -82,7 +82,7 @@ class SuggestedSongListViewController: UIViewController {
         }
     }
 
-    func reloadTable() {
+    final func reloadTable() {
         DispatchQueue.main.async {
             if self.suggestedSongListTableView != nil {
                 self.setupTableViewData()
@@ -92,7 +92,7 @@ class SuggestedSongListViewController: UIViewController {
         }
     }
 
-    func updateBadgeCount() {
+    final func updateBadgeCount() {
         self.tabBarItem.badgeValue = String(suggestedSongList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
         if self.tabBarItem.badgeValue == "0" {
             self.tabBarItem.badgeValue = nil

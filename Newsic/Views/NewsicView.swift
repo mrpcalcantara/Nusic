@@ -19,7 +19,7 @@ class NusicView: UIView {
         super.init(coder: aDecoder)
     }
     
-    func setupNusicView() {
+    final func setupNusicView() {
         if let image = UIImage(named: "BackgroundPattern") {
             self.backgroundColor = UIColor(patternImage: image)
         }

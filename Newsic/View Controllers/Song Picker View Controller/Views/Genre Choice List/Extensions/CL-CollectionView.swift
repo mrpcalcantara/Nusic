@@ -10,7 +10,7 @@ import Foundation
 
 extension ChoiceListView {
     
-    func setupCollectionView() {
+    final func setupCollectionView() {
         choiceCollectionView.delegate = self
         choiceCollectionView.dataSource = self
         choiceCollectionView.isScrollEnabled = true
@@ -39,7 +39,7 @@ extension ChoiceListView {
         
     }
     
-    func setupGestureRecognizers() {
+    final func setupGestureRecognizers() {
         let headerTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleListMenu));
         headerTapGestureRecognizer.numberOfTouchesRequired = 1
         headerTapGestureRecognizer.numberOfTapsRequired = 1
