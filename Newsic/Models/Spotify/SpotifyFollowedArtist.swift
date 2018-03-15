@@ -44,9 +44,7 @@ class SpotifyArtist: Hashable {
             }
             
             subGenres = Spotify.filterSpotifyGenres(genres: genreList)
-        } catch {
-            
-        }
+        } catch {}
         
     }
     

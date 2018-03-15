@@ -46,15 +46,13 @@ extension Array where Element == SpotifyArtist {
         for artist in self {
             for artistGenre in artist.subGenres! {
                 if !allGenres.contains(artistGenre) {
-                    if uppercase! {
-                        allGenres.append(artistGenre.capitalizingFirstLetter())
-                    } else {
-                        allGenres.append(artistGenre)
-                    }
+                    allGenres.append(artistGenre)
                 }
             }
         }
-        
+        if uppercase! {
+           return allGenres.map({ $0.capitalizingFirstLetter() })
+        }
         return allGenres
     }
     

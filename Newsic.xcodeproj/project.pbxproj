@@ -164,7 +164,6 @@
 		8CF8D3FE1FBA9C9300E130BC /* CustomNavigationAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF8D3FD1FBA9C9300E130BC /* CustomNavigationAnimationController.swift */; };
 		8CF8D4021FBAC7D200E130BC /* CustomInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF8D4011FBAC7D200E130BC /* CustomInteractionController.swift */; };
 		8CFD735C1F68F57E004E7D08 /* NewsicPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CFD735B1F68F57E004E7D08 /* NewsicPlaylist.swift */; };
-		8CFFBF371F9708F100A69E78 /* NewsicCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */; };
 		E73A4AF07C6809503B8CCB36 /* Pods_Newsic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16EA3F326FCB40183FD4C8ED /* Pods_Newsic.framework */; };
 /* End PBXBuildFile section */
 
@@ -345,7 +344,6 @@
 		8CF8D3FD1FBA9C9300E130BC /* CustomNavigationAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationAnimationController.swift; sourceTree = "<group>"; };
 		8CF8D4011FBAC7D200E130BC /* CustomInteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInteractionController.swift; sourceTree = "<group>"; };
 		8CFD735B1F68F57E004E7D08 /* NewsicPlaylist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicPlaylist.swift; sourceTree = "<group>"; };
-		8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicCollectionViewLayout.swift; sourceTree = "<group>"; };
 		B3A6FFA35B32287CA01B7ABA /* Pods-Newsic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Newsic.release.xcconfig"; path = "Pods/Target Support Files/Pods-Newsic/Pods-Newsic.release.xcconfig"; sourceTree = "<group>"; };
 		FE72F769C47D6A380F86AEA0 /* Pods_NewsicTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NewsicTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1253,7 +1251,6 @@
 			isa = PBXGroup;
 			children = (
 				8CB529E01F8375D900C8050F /* MoodCollectionView.swift */,
-				8CFFBF361F9708F000A69E78 /* NewsicCollectionViewLayout.swift */,
 				8C2911AD1FC6BEF50063E463 /* NewsicSegmentedControlDelegate.swift */,
 				8C3A6F1A1FCD769C00BA7981 /* ShowSongDataTransfer.swift */,
 				8C0ED6BC1FE7C79700394909 /* ChoiceListViewDelegate.swift */,
@@ -1680,7 +1677,6 @@
 				8C2D05E9201EE80700518B68 /* MoodGenreCell.swift in Sources */,
 				8C58ACED1FFE202500E68FD5 /* SPTBitrate.swift in Sources */,
 				8C0ED6BD1FE7C79700394909 /* ChoiceListViewDelegate.swift in Sources */,
-				8CFFBF371F9708F100A69E78 /* NewsicCollectionViewLayout.swift in Sources */,
 				8C1434701FDE63EC0061E2CB /* NewsicPreferredPlayer.swift in Sources */,
 				8C21E7101FC6AF950033B477 /* NewsicPageViewController.swift in Sources */,
 				8CCC55361F67975F005090A4 /* Double.swift in Sources */,

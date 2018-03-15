@@ -62,13 +62,11 @@ class SongListTabBarViewController: UITabBarController {
     
     fileprivate func setupNavigationBar(image: UIImage? = UIImage(named: "PreferredPlayer")) {
         navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
-        
         navbar.barStyle = .default
         navbar.translatesAutoresizingMaskIntoConstraints = false
         
         let leftBarButton = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(moveToShowSongVC));
-        self.navigationItem.leftBarButtonItem = leftBarButton
-        
+        self.navigationItem.leftBarButtonItem = leftBarButton        
         let navItem = self.navigationItem
         
         navbar.items = [navItem]

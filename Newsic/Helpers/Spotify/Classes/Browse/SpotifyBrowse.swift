@@ -51,7 +51,6 @@ extension Spotify {
         }
         
         urlString += buildUrlString(recommendation: recommendation, numberOfSongs: numberOfSongs, moodObject: moodObject, preferredTrackFeatures: preferredTrackFeatures, selectedGenreList: selectedGenreList, artists: artists, tracks: tracks)
-        
         urlString.append("&limit=\(numberOfSongs)")
         //Create URL Request to get songs
         let url = URL(string: urlString);
@@ -63,34 +62,30 @@ extension Spotify {
         
         executeSpotifyCall(with: request, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
             let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-            if isSuccess {
-                let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
-                let trackList = jsonObject["tracks"] as! [[String: AnyObject]]
-                for track in trackList {
-                    if let trackData = try? JSONSerialization.data(withJSONObject: track, options: JSONSerialization.WritingOptions.prettyPrinted) {
-                        if let decodedTrack = try? JSONDecoder().decode(SpotifyTrack.self, from: trackData) {
-                            spotifyResults.append(decodedTrack);
-                        }
-                    }
-                    
+            guard isSuccess else { completionHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)); return; }
+            let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
+            let trackList = jsonObject["tracks"] as! [[String: AnyObject]]
+            for track in trackList {
+                if let trackData = try? JSONSerialization.data(withJSONObject: track, options: JSONSerialization.WritingOptions.prettyPrinted),
+                    let decodedTrack = try? JSONDecoder().decode(SpotifyTrack.self, from: trackData) {
+                    spotifyResults.append(decodedTrack);
                 }
-                let artistUriList = spotifyResults.flatMap({ $0.artist.map({ $0.uri! }) })
-                self.getAllGenresForArtists(artistUriList, offset: 0, artistGenresHandler: { (artistList, error) in
-                    if let artistList = artistList {
-                        for artist in artistList {
-                            if let artistIndex = spotifyResults.index(where: { (track) -> Bool in
-                                return track.artist.map({$0.uri}).contains(where: { $0 == artist.uri })
-                            }) {
-                                spotifyResults[artistIndex].artist.updateArtist(artist: artist)
-                            }
+                
+            }
+            let artistUriList = spotifyResults.flatMap({ $0.artist.map({ $0.uri! }) })
+            self.getAllGenresForArtists(artistUriList, offset: 0, artistGenresHandler: { (artistList, error) in
+                if let artistList = artistList {
+                    for artist in artistList {
+                        if let artistIndex = spotifyResults.index(where: { (track) -> Bool in
+                            return track.artist.map({$0.uri}).contains(where: { $0 == artist.uri })
+                        }) {
+                            spotifyResults[artistIndex].artist.updateArtist(artist: artist)
                         }
                     }
-                    
-                    completionHandler(spotifyResults, nil)
-                })
-            } else {
-                completionHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue))
-            }
+                }
+                
+                completionHandler(spotifyResults, nil)
+            })
             
         })
         
@@ -242,24 +237,23 @@ extension Spotify {
             valence = trackFeatures.valence != nil ? valence + trackFeatures.valence! : 0
         }
         
-        acousticness = (acousticness/Double(trackCount));
-        danceability = danceability/Double(trackCount);
-        energy = energy/Double(trackCount);
-        instrumentalness = instrumentalness/Double(trackCount);
-        liveness = liveness/Double(trackCount);
-        loudness = loudness/Double(trackCount);
-        speechiness = speechiness/Double(trackCount);
-        tempo = tempo/Double(trackCount);
-        valence = valence/Double(trackCount);
+        acousticness /= Double(trackCount)
+        danceability /= Double(trackCount)
+        energy /= Double(trackCount)
+        instrumentalness /= Double(trackCount)
+        liveness /= Double(trackCount)
+        loudness /= Double(trackCount)
+        speechiness /= Double(trackCount)
+        tempo /= Double(trackCount)
+        valence /= Double(trackCount)
         
-        return SpotifyTrackFeature(acousticness: acousticness, analysisUrl: nil, danceability: danceability, durationMs: nil, energy: energy, id: nil, instrumentalness: instrumentalness, key: nil, liveness: liveness, loudness: loudness, mode: nil, speechiness: speechiness, tempo: tempo, timeSignature: nil, trackHref: nil, type: nil, uri: nil, valence: valence, youtubeId: nil)
+        return SpotifyTrackFeature(acousticness: acousticness, danceability: danceability, energy: energy, instrumentalness: instrumentalness, liveness: liveness, loudness: loudness, speechiness: speechiness, tempo: tempo, valence: valence)
         
     }
     
     private func getAverageTrackFeaturesRandomized(preferredTrackFeatures: [SpotifyTrackFeature]) -> [String: AnyObject] {
         var emotionValues:[String: AnyObject] = [:]
         let trackFeatures = getAverageTrackFeatures(preferredTrackFeatures: preferredTrackFeatures)
-        
         
         trackFeatures.danceability!.randomInRange(value: trackFeatures.danceability!, range: 0.2, acceptNegativeValues: false)
         trackFeatures.energy!.randomInRange(value: trackFeatures.energy!, range: 0.2, acceptNegativeValues: false)

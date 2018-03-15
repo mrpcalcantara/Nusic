@@ -121,44 +121,34 @@ extension NusicUser: FirebaseModel {
     
     final func getUser(getUserHandler: @escaping (NusicUser?, NusicError?) -> ()) {
         getData { (dictionary, error) in
-            if let dictionary = dictionary, dictionary.count > 1 {
-                self.userName = dictionary["canonicalUserName"] as? String ?? self.userName
-                
-                self.displayName = dictionary["displayName"] as? String ?? self.displayName
-                if let isPremiumValue = dictionary["isPremium"] as? NSNumber {
-                    self.isPremium = Bool(truncating: isPremiumValue)
-                }
-                
-                if let territory = dictionary["territory"] as? String {
-                    self.territory = territory != "" ? territory : self.territory 
-                }
-                
-                self.getSettings(fetchSettingsHandler: { (settings, error) in
-                    if let settings = settings {
-                        self.settingValues = settings
-                    } else {
-                        var preferredPlayer: NusicPreferredPlayer = .youtube
-                        if self.isPremium! {
-                            preferredPlayer = .spotify
-                        }
-                        self.settingValues = NusicUserSettings(useMobileData: false, preferredPlayer: preferredPlayer)
-                    }
-                    
-                    
-                    getUserHandler(self, error);
-                })
-                self.version = "1.0"
-                if let version = dictionary["version"] as? String {
-                    self.version = version
-                }
-                
-                
-            } else {
-                getUserHandler(nil, error);
+            guard let dictionary = dictionary, dictionary.count > 1 else { getUserHandler(nil, error); return; }
+            self.userName = dictionary["canonicalUserName"] as? String ?? self.userName
+            self.displayName = dictionary["displayName"] as? String ?? self.displayName
+            if let isPremiumValue = dictionary["isPremium"] as? NSNumber {
+                self.isPremium = Bool(truncating: isPremiumValue)
             }
             
+            if let territory = dictionary["territory"] as? String {
+                self.territory = territory != "" ? territory : self.territory
+            }
             
-            
+            self.getSettings(fetchSettingsHandler: { (settings, error) in
+                if let settings = settings {
+                    self.settingValues = settings
+                } else {
+                    var preferredPlayer: NusicPreferredPlayer = .youtube
+                    if self.isPremium! {
+                        preferredPlayer = .spotify
+                    }
+                    self.settingValues = NusicUserSettings(useMobileData: false, preferredPlayer: preferredPlayer)
+                }
+                
+                getUserHandler(self, error);
+            })
+            self.version = "1.0"
+            if let version = dictionary["version"] as? String {
+                self.version = version
+            }
         }
     }
     
@@ -186,11 +176,9 @@ extension NusicUser: FirebaseModel {
     
     final func getFavoriteGenres(getGenresHandler: @escaping ([String: Int]?, NusicError?) -> ()) {
         let closureSelf = self;
-//        reference.child("genres").child(userName).observe(.value, with: { (dataSnapshot) in
         reference.child("genres").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
-            let value = dataSnapshot.value as? NSDictionary
             var convertedDict: [String: Int] = [:]
-            if value != nil {
+            if let value = dataSnapshot.value as? NSDictionary {
                 convertedDict = value as! [String: Int]
                 
                 var iterator = convertedDict.makeIterator()
@@ -203,10 +191,8 @@ extension NusicUser: FirebaseModel {
                     }
                     nextElement = iterator.next()
                 }
-                //let extractedUsername = value?["canonicalUserName"] as? String ?? ""
                 closureSelf.favoriteGenres = genreList;
             } 
-            
             getGenresHandler(convertedDict, nil);
         }, withCancel: { (error) in
             getGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getFavoriteGenres.rawValue, systemError: error));
