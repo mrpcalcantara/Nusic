@@ -109,6 +109,7 @@ class MoodGenreCell: UICollectionViewCell {
     
     final func selectCell() {
         setPathSelectAnimation()
+        
     }
     
     final func deselectCell() {

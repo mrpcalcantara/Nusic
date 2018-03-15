@@ -317,10 +317,15 @@ extension SongPickerViewController: UICollectionViewDelegate {
                     return;
                 }
             }
+            let moodCellIndexPath = IndexPath(row: 0, section: indexPath.section)
+            if let moodListCell = moodCollectionView.cellForItem(at: moodCellIndexPath) as? MoodGenreListCell {
+                moodListCell.listCollectionView.scrollToItem(at: IndexPath(row: indexPath.row, section: 0), at: .centeredHorizontally, animated: true)
+            }
             
             if let moodCell = getNusicCell(for: collectionView, indexPath: indexPath) {
                 selectedIndexPathForMood = indexPath
                 moodCell.selectCell()
+                
                 self.selectedSongsForMood = self.fetchedSongsForMood.filter({ $0.key == moodCell.moodGenreLabel.text })
             }
             let dyad = sectionMoods[indexPath.section][indexPath.row]
@@ -334,10 +339,12 @@ extension SongPickerViewController: UICollectionViewDelegate {
             
         } else {
             //Get genre from section genre for section and row.
+            
             let selectedGenre = sectionGenres[indexPath.section][indexPath.row].rawValue
             listMenuView.insertChosenGenre(value: selectedGenre)
             sectionGenres[indexPath.section].remove(at: indexPath.row)
-            if let genreCell = genreCollectionView.cellForItem(at: IndexPath(row: 0, section: indexPath.section)) as? MoodGenreListCell {
+            let genreCellIndexPath = IndexPath(row: 0, section: indexPath.section)
+            if let genreCell = genreCollectionView.cellForItem(at: genreCellIndexPath) as? MoodGenreListCell {
                 genreCell.items = sectionGenres[indexPath.section].map({$0.rawValue})
                 let selectedIndexPath = IndexPath(row: indexPath.row, section: 0)
                 if let selectedCell = genreCell.listCollectionView.cellForItem(at: selectedIndexPath) as? MoodGenreCell {

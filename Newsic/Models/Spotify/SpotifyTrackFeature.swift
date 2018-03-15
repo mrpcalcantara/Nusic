@@ -34,27 +34,17 @@ class SpotifyTrackFeature: Hashable {
 //    var genre: String? = ""
     var youtubeId: String? = ""
     
-    init(acousticness: Double? = nil, analysisUrl: String? = nil, danceability: Double? = nil, durationMs: Double? = nil, energy: Double? = nil, id: String? = nil, instrumentalness: Double? = nil, key: Int? = nil, liveness: Double? = nil, loudness: Double? = nil, mode: Int? = nil, speechiness: Double? = nil, tempo: Double? = nil, timeSignature: Int? = nil, trackHref: String? = nil, type: String? = nil, uri: String? = nil, valence: Double? = nil, youtubeId: String? = nil) {
+    init(acousticness: Double? = nil, danceability: Double? = nil, energy: Double? = nil, instrumentalness: Double? = nil, liveness: Double? = nil, loudness: Double? = nil, speechiness: Double? = nil, tempo: Double? = nil, valence: Double? = nil) {
         
         self.acousticness      = acousticness
-        self.analysisUrl       = analysisUrl
         self.danceability      = danceability
-        self.durationMs        = durationMs
         self.energy            = energy
-        self.id                = id
         self.instrumentalness  = instrumentalness
-        self.key               = key
         self.liveness          = liveness
         self.loudness          = loudness
-        self.mode              = mode
         self.speechiness       = speechiness
         self.tempo             = tempo
-        self.timeSignature     = timeSignature
-        self.trackHref         = trackHref
-        self.type              = type
-        self.uri               = uri
         self.valence           = valence
-        self.youtubeId         = youtubeId
     }
     
     convenience init(featureDictionary: [String: AnyObject]) {

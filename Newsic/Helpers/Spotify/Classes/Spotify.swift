@@ -44,25 +44,18 @@ class Spotify {
         let count = trackIdList.count;
         var index = 0
         var allGenres:[String] = [];
-        
-        if trackIdList.count == 0 {
-            trackGenreHandler(nil, nil)
-        } else {
-            for trackId in trackIdList {
-                getGenreForTrack(trackId: trackId, trackGenreHandler: { (genres, error) in
-                    if error != nil {
-                        trackGenreHandler(nil, error)
-                    } else {
-                        if let genres = genres {
-                            allGenres.append(contentsOf: genres)
-                        }
-                        index += 1
-                        if index == count {
-                            trackGenreHandler(allGenres, nil);
-                        }
-                    }
-                })
-            }
+        guard trackIdList.count > 0 else { trackGenreHandler(nil, nil); return; }
+        for trackId in trackIdList {
+            getGenreForTrack(trackId: trackId, trackGenreHandler: { (genres, error) in
+                guard error == nil else { trackGenreHandler(nil, error); return; }
+                if let genres = genres {
+                    allGenres.append(contentsOf: genres)
+                }
+                index += 1
+                if index == count {
+                    trackGenreHandler(allGenres, nil);
+                }
+            })
         }
     }
     
@@ -91,19 +84,12 @@ class Spotify {
     private func getRefreshToken(currentSession: SPTSession, refreshTokenCompletionHandler: @escaping (Bool) -> ()) {
         let userDefaults = UserDefaults.standard;
         SPTAuth.defaultInstance().renewSession(currentSession, callback: { (error, session) in
-            if error == nil {
-//                print("refresh successful");
-                let sessionData = NSKeyedArchiver.archivedData(withRootObject: session!)
-                userDefaults.set(sessionData, forKey: "SpotifySession")
-                userDefaults.synchronize()
-                
-                self.auth.session = session;
-                refreshTokenCompletionHandler(true)
-            } else {
-//                print("error refreshing session: \(error?.localizedDescription)");
-                refreshTokenCompletionHandler(false)
-            }
-            
+            guard error == nil else { refreshTokenCompletionHandler(false); return; }
+            let sessionData = NSKeyedArchiver.archivedData(withRootObject: session!)
+            userDefaults.set(sessionData, forKey: "SpotifySession")
+            userDefaults.synchronize()
+            self.auth.session = session;
+            refreshTokenCompletionHandler(true)
         })
     }
     
@@ -111,38 +97,30 @@ class Spotify {
         let session = URLSession.shared;
         session.executeCall(with: request) { (data, response, error, isSuccess) in
             let statusCode = response?.statusCode
-            if let error = error {
-                spotifyCallCompletionHandler(data, response, error, false);
+            guard error == nil else { spotifyCallCompletionHandler(data, response, error, false); return; }
+            if isSuccess {
+                spotifyCallCompletionHandler(data, response, error, true)
             } else {
-                if isSuccess {
-                    spotifyCallCompletionHandler(data, response, error, true)
-                } else {
-                    switch statusCode! {
-                    case 400...499:
-                        if statusCode == HTTPErrorCodes.unauthorized.rawValue {
-                            self.getRefreshToken(currentSession: self.auth.session, refreshTokenCompletionHandler: { (isRefreshSuccessful) in
-                                if isRefreshSuccessful {
-                                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                                    appDelegate.auth = self.auth
-                                    if let url = request.url {
-                                        var newRequest = URLRequest(url: url);
-                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "refreshSuccessful"), object: nil);
-                                        newRequest.addValue("Bearer \(self.auth.session.accessToken!)", forHTTPHeaderField: "Authorization");
-                                        self.executeSpotifyCall(with: newRequest, spotifyCallCompletionHandler: spotifyCallCompletionHandler)
-                                    }
-                                } else {
-                                    spotifyCallCompletionHandler(data, response, error, isSuccess);
-                                }
-                            })
-                        }
-                    case 500...599:
-                        spotifyCallCompletionHandler(data, response, error, false);
-                    default:
-                        spotifyCallCompletionHandler(data, nil, error, false);
+                switch statusCode! {
+                case 400...499:
+                    if statusCode == HTTPErrorCodes.unauthorized.rawValue {
+                        self.getRefreshToken(currentSession: self.auth.session, refreshTokenCompletionHandler: { (isRefreshSuccessful) in
+                            guard isRefreshSuccessful,
+                                let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+                                let url = request.url else { spotifyCallCompletionHandler(data, response, error, isSuccess); return; }
+                            appDelegate.auth = self.auth
+                            var newRequest = URLRequest(url: url);
+                            NotificationCenter.default.post(name: Notification.Name(rawValue: "refreshSuccessful"), object: nil);
+                            newRequest.addValue("Bearer \(self.auth.session.accessToken!)", forHTTPHeaderField: "Authorization");
+                            self.executeSpotifyCall(with: newRequest, spotifyCallCompletionHandler: spotifyCallCompletionHandler)
+                        })
                     }
+                case 500...599:
+                    spotifyCallCompletionHandler(data, response, error, false);
+                default:
+                    spotifyCallCompletionHandler(data, nil, error, false);
                 }
             }
-            
         }
     }
     
@@ -184,8 +162,10 @@ class Spotify {
     
     static func filterSpotifyGenres(genres: [String]) -> [String] {
         var filteredList: [String] = []
+        //Removing the - to match the genres
+        let filteredGenreList = Spotify.genreList.map({ $0.replacingOccurrences(of: "-", with: " ")})
         for genre in genres {
-            for listedGenre in Spotify.genreList {
+            for listedGenre in filteredGenreList {
                 if genre.lowercased().range(of: listedGenre.lowercased()) != nil && !filteredList.contains(listedGenre) {
                     filteredList.append(listedGenre)
                 }

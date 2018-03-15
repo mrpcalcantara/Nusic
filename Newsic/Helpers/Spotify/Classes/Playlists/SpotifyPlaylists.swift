@@ -11,38 +11,23 @@ extension Spotify {
     final func getAllPlaylists(for pageRequest: URLRequest? = nil, currentPlaylistList: [SPTPartialPlaylist]? = nil, fetchedPlaylistsHandler: @escaping ([SPTPartialPlaylist], NusicError?) -> ()) {
         
         var nextPagePlaylistList = currentPlaylistList == nil ? [] : currentPlaylistList;
-        
         let playlistRequest = pageRequest != nil ? pageRequest : try? SPTPlaylistList.createRequestForGettingPlaylists(forUser: self.user.canonicalUserName, withAccessToken: self.auth.session.accessToken!);
         
-
         executeSpotifyCall(with: playlistRequest!, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
             let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-            if isSuccess {
-                
-                let playlistList = try? SPTPlaylistList.init(from: data, with: httpResponse);
-                let page = playlistList as! SPTListPage
-                if let playlists = page.items as? [SPTPartialPlaylist] {
-                    nextPagePlaylistList?.append(contentsOf: playlists);
-                    
-                    if page.hasNextPage {
-                        do {
-                            let nextPageRequest = try page.createRequestForNextPage(withAccessToken: self.auth.session.accessToken!)
-                            self.getAllPlaylists(for: nextPageRequest, currentPlaylistList: nextPagePlaylistList, fetchedPlaylistsHandler: { (currentPlaylistList, error) in
-                                fetchedPlaylistsHandler(currentPlaylistList, nil);
-                            })
-                        } catch {
-                            print("error in recursive get all playlists function")
-                        }
-                    } else {
-                        fetchedPlaylistsHandler(nextPagePlaylistList!, nil);
-                    }
-                } else {
-                    fetchedPlaylistsHandler([], nil)
-                }
-                
-                
-            } else {
-                fetchedPlaylistsHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue))
+            guard isSuccess else { fetchedPlaylistsHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue)); return; }
+            let playlistList = try? SPTPlaylistList.init(from: data, with: httpResponse);
+            let page = playlistList as! SPTListPage
+            guard let playlists = page.items as? [SPTPartialPlaylist] else { fetchedPlaylistsHandler([], nil); return; }
+            nextPagePlaylistList?.append(contentsOf: playlists);
+            guard page.hasNextPage else { fetchedPlaylistsHandler(nextPagePlaylistList!, nil); return; }
+            do {
+                let nextPageRequest = try page.createRequestForNextPage(withAccessToken: self.auth.session.accessToken!)
+                self.getAllPlaylists(for: nextPageRequest, currentPlaylistList: nextPagePlaylistList, fetchedPlaylistsHandler: { (currentPlaylistList, error) in
+                    fetchedPlaylistsHandler(currentPlaylistList, nil);
+                })
+            } catch {
+                print("error in recursive get all playlists function")
             }
         })
     }

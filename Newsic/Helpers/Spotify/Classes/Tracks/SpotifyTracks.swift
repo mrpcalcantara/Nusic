@@ -9,25 +9,15 @@
 extension Spotify {
     
     final func getTrackInfo(for trackList: [String], offset: Int, currentExtractedTrackList: [SpotifyTrack], trackInfoListHandler: @escaping([SpotifyTrack]?, NusicError?) -> ()) {
-        
-        if trackList.count <= 0 {
-            return;
-        }
+        guard trackList.count > 0 else { return; }
         var spotifyTrackList: [SpotifyTrack] = currentExtractedTrackList
         var currentTrackList:[String] = []
         let checkLimit = currentExtractedTrackList.count-offset
-        
-        //Spotify Limitation
-        if checkLimit > 50 {
-            currentTrackList = Array(trackList[offset...offset+49]);
-        } else {
-            currentTrackList = Array(trackList[offset...trackList.count-1])
-        }
-        
         let nextOffset = offset+50
+        //Spotify Limitation: 50 songs is the maximum we can get details from
+        currentTrackList = checkLimit > 50 ? Array(trackList[offset...offset+49]) : Array(trackList[offset...trackList.count-1]);
         
         var trackUriList: [URL] = []
-        
         for trackURI in currentTrackList {
             trackUriList.append(URL(string: Spotify.transformToURI(type: .track, id: trackURI))!)
         }
@@ -42,16 +32,12 @@ extension Spotify {
                     let extractedTrackList = jsonObject["tracks"] as! [[String:AnyObject]];
                     for track in extractedTrackList {
                         
-                        if let trackData = try? JSONSerialization.data(withJSONObject: track, options: JSONSerialization.WritingOptions.prettyPrinted) {
-                            if let decodedTrack = try? JSONDecoder().decode(SpotifyTrack.self, from: trackData) {
-                                spotifyTrackList.append(decodedTrack);
-                            }
+                        if let trackData = try? JSONSerialization.data(withJSONObject: track, options: JSONSerialization.WritingOptions.prettyPrinted), let decodedTrack = try? JSONDecoder().decode(SpotifyTrack.self, from: trackData) {
+                            spotifyTrackList.append(decodedTrack);
                         }
                         
                     }
-                    
-                    let nextPage = jsonObject["next"] as? String
-                    if nextPage != nil {
+                    if jsonObject["next"] as? String != nil {
                         self.getTrackInfo(for: trackList, offset: nextOffset, currentExtractedTrackList: currentExtractedTrackList, trackInfoListHandler: { (trackList, error) in
                             trackInfoListHandler(trackList, nil);
                         })

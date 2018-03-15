@@ -19,7 +19,7 @@ extension ChoiceListView {
         choiceCollectionView.autoresizingMask = [.flexibleHeight, .flexibleBottomMargin]
         choiceCollectionView.backgroundColor = UIColor.clear
         
-        choiceCollectionView.setCollectionViewLayout(NusicCollectionViewLayout(), animated: true)
+        choiceCollectionView.setCollectionViewLayout(ListCollectionViewFlowLayout(), animated: true)
         
         if let layout = choiceCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .vertical
