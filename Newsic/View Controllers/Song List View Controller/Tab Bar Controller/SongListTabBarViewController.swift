@@ -153,19 +153,16 @@ class SongListTabBarViewController: UITabBarController {
         
         showSongVC?.removeTrackFromLikedTracks(track: track, indexPath: indexPath, removeTrackHandler: { (isRemoved) in
             track.deleteData(deleteCompleteHandler: { (ref, error) in
-                if error != nil {
-                    print("ERROR DELETING TRACK");
-                } else {
-                    if let index = self.likedTrackList.index(where: { (likedTrack) -> Bool in
-                        return likedTrack.trackInfo == track.trackInfo
-                    }) {
-                        self.likedTrackList.remove(at: index)
-                        
-                        DispatchQueue.main.async {
-                            self.likedSongListVC?.sortTableView(by: (self.likedSongListVC?.songListTableViewHeader.currentSortElement)!)
-                            self.likedSongListVC?.songListTableView.reloadData()
-                        }
-                    }
+                guard let index = self.likedTrackList.index(where: { (likedTrack) -> Bool in
+                    return likedTrack.trackInfo == track.trackInfo
+                }) else {
+                    error?.presentPopup(for: self)
+                    return;
+                }
+                self.likedTrackList.remove(at: index)
+                DispatchQueue.main.async {
+                    self.likedSongListVC?.sortTableView(by: (self.likedSongListVC?.songListTableViewHeader.currentSortElement)!)
+                    self.likedSongListVC?.songListTableView.reloadData()
                 }
             })
             

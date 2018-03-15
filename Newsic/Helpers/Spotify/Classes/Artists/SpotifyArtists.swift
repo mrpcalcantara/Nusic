@@ -49,7 +49,7 @@ extension Spotify {
                         print("error parsing data in followed artists");
                     }
                 } else {
-                    followedArtistsHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                    followedArtistsHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.extractGenresFromUser.rawValue))
                 }
             })
         } catch {
@@ -80,27 +80,20 @@ extension Spotify {
                             let trackInfo = artist["track"] as! [String: AnyObject]
                             let artistInfo = trackInfo["artists"] as! [[String: AnyObject]]
                             for artist in artistInfo {
-                                if let artistId = artist["uri"] as? String {
-                                    if !currentList.contains(artistId) && !artistId.contains(":local:::") {
-                                        currentList.append(artistId)
-                                    }
+                                if let artistId = artist["uri"] as? String, !currentList.contains(artistId) && !artistId.contains(":local:::") {
+                                    currentList.append(artistId)
                                 }
                             }
                         }
-                        
-                        let nextPage = jsonObject["next"] as? String
-                        if let nextPage = nextPage {
-                            let nextPageUrl = URL(string: nextPage)
-                            let nextPageUrlRequest = URLRequest(url: nextPageUrl!)
-                            self.getAllArtistsForPlaylist(userId: userId, playlistId: playlistId, nextTrackPageRequest: nextPageUrlRequest, currentArtistList: currentList, fetchedPlaylistArtists: { (currentArtistList, nil) in
-                                fetchedPlaylistArtists(currentArtistList, nil)
-                            })
-                        } else {
-                            fetchedPlaylistArtists(currentList, nil);
-                        }
+                        guard let nextPage = jsonObject["next"] as? String,
+                            let nextPageUrl = URL(string: nextPage) else { fetchedPlaylistArtists(currentList, nil); return; }
+                        let nextPageUrlRequest = URLRequest(url: nextPageUrl)
+                        self.getAllArtistsForPlaylist(userId: userId, playlistId: playlistId, nextTrackPageRequest: nextPageUrlRequest, currentArtistList: currentList, fetchedPlaylistArtists: { (currentArtistList, nil) in
+                            fetchedPlaylistArtists(currentArtistList, nil)
+                        })
                     } catch { }
                 } else {
-                    fetchedPlaylistArtists([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                    fetchedPlaylistArtists([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue))
                 }
             })
             
@@ -172,7 +165,7 @@ extension Spotify {
                         print("error parsing data in followed artists");
                     }
                 } else {
-                    artistGenresHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                    artistGenresHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue))
                 }
             })
             
@@ -199,7 +192,7 @@ extension Spotify {
                         print("error parsing artist genres for artist \(artistId)");
                     }
                 } else {
-                    fetchedArtistGenresHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                    fetchedArtistGenresHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue))
                 }
             })
         } catch { fetchedArtistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));

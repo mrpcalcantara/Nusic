@@ -39,50 +39,17 @@ class NusicTrack {
         
         //Save
         Database.database().reference().child("likedTracks").child(userName).observe(.childAdded) { (dataSnapshot) in
-            if dataSnapshot.key == self.trackInfo.linkedFromTrackId {
-                if let moodInfo = self.moodInfo, self.isLiked! {
-                    for emotion in moodInfo.emotions {
-                        Database.database().reference()
-                            .child("moodTracks")
-                            .child(self.userName)
-                            .child(emotion.basicGroup.rawValue.lowercased())
-                            .child(self.trackInfo.linkedFromTrackId)
-                                .setValue(true)
-                    }
-                }
-            }
+            self.updateMoodTrack(track: dataSnapshot.key, value: true)
         }
         
         //Update
         Database.database().reference().child("likedTracks").child(userName).observe(.childChanged) { (dataSnapshot) in
-            if dataSnapshot.key == self.trackInfo.linkedFromTrackId {
-                if let moodInfo = self.moodInfo {
-                    for emotion in moodInfo.emotions {
-                        Database.database().reference()
-                            .child("moodTracks")
-                            .child(self.userName)
-                            .child(emotion.basicGroup.rawValue.lowercased())
-                            .child(self.trackInfo.linkedFromTrackId)
-                            .setValue(true)
-                    }
-                }
-            }
+            self.updateMoodTrack(track: dataSnapshot.key, value: true)
         }
         
         //Delete
         Database.database().reference().child("likedTracks").child(userName).observe(.childRemoved) { (dataSnapshot) in
-            if dataSnapshot.key == self.trackInfo.linkedFromTrackId {
-                if let moodInfo = self.moodInfo {
-                    for emotion in moodInfo.emotions {
-                        Database.database().reference()
-                            .child("moodTracks")
-                            .child(self.userName)
-                            .child(emotion.basicGroup.rawValue.lowercased())
-                            .child(self.trackInfo.linkedFromTrackId)
-                            .setValue(nil)
-                    }
-                }
-            }
+            self.updateMoodTrack(track: dataSnapshot.key, value: nil)
         }
     }
     
@@ -145,4 +112,30 @@ extension NusicTrack : FirebaseModel {
         self.isLiked = value
     }
     
+    private func updateMoodTrack(track: String, value: Bool?) {
+        if track == self.trackInfo.linkedFromTrackId {
+            if let moodInfo = self.moodInfo, self.isLiked! {
+                for emotion in moodInfo.emotions {
+                    Database.database().reference()
+                        .child("moodTracks")
+                        .child(self.userName)
+                        .child(emotion.basicGroup.rawValue.lowercased())
+                        .child(self.trackInfo.linkedFromTrackId)
+                        .setValue(value)
+                }
+            }
+        }
+    }
+    
+}
+
+extension Array where Element == NusicTrack {
+    func containsTrack(trackId: String) -> Bool {
+        for track in self {
+            if track.trackInfo.trackId == trackId {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -71,6 +71,7 @@ extension ShowSongViewController {
     }
     
     fileprivate func openPlayerMenu() {
+        self.showMore.transform = CGAffineTransform.identity;
         UIView.animate(withDuration: 0.3) {
             self.pausePlay.alpha = 1
             self.pausePlay.isHidden = false
@@ -88,45 +89,12 @@ extension ShowSongViewController {
             }
             self.toggleLikeButtons();
             self.trackStackView.alpha = 0.9;
-//            if let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as? SongOverlayView {
-//                cardView.genreLabel.alpha = 0
-//                cardView.songArtist.alpha = 0
-//            }
-            
-        }
-        
-        UIView.animate(withDuration: 0.3) {
-            
-            
-//            self.pausePlayCenterXConstraint.constant = 0
-            self.songProgressBottomConstraint.constant += self.view.frame.height * 0.10
-            self.songProgressTopConstraint.constant += self.view.frame.height * 0.10
-            if self.preferredPlayer == NusicPreferredPlayer.spotify {
-                
-                self.songCardBottomConstraint.constant += self.view.frame.height * 0.20
-                self.showMoreBottomConstraint.constant += self.view.frame.height * 0.15
-            } else {
-                self.songCardBottomConstraint.constant += self.view.frame.height * 0.15
-                self.showMoreBottomConstraint.constant += self.view.frame.height * 0.10
-            }
-            self.pausePlayTopConstraint.constant += self.view.frame.height * 0.20
-            self.previousTrackCenterXConstraint.constant += -self.trackStackView.bounds.width/4
-            self.previousTrackTopConstraint.constant += self.view.frame.height * 0.20
-            self.nextTrackCenterXConstraint.constant += self.trackStackView.bounds.width/4
-            self.nextTrackTopConstraint.constant += self.view.frame.height * 0.20
-            self.dislikeSongCenterXConstraint.constant += -self.trackStackView.bounds.width/2
-            self.dislikeSongTopConstraint.constant += self.view.frame.height * 0.20
-            self.likeSongCenterXConstraint.constant += self.trackStackView.bounds.width/2
-            self.likeSongTopConstraint.constant += self.view.frame.height * 0.20
+            self.showButtons()
             self.view.layoutIfNeeded();
-        }
-        self.showMore.transform = CGAffineTransform.identity;
-        UIView.animate(withDuration: 0.2, animations: {
             let rotateTransform = CGAffineTransform(rotationAngle: CGFloat.pi*4.5);
             self.showMore.transform = rotateTransform
-        }, completion: nil)
+        }
         isPlayerMenuOpen = true
-        
     }
     
     fileprivate func closePlayerMenu(animated: Bool) {
@@ -141,10 +109,6 @@ extension ShowSongViewController {
                 if self.preferredPlayer == NusicPreferredPlayer.spotify {
                     self.songProgressView.alpha = 0
                 }
-//                if let cardView = self.songCardView.viewForCard(at: self.songCardView.currentCardIndex) as? SongOverlayView {
-//                    cardView.genreLabel.alpha = 1
-//                    cardView.songArtist.alpha = 1
-//                }
             }, completion: { (isCompleted) in
                 self.previousSong.isHidden = true
                 self.pausePlay.isHidden = true
@@ -159,24 +123,7 @@ extension ShowSongViewController {
             
             UIView.animate(withDuration: 0.3) {
                 
-                self.pausePlayTopConstraint.constant -= self.view.frame.height * 0.20
-                self.previousTrackCenterXConstraint.constant -= -self.trackStackView.bounds.width/4
-                self.previousTrackTopConstraint.constant -= self.view.frame.height * 0.20
-                self.nextTrackCenterXConstraint.constant -= self.trackStackView.bounds.width/4
-                self.nextTrackTopConstraint.constant -= self.view.frame.height * 0.20
-                self.dislikeSongCenterXConstraint.constant -= -self.trackStackView.bounds.width/2
-                self.dislikeSongTopConstraint.constant -= self.view.frame.height * 0.20
-                self.likeSongCenterXConstraint.constant -= self.trackStackView.bounds.width/2
-                self.likeSongTopConstraint.constant -= self.view.frame.height * 0.20
-                self.songProgressBottomConstraint.constant -= self.view.frame.height * 0.10
-                self.songProgressTopConstraint.constant -= self.view.frame.height * 0.10
-                if self.preferredPlayer == NusicPreferredPlayer.spotify {
-                    self.songCardBottomConstraint.constant -= self.view.frame.height * 0.20
-                    self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.15
-                } else {
-                    self.songCardBottomConstraint.constant -= self.view.frame.height * 0.15
-                    self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.10
-                }
+                self.hideButtons()
                 self.view.layoutIfNeeded();
                 
             }
@@ -231,6 +178,27 @@ extension ShowSongViewController {
             self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.10
         }
         self.view.layoutIfNeeded();
+    }
+    
+    final func showButtons() {
+        self.songProgressBottomConstraint.constant += self.view.frame.height * 0.10
+        self.songProgressTopConstraint.constant += self.view.frame.height * 0.10
+        if self.preferredPlayer == NusicPreferredPlayer.spotify {
+            self.songCardBottomConstraint.constant += self.view.frame.height * 0.20
+            self.showMoreBottomConstraint.constant += self.view.frame.height * 0.15
+        } else {
+            self.songCardBottomConstraint.constant += self.view.frame.height * 0.15
+            self.showMoreBottomConstraint.constant += self.view.frame.height * 0.10
+        }
+        self.pausePlayTopConstraint.constant += self.view.frame.height * 0.20
+        self.previousTrackCenterXConstraint.constant += -self.trackStackView.bounds.width/4
+        self.previousTrackTopConstraint.constant += self.view.frame.height * 0.20
+        self.nextTrackCenterXConstraint.constant += self.trackStackView.bounds.width/4
+        self.nextTrackTopConstraint.constant += self.view.frame.height * 0.20
+        self.dislikeSongCenterXConstraint.constant += -self.trackStackView.bounds.width/2
+        self.dislikeSongTopConstraint.constant += self.view.frame.height * 0.20
+        self.likeSongCenterXConstraint.constant += self.trackStackView.bounds.width/2
+        self.likeSongTopConstraint.constant += self.view.frame.height * 0.20
     }
     
     final func toggleLikeButtons() {

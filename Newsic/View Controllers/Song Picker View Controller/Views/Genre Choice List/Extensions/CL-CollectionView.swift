@@ -58,15 +58,11 @@ extension ChoiceListView: UICollectionViewDelegate {
         if indexPath.section == Section.genreSection.rawValue {
             chosenGenres.remove(at: indexPath.row)
             delegate?.didTapGenre(value: (cell.choiceLabel.text)!)
-        } else {
-            //            chosenMoods.remove(at: indexPath.row)
-            //            delegate?.didTapMood(value: (cell.moodLabel?.text)!)
         }
         
         collectionView.performBatchUpdates({
             collectionView.deleteItems(at: [indexPath])
         }, completion: nil)
-        //        collectionView.reloadData()
         
     }
     

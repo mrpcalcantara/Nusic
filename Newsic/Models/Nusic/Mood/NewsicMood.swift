@@ -195,17 +195,11 @@ class NusicMood: FirebaseModel, Iterable {
     
     final func getTrackIdAndFeaturesForEmotion(trackIdAndFeaturesHandler: @escaping ([String]?, [SpotifyTrackFeature]?, NusicError?) -> ()) {
         getTrackIdListForEmotionGenre { (genres, error) in
-            if genres != nil && genres!.count > 0 {
-                self.getTrackFeaturesForEmotionGenre(getTrackFeaturesHandler: { (trackFeatures, error) in
-                    if let trackFeatures = trackFeatures {
-                        trackIdAndFeaturesHandler(genres!, trackFeatures, error);
-                    } else {
-                        trackIdAndFeaturesHandler(genres!, nil, error);
-                    }
-                })
-            } else {
-                trackIdAndFeaturesHandler(nil, nil, error);
-            }
+            guard let genres = genres, genres.count > 0 else { trackIdAndFeaturesHandler(nil, nil, error); return; }
+            self.getTrackFeaturesForEmotionGenre(getTrackFeaturesHandler: { (trackFeatures, error) in
+                guard let trackFeatures = trackFeatures else { trackIdAndFeaturesHandler(genres, nil, error); return; }
+                trackIdAndFeaturesHandler(genres, trackFeatures, error);
+            })
         }
     }
     

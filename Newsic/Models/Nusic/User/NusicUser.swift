@@ -40,6 +40,16 @@ class NusicUser: Iterable {
         setupListeners()
     }
     
+    convenience init(user: SPTUser) {
+        self.init(userName: user.canonicalUserName!)
+        userName = user.canonicalUserName!
+        displayName = user.displayName != nil ? user.displayName : ""
+        let imageURL = user.smallestImage != nil ? user.smallestImage.imageURL.absoluteString : ""
+        self.getImage(imageURL: imageURL)
+        territory = user.territory != nil ? user.territory! : "";
+        isPremium = user.product == SPTProduct.premium ? true : false
+    }
+    
     private func getImage(imageURL: String) {
         let image = UIImage();
         if imageURL != "" {

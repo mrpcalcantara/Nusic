@@ -50,9 +50,9 @@ class FirebaseDatabaseHelper {
         }
     }
     
-    class func deleteAllTracks(user: String, deleteTracksCompleteHandler: @escaping (DatabaseReference?, Error?) -> ()){
+    class func deleteAllTracks(user: String, deleteTracksCompleteHandler: ( (DatabaseReference?, Error?) -> () )? ){
         Database.database().reference().child("likedTracks").child(user).removeValue { (error, databaseReference) in
-            deleteTracksCompleteHandler(databaseReference, error)
+            deleteTracksCompleteHandler?(databaseReference, error)
         }
     }
     
