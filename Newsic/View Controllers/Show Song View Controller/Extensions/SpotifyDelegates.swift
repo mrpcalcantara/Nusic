@@ -40,58 +40,41 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: String!) {
         self.isPlaying = true
-        if Connectivity.isConnectedToNetwork() == .connectedCellular && !playOnCellularData! {
-            let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
+        guard detectConnectivity() else { return; }
+        let currentTrack = audioStreaming.metadata.currentTrack;
+        
+        print("track started");
+        
+        if let currentTrack = currentTrack {
+            let currentNusicTrack = self.cardList[songCardView.currentCardIndex]
+            if let isNewSuggestion = currentNusicTrack.suggestionInfo?.isNewSuggestion, isNewSuggestion == true {
+                currentNusicTrack.setSuggestedValue(value: false, suggestedHandler: nil)
+            }
             
-            dialog.addButton(DefaultButton(title: "Yes, keep playing!", action: {
-                self.playOnCellularData = true
-                self.audioStreaming(audioStreaming, didStartPlayingTrack: trackUri)
-            }))
-            dialog.addButton(CancelButton(title: "No", action: {
-                let parent = self.parent as! NusicPageViewController
-                parent.scrollToPreviousViewController();
-                parent.removeViewControllerFromPageVC(viewController: self)
-                self.actionStopPlayer()
-            }))
-            
-            self.present(dialog, animated: true, completion: nil)
-        } else {
-            // WORKAROUND : Reload data to correctly show Album Images in Table View. Otherwise, they're downloaded but not correctly loaded in the image view.
-            let currentTrack = audioStreaming.metadata.currentTrack;
-            
-            print("track started");
-            
-            if let currentTrack = currentTrack {
-                let currentNusicTrack = self.cardList[songCardView.currentCardIndex]
-                if let isNewSuggestion = currentNusicTrack.suggestionInfo?.isNewSuggestion, isNewSuggestion == true {
-                    currentNusicTrack.setSuggestedValue(value: false, suggestedHandler: nil)
-                }
-                
-                if currentNusicTrack.trackInfo.audioFeatures == nil {
-                    currentNusicTrack.trackInfo.audioFeatures = SpotifyTrackFeature()
-                }
-                currentNusicTrack.trackInfo.audioFeatures?.durationMs = currentTrack.duration
-                currentNusicTrack.trackInfo.audioFeatures?.youtubeId = currentNusicTrack.youtubeInfo?.trackId
-                self.currentPlayingTrack = currentNusicTrack.trackInfo;
-                self.activateAudioSession()
-                if let imageURL = currentTrack.albumCoverArtURL {
-                    let imageURL = URL(string: imageURL)!
-                    let image = UIImage(); image.downloadImage(from: imageURL) { (image) in
-                        self.currentPlayingTrack?.thumbNail = image
-                        if let songName = self.currentPlayingTrack?.songName, let artistName = self.currentPlayingTrack?.artist.namesToString() {
-                            self.updateNowPlayingCenter(title: songName, artist: artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
-                            DispatchQueue.main.async {
-                                self.toggleLikeButtons()
-                            }
+            if currentNusicTrack.trackInfo.audioFeatures == nil {
+                currentNusicTrack.trackInfo.audioFeatures = SpotifyTrackFeature()
+            }
+            currentNusicTrack.trackInfo.audioFeatures?.durationMs = currentTrack.duration
+            currentNusicTrack.trackInfo.audioFeatures?.youtubeId = currentNusicTrack.youtubeInfo?.trackId
+            self.currentPlayingTrack = currentNusicTrack.trackInfo;
+            self.activateAudioSession()
+            if let imageURL = currentTrack.albumCoverArtURL {
+                let imageURL = URL(string: imageURL)!
+                let image = UIImage(); image.downloadImage(from: imageURL) { (image) in
+                    self.currentPlayingTrack?.thumbNail = image
+                    if let songName = self.currentPlayingTrack?.songName, let artistName = self.currentPlayingTrack?.artist.namesToString() {
+                        self.updateNowPlayingCenter(title: songName, artist: artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+                        DispatchQueue.main.async {
+                            self.toggleLikeButtons()
                         }
                     }
-                } else {
-                    updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: nil, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
                 }
-                setupSongProgress(duration: Float(currentTrack.duration))
             } else {
-                print("problem starting track");
+                updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: nil, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
             }
+            setupSongProgress(duration: Float(currentTrack.duration))
+        } else {
+            print("problem starting track");
         }
     }
     
@@ -240,25 +223,21 @@ extension ShowSongViewController {
     }
     
     @objc final func remoteControlPlaySong(event: MPRemoteCommandEvent) {
-        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-        
-        if var nowPlayingInfo = nowPlayingInfo {
-            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
-            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.playbackState.position
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-            self.isPlaying = false
-            spotifyPausePlay()
-        }
+        remoteControlPausePlay(playSong: true)
     }
     
     @objc final func remoteControlPauseSong(event: MPRemoteCommandEvent) {
+        remoteControlPausePlay(playSong: false)
+    }
+    
+    @objc private func remoteControlPausePlay(playSong: Bool) {
         let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
         
         if var nowPlayingInfo = nowPlayingInfo {
-            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 0
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = playSong ? 1 : 0
             nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.playbackState.position
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-            self.isPlaying = true
+            self.isPlaying = playSong
             spotifyPausePlay()
         }
     }
@@ -280,47 +259,6 @@ extension ShowSongViewController {
         self.player?.logout()
         self.deactivateAudioSession()
         UIApplication.shared.endReceivingRemoteControlEvents();
-    }
-    
-    @objc final func actionSeekForward() {
-        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-        if var nowPlayingInfo = nowPlayingInfo {
-            nowPlayingInfo.updateValue(3, forKey: MPNowPlayingInfoPropertyPlaybackRate);
-            (MPNowPlayingInfoCenter.default().nowPlayingInfo)!.updateValue(3, forKey: MPNowPlayingInfoPropertyPlaybackRate);
-        }
-        
-    }
-    
-    @objc final func seekToTime() {
-        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-        if var nowPlayingInfo = nowPlayingInfo {
-            let seekTime = nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] as! Double
-            
-            player?.seek(to: seekTime, callback: { (error) in
-                if error != nil {
-//                    print("error seeking forward. Error: \(error?.localizedDescription)")
-                }
-                nowPlayingInfo.updateValue(seekTime, forKey: MPNowPlayingInfoPropertyElapsedPlaybackTime);
-                nowPlayingInfo.updateValue(1, forKey: MPNowPlayingInfoPropertyPlaybackRate);
-            })
-        }
-        
-    }
-    
-    @objc final func actionSeekBackward() {
-        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-        if let nowPlayingInfo = nowPlayingInfo {
-            let duration = nowPlayingInfo[MPMediaItemPropertyPlaybackDuration]! as! Double
-            let elapsedTime = nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] as! Double
-            let seekTime = elapsedTime - (duration / 20)
-            if seekTime >= 0 {
-                player?.seek(to: seekTime, callback: { (error) in
-                    if error != nil {
-                        //print("error seeking forward. Error: \(error?.localizedDescription)")
-                    }
-                })
-            }
-        }
     }
     
     final func updateNowPlayingCenter(title: String, artist: String, albumArt: AnyObject? = nil, currentTime: NSNumber, songLength: NSNumber, playbackRate: Double){
@@ -350,6 +288,26 @@ extension ShowSongViewController {
         
     }
   
-
+    func detectConnectivity() -> Bool {
+        if Connectivity.isConnectedToNetwork() == .connectedCellular && !playOnCellularData! {
+            let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
+            
+            dialog.addButton(DefaultButton(title: "Yes, keep playing!", action: {
+                self.playOnCellularData = true
+                self.audioStreaming(self.player!, didStartPlayingTrack: self.player?.metadata.currentTrack?.uri)
+            }))
+            dialog.addButton(CancelButton(title: "No", action: {
+                let parent = self.parent as! NusicPageViewController
+                parent.scrollToPreviousViewController();
+                parent.removeViewControllerFromPageVC(viewController: self)
+                self.actionStopPlayer()
+            }))
+            
+            self.present(dialog, animated: true, completion: nil)
+            return false
+        } else {
+            return true
+        }
+    }
 }
 

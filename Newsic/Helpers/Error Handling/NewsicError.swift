@@ -66,14 +66,14 @@ class NusicError: NSObject, Error {
         return ""
     }
     
-    static func manageError(statusCode: Int, errorCode: NusicErrorCodes) -> NusicError {
+    static func manageError(statusCode: Int, errorCode: NusicErrorCodes, description: String) -> NusicError {
         switch statusCode {
         case 400...499:
-            return NusicError(nusicErrorCode: errorCode, nusicErrorSubCode: NusicErrorSubCode.clientError)
+            return NusicError(nusicErrorCode: errorCode, nusicErrorSubCode: NusicErrorSubCode.clientError, nusicErrorDescription: description)
         case 500...599:
-            return NusicError(nusicErrorCode: errorCode, nusicErrorSubCode: NusicErrorSubCode.serverError)
+            return NusicError(nusicErrorCode: errorCode, nusicErrorSubCode: NusicErrorSubCode.serverError, nusicErrorDescription: description)
         default:
-            return NusicError(nusicErrorCode: errorCode, nusicErrorSubCode: NusicErrorSubCode.technicalError)
+            return NusicError(nusicErrorCode: errorCode, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: description)
         }
     }
     

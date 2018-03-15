@@ -63,7 +63,7 @@ extension Spotify {
                         trackInfoListHandler(sortedList, nil);
                     }
                 } else {
-                    trackInfoListHandler(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                    trackInfoListHandler(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue))
                 }
             })
             
@@ -83,7 +83,7 @@ extension Spotify {
                         fetchedTrackDetailsHandler(decodedTrackFeatures, nil)
                     }
                 } else {
-                    fetchedTrackDetailsHandler(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                    fetchedTrackDetailsHandler(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getTrackIdFeaturesForMood.rawValue))
                 }
             })
         } catch {
@@ -109,7 +109,7 @@ extension Spotify {
                     }
                     
                 } else {
-                    fetchedTrackArtistHandler(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                    fetchedTrackArtistHandler(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue))
                 }
             })
         } catch {
@@ -155,39 +155,36 @@ extension Spotify {
                             fetchedPlaylistTracks(currentList, error);
                         })
                     } else {
-                        
                         let sortedList = currentList.sorted(by: { (track1, track2) -> Bool in
-                            track1.addedAt!! > track2.addedAt!!
+                            track1.songName > track2.songName
                         })
-                        
-                        
-                        
+                        let dispatchGroup = DispatchGroup()
+                        dispatchGroup.enter()
                         if fetchGenres! {
                             let spotifyArtistList = sortedList.flatMap({ $0.artist.map({ $0.uri }) }) as! [String]
                             self.getAllGenresForArtists(spotifyArtistList, offset: 0, artistGenresHandler: { (fetchedArtistList, error) in
-                                if let error = error {
-                                    fetchedPlaylistTracks(nil, error)
-                                } else {
-                                    if let fetchedArtistList = fetchedArtistList {
-                                        for artist in fetchedArtistList {
-                                            if let index = sortedList.index(where: { (track) -> Bool in
-                                                return track.artist.map({$0.uri}).contains(where: { $0 == artist.uri })
-                                            }) {
-                                                sortedList[index].artist.updateArtist(artist: artist)
-                                            }
-                                        }
+                                guard let fetchedArtistList = fetchedArtistList else { fetchedPlaylistTracks(nil, error); return; }
+                                for artist in fetchedArtistList {
+                                    if let index = sortedList.index(where: { (track) -> Bool in
+                                        return track.artist.map({$0.uri}).contains(where: { $0 == artist.uri })
+                                    }) {
+                                        sortedList[index].artist.updateArtist(artist: artist)
                                     }
-                                    fetchedPlaylistTracks(sortedList, nil)
                                 }
+                                dispatchGroup.leave()
                             })
                         } else {
-                            fetchedPlaylistTracks(sortedList, nil);
+                            dispatchGroup.leave()
                         }
+                        
+                        dispatchGroup.notify(queue: .main, execute: {
+                            fetchedPlaylistTracks(sortedList, nil);
+                        })
                     }
                 } catch { }
                 
             } else {
-                fetchedPlaylistTracks(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                fetchedPlaylistTracks(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue))
             }
         })
         
@@ -211,7 +208,7 @@ extension Spotify {
             if isSuccess {
                 addTrackHandler(true, nil);
             } else {
-                addTrackHandler(false, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                addTrackHandler(false, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.addTrack.rawValue))
             }
         })
     }
@@ -247,7 +244,7 @@ extension Spotify {
             if isSuccess {
                 removeTrackHandler(true, nil);
             } else {
-                removeTrackHandler(true, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                removeTrackHandler(true, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.removeTrack.rawValue))
             }
         })
     }

@@ -42,7 +42,7 @@ extension Spotify {
                 
                 
             } else {
-                fetchedPlaylistsHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                fetchedPlaylistsHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue))
             }
         })
     }
@@ -68,10 +68,7 @@ extension Spotify {
         var createPlaylistRequest = URLRequest(url: URL(string: url)!);
         createPlaylistRequest.addValue("Bearer \(accessToken!)", forHTTPHeaderField: "Authorization")
         createPlaylistRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
         createPlaylistRequest.httpMethod = "POST";
-        
-        
         
         let body = "{\"name\":\"\(playlistName)\"}";
         createPlaylistRequest.httpBody = body.data(using: .utf8)
@@ -85,10 +82,10 @@ extension Spotify {
                     let nusicPlaylist = NusicPlaylist(name : playlistName, id: playlistId, userName: username)
                     playlistCreationHandler(true, nusicPlaylist, nil)
                 } else {
-                    playlistCreationHandler(false, nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                    playlistCreationHandler(false, nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.createPlaylist.rawValue))
                 }
             } catch {
-                playlistCreationHandler(false, nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError))
+                playlistCreationHandler(false, nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: SpotifyErrorCodeDescription.createPlaylist.rawValue))
                 print("error creating request creating playlist list with name \(playlistName)");
             }
         })

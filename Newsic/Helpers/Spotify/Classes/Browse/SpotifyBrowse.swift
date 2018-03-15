@@ -89,7 +89,7 @@ extension Spotify {
                     completionHandler(spotifyResults, nil)
                 })
             } else {
-                completionHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError))
+                completionHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue))
             }
             
         })
@@ -327,5 +327,4 @@ extension Spotify {
         
     }
     
-
 }
