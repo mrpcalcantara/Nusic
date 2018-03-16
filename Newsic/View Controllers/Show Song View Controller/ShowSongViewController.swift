@@ -402,9 +402,10 @@ class ShowSongViewController: NusicDefaultViewController {
         commandCenter.previousTrackCommand.isEnabled = true
         commandCenter.previousTrackCommand.addTarget(self, action: #selector(actionPreviousSong))
         
-        //        commandCenter.likeCommand.isEnabled = true
-        //        commandCenter.likeCommand.addTarget(self, action: #selector(likeSongClicked(_:)))
-        //
+        commandCenter.likeCommand.isEnabled = true
+        commandCenter.likeCommand.localizedTitle = "Like this track"
+        commandCenter.likeCommand.addTarget(self, action: #selector(likeSongClicked(_:)))
+        
     }
     
     fileprivate func setupNavigationBar() {
@@ -432,6 +433,7 @@ class ShowSongViewController: NusicDefaultViewController {
     
     fileprivate func setupSongs() {
         musicSearchType = .normal
+        
         if let selectedSongs = selectedSongs, selectedSongs.count > 0 {
             fetchYouTubeInfo()
         } else {
@@ -483,12 +485,10 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     
     @IBAction func songSeek(_ sender: UISlider) {
-        print("song seeking slider")
         updateElapsedTime(elapsedTime: sender.value, duration: Float((currentPlayingTrack?.audioFeatures?.durationMs)!))
     }
     
     @IBAction func finishSeek(_ sender: UISlider) {
-        print("finish seeking slider")
         if preferredPlayer == NusicPreferredPlayer.spotify {
             seekSong(interval: sender.value)
         } else {

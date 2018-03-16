@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "542871191.694973"
+            timestampString = "542877320.911015"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "321"
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "542871191.695035"
+            timestampString = "542877320.911366"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "312"
@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "542871191.695079"
+            timestampString = "542877320.911482"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "487"
@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Models/Nusic/Mood/NusicMood.swift"
-            timestampString = "542871191.695122"
+            timestampString = "542877320.911561"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "173"
@@ -74,7 +74,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Models/Nusic/Mood/NusicMood.swift"
-            timestampString = "542871191.6951621"
+            timestampString = "542877320.9118429"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "152"
@@ -90,7 +90,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Models/Nusic/Mood/NusicMood.swift"
-            timestampString = "542871191.6952029"
+            timestampString = "542877320.911943"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "77"
@@ -106,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Models/Nusic/Mood/NusicMood.swift"
-            timestampString = "542871191.6952389"
+            timestampString = "542877320.91201"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "107"
@@ -122,7 +122,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Models/Nusic/User/NusicUser.swift"
-            timestampString = "542871191.695281"
+            timestampString = "542877320.9120671"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "156"
@@ -138,7 +138,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Models/Nusic/User/NusicUser.swift"
-            timestampString = "542871191.695318"
+            timestampString = "542877320.912336"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "178"
@@ -154,7 +154,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Models/Nusic/Mood/NusicMood.swift"
-            timestampString = "542871191.6953551"
+            timestampString = "542877320.912411"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "129"
@@ -170,7 +170,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Helpers/Spotify/Classes/Spotify.swift"
-            timestampString = "542871191.695395"
+            timestampString = "542877320.9125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
@@ -182,107 +182,27 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Helpers/Firebase/Database/FirebaseDatabaseHelper.swift"
-            timestampString = "542871675.418247"
+            timestampString = "542877320.912717"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
             landmarkName = "fetchTrackFeatures(for:moodObject:fetchTrackFeaturesHandler:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "static Newsic.FirebaseDatabaseHelper.fetchTrackFeatures(for: Swift.String, moodObject: Newsic.NusicMood, fetchTrackFeaturesHandler: (Swift.Optional&lt;Swift.Array&lt;Newsic.SpotifyTrackFeature&gt;&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "Newsic"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/Helpers/Firebase/Database/FirebaseDatabaseHelper.swift"
-                  timestampString = "542871675.643133"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "85"
-                  endingLineNumber = "85"
-                  offsetFromSymbolStart = "827">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__ObjC.DataSnapshot) -&gt; () in static Newsic.FirebaseDatabaseHelper.fetchTrackFeatures(for: Swift.String, moodObject: Newsic.NusicMood, fetchTrackFeaturesHandler: (Swift.Optional&lt;Swift.Array&lt;Newsic.SpotifyTrackFeature&gt;&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "Newsic"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/Helpers/Firebase/Database/FirebaseDatabaseHelper.swift"
-                  timestampString = "542871675.64613"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "81"
-                  endingLineNumber = "81"
-                  offsetFromSymbolStart = "32">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Helpers/Firebase/Database/FirebaseDatabaseHelper.swift"
-            timestampString = "542871677.391824"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "fetchTrackFeatures(for:moodObject:fetchTrackFeaturesHandler:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "static Newsic.FirebaseDatabaseHelper.fetchTrackFeatures(for: Swift.String, moodObject: Newsic.NusicMood, fetchTrackFeaturesHandler: (Swift.Optional&lt;Swift.Array&lt;Newsic.SpotifyTrackFeature&gt;&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "Newsic"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/Helpers/Firebase/Database/FirebaseDatabaseHelper.swift"
-                  timestampString = "542871677.607704"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "108"
-                  endingLineNumber = "108"
-                  offsetFromSymbolStart = "2014">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__ObjC.DataSnapshot) -&gt; () in static Newsic.FirebaseDatabaseHelper.fetchTrackFeatures(for: Swift.String, moodObject: Newsic.NusicMood, fetchTrackFeaturesHandler: (Swift.Optional&lt;Swift.Array&lt;Newsic.SpotifyTrackFeature&gt;&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "Newsic"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/Helpers/Firebase/Database/FirebaseDatabaseHelper.swift"
-                  timestampString = "542871677.6102951"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "108"
-                  endingLineNumber = "108"
-                  offsetFromSymbolStart = "2099">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Views/Mood Cells/Cell Collection View/Genre Cell/MoodGenreCell.swift"
-            timestampString = "542873761.079652"
+            timestampString = "542877320.9129601"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "89"
@@ -294,49 +214,33 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/View Controllers/Song Picker View Controller/Views/Mood Cells/Cell Collection View/Genre Cell/MoodGenreCell.swift"
-            timestampString = "542873762.847091"
+            timestampString = "542877320.91319"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "102"
             endingLineNumber = "102"
             landmarkName = "addImages(urlList:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Newsic.MoodGenreCell.addImages(urlList: Swift.Array&lt;Swift.String&gt;) -&gt; ()"
-                  moduleName = "Newsic"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/View%20Controllers/Song%20Picker%20View%20Controller/Views/Mood%20Cells/Cell%20Collection%20View/Genre%20Cell/MoodGenreCell.swift"
-                  timestampString = "542873763.061216"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103"
-                  offsetFromSymbolStart = "1103">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;__ObjC.UIImage&gt;) -&gt; () in Newsic.MoodGenreCell.addImages(urlList: Swift.Array&lt;Swift.String&gt;) -&gt; ()"
-                  moduleName = "Newsic"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/miguelalcantara/Documents/Newsic/Newsic/View%20Controllers/Song%20Picker%20View%20Controller/Views/Mood%20Cells/Cell%20Collection%20View/Genre%20Cell/MoodGenreCell.swift"
-                  timestampString = "542873763.063652"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103"
-                  offsetFromSymbolStart = "561">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Newsic/Helpers/Firebase/Database/FirebaseDatabaseHelper.swift"
+            timestampString = "542877320.913265"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "fetchTrackFeatures(for:moodObject:fetchTrackFeaturesHandler:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

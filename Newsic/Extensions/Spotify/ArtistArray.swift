@@ -51,7 +51,7 @@ extension Array where Element == SpotifyArtist {
             }
         }
         if uppercase! {
-           return allGenres.map({ $0.capitalizingFirstLetter() })
+           return allGenres.map({ $0.capitalized })
         }
         return allGenres
     }

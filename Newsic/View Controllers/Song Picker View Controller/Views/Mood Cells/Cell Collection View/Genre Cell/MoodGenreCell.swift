@@ -205,7 +205,6 @@ class MoodGenreCell: UICollectionViewCell {
         animationGroup.duration = 0.5
         borderPathLayer.add(animationGroup, forKey: "myAnimation")
         borderPathLayer.removeFromSuperlayer()
-
     }
 
     final func animateHighlightedCell(isHighlighted: Bool) {
