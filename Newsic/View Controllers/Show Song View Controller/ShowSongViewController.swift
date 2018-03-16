@@ -402,10 +402,6 @@ class ShowSongViewController: NusicDefaultViewController {
         commandCenter.previousTrackCommand.isEnabled = true
         commandCenter.previousTrackCommand.addTarget(self, action: #selector(actionPreviousSong))
         
-        commandCenter.likeCommand.isEnabled = true
-        commandCenter.likeCommand.localizedTitle = "Like this track"
-        commandCenter.likeCommand.addTarget(self, action: #selector(likeSongClicked(_:)))
-        
     }
     
     fileprivate func setupNavigationBar() {
