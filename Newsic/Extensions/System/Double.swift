@@ -18,11 +18,9 @@ extension Double {
     }
     
     mutating func randomInRange(value: Double, range: Double, acceptNegativeValues: Bool = true, maxValue: Double = 1) {
-        
         let lowerBound = !acceptNegativeValues && value-range < 0 ? 0 : value-range;
         let upperBound = value + range > maxValue ? maxValue : value + range;
         self = random(lowerBound, upperBound)
-//      return random(lowerBound, upperBound);
     }
     
 }

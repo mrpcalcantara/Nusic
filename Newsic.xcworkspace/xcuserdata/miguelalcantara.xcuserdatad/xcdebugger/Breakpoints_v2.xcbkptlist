@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "542877320.911015"
+            filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
+            timestampString = "542892532.639321"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "321"
-            endingLineNumber = "321"
-            landmarkName = "collectionView(_:didSelectItemAt:)"
+            startingLineNumber = "676"
+            endingLineNumber = "676"
+            landmarkName = "fetchYouTubeInfo()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "542877320.911366"
+            filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
+            timestampString = "542892532.640254"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "312"
-            endingLineNumber = "312"
-            landmarkName = "collectionView(_:didSelectItemAt:)"
+            startingLineNumber = "679"
+            endingLineNumber = "679"
+            landmarkName = "fetchYouTubeInfo()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Song Picker View Controller/Extensions/MoodCollectionView.swift"
-            timestampString = "542877320.911482"
+            filePath = "Newsic/View Controllers/Show Song View Controller/ShowSongViewController.swift"
+            timestampString = "542892532.640624"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "487"
-            endingLineNumber = "487"
-            landmarkName = "willDisplayGenreCell(cell:label:section:indexPath:)"
+            startingLineNumber = "418"
+            endingLineNumber = "418"
+            landmarkName = "setupSongs()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Models/Nusic/Mood/NusicMood.swift"
-            timestampString = "542877320.911561"
+            timestampString = "542892532.640929"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
-            landmarkName = "getTrackFeaturesForEmotionGenre(getTrackFeaturesHandler:)"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "getTrackIdListForEmotionGenre(getAssociatedTrackHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -74,28 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Models/Nusic/Mood/NusicMood.swift"
-            timestampString = "542877320.9118429"
+            timestampString = "542892532.640977"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
-            landmarkName = "getTrackFeaturesForEmotionGenre(getTrackFeaturesHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Models/Nusic/Mood/NusicMood.swift"
-            timestampString = "542877320.911943"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
-            landmarkName = "getTrackListForEmotionGenre(getAssociatedTrackHandler:)"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
+            landmarkName = "getTrackIdListForEmotionGenre(getAssociatedTrackHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -106,140 +90,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Newsic/Models/Nusic/Mood/NusicMood.swift"
-            timestampString = "542877320.91201"
+            timestampString = "542892532.641019"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "107"
             endingLineNumber = "107"
             landmarkName = "getTrackIdListForEmotionGenre(getAssociatedTrackHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Models/Nusic/User/NusicUser.swift"
-            timestampString = "542877320.9120671"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
-            landmarkName = "getFavoriteGenres(getGenresHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Models/Nusic/User/NusicUser.swift"
-            timestampString = "542877320.912336"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
-            landmarkName = "getFavoriteGenres(getGenresHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Models/Nusic/Mood/NusicMood.swift"
-            timestampString = "542877320.912411"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
-            landmarkName = "getTrackIdListForEmotionGenre(getAssociatedTrackHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Helpers/Spotify/Classes/Spotify.swift"
-            timestampString = "542877320.9125"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
-            landmarkName = "getGenresForTrackList(trackIdList:trackGenreHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Helpers/Firebase/Database/FirebaseDatabaseHelper.swift"
-            timestampString = "542877320.912717"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "fetchTrackFeatures(for:moodObject:fetchTrackFeaturesHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Song Picker View Controller/Views/Mood Cells/Cell Collection View/Genre Cell/MoodGenreCell.swift"
-            timestampString = "542877320.9129601"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
-            landmarkName = "addImages(urlList:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/View Controllers/Song Picker View Controller/Views/Mood Cells/Cell Collection View/Genre Cell/MoodGenreCell.swift"
-            timestampString = "542877320.91319"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
-            landmarkName = "addImages(urlList:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Newsic/Helpers/Firebase/Database/FirebaseDatabaseHelper.swift"
-            timestampString = "542877320.913265"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
-            landmarkName = "fetchTrackFeatures(for:moodObject:fetchTrackFeaturesHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

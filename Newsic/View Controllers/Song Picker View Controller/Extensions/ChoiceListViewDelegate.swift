@@ -23,21 +23,17 @@ extension SongPickerViewController {
     }
     
     final func reloadListMenu() {
-        if listMenuView != nil {
-            var newY:CGFloat = 0
-            if !listMenuView.isShowing {
-                newY = self.view.frame.height
-            } else {
-                if listMenuView.isOpen {
-                    newY = self.view.frame.height/2
-                } else {
-                    newY = self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
-                }
-            }
-            listMenuView.maxY = self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
-            listMenuView.frame = CGRect(x: listMenuView.frame.origin.x, y: newY, width: self.view.frame.width, height: listMenuView.frame.height)
-            listMenuView.reloadView()
+        guard listMenuView != nil else { return }
+        var newY:CGFloat = 0
+        if !listMenuView.isShowing {
+            newY = self.view.frame.height
+        } else {
+            newY = listMenuView.isOpen ? self.view.frame.height/2 : self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
         }
+        listMenuView.maxY = self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight
+        listMenuView.frame = CGRect(x: listMenuView.frame.origin.x, y: newY, width: self.view.frame.width, height: listMenuView.frame.height)
+        listMenuView.reloadView()
+        
     }
     
 }
@@ -62,18 +58,15 @@ extension SongPickerViewController : ChoiceListDelegate {
             return genre1.rawValue < genre2.rawValue
         })
         selectedSongsForGenre.removeValue(forKey: value)
-        if addedSection {
-            genreCollectionView.reloadData()
-        } else {
-            guard let genreCell = genreCollectionView.cellForItem(at: indexPath) as? MoodGenreListCell else { return; }
-            genreCell.items = sectionGenres[indexPath.section].map({ $0.rawValue })
-            genreCell.listCollectionView.performBatchUpdates({
-                var indexSet = IndexSet()
-                indexSet.insert(0);
-                genreCell.listCollectionView.insertItems(at: [IndexPath(row: 0, section: 0)])
-                genreCell.listCollectionView.reloadSections(indexSet)
-            }, completion: nil)
-        }
+        guard !addedSection else { genreCollectionView.reloadData(); return }
+        guard let genreCell = genreCollectionView.cellForItem(at: indexPath) as? MoodGenreListCell else { return; }
+        genreCell.items = sectionGenres[indexPath.section].map({ $0.rawValue })
+        genreCell.listCollectionView.performBatchUpdates({
+            var indexSet = IndexSet()
+            indexSet.insert(0);
+            genreCell.listCollectionView.insertItems(at: [IndexPath(row: 0, section: 0)])
+            genreCell.listCollectionView.reloadSections(indexSet)
+        }, completion: nil)
     }
     
     final func didRemoveGenres() {
@@ -157,20 +150,14 @@ extension SongPickerViewController {
     final func toggleChoiceMenu(willOpen: Bool) {
         listMenuView.isOpen = willOpen
         listMenuView.manageToggleView()
-        if willOpen {
-            showChoiceMenu()
-        } else {
-            hideChoiceMenu()
-        }
+        _ = willOpen ? showChoiceMenu() : hideChoiceMenu()
     }
     
     final func animateMove(to point:CGPoint) {
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.listMenuView.frame.origin.y = point.y
             self.view.layoutIfNeeded()
-        }, completion: { (isCompleted) in
-            //            self.listMenuView.animateMove(to: point)
-        })
+        }, completion: { (isCompleted) in })
         
     }
     

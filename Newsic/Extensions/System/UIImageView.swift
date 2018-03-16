@@ -21,9 +21,9 @@ extension UIImageView {
                 else { return }
             DispatchQueue.main.async() { () -> Void in
                 self.image = image
-                if roundImage! {
-                    self.roundImage();
-                }
+                guard roundImage! else { return }
+                self.roundImage();
+                
             }
             }.resume()
     }
@@ -36,10 +36,8 @@ extension UIImageView {
     final func roundImage(border: Bool? = false) {
         self.layer.cornerRadius = self.frame.height/2
         self.layer.masksToBounds = true;
-        
-        if border! {
-            addRoundBorder()
-        }
+        guard border! else { return }
+        addRoundBorder()
     }
     
     private func addRoundBorder(borderColor: UIColor? = UIColor.white.withAlphaComponent(0.8), borderWidth: CGFloat? = 8) {

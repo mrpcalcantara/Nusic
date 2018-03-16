@@ -38,7 +38,7 @@ class SongPickerViewController: NusicDefaultViewController {
     
     //Nusic data variables
     var nusicPlaylist: NusicPlaylist! = nil;
-    var moodObject: NusicMood? = nil;
+    var moodObject: NusicMood? = NusicMood();
     var nusicUser: NusicUser! = nil {
         didSet {
             let parent = self.parent as! NusicPageViewController
@@ -62,15 +62,11 @@ class SongPickerViewController: NusicDefaultViewController {
                 
             }
             
-            if let fcmTokenId = UserDefaults.standard.value(forKey: "fcmTokenId") as? String {
-                FirebaseAuthHelper.addApnsDeviceToken(apnsToken: fcmTokenId, userId: nusicUser.userName, apnsTokenCompletionHandler: { (isSuccess, error) in
-                    if let error = error {
-                        error.presentPopup(for: self)
-                    }
-                    print("adding APNS token = \(isSuccess!)")
-                })
-            }
-            
+            guard let fcmTokenId = UserDefaults.standard.value(forKey: "fcmTokenId") as? String else { return }
+            FirebaseAuthHelper.addApnsDeviceToken(apnsToken: fcmTokenId, userId: nusicUser.userName, apnsTokenCompletionHandler: { (isSuccess, error) in
+                guard error == nil else { error?.presentPopup(for: self); return }
+                print("adding APNS token = \(isSuccess!)")
+            })
         }
     }
     var isMoodSelected: Bool = true
@@ -94,14 +90,13 @@ class SongPickerViewController: NusicDefaultViewController {
     
     var loadingFinished: Bool = false {
         didSet {
-            if sectionMoods.count == 0 {
-                FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
-                    self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
-                    self.sectionMoods = dyadList.map({ $0.value })
-                    SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
-                }
-            }
             handleNotificationSong()
+            guard sectionMoods.count == 0 else { return }
+            FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
+                self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
+                self.sectionMoods = dyadList.map({ $0.value })
+                SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
+            }
         }
     }
     
@@ -173,7 +168,7 @@ class SongPickerViewController: NusicDefaultViewController {
         isMoodSelected = nusicControl.selectedIndex == 0 ? true : false
         if !isMoodSelected {
             let nusicMood = NusicMood()
-            nusicMood.emotions = [Emotion(basicGroup: .unknown, detailedEmotions: [], rating: 0)]
+            nusicMood.emotions = [Emotion(basicGroup: .unknown)]
             self.moodObject = nusicMood
         }
         
@@ -181,28 +176,19 @@ class SongPickerViewController: NusicDefaultViewController {
             invalidateCellsLayout(for: moodCollectionView)
         }
 
-        self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
-
-        if Connectivity.isConnectedToNetwork() == .connectedCellular && nusicUser.settingValues.useMobileData! == false {
-            showMobileDataPopup()
-        } else {
-            passDataToShowSong();
-        }
+        self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername
+        guard Connectivity.isConnectedToNetwork() == .connectedCellular && nusicUser.settingValues.useMobileData! == false else { passDataToShowSong(); return }
+        showMobileDataPopup()
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         invalidateCellsLayout(for: moodCollectionView)
         invalidateCellsLayout(for: genreCollectionView)
-        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if navbar.frame.origin.y != self.view.safeAreaLayoutGuide.layoutFrame.origin.y {
-//            setupNavigationBar()
-        }
-        
         if viewRotated {
             reloadCellsData(for: moodCollectionView)
             reloadCellsData(for: genreCollectionView)
@@ -290,20 +276,15 @@ class SongPickerViewController: NusicDefaultViewController {
         self.navigationItem.leftBarButtonItem = leftBarButton
         let showSongImage = UIImage(named: "PreferredPlayer")?.withRenderingMode(.alwaysTemplate)
         let rightBarButton = UIBarButtonItem(image: showSongImage, style: .plain, target: self, action: #selector(goToShowSongVC));
-        if let pageViewController = parent as? NusicPageViewController {
-            
-            if pageViewController.orderedViewControllers.contains(pageViewController.showSongVC!) {
-                rightBarButton.tintColor = UIColor.white
-                rightBarButton.isEnabled = true
-            } else {
-                rightBarButton.tintColor = UIColor.gray
-                rightBarButton.isEnabled = false
-            }
-            
-            self.navigationItem.rightBarButtonItem = rightBarButton
-            
+        guard let pageViewController = parent as? NusicPageViewController else { return }
+        if pageViewController.orderedViewControllers.contains(pageViewController.showSongVC!) {
+            rightBarButton.tintColor = UIColor.white
+            rightBarButton.isEnabled = true
+        } else {
+            rightBarButton.tintColor = UIColor.gray
+            rightBarButton.isEnabled = false
         }
-        
+        self.navigationItem.rightBarButtonItem = rightBarButton
         nusicControl.frame.size.height = 44
         self.navigationItem.titleView = nusicControl
         
@@ -314,17 +295,13 @@ class SongPickerViewController: NusicDefaultViewController {
     }
     
     fileprivate func reloadNavigationBar(image: UIImage? = UIImage(named: "SettingsIcon")) {
-        if let pageViewController = parent as? NusicPageViewController {
-            
-            if pageViewController.orderedViewControllers.contains(pageViewController.showSongVC!) {
-                navigationBar.topItem?.rightBarButtonItem?.tintColor = UIColor.white
-                navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
-            } else {
-                navigationBar.topItem?.rightBarButtonItem?.tintColor = UIColor.gray
-                navigationBar.topItem?.rightBarButtonItem?.isEnabled = false
-            }
-            
-            
+        guard let pageViewController = parent as? NusicPageViewController else { return }
+        if pageViewController.orderedViewControllers.contains(pageViewController.showSongVC!) {
+            navigationBar.topItem?.rightBarButtonItem?.tintColor = UIColor.white
+            navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
+        } else {
+            navigationBar.topItem?.rightBarButtonItem?.tintColor = UIColor.gray
+            navigationBar.topItem?.rightBarButtonItem?.isEnabled = false
         }
     }
     
@@ -549,7 +526,7 @@ class SongPickerViewController: NusicDefaultViewController {
             parent.scrollToViewController(viewController: songPickerVC)
         }
         self.isMoodSelected = false
-        self.moodObject = NusicMood(emotions: [.init(basicGroup: .unknown, detailedEmotions: [], rating: 0)], date: Date(), associatedGenres: [])
+        self.moodObject = NusicMood(emotions: [.init(basicGroup: .unknown)], date: Date(), associatedGenres: [])
         spotifyHandler.getTrackInfo(for: [suggestedTrackId], offset: 0, currentExtractedTrackList: [], trackInfoListHandler: { (tracks, error) in
             guard let track = tracks else { error?.presentPopup(for: self); return; }
             UserDefaults.standard.removeObject(forKey: "suggestedSpotifyTrackId")
@@ -568,9 +545,7 @@ class SongPickerViewController: NusicDefaultViewController {
             guard let dbGenreCount = dbGenreCount else { self.spotifyHandler.genreCount = Spotify.getAllValuesDict(); return; }
             self.spotifyHandler.genreCount = dbGenreCount;
             self.nusicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
-                if let error = error {
-                    error.presentPopup(for: self)
-                }
+                guard error == nil else { error?.presentPopup(for: self); return }
             });
             self.loadingFinished = true;
         })

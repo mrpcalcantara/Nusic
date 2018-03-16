@@ -13,13 +13,7 @@ extension Array where Element == String {
         var array:[String] = []
         for value in self {
             if let firstCharacter = value.first {
-                var addValue = true
-                if removeDuplicates! {
-                    if array.contains("\(firstCharacter)") {
-                        addValue = false
-                    }
-                }
-                
+                var addValue = removeDuplicates! && array.contains("\(firstCharacter)") ? false : true
                 if addValue {
                     array.insert(firstCharacter.description, at: 0)
                 }

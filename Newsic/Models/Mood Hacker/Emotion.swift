@@ -8,55 +8,25 @@
 
 import Foundation
 
-enum EmotionValue:Int {
-    
-    case joy;
-    case anger;
-    case sadness;
-    case disgust;
-    case fear;
-    case trust;
-    case anticipation;
-    case surprise;
-    func description() -> String {
-        switch self {
-            case .anger: return "anger"
-            case .anticipation: return "anticipation"
-            case .disgust: return "disgust"
-            case .fear: return "fear"
-            case .joy: return "joy"
-            case .sadness: return "sadness"
-            case .surprise: return "surprise"
-            case .trust: return "trust"
-        }
-    }
-    
-}
-
 struct Emotion {
     
     var basicGroup: EmotionDyad;
-    var detailedEmotions: [String]
-    var rating: Double
+    var detailedEmotions: [String]?
     
     init() {
         self.basicGroup = .none;
         self.detailedEmotions = [];
-        self.rating = 0
     }
     
-    init(basicGroup: EmotionDyad, detailedEmotions: [String], rating: Double) {
+    init(basicGroup: EmotionDyad, detailedEmotions: [String]? = [String]()) {
         self.basicGroup = basicGroup
         self.detailedEmotions = detailedEmotions;
-        self.rating = rating;
+        
     }
     
     func toDictionary() -> [String: AnyObject] {
         
-        var dictionary: [String: AnyObject] = [:];
-        //dictionary["basicGroup"] = self.basicGroup as AnyObject;
-        
-        dictionary["rating"] = self.rating as AnyObject;
+        var dictionary: [String: AnyObject] = [:];        
         dictionary["emotions"] = self.detailedEmotions as AnyObject;
         return dictionary;
     }

@@ -23,59 +23,44 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePosition position: TimeInterval) {
         
-        let currentTrack = audioStreaming.metadata.currentTrack;
-        if let currentTrack = currentTrack, let currentPlayingTrack = currentPlayingTrack {
-            let currentPosition = Float(position)
-            songProgressSlider.value = currentPosition
-            updateElapsedTime(elapsedTime: currentPosition, duration: Float(currentTrack.duration))
-            let thumbNail = currentPlayingTrack.thumbNail != nil ? currentPlayingTrack.thumbNail : nil
-            self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.namesToString(), albumArt: thumbNail, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
-        }
+        guard let currentTrack = audioStreaming.metadata.currentTrack, let currentPlayingTrack = currentPlayingTrack else { return }
+        let currentPosition = Float(position)
+        songProgressSlider.value = currentPosition
+        updateElapsedTime(elapsedTime: currentPosition, duration: Float(currentTrack.duration))
+        let thumbNail = currentPlayingTrack.thumbNail != nil ? currentPlayingTrack.thumbNail : nil
+        self.updateNowPlayingCenter(title: currentPlayingTrack.songName, artist: currentPlayingTrack.artist.namesToString(), albumArt: thumbNail, currentTime: currentPosition as NSNumber, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
         
-    }
-    
-    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didSeekToPosition position: TimeInterval) {
-//        print("seeked")
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: String!) {
         self.isPlaying = true
-        guard detectConnectivity() else { return; }
-        let currentTrack = audioStreaming.metadata.currentTrack;
-        
-        print("track started");
-        
-        if let currentTrack = currentTrack {
-            let currentNusicTrack = self.cardList[songCardView.currentCardIndex]
-            if let isNewSuggestion = currentNusicTrack.suggestionInfo?.isNewSuggestion, isNewSuggestion == true {
-                currentNusicTrack.setSuggestedValue(value: false, suggestedHandler: nil)
-            }
-            
-            if currentNusicTrack.trackInfo.audioFeatures == nil {
-                currentNusicTrack.trackInfo.audioFeatures = SpotifyTrackFeature()
-            }
-            currentNusicTrack.trackInfo.audioFeatures?.durationMs = currentTrack.duration
-            currentNusicTrack.trackInfo.audioFeatures?.youtubeId = currentNusicTrack.youtubeInfo?.trackId
-            self.currentPlayingTrack = currentNusicTrack.trackInfo;
-            self.activateAudioSession()
-            if let imageURL = currentTrack.albumCoverArtURL {
-                let imageURL = URL(string: imageURL)!
-                let image = UIImage(); image.downloadImage(from: imageURL) { (image) in
-                    self.currentPlayingTrack?.thumbNail = image
-                    if let songName = self.currentPlayingTrack?.songName, let artistName = self.currentPlayingTrack?.artist.namesToString() {
-                        self.updateNowPlayingCenter(title: songName, artist: artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
-                        DispatchQueue.main.async {
-                            self.toggleLikeButtons()
-                        }
-                    }
-                }
-            } else {
-                updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: nil, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
-            }
-            setupSongProgress(duration: Float(currentTrack.duration))
-        } else {
-            print("problem starting track");
+        guard detectConnectivity(), let currentTrack = audioStreaming.metadata.currentTrack else { return; }
+        let currentNusicTrack = self.cardList[songCardView.currentCardIndex]
+        if let isNewSuggestion = currentNusicTrack.suggestionInfo?.isNewSuggestion, isNewSuggestion == true {
+            currentNusicTrack.setSuggestedValue(value: false, suggestedHandler: nil)
         }
+        
+        if currentNusicTrack.trackInfo.audioFeatures == nil {
+            currentNusicTrack.trackInfo.audioFeatures = SpotifyTrackFeature()
+        }
+        currentNusicTrack.trackInfo.audioFeatures?.durationMs = currentTrack.duration
+        currentNusicTrack.trackInfo.audioFeatures?.youtubeId = currentNusicTrack.youtubeInfo?.trackId
+        self.currentPlayingTrack = currentNusicTrack.trackInfo;
+        self.activateAudioSession()
+        setupSongProgress(duration: Float(currentTrack.duration))
+        guard let imageURL = currentTrack.albumCoverArtURL, let url = URL(string: imageURL) else {
+            updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: nil, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+            return
+        }
+        UIImage().downloadImage(from: url) { (image) in
+            self.currentPlayingTrack?.thumbNail = image
+            guard let songName = self.currentPlayingTrack?.songName, let artistName = self.currentPlayingTrack?.artist.namesToString() else { return }
+            self.updateNowPlayingCenter(title: songName, artist: artistName, albumArt: image as AnyObject, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+            DispatchQueue.main.async {
+                self.toggleLikeButtons()
+            }
+        }
+        
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
@@ -84,19 +69,15 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         }
         self.isPlaying = false
         songCardView.swipe(.left, force: true)
-        if UIApplication.shared.applicationState == .background {
-            presentedCardIndex += 1
-            playCard(at: presentedCardIndex)
-            getNextSong()
-        }
+        guard UIApplication.shared.applicationState == .background else { return }
+        presentedCardIndex += 1
+        playCard(at: presentedCardIndex)
+        getNextSong()
+        
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
-        if isPlaying {
-            self.activateAudioSession()
-        } else {
-            self.deactivateAudioSession()
-        }
+        _ = isPlaying ? self.activateAudioSession() : self.deactivateAudioSession()
     }
 }
 
@@ -149,22 +130,13 @@ extension ShowSongViewController {
     }
     
     final func togglePausePlayIcon() {
-        if isPlaying {
-            pausePlay.setImage(UIImage(named: "PauseTrack"), for: .normal)
-        } else {
-            pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
-        }
+        _ = isPlaying ? pausePlay.setImage(UIImage(named: "PauseTrack"), for: .normal) : pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
     }
     
     final func spotifyPausePlay() {
-        
-        
         self.isPlaying = !self.isPlaying;
-        
-        if self.isPlaying {
-            if currentPlayingTrack == nil {
-                actionPlaySpotifyTrack(spotifyTrackId: cardList[songCardView.currentCardIndex].trackInfo.trackUri)
-            }
+        if self.isPlaying && currentPlayingTrack == nil {
+            actionPlaySpotifyTrack(spotifyTrackId: cardList[songCardView.currentCardIndex].trackInfo.trackUri)
         }
         player?.setIsPlaying(isPlaying, callback: { (error) in
             self.togglePausePlayIcon()
@@ -204,6 +176,10 @@ extension ShowSongViewController {
         songCardView.swipe(.left, force: true)
     }
     
+    @objc final func actionLikeSong() {
+        likeTrack(in: presentedCardIndex)
+    }
+    
     @objc final func seekSong(interval: Float) {
         player?.seek(to: TimeInterval(interval), callback: { (error) in
             if let error = error {
@@ -213,10 +189,10 @@ extension ShowSongViewController {
     }
     
     @objc final func remoteControlSeekSong(event: MPRemoteCommandEvent) {
-        if event is MPChangePlaybackPositionCommandEvent {
-            let command = event as! MPChangePlaybackPositionCommandEvent
-            seekSong(interval: Float(command.positionTime))
-        }
+        guard event is MPChangePlaybackPositionCommandEvent else { return }
+        let command = event as! MPChangePlaybackPositionCommandEvent
+        seekSong(interval: Float(command.positionTime))
+        
     }
     
     @objc final func remoteControlPlaySong(event: MPRemoteCommandEvent) {
@@ -228,15 +204,12 @@ extension ShowSongViewController {
     }
     
     @objc private func remoteControlPausePlay(playSong: Bool) {
-        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-        
-        if var nowPlayingInfo = nowPlayingInfo {
-            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = playSong ? 1 : 0
-            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.playbackState.position
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-            self.isPlaying = playSong
-            spotifyPausePlay()
-        }
+        guard var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo else { return }
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = playSong ? 1 : 0
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.playbackState.position
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+        self.isPlaying = playSong
+        spotifyPausePlay()
     }
     
     @objc final func actionPlaySpotifyTrack(spotifyTrackId: String) {
@@ -270,15 +243,8 @@ extension ShowSongViewController {
         ]
         
         var albumImage: MPMediaItemArtwork
-        if albumArt != nil {
-            albumImage = MPMediaItemArtwork(image: albumArt as! UIImage)
-            trackInfo[MPMediaItemPropertyArtwork] = albumImage as AnyObject
-        } else {
-            albumImage = MPMediaItemArtwork(boundsSize: CGSize.zero, requestHandler: { (size) -> UIImage in
-                return UIImage()
-            })
-        }
-        
+        guard let image = albumArt as? UIImage else { return }
+        trackInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(image: image) as AnyObject
         DispatchQueue.main.async {
             MPNowPlayingInfoCenter.default().nowPlayingInfo = trackInfo as [String : AnyObject]
         }

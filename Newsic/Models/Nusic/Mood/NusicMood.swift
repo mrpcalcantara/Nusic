@@ -22,7 +22,7 @@ class NusicMood: FirebaseModel, Iterable {
     var reference: DatabaseReference!
     
     init() {
-        self.emotions = []
+        self.emotions = [Emotion]()
         self.date = Date();
         self.userName = ""
         self.associatedGenres = [String]()
@@ -105,7 +105,7 @@ class NusicMood: FirebaseModel, Iterable {
         var extractedGenres:[String]?
         for emotion in emotions {
             dispatchGroup.enter()
-            reference.child("moodTracks").child(userName).child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
+            Database.database().reference().child("moodTracks").child(userName).child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
                 let value = dataSnapshot.value as? [String: AnyObject];
                 var iterator = value?.makeIterator();
                 var element = iterator?.next()
@@ -125,7 +125,7 @@ class NusicMood: FirebaseModel, Iterable {
             })
         }
         
-        dispatchGroup.notify(queue: .main, execute: {
+        dispatchGroup.notify(queue: .global(qos: .default), execute: {
             getAssociatedTrackHandler(extractedGenres, error)
         })
         

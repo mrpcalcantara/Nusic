@@ -108,15 +108,13 @@ extension ShowSongViewController: KolodaViewDelegate {
         isSongLiked = likedTrackList.containsTrack(trackId: cardList[index].trackInfo.trackId)
         toggleLikeButtons();
         
-        if currentPlayingTrack?.trackId != cardList[index].trackInfo.trackId {
-            if preferredPlayer == NusicPreferredPlayer.spotify {
-                playCard(at: index)
-            } else {
-                if let youtubeTrackId = cardList[index].youtubeInfo?.trackId {
-                    setupYTPlayer(for: cardView, with: youtubeTrackId)
-                    ytPlayTrack()
-                }
-            }
+        guard currentPlayingTrack?.trackId != cardList[index].trackInfo.trackId else { return }
+        if preferredPlayer == NusicPreferredPlayer.spotify {
+            playCard(at: index)
+        } else {
+            guard let youtubeTrackId = cardList[index].youtubeInfo?.trackId else { return }
+            setupYTPlayer(for: cardView, with: youtubeTrackId)
+            ytPlayTrack()
         }
         
     }
@@ -148,10 +146,8 @@ extension ShowSongViewController: KolodaViewDataSource {
     
     func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
         //WORKAROUND: Because of concurrent reloading, we need to validate the indexes are valid.
-        if index < cardList.count {
-            return configure(index: index)
-        }
-        return UIView()
+        guard index < cardList.count else { return UIView() }
+        return configure(index: index)
     }
     
     func koloda(_ koloda: KolodaView, viewForCardOverlayAt index: Int) -> OverlayView? {
@@ -159,11 +155,8 @@ extension ShowSongViewController: KolodaViewDataSource {
     }
     
     final func configure(index: Int) -> UIView {
-        
-        
         let view = UINib(nibName: "OverlayView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SongOverlayView
         
-        //print("index = \(index) -> artist = \(self.cardList[index].trackInfo.artist!) and songName = \(self.cardList[index].trackInfo.songName!)");
         view.songArtist.text = self.cardList[index].trackInfo.artist.namesToString()
         view.songTitle.text = self.cardList[index].trackInfo.songName;
         view.genreLabel.text = self.cardList[index].trackInfo.artist.allArtistsGenresToString()
@@ -242,12 +235,11 @@ extension ShowSongViewController {
     }
     
     private func removeCardBorderLayer() {
-        if let index = self.view.layer.sublayers?.index(where: { (layer) -> Bool in
+        guard let index = self.view.layer.sublayers?.index(where: { (layer) -> Bool in
             return layer.name == "cardBorder"
-        }) {
-            let borderLayer = self.view.layer.sublayers![index]
-            borderLayer.removeFromSuperlayer()
-        }
+        }) else { return }
+        let borderLayer = self.view.layer.sublayers![index]
+        borderLayer.removeFromSuperlayer()
     }
     
     final func addCardBorderLayer() {
@@ -305,11 +297,11 @@ extension ShowSongViewController {
                 guard error == nil else { SwiftSpinner.hide(); error?.presentPopup(for: self); return; }
                 for genre in track.trackInfo.artist.listArtistsGenres() {
                     self.user.updateGenreCount(for: genre, updateGenreHandler: { (isUpdated, error) in
-                        if let error = error {
+                        guard error == nil else {
                             SwiftSpinner.hide()
-                            error.presentPopup(for: self)
+                            error?.presentPopup(for: self)
+                            return
                         }
-            
                     })
                 }
             })
@@ -323,9 +315,10 @@ extension ShowSongViewController {
             track.trackInfo.audioFeatures = trackFeatures;
             track.isLiked = true
             track.saveData(saveCompleteHandler: { (reference, error) in
-                if let error = error {
+                guard error == nil else {
                     SwiftSpinner.hide()
-                    error.presentPopup(for: self)
+                    error?.presentPopup(for: self)
+                    return
                 }
             });
         })

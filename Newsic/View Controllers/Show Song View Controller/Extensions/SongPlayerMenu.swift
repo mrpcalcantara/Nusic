@@ -46,21 +46,20 @@ extension ShowSongViewController {
         nextTrack.isHidden = true
         nextTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         
-        if preferredPlayer == NusicPreferredPlayer.spotify {
-            songProgressSlider.isHidden = false
-            
-            songProgressView.isHidden = true
-            songProgressView.backgroundColor = UIColor.clear
-            
-            songProgressSlider.tintColor = NusicDefaults.foregroundThemeColor
-            songProgressSlider.thumbTintColor = UIColor.lightGray
+        guard preferredPlayer == NusicPreferredPlayer.spotify else { return }
+        songProgressSlider.isHidden = false
+        
+        songProgressView.isHidden = true
+        songProgressView.backgroundColor = UIColor.clear
+        
+        songProgressSlider.tintColor = NusicDefaults.foregroundThemeColor
+        songProgressSlider.thumbTintColor = UIColor.lightGray
 
-            songDurationLabel.textColor = UIColor.lightText
-            songDurationLabel.text = songDurationLabel.text == "" ? convertElapsedSecondsToTime(interval: 0) : songDurationLabel.text
-            
-            songElapsedTime.textColor = UIColor.lightText
-            songElapsedTime.text = songElapsedTime.text == "" ? convertElapsedSecondsToTime(interval: 0) : songElapsedTime.text
-        }
+        songDurationLabel.textColor = UIColor.lightText
+        songDurationLabel.text = songDurationLabel.text == "" ? convertElapsedSecondsToTime(interval: 0) : songDurationLabel.text
+        
+        songElapsedTime.textColor = UIColor.lightText
+        songElapsedTime.text = songElapsedTime.text == "" ? convertElapsedSecondsToTime(interval: 0) : songElapsedTime.text
         
         self.view.layoutIfNeeded()
     }
@@ -90,62 +89,52 @@ extension ShowSongViewController {
             self.toggleLikeButtons();
             self.trackStackView.alpha = 0.9;
             self.showButtons()
-            self.view.layoutIfNeeded();
             let rotateTransform = CGAffineTransform(rotationAngle: CGFloat.pi*4.5);
             self.showMore.transform = rotateTransform
+            self.view.layoutIfNeeded();
+            
         }
         isPlayerMenuOpen = true
     }
     
     fileprivate func closePlayerMenu(animated: Bool) {
-        if animated {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.previousSong.alpha = 0
-                self.pausePlay.alpha = 0
-                self.nextSong.alpha = 0
-                self.previousTrack.alpha = 0
-                self.nextTrack.alpha = 0
-                
-                if self.preferredPlayer == NusicPreferredPlayer.spotify {
-                    self.songProgressView.alpha = 0
-                }
-            }, completion: { (isCompleted) in
-                self.previousSong.isHidden = true
-                self.pausePlay.isHidden = true
-                self.nextSong.isHidden = true
-                self.previousTrack.isHidden = true
-                self.nextTrack.isHidden = true
-                if self.preferredPlayer == NusicPreferredPlayer.spotify {
-                    self.songProgressView.isHidden = true
-                }
-                
-            })
-            
-            UIView.animate(withDuration: 0.3) {
-                
-                self.hideButtons()
-                self.view.layoutIfNeeded();
-                
-            }
-            self.showMore.transform = CGAffineTransform.identity;
-            UIView.animate(withDuration: 0.2, animations: {
-                let rotateTransform = CGAffineTransform(rotationAngle: -CGFloat.pi);
-                self.showMore.transform = rotateTransform
-            }, completion: nil);
-        } else {
-            hideButtons();
-        }
         isPlayerMenuOpen = false
+        guard animated else { hideButtons(); return }
+        UIView.animate(withDuration: 0.3, animations: {
+            self.previousSong.alpha = 0
+            self.pausePlay.alpha = 0
+            self.nextSong.alpha = 0
+            self.previousTrack.alpha = 0
+            self.nextTrack.alpha = 0
+            
+            if self.preferredPlayer == NusicPreferredPlayer.spotify {
+                self.songProgressView.alpha = 0
+            }
+        }, completion: { (isCompleted) in
+            self.previousSong.isHidden = true
+            self.pausePlay.isHidden = true
+            self.nextSong.isHidden = true
+            self.previousTrack.isHidden = true
+            self.nextTrack.isHidden = true
+            if self.preferredPlayer == NusicPreferredPlayer.spotify {
+                self.songProgressView.isHidden = true
+            }
+            
+        })
+        
+        UIView.animate(withDuration: 0.3) {
+            self.hideButtons()
+            self.view.layoutIfNeeded();
+        }
+        self.showMore.transform = CGAffineTransform.identity;
+        UIView.animate(withDuration: 0.2, animations: {
+            let rotateTransform = CGAffineTransform(rotationAngle: -CGFloat.pi);
+            self.showMore.transform = rotateTransform
+        }, completion: nil);
     }
     
     final func togglePlayerMenu(_ animated: Bool? = true) {
-        if isPlayerMenuOpen {
-            closePlayerMenu(animated: animated!)
-            
-        } else {
-            openPlayerMenu()
-        }
-        
+        _ = isPlayerMenuOpen ? closePlayerMenu(animated: animated!) : openPlayerMenu()
     }
     
     final func hideButtons() {
@@ -202,11 +191,7 @@ extension ShowSongViewController {
     }
     
     final func toggleLikeButtons() {
-        if !self.isSongLiked {
-            showLikeButtons()
-        } else {
-            hideLikeButtons()
-        }
+        _ = !self.isSongLiked ? showLikeButtons() : hideLikeButtons()
     }
     
     final func showLikeButtons() {

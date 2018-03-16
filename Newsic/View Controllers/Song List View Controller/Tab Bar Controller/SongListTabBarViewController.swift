@@ -88,27 +88,20 @@ class SongListTabBarViewController: UITabBarController {
     }
     
     private func setupTabBarController() {
+        guard let parent = self.parent as? NusicPageViewController, let showSongVC = parent.showSongVC as? ShowSongViewController else { return }
+        self.showSongVC = showSongVC
         self.delegate = self
-        
         self.view.backgroundColor = .clear
-        
-        if let parent = self.parent as? NusicPageViewController {
-            if let showSongVC = parent.showSongVC as? ShowSongViewController {
-                self.showSongVC = showSongVC
-            }
-        }
-        
-        setupChildViewControllers()
-        
         self.tabBar.tintColor = NusicDefaults.foregroundThemeColor
         self.tabBar.barTintColor = NusicDefaults.blackColor
+        setupChildViewControllers()
+        
     }
     
     private func setupChildViewControllers() {
-        if let viewControllers = self.viewControllers {
-            for viewController in viewControllers {
-                setupViewController(viewController: viewController)
-            }
+        guard let viewControllers = self.viewControllers else { return }
+        for viewController in viewControllers {
+            setupViewController(viewController: viewController)
         }
     }
     
@@ -142,9 +135,8 @@ class SongListTabBarViewController: UITabBarController {
 
     final func playSelectedCard(track: NusicTrack) {
         showSongVC?.playSelectedCard(track: track);
-        if let parent = parent as? NusicPageViewController {
-            parent.scrollToPreviousViewController()
-        }
+        guard let parent = parent as? NusicPageViewController else { return }
+        parent.scrollToPreviousViewController()
     }
     
     final func removeTrackFromLikedTracks(track: NusicTrack, indexPath: IndexPath) {
@@ -171,9 +163,8 @@ class SongListTabBarViewController: UITabBarController {
 extension SongListTabBarViewController: UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if let viewController = viewController as? SuggestedSongListViewController {
-            viewController.tabBarItem.badgeValue = String(viewController.suggestedSongList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
-        }
+        guard let viewController = viewController as? SuggestedSongListViewController else { return }
+        viewController.tabBarItem.badgeValue = String(viewController.suggestedSongList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
     }
     
 }
