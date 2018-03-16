@@ -48,23 +48,15 @@ extension NusicGenre: FirebaseModel {
     internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         let dictionary = [self.mainGenre: self.count]
         reference.child(userName).child(mainGenre).updateChildValues(dictionary) { (error, reference) in
-            if let error = error {
-                saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveGenre.rawValue, systemError: error))
-            } else {
-                saveCompleteHandler(reference, nil)
-            }
-            
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveGenre.rawValue, systemError: error);
+            saveCompleteHandler(reference, error);
         }
     }
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         reference.child(userName).child(mainGenre).removeValue { (error, databaseReference) in
-            if let error = error {
-                deleteCompleteHandler(self.reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteGenre.rawValue, systemError: error))
-            } else {
-                deleteCompleteHandler(self.reference, nil)
-            }
-            
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteGenre.rawValue, systemError: error);
+            deleteCompleteHandler(self.reference, error)
         }
     }
     
@@ -80,13 +72,9 @@ extension NusicGenre: FirebaseModel {
     }
     
     static func saveGenres(for userName: String, genreList:[String: Int], saveGenresHandler: @escaping (Bool?, NusicError?) -> ()) {
-        //let dictionary = user.dictionaryWithValues(forKeys: ["canonicalUserName","displayName","territory"]);
         Database.database().reference().child("genres").child(userName).updateChildValues(genreList) { (error, reference) in
-            if let error = error {
-                saveGenresHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveFavoriteGenres.rawValue, systemError: error))
-            } else {
-                saveGenresHandler(true, nil)
-            }
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveFavoriteGenres.rawValue, systemError: error)
+            saveGenresHandler(error == nil, error)
         }
     }
     

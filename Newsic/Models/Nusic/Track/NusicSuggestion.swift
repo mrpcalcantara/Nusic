@@ -20,15 +20,13 @@ class NusicSuggestion {
     
     convenience init(dictionary: [String: AnyObject]) {
         self.init()
+        mapDictionary(dictionary: dictionary)
     }
     
     private func mapDictionary(dictionary: [String: AnyObject]) {
-        if let newSuggestionValue = dictionary["isNewSuggestion"] as? NSNumber {
-            self.isNewSuggestion = Bool(truncating: newSuggestionValue)
-        }
-        if let suggestionDateValue = dictionary["suggestedOn"] as? String {
-            self.suggestionDate = Date().fromString(dateString: suggestionDateValue, dateFormat: "yyyy-MM-dd'T'HH:mm:ss+hhmm")
-        }
+        guard let newSuggestionValue = dictionary["isNewSuggestion"] as? NSNumber, let suggestionDateValue = dictionary["suggestedOn"] as? String else { return; }
+        self.isNewSuggestion = Bool(truncating: newSuggestionValue)
+        self.suggestionDate = Date().fromString(dateString: suggestionDateValue, dateFormat: "yyyy-MM-dd'T'HH:mm:ss+hhmm")
     }
     
 }

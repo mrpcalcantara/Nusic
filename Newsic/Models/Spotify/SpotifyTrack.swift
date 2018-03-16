@@ -102,11 +102,10 @@ class SpotifyTrack: Hashable {
         }
         
         
-        if let linkedFrom = try? container.nestedContainer(keyedBy: LinkedFromCodingKey.self, forKey: .linked_from) {
-            if let linkedFromTrackId = try linkedFrom.decodeIfPresent(String.self, forKey: .linkedFromTrackId) {
-                self.linkedFromTrackId = linkedFromTrackId
-            }
-        } else {
+        if let linkedFrom = try? container.nestedContainer(keyedBy: LinkedFromCodingKey.self, forKey: .linked_from), let linkedFromTrackId = try linkedFrom.decodeIfPresent(String.self, forKey: .linkedFromTrackId) {
+            self.linkedFromTrackId = linkedFromTrackId
+        }
+        else {
             self.linkedFromTrackId = trackId
         }
         
@@ -132,10 +131,6 @@ class SpotifyTrack: Hashable {
             self.thumbNail = image;
         }
     }
-    
-    
-    
-    
     
 }
 

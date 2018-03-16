@@ -36,28 +36,24 @@ class FirebaseAuthHelper {
         let urlRequest = URLRequest(url: (urlComponents?.url)!)
         
         URLSession.shared.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
-            if let error = error {
+            guard error == nil else {
                 loginCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.serverError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error));
-            } else {
-                do {
-                    let parsedData = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
-                    let firebaseToken = parsedData["token"] as? String
-                    var nusicError: NusicError? = nil
-                    if let firebaseToken = firebaseToken {
-                        Auth.auth().signIn(withCustomToken: firebaseToken, completion: { (user, error) in
-                            if let error = error {
-                                nusicError = NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error)
-                            }
-                            loginCompletionHandler(user, nusicError)
-                        })
-                    } else {
-                        nusicError = NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error)
-                    }
-                    
-                } catch {
-                    loginCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error))
+                return;
+            }
+            do {
+                let parsedData = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
+                var nusicError: NusicError? = nil
+                guard let firebaseToken = parsedData["token"] as? String else {
+                    nusicError = NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error);
+                    return;
                 }
+                Auth.auth().signIn(withCustomToken: firebaseToken, completion: { (user, error) in
+                    nusicError = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error)
+                    loginCompletionHandler(user, nusicError)
+                })
                 
+            } catch {
+                loginCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error))
             }
         }).resume()
     }
@@ -73,29 +69,25 @@ class FirebaseAuthHelper {
         let urlRequest = URLRequest(url: (urlComponents?.url)!)
         
         URLSession.shared.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
-            if let error = error {
+            guard error == nil else {
                 apnsTokenCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.serverError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error));
-            } else {
-                do {
-                    let parsedData = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
-                    let respData = parsedData["success"] as? Bool
-                    apnsTokenCompletionHandler(respData, nil)
-                    
-                } catch {
-                    apnsTokenCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error))
-                }
+                return;
+            }
+            do {
+                let parsedData = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject]
+                let respData = parsedData["success"] as? Bool
+                apnsTokenCompletionHandler(respData, nil)
                 
+            } catch {
+                apnsTokenCompletionHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error))
             }
         }).resume()
     }
 
     class func deleteUserData(userId: String) {
-        if let user = Auth.auth().currentUser {
-            user.delete(completion: { (error) in
-                if let error = error {
-                    print(error)
-                }
-            })
-        }
+        guard let user = Auth.auth().currentUser else { return; }
+        user.delete(completion: { (error) in
+            guard error == nil else { print(error); return }
+        })
     }
 }

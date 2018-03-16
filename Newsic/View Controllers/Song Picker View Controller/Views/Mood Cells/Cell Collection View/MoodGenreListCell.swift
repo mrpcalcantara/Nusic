@@ -77,6 +77,8 @@ class MoodGenreListCell: UICollectionViewCell {
         self.section = section
         self.nusicType = nusicType
     }
+
+    
 }
 
 extension MoodGenreListCell: UICollectionViewDelegate {
@@ -98,22 +100,13 @@ extension MoodGenreListCell: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? MoodGenreCell {
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
-                cell.moodGenreLabel.alpha = 0
-                cell.backgroundImage.alpha = cell.highlightedAlpha
-            }, completion: nil)
-        }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? MoodGenreCell else { return }
+        cell.animateHighlightedCell(isHighlighted: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? MoodGenreCell {
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
-                
-                cell.moodGenreLabel.alpha = 1
-                cell.backgroundImage.alpha = cell.unhighlightedAlpha
-            }, completion: nil)
-        }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? MoodGenreCell else { return }
+        cell.animateHighlightedCell(isHighlighted: false)
     }
 }
 

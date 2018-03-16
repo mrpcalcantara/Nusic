@@ -28,34 +28,30 @@ class Spotify {
     
     private func getGenreForTrack(trackId: String, trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
         getTrackArtist(trackId: trackId) { (fetchedArtistId, error) in
-            if error != nil {
-                trackGenreHandler(nil, error)
-            } else {
-                if let fetchedArtistId = fetchedArtistId {
-                    self.getGenresForArtist(artistId: fetchedArtistId, fetchedArtistGenresHandler: { (artistGenres, error) in
-                        trackGenreHandler(artistGenres, nil);
-                    })
-                }
-            }
+            guard let fetchedArtistId = fetchedArtistId else { trackGenreHandler(nil, error); return; }
+            self.getGenresForArtist(artistId: fetchedArtistId, fetchedArtistGenresHandler: { (artistGenres, error) in
+                trackGenreHandler(artistGenres, nil);
+            })
         }
     }
     
     final func getGenresForTrackList(trackIdList: [String], trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
-        let count = trackIdList.count;
-        var index = 0
-        var allGenres:[String] = [];
         guard trackIdList.count > 0 else { trackGenreHandler(nil, nil); return; }
+        let dispatchGroup = DispatchGroup()
+        var allGenres:[String] = [];
         for trackId in trackIdList {
+            dispatchGroup.enter()
             getGenreForTrack(trackId: trackId, trackGenreHandler: { (genres, error) in
-                guard error == nil else { trackGenreHandler(nil, error); return; }
+                guard error == nil else { dispatchGroup.leave(); return; }
                 if let genres = genres {
                     allGenres.append(contentsOf: genres)
                 }
-                index += 1
-                if index == count {
-                    trackGenreHandler(allGenres, nil);
-                }
+                dispatchGroup.leave()
             })
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            trackGenreHandler(allGenres, nil)
         }
     }
     

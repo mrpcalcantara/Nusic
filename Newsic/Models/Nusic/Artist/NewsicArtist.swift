@@ -48,12 +48,8 @@ extension NusicArtist: FirebaseModel {
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         reference.child(userName).removeValue { (error, databaseReference) in
-            if let error = error {
-                deleteCompleteHandler(self.reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteArtist.rawValue, systemError: error))
-            } else {
-                deleteCompleteHandler(self.reference, nil)
-            }
-            
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteArtist.rawValue, systemError: error)
+            deleteCompleteHandler(self.reference, error)
         }
     }
     

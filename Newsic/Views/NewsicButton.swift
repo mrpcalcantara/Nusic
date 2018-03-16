@@ -41,39 +41,40 @@ class NusicButton: UIButton {
             let containerView = createBlurEffect(style: .dark, alpha: blurAlpha)
             containerView.isUserInteractionEnabled = false // Edit: so that subview simply passes the event through to the button
             self.insertSubview(containerView, belowSubview: self.titleLabel!)
-            
         }
-    
         if animated {
-            let flashAnimation = CABasicAnimation(keyPath: "fillColor")
-            flashAnimation.fromValue = NusicDefaults.deselectedColor.cgColor
-            flashAnimation.toValue = NusicDefaults.foregroundThemeColor.cgColor
-            flashAnimation.duration = 0.5
-            flashAnimation.autoreverses = true
-            flashAnimation.repeatCount = .infinity
-            
-            let strokeColorAnimation = CABasicAnimation(keyPath: "strokeColor")
-            strokeColorAnimation.fromValue = NusicDefaults.deselectedColor.cgColor
-            strokeColorAnimation.toValue = NusicDefaults.foregroundThemeColor.cgColor
-            strokeColorAnimation.duration = 0.5
-            strokeColorAnimation.autoreverses = true
-            strokeColorAnimation.repeatCount = .infinity
-            
-            let animationGroup = CAAnimationGroup()
-            animationGroup.animations = [strokeColorAnimation, flashAnimation]
-            animationGroup.duration = .greatestFiniteMagnitude
-            self.layer.add(animationGroup, forKey: "buttonAnimation")
+            addAnimations()
         }
     }
     
-    private func setBackgroundColor(color: UIColor, forState: UIControlState) {
+    fileprivate func setBackgroundColor(color: UIColor, forState: UIControlState) {
         UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
-
         UIGraphicsGetCurrentContext()!.setFillColor(color.cgColor)
         UIGraphicsGetCurrentContext()!.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
         let colorImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         self.setBackgroundImage(colorImage, for: forState)
+    }
+    
+    fileprivate func addAnimations() {
+        let flashAnimation = CABasicAnimation(keyPath: "fillColor")
+        flashAnimation.fromValue = NusicDefaults.deselectedColor.cgColor
+        flashAnimation.toValue = NusicDefaults.foregroundThemeColor.cgColor
+        flashAnimation.duration = 0.5
+        flashAnimation.autoreverses = true
+        flashAnimation.repeatCount = .infinity
+        
+        let strokeColorAnimation = CABasicAnimation(keyPath: "strokeColor")
+        strokeColorAnimation.fromValue = NusicDefaults.deselectedColor.cgColor
+        strokeColorAnimation.toValue = NusicDefaults.foregroundThemeColor.cgColor
+        strokeColorAnimation.duration = 0.5
+        strokeColorAnimation.autoreverses = true
+        strokeColorAnimation.repeatCount = .infinity
+        
+        let animationGroup = CAAnimationGroup()
+        animationGroup.animations = [strokeColorAnimation, flashAnimation]
+        animationGroup.duration = .greatestFiniteMagnitude
+        self.layer.add(animationGroup, forKey: "buttonAnimation")
     }
     
 }

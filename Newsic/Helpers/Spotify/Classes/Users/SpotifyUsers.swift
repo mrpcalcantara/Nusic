@@ -10,19 +10,10 @@ extension Spotify {
     
     final func getUser(completion: @escaping(SPTUser?, NusicError?) -> ()) {
         SPTUser.requestCurrentUser(withAccessToken: auth.session.accessToken) { (error, results) in
-            if error != nil {
-                let error = NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError)
-                completion(nil, error)
-            }
-            if let results = results {
-                let userResult = results as! SPTUser
-                completion(userResult, nil);
-            } else {
-                completion(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError))
-            }
-           
+            guard let results = results else { completion(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError)); return; }
+            let userResult = results as! SPTUser
+            completion(userResult, nil);
         }
-        
     }
     
 }

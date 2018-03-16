@@ -34,15 +34,12 @@ extension Spotify {
     
     final func checkPlaylistExists(playlistId: String, playlistExistHandler: @escaping(Bool?, NusicError?) -> ()) {
         self.getAllPlaylists { (playListList, error) in
-            if let error = error {
-                playlistExistHandler(nil, error);
-            } else {
-                let hasElement = playListList.contains(where: { (existingPlaylist) -> Bool in
-                    return existingPlaylist.uri.absoluteString.contains(playlistId);
-                })
-                
-                playlistExistHandler(hasElement, nil);
-            }
+            guard error == nil else { playlistExistHandler(nil, error); return; }
+            let hasElement = playListList.contains(where: { (existingPlaylist) -> Bool in
+                return existingPlaylist.uri.absoluteString.contains(playlistId);
+            })
+            
+            playlistExistHandler(hasElement, nil);
         }
     }
     
@@ -60,15 +57,15 @@ extension Spotify {
         executeSpotifyCall(with: createPlaylistRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
             do {
                 let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-                if isSuccess {
-                    let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
-                    //print(jsonObject);
-                    let playlistId: String = jsonObject["id"] as! String
-                    let nusicPlaylist = NusicPlaylist(name : playlistName, id: playlistId, userName: username)
-                    playlistCreationHandler(true, nusicPlaylist, nil)
-                } else {
-                    playlistCreationHandler(false, nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.createPlaylist.rawValue))
+                guard isSuccess else {
+                    playlistCreationHandler(false, nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.createPlaylist.rawValue));
+                    return;
                 }
+                let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
+                //print(jsonObject);
+                let playlistId: String = jsonObject["id"] as! String
+                let nusicPlaylist = NusicPlaylist(name : playlistName, id: playlistId, userName: username)
+                playlistCreationHandler(true, nusicPlaylist, nil)
             } catch {
                 playlistCreationHandler(false, nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: SpotifyErrorCodeDescription.createPlaylist.rawValue))
                 print("error creating request creating playlist list with name \(playlistName)");
