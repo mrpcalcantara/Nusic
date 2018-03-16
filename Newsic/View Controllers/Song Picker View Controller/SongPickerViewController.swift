@@ -399,7 +399,11 @@ class SongPickerViewController: NusicDefaultViewController {
         
         //Get User Info
         self.spotifyHandler.getUser { (user, error) in
-            guard let user = user else { self.showLoginErrorPopup(); self.loadingFinished = true; return; }
+            guard let user = user else {
+                self.showLoginErrorPopup();
+                self.loadingFinished = true;
+                return;
+            }
             self.spotifyHandler.user = user;
             FirebaseAuthHelper.handleSpotifyLogin(
                 accessToken: self.spotifyHandler.auth.session.accessToken,
@@ -550,7 +554,7 @@ class SongPickerViewController: NusicDefaultViewController {
             parent.scrollToViewController(viewController: songPickerVC)
         }
         self.isMoodSelected = false
-        self.moodObject = NusicMood(emotions: [.init(basicGroup: .unknown, detailedEmotions: [], rating: 0)], isAmbiguous: false, sentiment: 0.5, date: Date(), associatedGenres: [], associatedTracks: [])
+        self.moodObject = NusicMood(emotions: [.init(basicGroup: .unknown, detailedEmotions: [], rating: 0)], date: Date(), associatedGenres: [])
         spotifyHandler.getTrackInfo(for: [suggestedTrackId], offset: 0, currentExtractedTrackList: [], trackInfoListHandler: { (tracks, error) in
             guard let track = tracks else { error?.presentPopup(for: self); return; }
             UserDefaults.standard.removeObject(forKey: "suggestedSpotifyTrackId")

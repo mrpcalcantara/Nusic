@@ -78,7 +78,7 @@
 		8C4D43751F57CFD000FD0A92 /* SpotifyDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4D43741F57CFD000FD0A92 /* SpotifyDelegates.swift */; };
 		8C4FBD781F5940A500712873 /* MoodHacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FBD771F5940A500712873 /* MoodHacker.swift */; };
 		8C4FBD7A1F59456200712873 /* Emotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FBD791F59456200712873 /* Emotion.swift */; };
-		8C4FBD7C1F5945CF00712873 /* NewsicMood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FBD7B1F5945CE00712873 /* NewsicMood.swift */; };
+		8C4FBD7C1F5945CF00712873 /* NusicMood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FBD7B1F5945CE00712873 /* NusicMood.swift */; };
 		8C53F74220592F8300E8DF61 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C53F74120592F8300E8DF61 /* CardView.swift */; };
 		8C5595681FD4FA8E00E70667 /* NewsicErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5595671FD4FA8E00E70667 /* NewsicErrorCodes.swift */; };
 		8C55956B1FD4FDA100E70667 /* SpotifyErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C55956A1FD4FDA100E70667 /* SpotifyErrorCodes.swift */; };
@@ -251,7 +251,7 @@
 		8C4D43741F57CFD000FD0A92 /* SpotifyDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyDelegates.swift; sourceTree = "<group>"; };
 		8C4FBD771F5940A500712873 /* MoodHacker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodHacker.swift; sourceTree = "<group>"; };
 		8C4FBD791F59456200712873 /* Emotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Emotion.swift; sourceTree = "<group>"; };
-		8C4FBD7B1F5945CE00712873 /* NewsicMood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicMood.swift; sourceTree = "<group>"; };
+		8C4FBD7B1F5945CE00712873 /* NusicMood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NusicMood.swift; sourceTree = "<group>"; };
 		8C53F74120592F8300E8DF61 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		8C5595671FD4FA8E00E70667 /* NewsicErrorCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicErrorCodes.swift; sourceTree = "<group>"; };
 		8C55956A1FD4FDA100E70667 /* SpotifyErrorCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyErrorCodes.swift; sourceTree = "<group>"; };
@@ -535,7 +535,7 @@
 		8C26C3541FE510C200365142 /* Mood */ = {
 			isa = PBXGroup;
 			children = (
-				8C4FBD7B1F5945CE00712873 /* NewsicMood.swift */,
+				8C4FBD7B1F5945CE00712873 /* NusicMood.swift */,
 			);
 			path = Mood;
 			sourceTree = "<group>";
@@ -1636,7 +1636,7 @@
 				8C58ACF71FFE48DE00E68FD5 /* NewsicAlertController.swift in Sources */,
 				8C6052481F863DBC00892205 /* NewsicSegmentedControl.swift in Sources */,
 				8CA40DF11F8B7C6800C95B9D /* SpotifyBrowse.swift in Sources */,
-				8C4FBD7C1F5945CF00712873 /* NewsicMood.swift in Sources */,
+				8C4FBD7C1F5945CF00712873 /* NusicMood.swift in Sources */,
 				8C55956B1FD4FDA100E70667 /* SpotifyErrorCodes.swift in Sources */,
 				8C5E892D1FBD930600FF75AC /* UILabel.swift in Sources */,
 				8C5E89291FBD7B2E00FF75AC /* CustomNavigationController.swift in Sources */,

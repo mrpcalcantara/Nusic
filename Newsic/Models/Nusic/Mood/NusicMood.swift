@@ -12,8 +12,6 @@ import FirebaseDatabase
 class NusicMood: FirebaseModel, Iterable {
     
     var emotions: [Emotion];
-    var sentiment: Double;
-    var isAmbiguous: Bool;
     var userName: String {
         didSet {
             userName.replace(symbol: ".", with: "-")
@@ -21,29 +19,22 @@ class NusicMood: FirebaseModel, Iterable {
     }
     var date: Date!
     var associatedGenres: [String];
-    var associatedTracks: [NusicTrack];
     var reference: DatabaseReference!
     
     init() {
         self.emotions = []
-        self.isAmbiguous = false;
-        self.sentiment = 0.5
         self.date = Date();
         self.userName = ""
-        self.associatedGenres = []
-        self.associatedTracks = []
+        self.associatedGenres = [String]()
         self.reference = Database.database().reference();
     }
     
-    init(emotions: [Emotion], isAmbiguous: Bool, sentiment: Double, date: Date, userName: String? = "", associatedGenres: [String], associatedTracks: [NusicTrack]) {
+    init(emotions: [Emotion], date: Date, userName: String? = "", associatedGenres: [String]? = [String]()) {
         self.emotions = emotions;
-        self.isAmbiguous = isAmbiguous;
-        self.sentiment = sentiment;
         self.date = date;
         let firebaseUsername = userName!.replaceSymbols(symbol: ".", with: "-")
         self.userName = firebaseUsername
-        self.associatedGenres = associatedGenres
-        self.associatedTracks = associatedTracks
+        self.associatedGenres = associatedGenres!
         self.reference = Database.database().reference();
     }
     
@@ -64,12 +55,8 @@ class NusicMood: FirebaseModel, Iterable {
             let firstEmotion = emotion.toDictionary()
             emotionArray.append(firstEmotion)
             reference.child("emotions").child(userName).child(emotion.basicGroup.rawValue.lowercased()).child(date.toString()).updateChildValues(emotion.toDictionary()) { (error, reference) in
-                if let error = error {
-                    saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveMoodInfo.rawValue, systemError: error))
-                } else {
-                    saveCompleteHandler(reference, nil)
-                }
-                
+                let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveMoodInfo.rawValue, systemError: error);
+                saveCompleteHandler(reference, error)
             }
         }
 
@@ -77,84 +64,79 @@ class NusicMood: FirebaseModel, Iterable {
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         reference.child("emotions").child(userName).removeValue { (error, databaseReference) in
-            if let error = error {
-                deleteCompleteHandler(self.reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteMoodInfo.rawValue, systemError: error))
-            } else {
-                deleteCompleteHandler(self.reference, nil)
-            }
-            
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteMoodInfo.rawValue, systemError: error)
+            deleteCompleteHandler(self.reference, error)
         }
     }
     
     final func getTrackListForEmotionGenre(getAssociatedTrackHandler: @escaping ([String: SpotifyTrackFeature]?, NusicError?) -> ()) {
-        let count = emotions.count
-        var index = 0
+        let dispatchGroup = DispatchGroup()
+        var error: NusicError?
+        var extractedGenres:[String:SpotifyTrackFeature]?
         for emotion in emotions {
+            dispatchGroup.enter()
             reference.child("likedTracks").child(userName).child("moods").child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
+                extractedGenres = [:]
                 let value = dataSnapshot.value as? [String: AnyObject];
                 var iterator = value?.makeIterator()
-                
                 let element = iterator?.next()
-                var extractedGenres:[String:SpotifyTrackFeature] = [:]
-                
                 while element != nil {
-                    if let element = element {
-                        let key = element.key
-                        if let dict = element.value as? [String: AnyObject] {
-                            extractedGenres[key] = SpotifyTrackFeature(featureDictionary: dict)
-                        }
+                    
+                    if let element = element, let dict = element.value as? [String: AnyObject] {
+                        extractedGenres?[element.key] = SpotifyTrackFeature(featureDictionary: dict)
                     }
                 }
-                
-                index += 1;
-                if index == count {
-                    getAssociatedTrackHandler(extractedGenres, nil)
-                }
-                
-            }, withCancel: { (error) in
-                getAssociatedTrackHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackListForEmotion.rawValue, systemError: error))
+                dispatchGroup.leave()
+            }, withCancel: { (cancelError) in
+                error = NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackListForEmotion.rawValue, systemError: cancelError)
+                dispatchGroup.leave()
             })
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            getAssociatedTrackHandler(extractedGenres, error)
         }
         
     }
     
     final func getTrackIdListForEmotionGenre(getAssociatedTrackHandler: @escaping ([String]?, NusicError?) -> ()) {
-        let count = emotions.count;
-        var index = 0;
+        let dispatchGroup = DispatchGroup()
+        var error: NusicError?
+        var extractedGenres:[String]?
         for emotion in emotions {
+            dispatchGroup.enter()
             reference.child("moodTracks").child(userName).child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
                 let value = dataSnapshot.value as? [String: AnyObject];
                 var iterator = value?.makeIterator();
-                
                 var element = iterator?.next()
-                var extractedGenres:[String] = []
+                extractedGenres = [String]()
                 
                 while element != nil {
                     if let element = element {
-                        extractedGenres.append(element.key)
+                        extractedGenres?.append(element.key)
                     }
                     element = iterator?.next();
                 }
+                dispatchGroup.leave()
                 
-                index += 1;
-                if index == count {
-                    getAssociatedTrackHandler(extractedGenres, nil);
-                }
-                
-            }, withCancel: { (error) in
-                getAssociatedTrackHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackListForEmotion.rawValue, systemError: error));
+            }, withCancel: { (cancelError) in
+                error = NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackListForEmotion.rawValue, systemError: cancelError)
+                dispatchGroup.leave()
             })
         }
-        //getAssociatedTrackHandler(nil)
+        
+        dispatchGroup.notify(queue: .main, execute: {
+            getAssociatedTrackHandler(extractedGenres, error)
+        })
+        
     }
     
     final func getDefaultTrackFeatures(getDefaultTrackFeaturesHandler: @escaping ([SpotifyTrackFeature]?, NusicError?) -> ()) {
         for emotion in emotions {
             reference.child("emotions").child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
+                guard let value = dataSnapshot.value as? [String: AnyObject] else { return; }
                 var extractedTrackFeatures:[SpotifyTrackFeature] = Array()
-                if let value = dataSnapshot.value as? [String: AnyObject] {
-                    extractedTrackFeatures.append(SpotifyTrackFeature(featureDictionary: value));
-                }
+                extractedTrackFeatures.append(SpotifyTrackFeature(featureDictionary: value));
                 getDefaultTrackFeaturesHandler(extractedTrackFeatures, nil);
             }, withCancel: { (error) in
                 getDefaultTrackFeaturesHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackFeatures.rawValue, systemError: error));
@@ -163,32 +145,32 @@ class NusicMood: FirebaseModel, Iterable {
     }
     
     final func getTrackFeaturesForEmotionGenre(getTrackFeaturesHandler: @escaping ([SpotifyTrackFeature]?, NusicError?) -> ()) {
-        let count = emotions.count;
-        var index = 0;
+        let dispatchGroup = DispatchGroup()
+        var extractedTrackFeatures: [SpotifyTrackFeature]?
+        var error: NusicError?
         for emotion in emotions {
-            
+            dispatchGroup.enter()
             reference.child("likedTracks").child("moods").child(userName).child(emotion.basicGroup.rawValue.lowercased()).observeSingleEvent(of: .value, with: { (dataSnapshot) in
-                let value = dataSnapshot.value as? [String: AnyObject];
-                var iterator = value?.makeIterator();
+                extractedTrackFeatures = [SpotifyTrackFeature]()
+                guard let value = dataSnapshot.value as? [String: AnyObject] else { dispatchGroup.leave(); return; }
                 
-                var element = iterator?.next()
-                var extractedTrackFeatures:[SpotifyTrackFeature] = []
-                
+                var iterator = value.makeIterator();
+                var element = iterator.next()
                 while element != nil {
                     if let element = element, let dict = element.value as? [String: AnyObject] {
-                        extractedTrackFeatures.append(SpotifyTrackFeature(featureDictionary: dict));
+                        extractedTrackFeatures?.append(SpotifyTrackFeature(featureDictionary: dict));
                     }
-                    element = iterator?.next();
+                    element = iterator.next();
                 }
-                
-                index += 1;
-                if index == count {
-                    getTrackFeaturesHandler(extractedTrackFeatures, nil);
-                }
-                
-            }, withCancel: { (error) in
-                getTrackFeaturesHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackFeatures.rawValue, systemError: error));
+                dispatchGroup.leave()
+            }, withCancel: { (cancelError) in
+                error = NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getTrackFeatures.rawValue, systemError: cancelError)
+                dispatchGroup.leave()
             })
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            getTrackFeaturesHandler(extractedTrackFeatures, error)
         }
         
     }

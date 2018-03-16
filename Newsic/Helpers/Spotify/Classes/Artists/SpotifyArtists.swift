@@ -23,33 +23,30 @@ extension Spotify {
 
             executeSpotifyCall(with: followedArtistsRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-                if isSuccess {
-                    do {
-                        let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
-                        let rootElement = jsonObject["artists"] as! [String: AnyObject];
-                        let items = rootElement["items"] as! [[String: AnyObject]];
-                        for artist in items {
-                            
-                            if let artistData = try? JSONSerialization.data(withJSONObject: artist, options: JSONSerialization.WritingOptions.prettyPrinted) {
-                                if let decodedArtist = try? JSONDecoder().decode(SpotifyArtist.self, from: artistData) {
-                                    currentArtistList.append(decodedArtist);
-                                }
-                            }
-                        }
-                        
-                        if let next = rootElement["next"] as? String {
-                            self.getFollowedArtistsForUser(user: user, artistList: currentArtistList, searchFollowedUrl: next, followedArtistsHandler: { (fullArtistsList, nil) in
-                                followedArtistsHandler(fullArtistsList, nil);
-                            })
-                        } else {
-                            followedArtistsHandler(currentArtistList, nil);
-                        }
-                        
-                    } catch {
-                        print("error parsing data in followed artists");
-                    }
-                } else {
+                guard isSuccess else {
                     followedArtistsHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.extractGenresFromUser.rawValue))
+                    return;
+                }
+                do {
+                    let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
+                    let rootElement = jsonObject["artists"] as! [String: AnyObject];
+                    let items = rootElement["items"] as! [[String: AnyObject]];
+                    for artist in items {
+                        
+                        if let artistData = try? JSONSerialization.data(withJSONObject: artist, options: JSONSerialization.WritingOptions.prettyPrinted), let decodedArtist = try? JSONDecoder().decode(SpotifyArtist.self, from: artistData) {
+                            currentArtistList.append(decodedArtist);
+                        }
+                    }
+                    
+                    if let next = rootElement["next"] as? String {
+                        self.getFollowedArtistsForUser(user: user, artistList: currentArtistList, searchFollowedUrl: next, followedArtistsHandler: { (fullArtistsList, nil) in
+                            followedArtistsHandler(fullArtistsList, nil);
+                        })
+                    } else {
+                        followedArtistsHandler(currentArtistList, nil);
+                    }
+                } catch {
+                    print("error parsing data in followed artists");
                 }
             })
         } catch {
@@ -72,40 +69,36 @@ extension Spotify {
         if let pageRequest = pageRequest {
             executeSpotifyCall(with: pageRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-                if isSuccess {
-                    do {
-                        let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
-                        let artistList = jsonObject["items"] as! [[String:AnyObject]];
-                        for artist in artistList {
-                            let trackInfo = artist["track"] as! [String: AnyObject]
-                            let artistInfo = trackInfo["artists"] as! [[String: AnyObject]]
-                            for artist in artistInfo {
-                                if let artistId = artist["uri"] as? String, !currentList.contains(artistId) && !artistId.contains(":local:::") {
-                                    currentList.append(artistId)
-                                }
+                guard isSuccess else {
+                    fetchedPlaylistArtists([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue))
+                    return;
+                }
+                do {
+                    let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
+                    let artistList = jsonObject["items"] as! [[String:AnyObject]];
+                    for artist in artistList {
+                        let trackInfo = artist["track"] as! [String: AnyObject]
+                        let artistInfo = trackInfo["artists"] as! [[String: AnyObject]]
+                        for artist in artistInfo {
+                            if let artistId = artist["uri"] as? String, !currentList.contains(artistId) && !artistId.contains(":local:::") {
+                                currentList.append(artistId)
                             }
                         }
-                        guard let nextPage = jsonObject["next"] as? String,
-                            let nextPageUrl = URL(string: nextPage) else { fetchedPlaylistArtists(currentList, nil); return; }
-                        let nextPageUrlRequest = URLRequest(url: nextPageUrl)
-                        self.getAllArtistsForPlaylist(userId: userId, playlistId: playlistId, nextTrackPageRequest: nextPageUrlRequest, currentArtistList: currentList, fetchedPlaylistArtists: { (currentArtistList, nil) in
-                            fetchedPlaylistArtists(currentArtistList, nil)
-                        })
-                    } catch { }
-                } else {
-                    fetchedPlaylistArtists([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue))
-                }
+                    }
+                    guard let nextPage = jsonObject["next"] as? String,
+                        let nextPageUrl = URL(string: nextPage) else { fetchedPlaylistArtists(currentList, nil); return; }
+                    let nextPageUrlRequest = URLRequest(url: nextPageUrl)
+                    self.getAllArtistsForPlaylist(userId: userId, playlistId: playlistId, nextTrackPageRequest: nextPageUrlRequest, currentArtistList: currentList, fetchedPlaylistArtists: { (currentArtistList, nil) in
+                        fetchedPlaylistArtists(currentArtistList, nil)
+                    })
+                } catch { }
             })
             
         }
     }
     
     final func getAllGenresForArtists(_ artistList: [String], offset: Int, currentFollowedArtistList: [SpotifyArtist]? = nil, artistGenresHandler: @escaping([SpotifyArtist]?, NusicError?) -> ()) {
-        
-        if artistList.count <= 0 {
-            artistGenresHandler(nil, nil);
-            return;
-        }
+        guard artistList.count > 0 else { artistGenresHandler(nil, nil); return; }
         var spotifyFollowedArtistList: [SpotifyArtist] = currentFollowedArtistList != nil ? currentFollowedArtistList! : []
         var currentArtistList:[String] = []
         let checkLimit = artistList.count-offset
@@ -152,22 +145,20 @@ extension Spotify {
     
     final func getGenresForArtist(artistId: String, fetchedArtistGenresHandler: @escaping ([String]?, NusicError?) -> () ) {
         do {
-            
             let trackUrl = URL(string: "spotify:artist:\(artistId)")!
             let artistGenresRequest = try SPTArtist.createRequest(forArtist: trackUrl, withAccessToken: auth.session.accessToken!);
-
             executeSpotifyCall(with: artistGenresRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-                if isSuccess {
-                    do {
-                        let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
-                        let genres = jsonObject["genres"] as! [String]
-                        fetchedArtistGenresHandler(genres, nil);
-                    } catch {
-                        print("error parsing artist genres for artist \(artistId)");
-                    }
-                } else {
+                guard isSuccess else {
                     fetchedArtistGenresHandler([], NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue))
+                    return;
+                }
+                do {
+                    let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
+                    let genres = jsonObject["genres"] as! [String]
+                    fetchedArtistGenresHandler(genres, nil);
+                } catch {
+                    print("error parsing artist genres for artist \(artistId)");
                 }
             })
         } catch { fetchedArtistGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));

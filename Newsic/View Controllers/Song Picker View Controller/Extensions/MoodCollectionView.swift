@@ -319,6 +319,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
             }
             let moodCellIndexPath = IndexPath(row: 0, section: indexPath.section)
             if let moodListCell = moodCollectionView.cellForItem(at: moodCellIndexPath) as? MoodGenreListCell {
+                moodCollectionView.scrollToItem(at: IndexPath(row: 0, section: indexPath.section), at: .centeredVertically, animated: true)
                 moodListCell.listCollectionView.scrollToItem(at: IndexPath(row: indexPath.row, section: 0), at: .centeredHorizontally, animated: true)
             }
             
@@ -330,7 +331,7 @@ extension SongPickerViewController: UICollectionViewDelegate {
             }
             let dyad = sectionMoods[indexPath.section][indexPath.row]
             let emotion = Emotion(basicGroup: dyad, detailedEmotions: [], rating: 0)
-            self.moodObject = NusicMood(emotions: [emotion], isAmbiguous: false, sentiment: 0.5, date: Date(), userName: spotifyHandler.auth.session.canonicalUsername, associatedGenres: [], associatedTracks: []);
+            self.moodObject = NusicMood(emotions: [emotion], date: Date(), userName: spotifyHandler.auth.session.canonicalUsername);
             self.moodObject?.userName = self.spotifyHandler.auth.session.canonicalUsername!
             self.selectedSongsForGenre.removeAll()
             
@@ -483,14 +484,13 @@ extension SongPickerViewController: MoodGenreListCellDelegate {
     }
     
     final func willDisplayGenreCell(cell: MoodGenreCell, label: String, section: Int, indexPath: IndexPath) {
-        if self.fetchedSongsForGenre.keys.contains(label)  {
-            let tracks = self.fetchedSongsForGenre[label] as! [SpotifyTrack]
+        if let tracks = self.fetchedSongsForGenre[label] {
             cell.trackList = tracks
             cell.imageList = tracks.flatMap({ $0.thumbNail })
         } else {
             let genre = self.sectionGenres[section][indexPath.row]
             let dict = ["\(genre.rawValue.lowercased())":1]
-            let moodObject = NusicMood(emotions: [.init(basicGroup: .unknown, detailedEmotions: [], rating: 0)], isAmbiguous: false, sentiment: 0.5, date: Date(), associatedGenres: [], associatedTracks: [])
+            let moodObject = NusicMood(emotions: [.init(basicGroup: .unknown, detailedEmotions: [], rating: 0)], date: Date(), associatedGenres: [String]())
             self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: 5, market: self.user?.territory, moodObject: moodObject, selectedGenreList: dict) { (tracks, error) in
                 guard error == nil else { error?.presentPopup(for: self); return; }
                 cell.trackList = tracks
@@ -507,14 +507,13 @@ extension SongPickerViewController: MoodGenreListCellDelegate {
                 cell.selectCell()
             }
         }
-        if self.fetchedSongsForMood.keys.contains(label)  {
-            let tracks = self.fetchedSongsForMood[label] as! [SpotifyTrack]
+        if let tracks = self.fetchedSongsForMood[label]  {
             cell.trackList = tracks
             cell.imageList = tracks.flatMap({ $0.thumbNail })
         } else {
             if section < self.sectionMoods.count && self.sectionMoods[section].count > 0, self.nusicUser != nil {
                 let mood = self.sectionMoods[section][indexPath.row]
-                let moodObject = NusicMood(emotions: [.init(basicGroup: mood, detailedEmotions: [], rating: 0)], isAmbiguous: false, sentiment: 0.5, date: Date(), associatedGenres: [], associatedTracks: [])
+                let moodObject = NusicMood(emotions: [.init(basicGroup: mood, detailedEmotions: [], rating: 0)], date: Date())
                 FirebaseDatabaseHelper.fetchTrackFeatures(for: (self.nusicUser.userName), moodObject: moodObject, fetchTrackFeaturesHandler: { (trackFeatures) in
                     self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: 5, market: self.user?.territory, moodObject: moodObject, preferredTrackFeatures: trackFeatures!, selectedGenreList: nil) { (tracks, error) in
                         guard error == nil else { error?.presentPopup(for: self); return; }
