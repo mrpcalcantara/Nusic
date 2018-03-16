@@ -168,9 +168,6 @@ extension ShowSongViewController {
         }
         player?.setIsPlaying(isPlaying, callback: { (error) in
             self.togglePausePlayIcon()
-            if error != nil {
-                print("ERROR PAUSING TRACK");
-            }
         })
         
         
@@ -205,6 +202,10 @@ extension ShowSongViewController {
     @objc final func actionNextSong() {
         player?.playbackDelegate.audioStreaming!(player, didStopPlayingTrack: currentPlayingTrack?.trackUri)
         songCardView.swipe(.left, force: true)
+    }
+    
+    @objc final func likeSongClicked() {
+        likeTrack(in: presentedCardIndex)
     }
     
     @objc final func seekSong(interval: Float) {

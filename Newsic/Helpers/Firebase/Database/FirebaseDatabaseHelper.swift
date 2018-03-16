@@ -82,14 +82,22 @@ class FirebaseDatabaseHelper {
                 })
                 return;
             }
+            
+            let childDispatchGroup = DispatchGroup()
+            
             for child in dataSnapshot.children {
+                childDispatchGroup.enter()
                 let trackId = (child as! DataSnapshot).key
                 reference.child("trackFeatures").child(trackId).observeSingleEvent(of: .value, with: { (childSnapshot) in
                     guard childSnapshot.exists() else { dispatchGroup.leave(); return; }
                     trackFeatures.append(SpotifyTrackFeature(featureDictionary: childSnapshot.value as! [String: AnyObject]))
-                    dispatchGroup.leave()
+                    childDispatchGroup.leave()
                 })
             }
+            
+            childDispatchGroup.notify(queue: .main, execute: {
+                dispatchGroup.leave()
+            })
         }
         
         dispatchGroup.notify(queue: .main) {
