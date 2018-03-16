@@ -254,23 +254,17 @@ class SongPickerViewController: NusicDefaultViewController {
  
     override func viewDidLoad() {
         super.viewDidLoad()
-    
         guard nusicUser == nil else { return; }
         DispatchQueue.main.async {
             SwiftSpinner.show("Loading..", animated: true)
         }
-        
-        extractInformationFromUser { (isFinished) in
-            
-        }
-        self.setupCollectionCellViews();
-        self.setupView()
-        self.setupListMenu()
-        self.setupSegmentedControl()
-        self.setupNavigationBar()
-        self.setupNotificationHandlers()
-        
-        
+        setupUser()
+        setupCollectionCellViews();
+        setupView()
+        setupListMenu()
+        setupSegmentedControl()
+        setupNavigationBar()
+        setupNotificationHandlers()
     }
     
     fileprivate func setupSegmentedControl() {
@@ -381,12 +375,12 @@ class SongPickerViewController: NusicDefaultViewController {
         self.present(dialog, animated: true, completion: nil)
     }
     
-    fileprivate func extractInformationFromUser(extractionHandler: @escaping (Bool) -> ()) {
-        
+    fileprivate func setupUser() {
         let dispatchGroup = DispatchGroup()
         
         fullArtistList = [];
         //Get User Info
+        dispatchGroup.enter()
         self.spotifyHandler.getUser { (user, error) in
             guard let user = user else {
                 self.showLoginErrorPopup();
@@ -394,38 +388,59 @@ class SongPickerViewController: NusicDefaultViewController {
                 return;
             }
             self.spotifyHandler.user = user;
-            FirebaseAuthHelper.handleSpotifyLogin(
-                accessToken: self.spotifyHandler.auth.session.accessToken,
-                user: self.spotifyHandler.user,
-                loginCompletionHandler: { (user, error) in
-                    guard error == nil, let userName = user?.uid else {
-                        self.showLoginErrorPopup()
-                        self.loadingFinished = true
-                        return
-                    }
-                    let user = NusicUser(user: self.spotifyHandler.user)
-                    self.moodObject?.userName = userName
-                    self.spotifyPlaylistCheck();
-                    user.getUser(getUserHandler: { (fbUser, error) in
-                        guard error == nil else { error?.presentPopup(for: self); return; }
-                        if fbUser == nil || fbUser?.userName == "" {
-                            self.nusicUser = user
-                            self.extractGenresFromSpotify(genreExtractionHandler: { (isSuccessful) in
-                                guard isSuccessful else { error?.presentPopup(for: self, description: SpotifyErrorCodeDescription.extractGenresFromUser.rawValue); return;}
-                            })
-                        } else {
-                            self.nusicUser = fbUser!
-                            //TEMPORARY: Due to the DB restructure, migrate data if user version is < 1.1
-                            guard self.nusicUser.version == "1.0" else { self.fetchFavoriteGenres(); return; }
-                            FirebaseDatabaseHelper.migrateData(userId: self.nusicUser.userName, migrationCompletionHandler: { (success, error) in
-                                guard error == nil else { error?.presentPopup(for: self); return; }
-                                self.fetchFavoriteGenres()
-                            })
-                        }
-                    })
-            })
+            dispatchGroup.leave()
         }
         
+        dispatchGroup.notify(queue: .main) {
+            self.handleUserLogin()
+        }
+    }
+    
+    fileprivate func handleUserLogin() {
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        var tempUser: NusicUser?
+        FirebaseAuthHelper.handleSpotifyLogin(
+            accessToken: self.spotifyHandler.auth.session.accessToken,
+            user: self.spotifyHandler.user,
+            loginCompletionHandler: { (user, error) in
+                guard error == nil, let userName = user?.uid else {
+                    self.showLoginErrorPopup()
+                    self.loadingFinished = true
+                    return
+                }
+                tempUser = NusicUser(user: self.spotifyHandler.user)
+                self.moodObject?.userName = userName
+                self.spotifyPlaylistCheck();
+                dispatchGroup.leave()
+        })
+        
+        dispatchGroup.notify(queue: .main) {
+            guard let user = tempUser else { return }
+            self.manageUserData(user: user)
+        }
+    }
+    
+    fileprivate func manageUserData(user: NusicUser) {
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        user.getUser(getUserHandler: { (fbUser, error) in
+            guard error == nil else { error?.presentPopup(for: self); return; }
+            if fbUser == nil || fbUser?.userName == "" {
+                self.nusicUser = user
+                self.extractGenresFromSpotify(genreExtractionHandler: { (isSuccessful) in
+                    guard isSuccessful else { error?.presentPopup(for: self, description: SpotifyErrorCodeDescription.extractGenresFromUser.rawValue); return;}
+                })
+            } else {
+                self.nusicUser = fbUser!
+                //TEMPORARY: Due to the DB restructure, migrate data if user version is < 1.1
+                guard self.nusicUser.version == "1.0" else { self.fetchFavoriteGenres(); return; }
+                FirebaseDatabaseHelper.migrateData(userId: self.nusicUser.userName, migrationCompletionHandler: { (success, error) in
+                    guard error == nil else { error?.presentPopup(for: self); return; }
+                    self.fetchFavoriteGenres()
+                })
+            }
+        })
     }
     
     fileprivate func extractGenresFromSpotify(genreExtractionHandler: @escaping (Bool) -> ()) {
@@ -502,7 +517,6 @@ class SongPickerViewController: NusicDefaultViewController {
         }
         
     }
-    
     
     fileprivate func spotifyPlaylistCheck() {
         nusicPlaylist = NusicPlaylist(userName: self.spotifyHandler.user.canonicalUserName);

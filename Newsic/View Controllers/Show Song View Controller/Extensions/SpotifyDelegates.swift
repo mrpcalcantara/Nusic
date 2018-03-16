@@ -204,10 +204,6 @@ extension ShowSongViewController {
         songCardView.swipe(.left, force: true)
     }
     
-    @objc final func likeSongClicked() {
-        likeTrack(in: presentedCardIndex)
-    }
-    
     @objc final func seekSong(interval: Float) {
         player?.seek(to: TimeInterval(interval), callback: { (error) in
             if let error = error {
