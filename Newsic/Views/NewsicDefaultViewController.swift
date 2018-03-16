@@ -29,11 +29,9 @@ class NusicDefaultViewController: UIViewController {
         
         
         let okButton = DefaultButton(title: "OK", action: {
-//            print("Back to Login menu");
             self.dismiss(animated: true, completion: {
                 SPTAuth.defaultInstance().resetCurrentLogin()
             })
-//            self.dismiss(animated: true, completion: nil);
         })
         
         popupDialog.addButton(okButton);
@@ -41,14 +39,12 @@ class NusicDefaultViewController: UIViewController {
     }
     
     final func goToPreviousViewController() {
-        if let parent = self.parent as? NusicPageViewController {
-            parent.scrollToPreviousViewController()
-        }
+        guard let parent = self.parent as? NusicPageViewController else { return }
+        parent.scrollToPreviousViewController()
     }
     
     final func goToNextViewController() {
-        if let parent = self.parent as? NusicPageViewController {
-            parent.scrollToNextViewController()
-        }
+        guard let parent = self.parent as? NusicPageViewController else { return }
+        parent.scrollToNextViewController()
     }
 }

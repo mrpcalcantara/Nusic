@@ -56,9 +56,8 @@ class NusicPageViewController: UIPageViewController {
         
         //Disable delay in order to facilitate the scrubbing for the track
         for view in view.subviews {
-            if let myView = view as? UIScrollView {
-                myView.delaysContentTouches = false
-            }
+            guard let myView = view as? UIScrollView else { break }
+            myView.delaysContentTouches = false
         }
 
         if let image = UIImage(named: "BackgroundPattern") {
@@ -77,38 +76,31 @@ class NusicPageViewController: UIPageViewController {
     }
     
     @objc func addViewControllerToPageVC(viewController: UIViewController) {
-        if !orderedViewControllers.contains(viewController) {
-            orderedViewControllers.insert(viewController, at: orderedViewControllers.count)
-            nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
-        }
-        
+        guard !orderedViewControllers.contains(viewController) else { return }
+        orderedViewControllers.insert(viewController, at: orderedViewControllers.count)
+        nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
     }
     
     @objc func removeViewControllerFromPageVC(viewController: UIViewController) {
-        if orderedViewControllers.contains(viewController) {
-            if let index = orderedViewControllers.index(of: viewController) {
-                orderedViewControllers.remove(at: index)
-                nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
-            }
-        }
+        guard orderedViewControllers.contains(viewController), let index = orderedViewControllers.index(of: viewController) else { return }
+        orderedViewControllers.remove(at: index)
+        nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
     }
     
     /**
      Scrolls to the next view controller.
      */
     func scrollToNextViewController() {
-        if let visibleViewController = viewControllers?.first, let nextViewController = pageViewController(self, viewControllerAfter: visibleViewController) {
-            scrollToViewController(viewController: nextViewController)
-        }
+        guard let visibleViewController = viewControllers?.first, let nextViewController = pageViewController(self, viewControllerAfter: visibleViewController) else { return }
+        scrollToViewController(viewController: nextViewController)
     }
     
     /**
      Scrolls to the previous view controller.
      */
     func scrollToPreviousViewController() {
-        if let visibleViewController = viewControllers?.first, let previousViewController = pageViewController(self, viewControllerBefore: visibleViewController) {
-            scrollToViewController(viewController: previousViewController, direction: .reverse)
-        }
+        guard let visibleViewController = viewControllers?.first, let previousViewController = pageViewController(self, viewControllerBefore: visibleViewController) else { return }
+        scrollToViewController(viewController: previousViewController, direction: .reverse)
     }
     
     /**
@@ -118,16 +110,10 @@ class NusicPageViewController: UIPageViewController {
      - parameter newIndex: the new index to scroll to
      */
     func scrollToViewController(index newIndex: Int) {
-        if let firstViewController = viewControllers?.first, let currentIndex = orderedViewControllers.index(of: firstViewController) {
-            let direction: UIPageViewControllerNavigationDirection = newIndex >= currentIndex ? .forward : .reverse
-            let nextViewController = orderedViewControllers[newIndex]
-            scrollToViewController(viewController: nextViewController, direction: direction)
-        }
-    }
-    
-    private func newColoredViewController(color: String) -> UIViewController {
-        return UIStoryboard(name: "Main", bundle: nil) .
-            instantiateViewController(withIdentifier: "\(color)ViewController")
+        guard let firstViewController = viewControllers?.first, let currentIndex = orderedViewControllers.index(of: firstViewController) else { return }
+        let direction: UIPageViewControllerNavigationDirection = newIndex >= currentIndex ? .forward : .reverse
+        let nextViewController = orderedViewControllers[newIndex]
+        scrollToViewController(viewController: nextViewController, direction: direction)
     }
     
     /**
@@ -147,9 +133,8 @@ class NusicPageViewController: UIPageViewController {
      Notifies '_nusicDelegate' that the current page index was updated.
      */
     private func notifyNusicDelegateOfNewIndex() {
-        if let firstViewController = viewControllers?.first, let index = orderedViewControllers.index(of: firstViewController) {
-            nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageIndex: index)
-        }
+        guard let firstViewController = viewControllers?.first, let index = orderedViewControllers.index(of: firstViewController) else { return }
+        nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageIndex: index)
     }
     
 }

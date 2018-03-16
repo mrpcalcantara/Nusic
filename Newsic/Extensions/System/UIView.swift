@@ -21,19 +21,13 @@ extension UIView {
     }
     
     final func addBlurEffect(style: UIBlurEffectStyle, alpha: CGFloat, customBounds: CGRect? = nil, inFront: Bool? = true) {
-        
         let blurEffect = UIBlurEffect(style: style)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.frame = customBounds != nil ? customBounds! : self.bounds
         blurView.autoresizingMask = [.flexibleHeight, .flexibleWidth, .flexibleLeftMargin, .flexibleRightMargin];
         blurView.tag = 111
         blurView.alpha = alpha
-        if inFront! {
-            self.insertSubview(blurView, at: 0);
-        } else {
-            self.addSubview(blurView)
-        }
-        
+        _ = inFront! ? self.insertSubview(blurView, at: 0) : self.addSubview(blurView)
     }
     
     final func removeBlurEffect() {

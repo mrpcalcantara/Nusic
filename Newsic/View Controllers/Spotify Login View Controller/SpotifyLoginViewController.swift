@@ -188,13 +188,13 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         animateLogo()
         if !firstTimeSession.isValid() {
             self.getRefreshToken(currentSession: firstTimeSession, refreshTokenCompletionHandler: { (isRefreshed) in
-                _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
+                Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
             });
         } else {
             self.session = firstTimeSession
             self.auth.session = firstTimeSession;
-            let appDelegate = (UIApplication.shared.delegate as! AppDelegate).auth = self.auth;
-            _ = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
+            (UIApplication.shared.delegate as! AppDelegate).auth = self.auth;
+            Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
         }
         
     }

@@ -49,13 +49,11 @@ class NusicAlertController : YBAlertController {
     }
     
     final func configure(options: [YBButton]? = nil, alertText: String? = nil) {
-        if let options = options {
-            self.title = alertText
-            self.style = YBAlertControllerStyle.ActionSheet
-            for option in options {
-                self.addButton(icon: option.icon, title: option.textLabel.text!, action: option.action)
-            }
-            
+        guard let options = options else { return }
+        self.title = alertText
+        self.style = YBAlertControllerStyle.ActionSheet
+        for option in options {
+            self.addButton(icon: option.icon, title: option.textLabel.text!, action: option.action)
         }
     }
     

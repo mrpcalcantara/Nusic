@@ -70,12 +70,8 @@ extension LikedSongListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SongTableViewSectionHeader.reuseIdentifier) as? SongTableViewSectionHeader else { return UIView(); }
-        
-        if let text = sectionTitles[section] {
-            cell.configure(text: text)
-        }
-        
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SongTableViewSectionHeader.reuseIdentifier) as? SongTableViewSectionHeader, let text = sectionTitles[section] else { return UIView(); }
+        cell.configure(text: text)
         return cell
     }
     

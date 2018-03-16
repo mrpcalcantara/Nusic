@@ -23,11 +23,8 @@ private var handle: UInt8 = 0;
 extension UIBarButtonItem {
     
     private var badgeLayer: CAShapeLayer? {
-        if let b: AnyObject = objc_getAssociatedObject(self, &handle) as AnyObject? {
-            return b as? CAShapeLayer
-        } else {
-            return nil
-        }
+        guard let b: AnyObject = objc_getAssociatedObject(self, &handle) as AnyObject? else { return nil }
+        return b as? CAShapeLayer
     }
     
     func setBadge(text: String?, withOffsetFromTopRight offset: CGPoint = CGPoint.zero, andColor color:UIColor = UIColor.red, andFilled filled: Bool = true, andFontSize fontSize: CGFloat = 11) {

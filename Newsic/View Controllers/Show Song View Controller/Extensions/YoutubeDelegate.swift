@@ -60,19 +60,18 @@ extension ShowSongViewController: YTPlayerViewDelegate {
     }
     
     final func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
-        if state == .playing {
+        switch state {
+        case .playing:
             self.isPlaying = true
             self.togglePausePlayIcon()
-        } else if state == .paused {
+        case .paused:
             self.isPlaying = false
             self.togglePausePlayIcon()
-        } else if state == .ended {
+        case .ended:
             songCardView.swipe(.left)
-        } 
-    }
-    
-    final func playerView(_ playerView: YTPlayerView, receivedError error: YTPlayerError) {
-        
+        default:
+            return
+        }
     }
     
     final func ytSeekTo(seconds: Float) {
@@ -92,12 +91,7 @@ extension ShowSongViewController: YTPlayerViewDelegate {
     
     final func ytPausePlay() {
         self.isPlaying = !self.isPlaying
-        
-        if isPlaying {
-            ytPlayTrack()
-        } else {
-            ytPauseTrack()
-        }
+        _ = isPlaying ? ytPlayTrack() : ytPauseTrack()
         self.togglePausePlayIcon()
     }
     

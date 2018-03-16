@@ -83,7 +83,6 @@ extension SuggestedSongListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) as? SongTableViewCell {
             cell.setColor(color: .clear)
-            print(cell)
         }
         let track = sectionSongs[indexPath.section][indexPath.row]
         track.setSuggestedValue(value: false, suggestedHandler: nil);
@@ -95,7 +94,6 @@ extension SuggestedSongListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SongTableViewSectionHeader.reuseIdentifier) as? SongTableViewSectionHeader else { return UIView(); }
-        
         let date = Date();
         let formattedDate = date.fromString(dateString: sectionTitles[section], dateFormat: "dd-MM-yyyy")
         cell.configure(text: getHeaderString(date: formattedDate))
