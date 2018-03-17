@@ -1,4 +1,4 @@
-//
+ //
 //  Koloda-SongCard.swift
 //  Nusic
 //
@@ -94,21 +94,22 @@ extension ShowSongViewController: KolodaViewDelegate {
         self.hideLikeButtons()
         didUserSwipe = true;
         pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
+        
         if direction == .right {
             likeTrack(in: index);
         }
         didUserSwipe = false;
         getNextSong()
-
+        
     }
     
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
+        guard index < cardList.count, currentPlayingTrack?.trackId != cardList[index].trackInfo.trackId else { return }
         presentedCardIndex = index
         let cardView = koloda.viewForCard(at: index) as! SongOverlayView
         isSongLiked = likedTrackList.containsTrack(trackId: cardList[index].trackInfo.trackId)
         toggleLikeButtons();
         
-        guard currentPlayingTrack?.trackId != cardList[index].trackInfo.trackId else { return }
         if preferredPlayer == NusicPreferredPlayer.spotify {
             playCard(at: index)
         } else {
@@ -310,7 +311,7 @@ extension ShowSongViewController {
     
     private func saveTrack(track: NusicTrack) {
         spotifyHandler.getTrackDetails(trackId: track.trackInfo.trackId!, fetchedTrackDetailsHandler: { (trackFeatures, error) in
-            guard let trackFeatures = trackFeatures else { SwiftSpinner.hide(); error?.presentPopup(for: self); return; }
+            guard var trackFeatures = trackFeatures else { SwiftSpinner.hide(); error?.presentPopup(for: self); return; }
             trackFeatures.youtubeId = track.youtubeInfo?.trackId;
             track.trackInfo.audioFeatures = trackFeatures;
             track.isLiked = true

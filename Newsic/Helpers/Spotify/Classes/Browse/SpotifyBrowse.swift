@@ -76,11 +76,10 @@ extension Spotify {
             self.getAllGenresForArtists(artistUriList, offset: 0, artistGenresHandler: { (artistList, error) in
                 if let artistList = artistList {
                     for artist in artistList {
-                        if let artistIndex = spotifyResults.index(where: { (track) -> Bool in
+                        guard let artistIndex = spotifyResults.index(where: { (track) -> Bool in
                             return track.artist.map({$0.uri}).contains(where: { $0 == artist.uri })
-                        }) {
-                            spotifyResults[artistIndex].artist.updateArtist(artist: artist)
-                        }
+                        }) else { return }
+                        spotifyResults[artistIndex].artist.updateArtist(artist: artist)
                     }
                 }
                 
@@ -253,7 +252,7 @@ extension Spotify {
     
     private func getAverageTrackFeaturesRandomized(preferredTrackFeatures: [SpotifyTrackFeature]) -> [String: AnyObject] {
         var emotionValues:[String: AnyObject] = [:]
-        let trackFeatures = getAverageTrackFeatures(preferredTrackFeatures: preferredTrackFeatures)
+        var trackFeatures = getAverageTrackFeatures(preferredTrackFeatures: preferredTrackFeatures)
         
         trackFeatures.danceability!.randomInRange(value: trackFeatures.danceability!, range: 0.2, acceptNegativeValues: false)
         trackFeatures.energy!.randomInRange(value: trackFeatures.energy!, range: 0.2, acceptNegativeValues: false)

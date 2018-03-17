@@ -385,7 +385,7 @@ extension SongPickerViewController: UICollectionViewDataSource {
             cell.configure(for: genres, section: indexPath.section, nusicType: .genre);
         }
         cell.delegate = self
-        cell.layoutIfNeeded()
+//        cell.layoutIfNeeded()
         return cell
         
     }

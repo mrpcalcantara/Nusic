@@ -26,7 +26,7 @@ class ShowSongViewController: NusicDefaultViewController {
     //Data variables
     var cardList:[NusicTrack] = [] {
         didSet {
-            guard cardList.count < 3 else { return }
+            guard cardList != nil, cardList.count < 3 else { return }
             self.fetchNewCard(numberOfSongs: 3-cardList.count, cardFetchingHandler: { (fetched) in })
         }
     }
@@ -698,10 +698,9 @@ extension ShowSongViewController {
             return trackList.count > 0
         }
         
-        fetchNewCardsFromSpotify { (tracks) in
+        fetchNewCardsFromSpotify(numberOfSongs: numberOfSongs) { (tracks) in
             cardFetchingHandler?(addSongsHandler(tracks));
         }
-        
     }
     
     final func fetchNewCardsFromSpotify(numberOfSongs: Int? = 1, fetchedCardsHandler: @escaping ([NusicTrack]) -> ()) {
@@ -835,12 +834,12 @@ extension ShowSongViewController {
     }
     
     fileprivate func getYouTubeResults(tracks: [SpotifyTrack], youtubeSearchHandler: @escaping ([NusicTrack]) -> ()) {
-        var index = 0
+        let dispatchGroup = DispatchGroup()
         var ytTracks: [NusicTrack] = []
         for track in tracks {
+            dispatchGroup.enter()
             if let firstArtist = track.artist.first?.artistName {
                 YouTubeSearch.getSongInfo(artist: firstArtist, songName: track.songName, completionHandler: { (youtubeInfo) in
-                    index += 1
                     if let currentIndex = tracks.index(where: { (currentTrack) -> Bool in
                         return currentTrack.trackId == track.trackId
                     }) {
@@ -849,11 +848,13 @@ extension ShowSongViewController {
                         
                         ytTracks.append(nusicTrack);
                     }
-                    if index == tracks.count {
-                        youtubeSearchHandler(ytTracks)
-                    }
+                    dispatchGroup.leave()
                 })
             }
+        }
+        
+        dispatchGroup.notify(queue: .global(qos: .default)) {
+            youtubeSearchHandler(ytTracks)
         }
     }
     
@@ -890,24 +891,27 @@ extension ShowSongViewController {
     }
     
     final func addSongsToCardList(for startIndex: Int?, tracks: [NusicTrack]) {
-        for track in tracks {
-            self.addSongToCardPlaylist(index: startIndex, track: track)
-        }
+        addSongToCardPlaylist(index: startIndex, tracks: tracks)
         DispatchQueue.main.async {
             self.songCardView.reloadData();
         }
     }
     
+    final func removeSongsFromCardList(tracks: [NusicTrack]) {
+        for track in tracks {
+            removeSongFromCardPlaylist(track: track)
+        }
+    }
+    
     final func getNextSong() {
         let handler: (Bool) -> Void = { didHandle in
-            if self.songCardView.countOfVisibleCards < 3 || !didHandle {
-                self.fetchNewCard(cardFetchingHandler: nil)
-            }
-            else {
+            guard self.songCardView.countOfVisibleCards < 3 || !didHandle else {
                 DispatchQueue.main.sync {
                     self.songCardView.reloadData()
                 }
+                return
             }
+            self.fetchNewCard(cardFetchingHandler: nil)
         }
         
         fetchNewCard { (isFetched) in
@@ -937,13 +941,18 @@ extension ShowSongViewController {
         }
     }
     
-    fileprivate func addSongToCardPlaylist(index: Int? = nil, track: NusicTrack) {
-        if index != nil {
-            self.cardList.insert(track, at: index!)
+    fileprivate func addSongToCardPlaylist(index: Int? = nil, tracks: [NusicTrack]) {
+        if let index = index {
+            self.cardList.insert(contentsOf: tracks, at: index)
         } else {
-            self.cardList.append(track)
+            self.cardList.append(contentsOf: tracks)
         }
-        self.playedSongsHistory?.append(track.trackInfo)
+        self.playedSongsHistory?.append(contentsOf: tracks.map({ $0.trackInfo }) as [SpotifyTrack])
+    }
+    
+    fileprivate func removeSongFromCardPlaylist(track: NusicTrack) {
+        guard let index = cardList.index(where: { $0.trackInfo.trackId == track.trackInfo.trackId }) else { return }
+        self.cardList.remove(at: index);
     }
     
     fileprivate func checkConnectivity() -> Bool {

@@ -242,7 +242,6 @@ extension ShowSongViewController {
             MPNowPlayingInfoPropertyPlaybackRate: playbackRate as AnyObject
         ]
         
-        var albumImage: MPMediaItemArtwork
         guard let image = albumArt as? UIImage else { return }
         trackInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(image: image) as AnyObject
         DispatchQueue.main.async {

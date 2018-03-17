@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NusicSuggestion {
+struct NusicSuggestion {
 
     var isNewSuggestion: Bool? = false
     var suggestionDate: Date? = nil
@@ -18,15 +18,15 @@ class NusicSuggestion {
         self.suggestionDate = suggestionDate
     }
     
-    convenience init(dictionary: [String: AnyObject]) {
+    init(dictionary: [String: AnyObject]) {
         self.init()
         mapDictionary(dictionary: dictionary)
     }
     
-    private func mapDictionary(dictionary: [String: AnyObject]) {
+    private mutating func mapDictionary(dictionary: [String: AnyObject]) {
         guard let newSuggestionValue = dictionary["isNewSuggestion"] as? NSNumber, let suggestionDateValue = dictionary["suggestedOn"] as? String else { return; }
-        self.isNewSuggestion = Bool(truncating: newSuggestionValue)
-        self.suggestionDate = Date().fromString(dateString: suggestionDateValue, dateFormat: "yyyy-MM-dd'T'HH:mm:ss+hhmm")
+        isNewSuggestion = Bool(truncating: newSuggestionValue)
+        suggestionDate = Date().fromString(dateString: suggestionDateValue, dateFormat: "yyyy-MM-dd'T'HH:mm:ss+hhmm")
     }
     
 }

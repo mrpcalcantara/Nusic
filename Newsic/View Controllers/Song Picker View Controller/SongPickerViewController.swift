@@ -244,13 +244,14 @@ class SongPickerViewController: NusicDefaultViewController {
         DispatchQueue.main.async {
             SwiftSpinner.show("Loading..", animated: true)
         }
-        setupUser()
+        
         setupCollectionCellViews();
         setupView()
         setupListMenu()
         setupSegmentedControl()
         setupNavigationBar()
         setupNotificationHandlers()
+        setupUser()
     }
     
     fileprivate func setupSegmentedControl() {

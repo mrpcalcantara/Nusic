@@ -14,7 +14,8 @@ class SpotifyTrack: Hashable {
         return trackId.hashValue
     }
     
-    var title: String!;
+    var audioFeatures: SpotifyTrackFeature? = nil
+    var artist: [SpotifyArtist];
     var thumbNail: UIImage?;
     var thumbNailUrl: String!;
     var smallThumbNailUrl: String!;
@@ -23,13 +24,10 @@ class SpotifyTrack: Hashable {
     var trackUri: String!;
     var songName: String!;
     var songHref: String!;
-    var artist: [SpotifyArtist];
     var addedAt: Date?!
-    var audioFeatures: SpotifyTrackFeature? = nil
     var suggestedSong: Bool? = false
     
-    init(title: String? = "", thumbNail: UIImage? = nil, thumbNailUrl: String? = "", smallThumbNailUrl: String? = "", trackUri: String? = "", trackId: String, linkedFromTrackId: String? = "", songName: String? = "", songHref: String? = "", artist: [SpotifyArtist]?, addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?, suggestedSong: Bool? = false) {
-        self.title = title;
+    init(thumbNail: UIImage? = nil, thumbNailUrl: String? = "", smallThumbNailUrl: String? = "", trackUri: String? = "", trackId: String, linkedFromTrackId: String? = "", songName: String? = "", songHref: String? = "", artist: [SpotifyArtist]?, addedAt: Date? = Date(), audioFeatures: SpotifyTrackFeature?, suggestedSong: Bool? = false) {
         self.thumbNailUrl = thumbNailUrl;
         self.smallThumbNailUrl = smallThumbNailUrl
         self.trackUri = trackUri;
@@ -47,10 +45,9 @@ class SpotifyTrack: Hashable {
             self.thumbNail = thumbNail
         } else {
             if let thumbNailUrl = thumbNailUrl {
-                if let url = URL(string: thumbNailUrl) {
-                    image.downloadImage(from: url) { (image) in
-                        self.thumbNail = image;
-                    }
+                guard let url = URL(string: thumbNailUrl) else { return}
+                image.downloadImage(from: url) { (image) in
+                    self.thumbNail = image;
                 }
             }
         }
@@ -83,6 +80,18 @@ class SpotifyTrack: Hashable {
         let album = try container.nestedContainer(keyedBy: AlbumKeys.self, forKey: .album)
         var images = try album.nestedUnkeyedContainer(forKey: .images)
         var imageArray = [String]()
+        let href = try container.nestedContainer(keyedBy: ExternalHrefKey.self, forKey: .external_urls)
+        if let songHref = try href.decodeIfPresent(String.self, forKey: .songHref) {
+            self.songHref = songHref
+        }
+
+        if let linkedFrom = try? container.nestedContainer(keyedBy: LinkedFromCodingKey.self, forKey: .linked_from), let linkedFromTrackId = try linkedFrom.decodeIfPresent(String.self, forKey: .linkedFromTrackId) {
+            self.linkedFromTrackId = linkedFromTrackId
+        }
+        else {
+            self.linkedFromTrackId = trackId
+        }
+        
         while !images.isAtEnd {
             let image = try images.nestedContainer(keyedBy: ImageKeys.self)
             imageArray.append(try image.decode(String.self, forKey: .url))
@@ -95,24 +104,10 @@ class SpotifyTrack: Hashable {
                 }
             }
         }
-        
-        let href = try container.nestedContainer(keyedBy: ExternalHrefKey.self, forKey: .external_urls)
-        if let songHref = try href.decodeIfPresent(String.self, forKey: .songHref) {
-            self.songHref = songHref
-        }
-        
-        
-        if let linkedFrom = try? container.nestedContainer(keyedBy: LinkedFromCodingKey.self, forKey: .linked_from), let linkedFromTrackId = try linkedFrom.decodeIfPresent(String.self, forKey: .linkedFromTrackId) {
-            self.linkedFromTrackId = linkedFromTrackId
-        }
-        else {
-            self.linkedFromTrackId = trackId
-        }
-        
     }
     
     static func ==(lhs: SpotifyTrack, rhs: SpotifyTrack) -> Bool {
-        return lhs.title == rhs.title &&
+        return
             lhs.thumbNail == rhs.thumbNail &&
             lhs.thumbNailUrl == rhs.thumbNailUrl &&
             lhs.trackId == rhs.trackId &&
@@ -120,7 +115,6 @@ class SpotifyTrack: Hashable {
             lhs.songName == rhs.songName &&
             lhs.songHref == rhs.songHref &&
             lhs.artist == rhs.artist &&
-            lhs.addedAt == rhs.addedAt &&
             lhs.audioFeatures == rhs.audioFeatures &&
             lhs.suggestedSong == rhs.suggestedSong
     }
