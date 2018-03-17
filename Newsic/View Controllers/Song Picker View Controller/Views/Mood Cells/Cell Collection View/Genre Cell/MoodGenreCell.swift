@@ -60,24 +60,26 @@ class MoodGenreCell: UICollectionViewCell {
     }
     
     final func configure(text: String) {
+        self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.setupBorderLayer()
+        self.layer.cornerRadius = self.cornerRadius
+        self.moodGenreLabel.backgroundColor = NusicDefaults.deselectedColor
+        self.moodGenreLabel.font = NusicDefaults.font!
+        self.moodGenreLabel.textColor = self.deselectedLabelColor
+        self.moodGenreLabel.text = text
         
+        self.backgroundImage.contentMode = .scaleAspectFit
+        self.backgroundImage.alpha = self.unhighlightedAlpha
+        
+        self.activityIndicator.hidesWhenStopped = true
+        self.imageList = self.imageList != nil ? self.imageList : Array();
+        guard let imageList = self.imageList, imageList.count > 0 else {
+            return;
+        }
+        self.backgroundImage.image = imageList[self.currentImageIndex]
+        self.setTimer()
         DispatchQueue.main.async {
-            self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-            self.setupBorderLayer()
-            self.layer.cornerRadius = self.cornerRadius
-            self.moodGenreLabel.backgroundColor = NusicDefaults.deselectedColor
-            self.moodGenreLabel.font = NusicDefaults.font!
-            self.moodGenreLabel.textColor = self.deselectedLabelColor
-            self.moodGenreLabel.text = text
             
-            self.backgroundImage.contentMode = .scaleAspectFit
-            self.backgroundImage.alpha = self.unhighlightedAlpha
-            
-            self.activityIndicator.hidesWhenStopped = true
-            
-            guard let imageList = self.imageList, imageList.count > 0 else { self.imageList = Array(); return; }
-            self.backgroundImage.image = imageList[self.currentImageIndex]
-            self.setTimer()
         }
     }
     
@@ -85,7 +87,7 @@ class MoodGenreCell: UICollectionViewCell {
         imageUrlList = Array(urlList.prefix(2))
         let dispatchGroup = DispatchGroup()
         var downloadedImageList: [UIImage] = Array()
-        for imageUrl in urlList {
+        for imageUrl in imageUrlList! {
             dispatchGroup.enter()
             if let url = URL(string: imageUrl) {
                 guard (UIImage(named: "TransparentAppIcon")?.downloadImage(from: url, downloadImageHandler: { (downloadedImage) in

@@ -89,7 +89,7 @@ class FirebaseDatabaseHelper {
                 childDispatchGroup.enter()
                 let trackId = (child as! DataSnapshot).key
                 reference.child("trackFeatures").child(trackId).observeSingleEvent(of: .value, with: { (childSnapshot) in
-                    guard childSnapshot.exists() else { dispatchGroup.leave(); return; }
+                    guard childSnapshot.exists() else { childDispatchGroup.leave(); return; }
                     trackFeatures.append(SpotifyTrackFeature(featureDictionary: childSnapshot.value as! [String: AnyObject]))
                     childDispatchGroup.leave()
                 })

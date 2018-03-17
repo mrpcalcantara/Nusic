@@ -134,9 +134,10 @@ class SongListTabBarViewController: UITabBarController {
     }
 
     final func playSelectedCard(track: NusicTrack) {
-        showSongVC?.playSelectedCard(track: track);
+        
         guard let parent = parent as? NusicPageViewController else { return }
         parent.scrollToPreviousViewController()
+        showSongVC?.playSelectedCard(track: track);
     }
     
     final func removeTrackFromLikedTracks(track: NusicTrack, indexPath: IndexPath) {

@@ -13,15 +13,17 @@ class NusicTrack {
     
     var youtubeInfo: YouTubeResult?
     var trackInfo: SpotifyTrack
+    var reference: DatabaseReference! = Database.database().reference()
+    weak var moodInfo: NusicMood?;
+    var suggestionInfo: NusicSuggestion?
     var userName: String {
         didSet {
             userName.replace(symbol: ".", with: "-")
         }
     }
-    var moodInfo: NusicMood?;
-    var suggestionInfo: NusicSuggestion?
+    
     var isLiked: Bool?
-    var reference: DatabaseReference! = Database.database().reference()
+    
     
     init(trackInfo: SpotifyTrack, moodInfo: NusicMood?, userName: String, youtubeInfo: YouTubeResult? = nil, suggestionInfo: NusicSuggestion? = NusicSuggestion(), isLiked: Bool? = false) {
         self.trackInfo = trackInfo;

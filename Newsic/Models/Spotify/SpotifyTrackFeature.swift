@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SpotifyTrackFeature: Hashable {
+struct SpotifyTrackFeature: Hashable {
     var hashValue: Int {
         return (youtubeId?.hashValue)!
     }
@@ -31,7 +31,6 @@ class SpotifyTrackFeature: Hashable {
     var analysisUrl: String? = "";
     var durationMs: Double? = 0;
     var timeSignature: Int? = 0;
-//    var genre: String? = ""
     var youtubeId: String? = ""
     
     init(acousticness: Double? = nil, danceability: Double? = nil, energy: Double? = nil, instrumentalness: Double? = nil, liveness: Double? = nil, loudness: Double? = nil, speechiness: Double? = nil, tempo: Double? = nil, valence: Double? = nil) {
@@ -47,12 +46,12 @@ class SpotifyTrackFeature: Hashable {
         self.valence           = valence
     }
     
-    convenience init(featureDictionary: [String: AnyObject]) {
+    init(featureDictionary: [String: AnyObject]) {
         self.init()
         self.mapDictionary(featureDictionary: featureDictionary)
     }
     
-    required init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: TrackFeatureKeys.self)
         
         acousticness      = try container.decodeIfPresent(Double.self, forKey: .acousticness)
@@ -100,7 +99,7 @@ class SpotifyTrackFeature: Hashable {
                 lhs.youtubeId == rhs.youtubeId
     }
     
-    final func toDictionary() -> [String: AnyObject] {
+    func toDictionary() -> [String: AnyObject] {
         var featureDictionary: [String: AnyObject] = [:]
         
         featureDictionary["acousticness"] = self.acousticness as AnyObject
@@ -126,27 +125,27 @@ class SpotifyTrackFeature: Hashable {
         return featureDictionary;
     }
     
-    final func mapDictionary(featureDictionary: [String: AnyObject]) {
+    mutating func mapDictionary(featureDictionary: [String: AnyObject]) {
         
-        self.acousticness      = featureDictionary["acousticness"] as? Double
-        self.analysisUrl       = featureDictionary["analysis_url"] as? String
-        self.danceability      = featureDictionary["danceability"] as? Double
-        self.durationMs        = featureDictionary["duration_ms"] as? Double
-        self.energy            = featureDictionary["energy"] as? Double
-        self.id                = featureDictionary["id"] as? String
-        self.instrumentalness  = featureDictionary["instrumentalness"] as? Double
-        self.key               = featureDictionary["key"] as? Int
-        self.liveness          = featureDictionary["liveness"] as? Double
-        self.loudness          = featureDictionary["loudness"] as? Double
-        self.mode              = featureDictionary["mode"] as? Int
-        self.speechiness       = featureDictionary["speechiness"] as? Double
-        self.tempo             = featureDictionary["tempo"] as? Double
-        self.timeSignature     = featureDictionary["time_signature"] as? Int
-        self.trackHref         = featureDictionary["track_href"] as? String
-        self.type              = featureDictionary["type"] as? String
-        self.uri               = featureDictionary["uri"] as? String
-        self.valence           = featureDictionary["valence"] as? Double
-        self.youtubeId         = featureDictionary["youtubeId"] as? String
+        acousticness      = featureDictionary["acousticness"] as? Double
+        analysisUrl       = featureDictionary["analysis_url"] as? String
+        danceability      = featureDictionary["danceability"] as? Double
+        durationMs        = featureDictionary["duration_ms"] as? Double
+        energy            = featureDictionary["energy"] as? Double
+        id                = featureDictionary["id"] as? String
+        instrumentalness  = featureDictionary["instrumentalness"] as? Double
+        key               = featureDictionary["key"] as? Int
+        liveness          = featureDictionary["liveness"] as? Double
+        loudness          = featureDictionary["loudness"] as? Double
+        mode              = featureDictionary["mode"] as? Int
+        speechiness       = featureDictionary["speechiness"] as? Double
+        tempo             = featureDictionary["tempo"] as? Double
+        timeSignature     = featureDictionary["time_signature"] as? Int
+        trackHref         = featureDictionary["track_href"] as? String
+        type              = featureDictionary["type"] as? String
+        uri               = featureDictionary["uri"] as? String
+        valence           = featureDictionary["valence"] as? Double
+        youtubeId         = featureDictionary["youtubeId"] as? String
     }
     
     

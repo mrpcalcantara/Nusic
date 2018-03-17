@@ -84,19 +84,13 @@ class MoodGenreListCell: UICollectionViewCell {
 extension MoodGenreListCell: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let nusicType = nusicType {
-            delegate?.didSelect(nusicType: nusicType, section: section!, indexPath: indexPath)
-        }
+        guard let nusicType = nusicType else { return }
+        delegate?.didSelect(nusicType: nusicType, section: section!, indexPath: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let nusicType = nusicType {
-            if let cell = cell as? MoodGenreCell {
-                delegate?.willDisplayCell(cell: cell, nusicType: nusicType, section: section!, indexPath: indexPath)
-            }
-            
-        }
-        
+        guard let nusicType = nusicType, let cell = cell as? MoodGenreCell else { return }
+        delegate?.willDisplayCell(cell: cell, nusicType: nusicType, section: section!, indexPath: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
@@ -113,21 +107,18 @@ extension MoodGenreListCell: UICollectionViewDelegate {
 extension MoodGenreListCell: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let items = items {
-            return items.count
-        }
-        return 0
+        guard let items = items else { return 0 }
+        return items.count
     }
     
     
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MoodGenreCell.reuseIdentifier, for: indexPath) as? MoodGenreCell {
-            cell.configure(text: items![indexPath.row])
-            cell.layoutIfNeeded()
-            return cell;
-        }
-        return UICollectionViewCell();
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MoodGenreCell.reuseIdentifier, for: indexPath) as? MoodGenreCell else { return UICollectionViewCell() }
+        cell.configure(text: items![indexPath.row])
+        cell.layoutIfNeeded()
+        return cell;
+        
     }
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -140,7 +131,6 @@ extension MoodGenreListCell: UICollectionViewDataSource {
 extension MoodGenreListCell: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
         let cellsPerRow:CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 2 : 1
         var sizeWidth = collectionView.bounds.width - collectionView.bounds.width/(cellsPerRow*6)
         sizeWidth = sizeWidth * 0.7
@@ -157,11 +147,8 @@ extension MoodGenreListCell: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        
-        if let cellSize = cellSize {
-            let inset = (collectionView.frame.width - cellSize.width)/2
-            return UIEdgeInsetsMake(0, inset, 0, inset)
-        }
-        return UIEdgeInsetsMake(0, 0, 0, 0)
+        guard let cellSize = cellSize else { return UIEdgeInsetsMake(0, 0, 0, 0) }
+        let inset = (collectionView.frame.width - cellSize.width)/2
+        return UIEdgeInsetsMake(0, inset, 0, inset)
     }
 }
