@@ -23,10 +23,9 @@ class NusicError: NSObject, Error {
         self.nusicErrorSubCode = nusicErrorSubCode
         self.nusicErrorDescription = nusicErrorDescription
         self.systemError = systemError
-        //self.popupDialog = setupDialog();
     }
     
-    func setupDialog(description: String? = nil) -> PopupDialog {
+    private func setupDialog(description: String? = nil) -> PopupDialog {
         var popupMessage = ""
         popupMessage.append("Error \(codesToString())")
         if let description = self.nusicErrorDescription {
@@ -50,7 +49,7 @@ class NusicError: NSObject, Error {
         return dialog
     }
     
-    func presentPopup(for viewController: UIViewController, description: String? = nil) {
+    final func presentPopup(for viewController: UIViewController, description: String? = nil) {
         if self.popupDialog == nil {
             self.popupDialog = setupDialog(description: description)
         }
@@ -60,11 +59,22 @@ class NusicError: NSObject, Error {
         
     }
 
-    func codesToString() -> String {
+    final func codesToString() -> String {
         if let nusicErrorCode = nusicErrorCode, let nusicErrorSubCode = nusicErrorSubCode {
             return "\(nusicErrorCode.rawValue)\(nusicErrorSubCode.rawValue)"
         }
         return ""
+    }
+    
+    static func manageError(statusCode: Int, errorCode: NusicErrorCodes, description: String) -> NusicError {
+        switch statusCode {
+        case 400...499:
+            return NusicError(nusicErrorCode: errorCode, nusicErrorSubCode: NusicErrorSubCode.clientError, nusicErrorDescription: description)
+        case 500...599:
+            return NusicError(nusicErrorCode: errorCode, nusicErrorSubCode: NusicErrorSubCode.serverError, nusicErrorDescription: description)
+        default:
+            return NusicError(nusicErrorCode: errorCode, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: description)
+        }
     }
     
 }

@@ -9,12 +9,7 @@
 import Foundation
 
 extension SPTAuth {
-    func resetCurrentLogin() {
-//        self.session = nil
-//        let userDefaults = UserDefaults.standard;
-//        userDefaults.set(nil, forKey: "SpotifySession")
-//        userDefaults.synchronize()
-//        NotificationCenter.default.post(name: Notification.Name(rawValue: "resetLogin"), object: nil)
+    final func resetCurrentLogin() {
         UserDefaults.standard.removeObject(forKey: "SpotifySession");
         UserDefaults.standard.synchronize();
     }

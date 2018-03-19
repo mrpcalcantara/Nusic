@@ -1,4 +1,4 @@
-//
+ //
 //  Koloda-SongCard.swift
 //  Nusic
 //
@@ -19,33 +19,25 @@ extension ShowSongViewController: KolodaViewDelegate {
     func koloda(_ koloda: KolodaView, didSelectCardAt index: Int) {
         
         let alertController = NusicAlertController(title: nil, message: nil, style: YBAlertControllerStyle.ActionSheet)
+        
         let actionShare: () -> Void = {
             var url: URL? = nil
-            if self.user.settingValues.preferredPlayer == NusicPreferredPlayer.spotify {
-                if let href = self.currentPlayingTrack?.songHref {
-                    url = URL(string: href)
-                } else {
-                    return;
-                }
-            } else {
-                if let ytId = self.currentPlayingTrack?.audioFeatures?.youtubeId {
-                    url = URL(string: "https://www.youtube.com/watch?v=\(ytId)");
-                } else {
-                    return;
-                }
+            switch self.user.settingValues.preferredPlayer! {
+            case .spotify:
+                guard let href = self.currentPlayingTrack?.songHref else { return; }
+                url = URL(string: href)
+            case .youtube:
+                let ytId = self.currentPlayingTrack?.audioFeatures?.youtubeId
+                url = URL(string: "https://www.youtube.com/watch?v=\(ytId)");
             }
             let appendedText = "Suggested by #nusic"
             let array: [Any] = [url as Any, appendedText as Any]
             let activityVC = UIActivityViewController(activityItems: array, applicationActivities: nil)
             activityVC.completionWithItemsHandler = { activity, isSuccess, returneditems, activityError in
                 var spinnerMessage = ""
-                if activity != nil {
-                    if isSuccess {
-                        spinnerMessage = "Shared!"
-                    } 
-                    
-                    SwiftSpinner.show(duration: 2, title: spinnerMessage, animated: true)
-                }
+                guard activity != nil, isSuccess else { return; }
+                spinnerMessage = "Shared!"
+                SwiftSpinner.show(duration: 2, title: spinnerMessage, animated: true)
             }
             self.present(activityVC, animated: true, completion: nil)
         }
@@ -55,7 +47,7 @@ extension ShowSongViewController: KolodaViewDelegate {
             
             let actionArtist: () -> Void = {
                 self.musicSearchType = .artist
-                self.searchBasedOnArtist = self.currentPlayingTrack?.artist != nil ? self.currentPlayingTrack?.artist : nil
+                self.searchBasedOnArtist = self.currentPlayingTrack?.artist != nil ? self.currentPlayingTrack?.artist : []
                 self.showSwiftSpinner(text: "Fetching tracks..")
                 self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
                 self.showMore.transform = CGAffineTransform.identity;
@@ -72,12 +64,7 @@ extension ShowSongViewController: KolodaViewDelegate {
             }
             
             let actionGenre: () -> Void = {
-                let dict = self.currentPlayingTrack?.artist.listDictionary()
-                let count: Int? = dict?.count
-                if let count = count, count > 0 {
-                    self.searchBasedOnGenres = dict!
-                }
-                
+                self.searchBasedOnGenres = self.currentPlayingTrack?.artist.getGenresForArtists()
                 self.showSwiftSpinner(text: "Fetching tracks..")
                 self.showSwiftSpinner(delay: 20, text: "Unable to fetch!", duration: nil)
                 self.musicSearchType = .genre
@@ -93,10 +80,11 @@ extension ShowSongViewController: KolodaViewDelegate {
             })
         }
         
-        alertController.addButton(icon: UIImage(named: "Share"), title: "Share", action: actionShare)
-        alertController.addButton(icon: UIImage(named: "BasedOn"), title: "More tracks based on", action: actionBasedOn)
-        
-        
+        let buttonShare = YBButton(frame: CGRect.zero, icon: UIImage(named: "Share"), text: "Share")
+        buttonShare.action = actionShare
+        let buttonBasedOn = YBButton(frame: CGRect.zero, icon: UIImage(named: "BasedOn"), text: "More tracks based on")
+        buttonBasedOn.action = actionBasedOn
+        alertController.configure(options: [buttonBasedOn, buttonShare], alertText: nil)
         alertController.show()
         
     }
@@ -106,33 +94,28 @@ extension ShowSongViewController: KolodaViewDelegate {
         self.hideLikeButtons()
         didUserSwipe = true;
         pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
+        
         if direction == .right {
             likeTrack(in: index);
         }
         didUserSwipe = false;
         getNextSong()
-
+        
     }
     
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
+        guard index < cardList.count, currentPlayingTrack?.trackId != cardList[index].trackInfo.trackId else { return }
         presentedCardIndex = index
         let cardView = koloda.viewForCard(at: index) as! SongOverlayView
-        if isPlayerMenuOpen {
-            cardView.genreLabel.alpha = 0
-            cardView.songArtist.alpha = 0
-        }
-        isSongLiked = containsTrack(trackId: cardList[index].trackInfo.trackId);
+        isSongLiked = likedTrackList.containsTrack(trackId: cardList[index].trackInfo.trackId)
         toggleLikeButtons();
         
-        if currentPlayingTrack?.trackId != cardList[index].trackInfo.trackId {
-            if preferredPlayer == NusicPreferredPlayer.spotify {
-                playCard(at: index)
-            } else {
-                if let youtubeTrackId = cardList[index].youtubeInfo?.trackId {
-                    setupYTPlayer(for: cardView, with: youtubeTrackId)
-                    ytPlayTrack()
-                }
-            }
+        if preferredPlayer == NusicPreferredPlayer.spotify {
+            playCard(at: index)
+        } else {
+            guard let youtubeTrackId = cardList[index].youtubeInfo?.trackId else { return }
+            setupYTPlayer(for: cardView, with: youtubeTrackId)
+            ytPlayTrack()
         }
         
     }
@@ -164,25 +147,20 @@ extension ShowSongViewController: KolodaViewDataSource {
     
     func koloda(_ koloda: KolodaView, viewForCardAt index: Int) -> UIView {
         //WORKAROUND: Because of concurrent reloading, we need to validate the indexes are valid.
-        if index < cardList.count {
-            return configure(index: index)
-        }
-        return UIView()
+        guard index < cardList.count else { return UIView() }
+        return configure(index: index)
     }
     
     func koloda(_ koloda: KolodaView, viewForCardOverlayAt index: Int) -> OverlayView? {
         return Bundle.main.loadNibNamed("OverlayView", owner: self, options: nil)?[0] as? SongOverlayView
     }
     
-    func configure(index: Int) -> UIView {
-        
-        
+    final func configure(index: Int) -> UIView {
         let view = UINib(nibName: "OverlayView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SongOverlayView
         
-        //print("index = \(index) -> artist = \(self.cardList[index].trackInfo.artist!) and songName = \(self.cardList[index].trackInfo.songName!)");
-        view.songArtist.text = self.cardList[index].trackInfo.artist.artistName
+        view.songArtist.text = self.cardList[index].trackInfo.artist.namesToString()
         view.songTitle.text = self.cardList[index].trackInfo.songName;
-        view.genreLabel.text = self.cardList[index].trackInfo.artist.listGenres()
+        view.genreLabel.text = self.cardList[index].trackInfo.artist.allArtistsGenresToString()
         view.albumImage.downloadedFrom(link: self.cardList[index].trackInfo.thumbNailUrl);
         view.suggestedSongIcon.isHidden = !self.cardList[index].trackInfo.suggestedSong!
         
@@ -205,7 +183,7 @@ extension ShowSongViewController: KolodaViewDataSource {
 
 extension ShowSongViewController {
     
-    func setupCards() {
+    final func setupCards() {
         
         songCardView.delegate = nil;
         songCardView.dataSource = nil;
@@ -220,8 +198,8 @@ extension ShowSongViewController {
         
     }
     
-    @objc func likeTrack(in index: Int) {
-        guard cardList.count > 0, containsTrack(trackId: cardList[presentedCardIndex].trackInfo.trackId) == false else { return; }
+    @objc final func likeTrack(in index: Int) {
+        guard cardList.count > 0, likedTrackList.containsTrack(trackId: cardList[index].trackInfo.trackId) == false else { return; }
         let likedCardIndex = presentedCardIndex
         DispatchQueue.main.async {
             SwiftSpinner.show(duration: 1, title: "Liked!");
@@ -229,67 +207,23 @@ extension ShowSongViewController {
         
         let track = cardList[likedCardIndex];
         isSongLiked = didUserSwipe == true ? false : true ; toggleLikeButtons()
-        spotifyHandler.isTrackInPlaylist(trackId: track.trackInfo.trackId, playlistId: playlist.id!) { (isInPlaylist) in
-            if !isInPlaylist {
-                self.spotifyHandler.addTracksToPlaylist(playlistId: self.playlist.id!, trackId: track.trackInfo.trackUri, addTrackHandler: { (isAdded, error) in
-                    
-                    if let error = error {
-                        SwiftSpinner.hide()
-                        error.presentPopup(for: self, description: SpotifyErrorCodeDescription.addTrack.rawValue)
-                    } else {
-                        if let genres = track.trackInfo.artist.subGenres {
-                            for genre in genres {
-                                self.user.updateGenreCount(for: genre, updateGenreHandler: { (isUpdated, error) in
-                                    if let error = error {
-                                        SwiftSpinner.hide()
-                                        error.presentPopup(for: self)
-                                    }
-                                    
-                                })
-                            }
-                        }
-                        
-                    }
-                    
-                })
-            }
-        }
+        checkTrackInPlaylist(track: track)
+        saveTrack(track: track)
         
-        spotifyHandler.getTrackDetails(trackId: track.trackInfo.trackId!, fetchedTrackDetailsHandler: { (trackFeatures, error) in
-            if let error = error {
-                SwiftSpinner.hide()
-                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue)
-            } else {
-                if var trackFeatures = trackFeatures {
-                    trackFeatures.youtubeId = track.youtubeInfo?.trackId;
-                    track.trackInfo.audioFeatures = trackFeatures;
-                    track.isLiked = true
-                    track.saveData(saveCompleteHandler: { (reference, error) in
-                        if let error = error {
-                            SwiftSpinner.hide()
-                            error.presentPopup(for: self)
-                        }
-                        
-                    });
-                }
-            }
-            
-        })
     }
     
-    func addSongToPosition(track: NusicTrack, position: Int) {
+    final func addSongToPosition(track: NusicTrack, position: Int) {
         let nusicTrack = track
         cardList.insert(nusicTrack, at: position);
-        
         songCardView.insertCardAtIndexRange(position..<position+1, animated: false);
         songCardView.delegate?.koloda(songCardView, didShowCardAt: position)
     }
     
-    func getCurrentCardView() -> SongOverlayView {
+    final func getCurrentCardView() -> SongOverlayView {
         return songCardView.viewForCard(at: songCardView.currentCardIndex) as! SongOverlayView
     }
     
-    func handleFetchNewTracks(numberOfSongs: Int, completionHandler: ((Bool) -> ())?) {
+    private func handleFetchNewTracks(numberOfSongs: Int, completionHandler: ((Bool) -> ())?) {
         fetchNewCardsFromSpotify(numberOfSongs: numberOfSongs) { (tracks) in
             DispatchQueue.main.async {
                 self.cardList.removeSubrange(self.songCardView.currentCardIndex+1..<self.cardList.count)
@@ -301,16 +235,15 @@ extension ShowSongViewController {
         }
     }
     
-    func removeCardBorderLayer() {
-        if let index = self.view.layer.sublayers?.index(where: { (layer) -> Bool in
+    private func removeCardBorderLayer() {
+        guard let index = self.view.layer.sublayers?.index(where: { (layer) -> Bool in
             return layer.name == "cardBorder"
-        }) {
-            let borderLayer = self.view.layer.sublayers![index]
-            borderLayer.removeFromSuperlayer()
-        }
+        }) else { return }
+        let borderLayer = self.view.layer.sublayers![index]
+        borderLayer.removeFromSuperlayer()
     }
     
-    func addCardBorderLayer() {
+    final func addCardBorderLayer() {
         removeCardBorderLayer()
         var frame = trackStackView.frame
         frame.origin = CGPoint(x: (frame.origin.x) - 4 , y: (frame.origin.y) - 4)
@@ -356,6 +289,40 @@ extension ShowSongViewController {
         animation.repeatCount = .infinity
         animation.isRemovedOnCompletion = false
         layer.add(animation, forKey: "border")
+    }
+
+    private func checkTrackInPlaylist(track: NusicTrack) {
+        spotifyHandler.isTrackInPlaylist(trackId: track.trackInfo.trackId, playlistId: playlist.id!) { (isInPlaylist) in
+            guard !isInPlaylist else { return; }
+            self.spotifyHandler.addTracksToPlaylist(playlistId: self.playlist.id!, trackId: track.trackInfo.trackUri, addTrackHandler: { (isAdded, error) in
+                guard error == nil else { SwiftSpinner.hide(); error?.presentPopup(for: self); return; }
+                for genre in track.trackInfo.artist.listArtistsGenres() {
+                    self.user.updateGenreCount(for: genre, updateGenreHandler: { (isUpdated, error) in
+                        guard error == nil else {
+                            SwiftSpinner.hide()
+                            error?.presentPopup(for: self)
+                            return
+                        }
+                    })
+                }
+            })
+        }
+    }
+    
+    private func saveTrack(track: NusicTrack) {
+        spotifyHandler.getTrackDetails(trackId: track.trackInfo.trackId!, fetchedTrackDetailsHandler: { (trackFeatures, error) in
+            guard var trackFeatures = trackFeatures else { SwiftSpinner.hide(); error?.presentPopup(for: self); return; }
+            trackFeatures.youtubeId = track.youtubeInfo?.trackId;
+            track.trackInfo.audioFeatures = trackFeatures;
+            track.isLiked = true
+            track.saveData(saveCompleteHandler: { (reference, error) in
+                guard error == nil else {
+                    SwiftSpinner.hide()
+                    error?.presentPopup(for: self)
+                    return
+                }
+            });
+        })
     }
 }
 

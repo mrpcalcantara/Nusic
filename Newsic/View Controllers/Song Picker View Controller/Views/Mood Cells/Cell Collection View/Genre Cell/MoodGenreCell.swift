@@ -59,58 +59,58 @@ class MoodGenreCell: UICollectionViewCell {
         self.activityIndicator.stopAnimating()
     }
     
-    func configure(text: String) {
+    final func configure(text: String) {
+        self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.setupBorderLayer()
+        self.layer.cornerRadius = self.cornerRadius
+        self.moodGenreLabel.backgroundColor = NusicDefaults.deselectedColor
+        self.moodGenreLabel.font = NusicDefaults.font!
+        self.moodGenreLabel.textColor = self.deselectedLabelColor
+        self.moodGenreLabel.text = text
         
+        self.backgroundImage.contentMode = .scaleAspectFit
+        self.backgroundImage.alpha = self.unhighlightedAlpha
+        
+        self.activityIndicator.hidesWhenStopped = true
+        self.imageList = self.imageList != nil ? self.imageList : Array();
+        guard let imageList = self.imageList, imageList.count > 0 else {
+            return;
+        }
+        self.backgroundImage.image = imageList[self.currentImageIndex]
+        self.setTimer()
         DispatchQueue.main.async {
-            self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-            self.setupBorderLayer()
-            self.layer.cornerRadius = self.cornerRadius
-            self.moodGenreLabel.backgroundColor = NusicDefaults.deselectedColor
-            self.moodGenreLabel.font = NusicDefaults.font!
-            self.moodGenreLabel.textColor = self.deselectedLabelColor
-            self.moodGenreLabel.text = text
             
-            self.backgroundImage.contentMode = .scaleAspectFit
-            self.backgroundImage.alpha = self.unhighlightedAlpha
-            
-            self.activityIndicator.hidesWhenStopped = true
-            
-            if let imageList = self.imageList, imageList.count > 0 {
-                self.setTimer()
-            } else {
-                
-                self.imageList = Array()
-            }
         }
     }
     
-    func addImages(urlList: [String]) {
+    final func addImages(urlList: [String]) {
         imageUrlList = Array(urlList.prefix(2))
-        var count = 0
+        let dispatchGroup = DispatchGroup()
         var downloadedImageList: [UIImage] = Array()
-        for imageUrl in urlList {
+        for imageUrl in imageUrlList! {
+            dispatchGroup.enter()
             if let url = URL(string: imageUrl) {
                 guard (UIImage(named: "TransparentAppIcon")?.downloadImage(from: url, downloadImageHandler: { (downloadedImage) in
-                    if let downloadedImage = downloadedImage {
+                    guard let downloadedImage = downloadedImage else { dispatchGroup.leave(); return; }
                         downloadedImageList.append(downloadedImage);
-                    }
-                    
-                    count += 1
-                    if count == urlList.count {
-                        self.imageList = downloadedImageList
-                    }
+                    dispatchGroup.leave()
                 })) != nil else {
                     return
                 }
             }
         }
+        
+        dispatchGroup.notify(queue: .main) {
+            self.imageList = downloadedImageList
+        }
     }
     
-    func selectCell() {
+    final func selectCell() {
         setPathSelectAnimation()
+        
     }
     
-    func deselectCell() {
+    final func deselectCell() {
         setPathDeselectAnimation()
     }
     
@@ -133,95 +133,86 @@ class MoodGenreCell: UICollectionViewCell {
         if currentImageIndex == imageUrlList?.count {
             currentImageIndex = 0
         }
-        if let imageList = self.imageList {
-            DispatchQueue.main.async {
+        guard let imageList = self.imageList else { return; }
+        DispatchQueue.main.async {
+            
+            UIView.transition(with: self.backgroundImage, duration: 1, options: [.transitionCrossDissolve], animations: {
+                guard self.currentImageIndex < imageList.count else { return; }
+                self.backgroundImage.image = imageList[self.currentImageIndex]
+                self.currentImageIndex += 1
+            }, completion: { (isCompleted) in
                 
-                UIView.transition(with: self.backgroundImage, duration: 1, options: [.transitionCrossDissolve], animations: {
-                    if self.currentImageIndex < imageList.count {
-                        self.backgroundImage.image = imageList[self.currentImageIndex]
-                        self.currentImageIndex += 1
-                    }
-                }, completion: { (isCompleted) in
-                    
-                })
-            }
+            })
         }
-        
-        
     }
     
     fileprivate func setTimer() {
-        
-        
         self.timer?.invalidate()
         self.timer = nil
         self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true, block: { (timer) in
             self.cycleImages()
         })
         timer?.fire()
-        
-        
-        
     }
     
     fileprivate func setPathSelectAnimation() {
         self.moodGenreLabel.textColor = selectedLabelColor
-        if let borderPathLayer = borderPathLayer {
-            borderPathLayer.removeAllAnimations()
-            borderPathLayer.strokeColor = NusicDefaults.foregroundThemeColor.cgColor
-            let strokePathAnimation = CABasicAnimation(keyPath: "strokeEnd")
-            strokePathAnimation.fromValue = 0
-            strokePathAnimation.duration = 0.2
-            
-            let flashAnimation = CABasicAnimation(keyPath: "fillColor")
-            flashAnimation.fromValue = NusicDefaults.deselectedColor.cgColor
-            flashAnimation.toValue = NusicDefaults.selectedColor.withAlphaComponent(0.5).cgColor
-            flashAnimation.duration = 0.5
-            flashAnimation.autoreverses = true
-            flashAnimation.repeatCount = .infinity
-            
-            let strokeColorAnimation = CABasicAnimation(keyPath: "strokeColor")
-            strokeColorAnimation.fromValue = NusicDefaults.selectedColor.cgColor
-            strokeColorAnimation.toValue = NusicDefaults.foregroundThemeColor.cgColor
-            strokeColorAnimation.duration = 0.5
-            strokeColorAnimation.autoreverses = true
-            strokeColorAnimation.repeatCount = .infinity
-            
-            let animationGroup = CAAnimationGroup()
-            animationGroup.animations = [strokePathAnimation, strokeColorAnimation, flashAnimation]
-            animationGroup.duration = .greatestFiniteMagnitude
-            borderPathLayer.add(animationGroup, forKey: "myAnimation")
-            
-            self.layer.addSublayer(borderPathLayer)
-        }
+        guard let borderPathLayer = borderPathLayer else { return; }
+        borderPathLayer.removeAllAnimations()
+        borderPathLayer.strokeColor = NusicDefaults.foregroundThemeColor.cgColor
+        let strokePathAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        strokePathAnimation.fromValue = 0
+        strokePathAnimation.duration = 0.2
+        
+        let flashAnimation = CABasicAnimation(keyPath: "fillColor")
+        flashAnimation.fromValue = NusicDefaults.deselectedColor.cgColor
+        flashAnimation.toValue = NusicDefaults.selectedColor.withAlphaComponent(0.5).cgColor
+        flashAnimation.duration = 0.5
+        flashAnimation.autoreverses = true
+        flashAnimation.repeatCount = .infinity
+        
+        let strokeColorAnimation = CABasicAnimation(keyPath: "strokeColor")
+        strokeColorAnimation.fromValue = NusicDefaults.selectedColor.cgColor
+        strokeColorAnimation.toValue = NusicDefaults.foregroundThemeColor.cgColor
+        strokeColorAnimation.duration = 0.5
+        strokeColorAnimation.autoreverses = true
+        strokeColorAnimation.repeatCount = .infinity
+        
+        let animationGroup = CAAnimationGroup()
+        animationGroup.animations = [strokePathAnimation, strokeColorAnimation, flashAnimation]
+        animationGroup.duration = .greatestFiniteMagnitude
+        borderPathLayer.add(animationGroup, forKey: "myAnimation")
+        
+        self.layer.addSublayer(borderPathLayer)
+        
     }
     
     fileprivate func setPathDeselectAnimation() {
         self.moodGenreLabel.textColor = deselectedLabelColor
-        if let borderPathLayer = borderPathLayer {
-            borderPathLayer.removeAllAnimations()
-            borderPathLayer.strokeColor = NusicDefaults.deselectedColor.cgColor
-            let animation = CABasicAnimation(keyPath: "strokeEnd")
-            animation.fromValue = 1
-            animation.toValue = 0
-            animation.duration = 0.5
-            
-            let flashAnimation = CABasicAnimation(keyPath: "fillColor")
-            flashAnimation.toValue = NusicDefaults.deselectedColor.cgColor
-            flashAnimation.duration = 0.5
-            flashAnimation.autoreverses = true
-            
-            let animationGroup = CAAnimationGroup()
-            animationGroup.animations = [animation, flashAnimation]
-            animationGroup.duration = 0.5
-            borderPathLayer.add(animationGroup, forKey: "myAnimation")
-            
-        }
+        guard let borderPathLayer = borderPathLayer else { return; }
+        borderPathLayer.removeAllAnimations()
+        borderPathLayer.strokeColor = NusicDefaults.deselectedColor.cgColor
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 1
+        animation.toValue = 0
+        animation.duration = 0.5
         
-        if let borderLayer = self.borderPathLayer {
-            borderLayer.removeFromSuperlayer()
-        }
+        let flashAnimation = CABasicAnimation(keyPath: "fillColor")
+        flashAnimation.toValue = NusicDefaults.deselectedColor.cgColor
+        flashAnimation.duration = 0.5
+        flashAnimation.autoreverses = true
         
+        let animationGroup = CAAnimationGroup()
+        animationGroup.animations = [animation, flashAnimation]
+        animationGroup.duration = 0.5
+        borderPathLayer.add(animationGroup, forKey: "myAnimation")
+        borderPathLayer.removeFromSuperlayer()
     }
 
+    final func animateHighlightedCell(isHighlighted: Bool) {
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut], animations: {
+            self.moodGenreLabel.alpha = isHighlighted ? 0 : 1
+            self.backgroundImage.alpha = isHighlighted ? self.highlightedAlpha : self.unhighlightedAlpha
+        }, completion: nil)
+    }
 }

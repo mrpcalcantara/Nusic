@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct SpotifyArtist: Hashable {
+class SpotifyArtist: Hashable {
     var hashValue: Int {
         return (uri?.hashValue)!
     }
@@ -27,6 +27,27 @@ struct SpotifyArtist: Hashable {
         self.id = id;
     }
     
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ArtistKeys.self)
+        artistName = try container.decode(String.self, forKey: .artistName)
+        uri = try container.decode(String.self, forKey: .uri)
+        id = try container.decode(String.self, forKey: .id)
+        popularity = try container.decodeIfPresent(Int.self, forKey: .popularity)
+        
+        do {
+            var genres = try container.nestedUnkeyedContainer(forKey: .subGenres)
+            var genreList = [String]()
+            while !genres.isAtEnd {
+                if let genre = try genres.decodeIfPresent(String.self) {
+                    genreList.append(genre)
+                }
+            }
+            
+            subGenres = Spotify.filterSpotifyGenres(genres: genreList)
+        } catch {}
+        
+    }
+    
     static func ==(lhs: SpotifyArtist, rhs: SpotifyArtist) -> Bool {
         var isEqual = lhs.artistName == rhs.artistName &&
             lhs.popularity == rhs.popularity &&
@@ -39,7 +60,7 @@ struct SpotifyArtist: Hashable {
         return isEqual
     }
     
-    func listGenres(showPrefix: Bool? = true) -> String {
+    final func listGenres(showPrefix: Bool? = true) -> String {
         if let subGenres = subGenres {
             var genreList = ""
             for genre in subGenres {
@@ -54,7 +75,7 @@ struct SpotifyArtist: Hashable {
         return ""
     }
     
-    func listDictionary() -> [String: Int] {
+    final func listDictionary() -> [String: Int] {
         var dict: [String: Int] = [:]
         let genres = listGenres(showPrefix: false).split(separator: ",")
         for genre in genres {
@@ -62,6 +83,18 @@ struct SpotifyArtist: Hashable {
         }
         
         return dict
+    }
+    
+}
+
+extension SpotifyArtist: Decodable {
+    
+    enum ArtistKeys: String, CodingKey {
+        case id
+        case uri
+        case artistName = "name"
+        case popularity
+        case subGenres = "genres"
     }
     
 }

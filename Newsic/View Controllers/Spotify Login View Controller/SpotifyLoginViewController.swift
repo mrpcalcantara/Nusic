@@ -73,16 +73,11 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         self.view.bringSubview(toFront: nusicFullTitle)
         self.view.layoutIfNeeded()
         
-        gotToken = UserDefaults.standard.object(forKey: "SpotifySession") as AnyObject != nil
         checkFirebaseConnectivity()
+        removeNotificationObservers()
+        addNotificationObservers()
         
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateAfterFirstLogin), name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(setupSpotify), name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(notificationResetLogin), name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
         
     }
     
@@ -112,7 +107,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         
     }
     
-    @objc func fireErrorPopup() {
+    @objc final func fireErrorPopup() {
         let popup = NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: "Unable to connect. Please try again later.");
         popup.presentPopup(for: self);
     }
@@ -152,9 +147,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     }
     
     @objc fileprivate func moveToMainScreen() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
+        removeNotificationObservers()
         let pageViewController = NusicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         UIApplication.shared.keyWindow?.rootViewController = pageViewController
         self.present(pageViewController, animated: true, completion: {
@@ -187,29 +180,23 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     fileprivate func getSession() {
         activateTimer()
         let userDefaults = UserDefaults.standard
-        if let sessionObj:AnyObject = userDefaults.object(forKey: "SpotifySession") as AnyObject? {
-            //SwiftSpinner.show("Logging in..", animated: true);
-            let sessionDataObj = sessionObj as! Data
-            let firstTimeSession = NSKeyedUnarchiver.unarchiveObject(with: sessionDataObj) as! SPTSession
-            print("REFRESH TOKEN \(firstTimeSession.encryptedRefreshToken!)");
-            print("ACCESS TOKEN \(firstTimeSession.accessToken!)");
-            animateLogo()
-            if !firstTimeSession.isValid() {
-                self.getRefreshToken(currentSession: firstTimeSession, refreshTokenCompletionHandler: { (isRefreshed) in
-                    _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
-                });
-            } else {
-                self.session = firstTimeSession
-                self.auth.session = firstTimeSession;
-                
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate;
-                appDelegate.auth = self.auth;
-                _ = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
-            }
-            
+        guard let sessionObj:AnyObject = userDefaults.object(forKey: "SpotifySession") as AnyObject? else { self.resetLogin(); return; }
+        let sessionDataObj = sessionObj as! Data
+        let firstTimeSession = NSKeyedUnarchiver.unarchiveObject(with: sessionDataObj) as! SPTSession
+        print("REFRESH TOKEN \(firstTimeSession.encryptedRefreshToken!)");
+        print("ACCESS TOKEN \(firstTimeSession.accessToken!)");
+        animateLogo()
+        if !firstTimeSession.isValid() {
+            self.getRefreshToken(currentSession: firstTimeSession, refreshTokenCompletionHandler: { (isRefreshed) in
+                Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
+            });
         } else {
-            self.resetLogin()
+            self.session = firstTimeSession
+            self.auth.session = firstTimeSession;
+            (UIApplication.shared.delegate as! AppDelegate).auth = self.auth;
+            Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.moveToMainScreen), userInfo: nil, repeats: false)
         }
+        
     }
     
     fileprivate func getRefreshToken(currentSession: SPTSession, refreshTokenCompletionHandler: @escaping (Bool) -> ()) {
@@ -220,22 +207,31 @@ class SpotifyLoginViewController: NusicDefaultViewController {
                 let sessionData = NSKeyedArchiver.archivedData(withRootObject: session!)
                 userDefaults.set(sessionData, forKey: "SpotifySession")
                 userDefaults.synchronize()
-                
                 self.auth.session = session;
-                refreshTokenCompletionHandler(true)
             } else {
                 print("error refreshing session: \(error?.localizedDescription ?? "sdsdasasd")");
                 self.loginButton.isHidden = false;
                 self.loginUrl = self.auth.spotifyWebAuthenticationURL();
-                
                 self.resetLogin()
-                refreshTokenCompletionHandler(false)
             }
+            refreshTokenCompletionHandler(error == nil)
         })
     }
     
     @objc fileprivate func notificationResetLogin() {
         resetLogin()
+    }
+    
+    fileprivate func removeNotificationObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
+    }
+    
+    fileprivate func addNotificationObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateAfterFirstLogin), name: NSNotification.Name(rawValue: "loginSuccessful"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setupSpotify), name: NSNotification.Name(rawValue: "loginUnsuccessful"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(notificationResetLogin), name: NSNotification.Name(rawValue: "resetLogin"), object: nil)
     }
     
     fileprivate func resetLogin() {
@@ -272,9 +268,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         UIView.animate(withDuration: 1, animations: {
             self.nusicLabl.alpha = 1;
         })
-        
         rotateNusicLogo()
-        
     }
     
     @objc fileprivate func rotateNusicLogo() {

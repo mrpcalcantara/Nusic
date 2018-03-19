@@ -10,13 +10,13 @@ import Foundation
 
 extension UIImage {
     
-    func downloadImage(from url: URL, downloadImageHandler: @escaping(UIImage?) -> ()) {
+    final func downloadImage(from url: URL, downloadImageHandler: @escaping(UIImage?) -> ()) {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard
                 let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
                 let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
                 let data = data, error == nil,
-                var image = UIImage(data: data)
+                let image = UIImage(data: data)
                 else { downloadImageHandler(nil); return; }
             
             downloadImageHandler(image);

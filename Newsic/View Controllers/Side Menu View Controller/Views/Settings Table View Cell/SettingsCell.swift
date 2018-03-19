@@ -51,16 +51,12 @@ class SettingsCell: UITableViewCell {
         
     }
     
-    func configureCell(title: String, value: String, icon: UIImage?, options: [YBButton]? = nil, centerText: Bool? = false, alertText: String? = nil, enableCell: Bool? = true) {
+    final func configure(title: String, value: String, icon: UIImage?, centerText: Bool? = false) {
         
         self.backgroundColor = NusicDefaults.deselectedColor
         self.selectionStyle = .none
-        if !self.subviews.contains(where: { (view) -> Bool in
-            return view.tag == 111
-        }) {
-//            self.removeBlurEffect()
-            self.addBlurEffect(style: .dark, alpha: 0.2)
-        }
+        self.removeBlurEffect()
+        self.addBlurEffect(style: .dark, alpha: 0.2)
         
         self.itemValue.textColor = UIColor.white
         if centerText! {
@@ -75,14 +71,8 @@ class SettingsCell: UITableViewCell {
         
         itemDescription.text = title
         itemValue.text = value
+        alertController = NusicAlertController()
         
-        if let options = options {
-            alertController = NusicAlertController(title: alertText != nil ? alertText! : nil, message: nil, style: YBAlertControllerStyle.ActionSheet)
-            for option in options {
-                alertController?.addButton(icon: option.icon, title: option.textLabel.text!, action: option.action)
-            }
-            
-        }
     }
     
 }

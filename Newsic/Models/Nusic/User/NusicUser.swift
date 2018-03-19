@@ -40,7 +40,17 @@ class NusicUser: Iterable {
         setupListeners()
     }
     
-    func getImage(imageURL: String) {
+    convenience init(user: SPTUser) {
+        self.init(userName: user.canonicalUserName!)
+        userName = user.canonicalUserName!
+        displayName = user.displayName != nil ? user.displayName : ""
+        let imageURL = user.smallestImage != nil ? user.smallestImage.imageURL.absoluteString : ""
+        self.getImage(imageURL: imageURL)
+        territory = user.territory != nil ? user.territory! : "";
+        isPremium = user.product == SPTProduct.premium ? true : false
+    }
+    
+    private func getImage(imageURL: String) {
         let image = UIImage();
         if imageURL != "" {
             let url = URL(string: imageURL)
@@ -54,7 +64,7 @@ class NusicUser: Iterable {
 
 extension NusicUser: FirebaseModel {
     
-    func setupListeners() {
+    private func setupListeners() {
         
         //Delete
         Database.database().reference().child("users").child(userName).observe(.childRemoved) { (dataSnapshot) in
@@ -85,106 +95,69 @@ extension NusicUser: FirebaseModel {
                           "displayName": displayName,
                           "territory": territory,
                           "isPremium": isPremium! ? 1 : 0,
-                          "version": version] as [String : Any]
+                          "version": version as Any] as [String : Any]
         
         
         reference.child("users").child(userName).updateChildValues(dictionary) { (error, reference) in
-            if let error = error {
-                saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveUser.rawValue, systemError: error))
-            } else {
-                saveCompleteHandler(reference, nil)
-            }
-            
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveUser.rawValue, systemError: error)
+            saveCompleteHandler(reference, error)
         }
     }
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         reference.child("users").child(userName).removeValue { (error, databaseReference) in
-            if let error = error {
-                deleteCompleteHandler(self.reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteUser.rawValue, systemError: error))
-            } else {
-                deleteCompleteHandler(self.reference, nil)
-            }
-            
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteUser.rawValue, systemError: error)
+            deleteCompleteHandler(self.reference, error)
         }
     }
     
-    func getUser(getUserHandler: @escaping (NusicUser?, NusicError?) -> ()) {
+    final func getUser(getUserHandler: @escaping (NusicUser?, NusicError?) -> ()) {
         getData { (dictionary, error) in
-            if let dictionary = dictionary, dictionary.count > 1 {
-                self.userName = dictionary["canonicalUserName"] as? String ?? self.userName
-                
-                self.displayName = dictionary["displayName"] as? String ?? self.displayName
-                if let isPremiumValue = dictionary["isPremium"] as? NSNumber {
-                    self.isPremium = Bool(truncating: isPremiumValue) ?? self.isPremium
+            guard let dictionary = dictionary, dictionary.count > 1 else { getUserHandler(nil, error); return; }
+            self.userName = dictionary["canonicalUserName"] as? String ?? self.userName
+            self.displayName = dictionary["displayName"] as? String ?? self.displayName
+            self.isPremium = dictionary["isPremium"] as? NSNumber != nil ? Bool(truncating: dictionary["isPremium"] as! NSNumber) : self.isPremium
+            self.territory = dictionary["territory"] as? String != nil && dictionary["territory"] as? String != "" ? dictionary["territory"] as! String : self.territory
+            self.version = dictionary["version"] as? String ?? "1.0"
+            self.getSettings(fetchSettingsHandler: { (settings, error) in
+                if let settings = settings {
+                    self.settingValues = settings
+                } else {
+                    let preferredPlayer:NusicPreferredPlayer = self.isPremium! ? .spotify : .youtube
+                    self.settingValues = NusicUserSettings(useMobileData: false, preferredPlayer: preferredPlayer)
                 }
-                
-                if let territory = dictionary["territory"] as? String {
-                    self.territory = territory != "" ? territory : self.territory 
-                }
-                
-                self.getSettings(fetchSettingsHandler: { (settings, error) in
-                    if let settings = settings {
-                        self.settingValues = settings
-                    } else {
-                        var preferredPlayer: NusicPreferredPlayer = .youtube
-                        if self.isPremium! {
-                            preferredPlayer = .spotify
-                        }
-                        self.settingValues = NusicUserSettings(useMobileData: false, preferredPlayer: preferredPlayer)
-                    }
-                    
-                    
-                    getUserHandler(self, error);
-                })
-                self.version = "1.0"
-                if let version = dictionary["version"] as? String {
-                    self.version = version
-                }
-                
-                
-            } else {
-                getUserHandler(nil, error);
-            }
-            
-            
-            
+                getUserHandler(self, error);
+            })
         }
     }
     
-    func saveUser(saveUserHandler: @escaping (Bool?, NusicError?) -> ()) {
+    final func saveUser(saveUserHandler: @escaping (Bool?, NusicError?) -> ()) {
         saveData { (databaseReference, error) in
-            if let error = error {
-                saveUserHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveUser.rawValue, systemError: error))
-            } else {
-                self.saveSettings(saveSettingsHandler: { (isSaved, error) in
-                    saveUserHandler(isSaved, error)
-                })
-            }
+            guard error == nil else { saveUserHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveUser.rawValue, systemError: error)); return; }
+            self.saveSettings(saveSettingsHandler: { (isSaved, error) in
+                saveUserHandler(isSaved, error)
+            })
         }
     }
     
-    func deleteUser(deleteUserHandler: @escaping (Bool?, NusicError?) -> ()) {
+    final func deleteUser(deleteUserHandler: @escaping (Bool?, NusicError?) -> ()) {
         deleteData { (databaseReference, error) in
-            if let error = error {
-                deleteUserHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteUser.rawValue, systemError: error))
-            } else {
-                deleteUserHandler(true, nil)
-            }
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteUser.rawValue, systemError: error)
+            deleteUserHandler(error == nil, error)
+
         }
     }
     
-    func getFavoriteGenres(getGenresHandler: @escaping ([String: Int]?, NusicError?) -> ()) {
+    final func getFavoriteGenres(getGenresHandler: @escaping ([String: Int]?, NusicError?) -> ()) {
         let closureSelf = self;
-//        reference.child("genres").child(userName).observe(.value, with: { (dataSnapshot) in
+        var convertedDict: ([String: Int])?
+        var error: NusicError?
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
         reference.child("genres").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
-            let value = dataSnapshot.value as? NSDictionary
-            var convertedDict: [String: Int] = [:]
-            if value != nil {
-                convertedDict = value as! [String: Int]
-                
-                var iterator = convertedDict.makeIterator()
-                
+            if let value = dataSnapshot.value as? NSDictionary, let dict = value as? [String: Int] {
+                convertedDict = dict
+                var iterator = dict.makeIterator()
                 var nextElement = iterator.next();
                 var genreList: [NusicGenre]? = []
                 while nextElement != nil {
@@ -193,124 +166,96 @@ extension NusicUser: FirebaseModel {
                     }
                     nextElement = iterator.next()
                 }
-                //let extractedUsername = value?["canonicalUserName"] as? String ?? ""
                 closureSelf.favoriteGenres = genreList;
             } 
-            
-            getGenresHandler(convertedDict, nil);
-        }, withCancel: { (error) in
-            getGenresHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getFavoriteGenres.rawValue, systemError: error));
+            dispatchGroup.leave()
+        }, withCancel: { (cancelError) in
+            error = NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.getFavoriteGenres.rawValue, systemError: cancelError)
+            dispatchGroup.leave()
+        })
+        
+        dispatchGroup.notify(queue: .main) {
+            getGenresHandler(convertedDict, error);
+        }
+        
+    }
+    
+    final func saveFavoriteGenres(saveGenresHandler: @escaping (Bool?, NusicError?) -> ()) {
+        guard let favoriteGenres = favoriteGenres else { return; }
+        var dict:[String: Int] = [:]
+        for genre in favoriteGenres {
+            dict[genre.mainGenre] = genre.count
+        }
+        Database.database().reference().child("genres").child(userName).updateChildValues(dict, withCompletionBlock: { (error, reference) in
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveFavoriteGenres.rawValue, systemError: error)
+            saveGenresHandler(error == nil, error)
         })
     }
     
-    func saveFavoriteGenres(saveGenresHandler: @escaping (Bool?, NusicError?) -> ()) {
-        if let favoriteGenres = favoriteGenres {
-            var dict:[String: Int] = [:]
-            for genre in favoriteGenres {
-                dict[genre.mainGenre] = genre.count
-            }
-            Database.database().reference().child("genres").child(userName).updateChildValues(dict, withCompletionBlock: { (error, reference) in
-                if let error = error {
-                    saveGenresHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveFavoriteGenres.rawValue, systemError: error))
-                } else {
-                    saveGenresHandler(true, nil)
-                }
-            })
-        }
-    }
-    
-    func deleteFavoriteGenres(deleteGenresHandler: @escaping (Bool?, NusicError?) -> ()) {
+    final func deleteFavoriteGenres(deleteGenresHandler: @escaping (Bool?, NusicError?) -> ()) {
         Database.database().reference().child("genres").child(userName).removeValue { (error, reference) in
-            if let error = error {
-                deleteGenresHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteFavoriteGenres.rawValue, systemError: error))
-            } else {
-                deleteGenresHandler(true, nil)
-            }
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteFavoriteGenres.rawValue, systemError: error)
+            deleteGenresHandler(error == nil, error)
         }
     }
     
-    func updateGenreCount(for genre: String, updateGenreHandler: @escaping (Bool?, NusicError?) -> ()) {
+    final func updateGenreCount(for genre: String, updateGenreHandler: @escaping (Bool?, NusicError?) -> ()) {
         if favoriteGenres == nil {
             self.favoriteGenres = []
         }
-        if var favoriteGenres = favoriteGenres {
-            let key = reference.child("genres").child(userName)
-            var localGenre: NusicGenre
-            var updatedValue: [String: Int]
-            if let genreIndex = favoriteGenres.index(where: { (localGenre) -> Bool in
-                return localGenre.mainGenre == genre
-            }) {
-                //                favoriteGenres[genreIndex].count += 1
-                localGenre = favoriteGenres[genreIndex]
-                localGenre.count += 1
-                self.favoriteGenres![genreIndex] = localGenre
-            } else {
-                localGenre = NusicGenre(mainGenre: genre, count: 1, userName: userName)
-                self.favoriteGenres?.append(localGenre)
-            }
-            
-            updatedValue = [localGenre.mainGenre:localGenre.count];
-            
-            key.updateChildValues(updatedValue, withCompletionBlock: { (error, reference) in
-                if let error = error {
-                    updateGenreHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.updateGenreCount.rawValue, systemError: error))
-                } else {
-                    updateGenreHandler(true, nil)
-                }
-            })
+        guard var favoriteGenres = favoriteGenres else { return; }
+        let key = reference.child("genres").child(userName)
+        var localGenre: NusicGenre
+        var updatedValue: [String: Int]
+        if let genreIndex = favoriteGenres.index(where: { (localGenre) -> Bool in
+            return localGenre.mainGenre == genre
+        }) {
+            //                favoriteGenres[genreIndex].count += 1
+            localGenre = favoriteGenres[genreIndex]
+            localGenre.count += 1
+            self.favoriteGenres![genreIndex] = localGenre
+        } else {
+            localGenre = NusicGenre(mainGenre: genre, count: 1, userName: userName)
+            self.favoriteGenres?.append(localGenre)
         }
+        
+        updatedValue = [localGenre.mainGenre:localGenre.count];
+        
+        key.updateChildValues(updatedValue, withCompletionBlock: { (error, reference) in
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.updateGenreCount.rawValue, systemError: error)
+            updateGenreHandler(error == nil, error)
+        })
+        
     }
     
     //Settings
     //----------------
     
-    func getSettings(fetchSettingsHandler: @escaping (NusicUserSettings?, NusicError?) -> ()) {
+    final func getSettings(fetchSettingsHandler: @escaping (NusicUserSettings?, NusicError?) -> ()) {
         reference.child("settings").child(userName).observeSingleEvent(of: .value, with: { (dataSnapshot) in
-            let dictionary = dataSnapshot.value as? NSDictionary
-            if let dictionary = dictionary {
-                
-                var preferredPlayer: NusicPreferredPlayer?
-                var useMobileData: Bool? = true
-                var spotifySettings = NusicUserSpotifySettings(bitrate: .normal)
-                
-                if let preferredPlayerValue = dictionary["preferredPlayer"] as? NSNumber {
-                    preferredPlayer = NusicPreferredPlayer(rawValue: Int(truncating: preferredPlayerValue))
-                }
-                
-                if let useMobileDataValue = dictionary["useMobileData"] as? NSNumber {
-                    useMobileData = Bool(truncating: useMobileDataValue)
-                }
-                
-                if let spotifyDict = dictionary["spotify"] as? NSDictionary {
-                    let bitrate = spotifyDict["bitrate"] as? NSNumber
-                    spotifySettings.bitrate = SPTBitrate(rawValue: UInt(truncating: bitrate!))!
-                }
-                
-                let settings = NusicUserSettings(useMobileData: useMobileData!, preferredPlayer: preferredPlayer!, spotifySettings: spotifySettings)
-                
-                fetchSettingsHandler(settings, nil);
-            } else {
-                fetchSettingsHandler(nil, nil);
+            guard let dictionary = dataSnapshot.value as? NSDictionary else { fetchSettingsHandler(nil, nil); return; }
+            let useMobileData: Bool? = dictionary["useMobileData"] as? NSNumber != nil ? Bool(truncating: dictionary["useMobileData"] as! NSNumber) : true
+            let preferredPlayer: NusicPreferredPlayer = dictionary["preferredPlayer"] as? NSNumber != nil ? NusicPreferredPlayer(rawValue: Int(truncating: dictionary["preferredPlayer"] as! NSNumber))! : .youtube
+            var spotifySettings = NusicUserSpotifySettings(bitrate: .normal)
+            if let spotifyDict = dictionary["spotify"] as? NSDictionary, let bitrate = spotifyDict["bitrate"] as? NSNumber {
+                spotifySettings.bitrate = SPTBitrate(rawValue: UInt(truncating: bitrate))!
             }
+            let settings = NusicUserSettings(useMobileData: useMobileData!, preferredPlayer: preferredPlayer, spotifySettings: spotifySettings)
+            
+            fetchSettingsHandler(settings, nil);
         }) { (error) in
             fetchSettingsHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: "", systemError: error));
         }
     }
     
-    func saveSettings(saveSettingsHandler: @escaping(Bool, NusicError?) -> ()) {
+    final func saveSettings(saveSettingsHandler: @escaping(Bool, NusicError?) -> ()) {
         let spotify = settingValues.spotifySettings?.toDictionary()
         let dictionary = ["preferredPlayer": settingValues.preferredPlayer?.rawValue,
                           "useMobileData": settingValues.useMobileData! ? 1 : 0,
                           "spotify": spotify] as [String : Any]
-        
-        
         reference.child("settings").child(userName).updateChildValues(dictionary) { (error, reference) in
-            if let error = error {
-                saveSettingsHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveSettings.rawValue, systemError: error))
-            } else {
-                saveSettingsHandler(true, nil);
-            }
-            
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.saveSettings.rawValue, systemError: error)
+            saveSettingsHandler(error == nil, error)
         }
     }
     

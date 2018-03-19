@@ -52,25 +52,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         registerForPushNotifications()
         
         // Setup Spotify Values
-        
-
         auth.redirectURL     = URL(string: Spotify.redirectURI!)
         auth.sessionUserDefaultsKey = "current session"
         auth.tokenSwapURL = URL(string: Spotify.swapURL!);
         auth.tokenRefreshURL = URL(string: Spotify.refreshURL!);
         
-        
-        
-
         setupNavigationBarAppearance()
         setupPopupDialogAppearance()
         
-        //NOTE: DELETE WHEN RELEASE. Suppressing the constraint errors for the cards
-//        UserDefaults.standard.setValue(true, forKey:"_UIConstraintBasedLayoutLogUnsatisfiable")
-//        UserDefaults.standard.setValue(false, forKey:"_UIConstraintBasedLayoutLogUnsatisfiable")
-        
         UserDefaults.standard.setValue(false, forKey: "appOpened")
-        
         
         // Override point for customization after application launch.
         return true
@@ -78,29 +68,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         
-        // 2- check if app can handle redirect URL
         if auth.canHandle(url) {
-            // 3 - handle callback in closure
             auth.handleAuthCallback(withTriggeredAuthURL: url, callback: { (error, session) in
-                // 4- handle error
-                
-//                let session = URLSession.shared.
-                if error != nil || session == nil {
-                    print("error!: \(String(describing: error?.localizedDescription))")
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "loginUnsuccessful"), object: false)
-                } else {
-                    // 5- Add session to User Defaults
-                    let userDefaults = UserDefaults.standard
-                    let sessionData = NSKeyedArchiver.archivedData(withRootObject: session!)
-                    userDefaults.set(sessionData, forKey: "SpotifySession")
-                    userDefaults.synchronize()
-//
-                    // 6 - Tell notification center login is successful
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "loginSuccessful"), object: true)
-                }
+                guard let session = session else { NotificationCenter.default.post(name: Notification.Name(rawValue: "loginUnsuccessful"), object: false); return; }
+                let userDefaults = UserDefaults.standard
+                let sessionData = NSKeyedArchiver.archivedData(withRootObject: session)
+                userDefaults.set(sessionData, forKey: "SpotifySession")
+                userDefaults.synchronize()
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "loginSuccessful"), object: true)
                 
             })
-            
             return true
         }
         return false
@@ -126,7 +103,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        
         print("APP ACTIVE")
     }
 
@@ -189,11 +165,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         buttonAppearance.buttonColor    = UIColor(white: 0.15, alpha: 1)
         buttonAppearance.separatorColor = UIColor(white: 0.9, alpha: 1)
         
-        // Below, only the differences are highlighted
-        
-        // Default Button
-        
-        
         // Cancel button
         CancelButton.appearance().titleColor = UIColor.lightGray
         
@@ -244,53 +215,44 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         // Print full message.
         print(userInfo)
+        guard UIApplication.shared.applicationState == .active,
+            let rootVC = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController,
+            let aps = userInfo["aps"] as? [String: AnyObject],
+            let alert = aps["alert"] as? [String: AnyObject],
+            let title = alert["title"] as? String,
+            let message = alert["body"] as? String else { return; }
         
-        if UIApplication.shared.applicationState == .active {
-            if let rootVC = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController,
-                let aps = userInfo["aps"] as? [String: AnyObject],
-                let alert = aps["alert"] as? [String: AnyObject],
-                let title = alert["title"] as? String,
-                let message = alert["body"] as? String {
-                
-                let alert = PopupDialog(title: title, message: message)
-                if let viewC = alert.viewController as? PopupDialogDefaultViewController {
-                    setupPopupDialogAppearance()
-                    
-                    let dialogAppearance = PopupDialogDefaultView.appearance()
-                    viewC.titleFont            = UIFont(name: "Futura", size: 16)!
-                    viewC.titleColor           = UIColor(white: 1, alpha: 1)
-                    viewC.titleTextAlignment   = .center
-                    viewC.messageFont          = UIFont(name: "Futura", size: 16)!
-                    viewC.messageColor         = UIColor(white: 0.6, alpha: 1)
-                    viewC.messageTextAlignment = .center
-
-                }
-                
-                
-                print()
-                let action1 = { () -> Void in
-                    self.handleReceivedRemoteNotification(userInfo: userInfo)
-                }
-                
-                let action2 = { () -> Void in
-                    alert.dismiss(animated: true, completion: nil)
-                }
-                let button1 = PopupDialogButton(title: "Show Me!", action: action1)
-                button1.titleFont      = UIFont(name: "Futura", size: 16)!
-                button1.titleColor     = NusicDefaults.foregroundThemeColor
-                button1.buttonColor    = UIColor(white: 0.15, alpha: 1)
-                button1.separatorColor = UIColor(white: 0.9, alpha: 1)
-                
-                let button2 = PopupDialogButton(title: "Cancel", action: action2)
-                button2.titleFont      = UIFont(name: "Futura", size: 16)!
-                button2.titleColor     = NusicDefaults.foregroundThemeColor
-                button2.buttonColor    = UIColor(white: 0.15, alpha: 1)
-                button2.separatorColor = UIColor(white: 0.9, alpha: 1)
-                alert.addButtons([button1, button2])
-                
-                rootVC.present(alert, animated: true, completion: nil)
-            }
+        let alertDialog = PopupDialog(title: title, message: message)
+        if let viewC = alertDialog.viewController as? PopupDialogDefaultViewController {
+            viewC.titleFont            = UIFont(name: "Futura", size: 16)!
+            viewC.titleColor           = UIColor(white: 1, alpha: 1)
+            viewC.titleTextAlignment   = .center
+            viewC.messageFont          = UIFont(name: "Futura", size: 16)!
+            viewC.messageColor         = UIColor(white: 0.6, alpha: 1)
+            viewC.messageTextAlignment = .center
         }
+        
+        let action1 = { () -> Void in
+            self.handleReceivedRemoteNotification(userInfo: userInfo)
+        }
+        
+        let action2 = { () -> Void in
+            alertDialog.dismiss(animated: true, completion: nil)
+        }
+        let button1 = PopupDialogButton(title: "Show Me!", action: action1)
+        button1.titleFont      = UIFont(name: "Futura", size: 16)!
+        button1.titleColor     = NusicDefaults.foregroundThemeColor
+        button1.buttonColor    = UIColor(white: 0.15, alpha: 1)
+        button1.separatorColor = UIColor(white: 0.9, alpha: 1)
+        
+        let button2 = PopupDialogButton(title: "Cancel", action: action2)
+        button2.titleFont      = UIFont(name: "Futura", size: 16)!
+        button2.titleColor     = NusicDefaults.foregroundThemeColor
+        button2.buttonColor    = UIColor(white: 0.15, alpha: 1)
+        button2.separatorColor = UIColor(white: 0.9, alpha: 1)
+        alertDialog.addButtons([button1, button2])
+        
+        rootVC.present(alertDialog, animated: true, completion: nil)
         
         // Change this to your preferred presentation option
         completionHandler([])
@@ -301,7 +263,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         handleReceivedRemoteNotification(userInfo: userInfo)
-        
         completionHandler()
     }
 }
@@ -311,39 +272,20 @@ extension AppDelegate : MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         print("Firebase registration token: \(fcmToken)")
         fcmTokenId = fcmToken
-        // TODO: If necessary send token to application server.
-        // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
-    // [END refresh_token]
     
-    // [START ios_10_data_message]
-    // Receive data messages on iOS 10+ directly from FCM (bypassing APNs) when the app is in the foreground.
-    // To enable direct data messages, you can set Messaging.messaging().shouldEstablishDirectChannel to true.
     func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
         print("Received data message: \(remoteMessage.appData)")
-        
     }
     
     func handleReceivedRemoteNotification(userInfo: [AnyHashable: Any]) {
-        // Print message ID.
-        //        let mainStoryboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        //        let initialViewController: NusicPageViewController = mainStoryboard.instantiateViewController(withIdentifier: "nusicPageViewController") as! NusicPageViewController
         UIApplication.shared.applicationIconBadgeNumber += 1
         UserDefaults.standard.set(userInfo["spotifyTrackId"] as! String, forKey: "suggestedSpotifyTrackId")
         UserDefaults.standard.synchronize()
         NotificationCenter.default.post(name: Notification.Name(rawValue: "nusicADayNotificationPushed"), object: nil)
-        print(userInfo["spotifyTrackId"])
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }
-        //
-        //        self.window = UIWindow(frame: UIScreen.main.bounds)
-        //        self.window?.rootViewController = initialViewController
-        //        self.window?.makeKeyAndVisible()
-        //
-        // Print full message.
-        print(userInfo)
     }
-    // [END ios_10_data_message]
 }
 

@@ -19,19 +19,9 @@ class NusicView: UIView {
         super.init(coder: aDecoder)
     }
     
-    func setupNusicView() {
-        if let image = UIImage(named: "BackgroundPattern") {
-            self.backgroundColor = UIColor(patternImage: image)
-        }
-        
+    final func setupNusicView() {
+        guard let image = UIImage(named: "BackgroundPattern") else { return }
+        self.backgroundColor = UIColor(patternImage: image)
     }
     
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
 }

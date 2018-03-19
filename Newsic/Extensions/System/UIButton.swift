@@ -11,7 +11,7 @@ import UIKit
 
 extension UIButton {
     
-    func animateClick() {
+    final func animateClick() {
         let trans = self.transform
         UIView.animate(withDuration: 0.1, animations: {
             self.transform = CGAffineTransform(scaleX: trans.a*2, y: trans.a*2);
@@ -21,7 +21,7 @@ extension UIButton {
         }, completion: nil)
     }
     
-    func setBackgroundColor(_ color: UIColor, for state: UIControlState) {
+    final func setBackgroundColor(_ color: UIColor, for state: UIControlState) {
         
         UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
         UIGraphicsGetCurrentContext()!.setFillColor(color.cgColor)

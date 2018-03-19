@@ -63,47 +63,40 @@ class SuggestedSongListViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setupTableViewData() {
+    final func setupTableViewData() {
         sectionTitles.removeAll()
         sectionSongs.removeAll()
         for track in suggestedSongList {
-            if let date = track.suggestionInfo?.suggestionDate {
-                let dateString = date.toString(dateFormat: "dd-MM-yyyy")
-                //Check if array contains suggestion date ( only date, no time considered )
-                if !sectionTitles.contains(dateString) {
-                    sectionTitles.append(dateString)
-                    sectionSongs.append([track])
-                } else {
-                    if let titleIndex = sectionTitles.index(of: dateString) {
-                        sectionSongs[titleIndex].append(track);
-                    }
-                }
+            guard let date = track.suggestionInfo?.suggestionDate else { break }
+            let dateString = date.toString(dateFormat: "dd-MM-yyyy")
+            //Check if array contains suggestion date ( only date, no time considered )
+            if !sectionTitles.contains(dateString) {
+                sectionTitles.append(dateString)
+                sectionSongs.append([track])
+            } else {
+                guard let titleIndex = sectionTitles.index(of: dateString) else { break }
+                sectionSongs[titleIndex].append(track);
             }
         }
     }
 
-    func reloadTable() {
+    final func reloadTable() {
         DispatchQueue.main.async {
-            if self.suggestedSongListTableView != nil {
-                self.setupTableViewData()
-                self.updateBadgeCount()
-                self.suggestedSongListTableView.reloadData()
-            }
+            guard self.suggestedSongListTableView != nil else { return }
+            self.setupTableViewData()
+            self.updateBadgeCount()
+            self.suggestedSongListTableView.reloadData()
         }
     }
 
-    func updateBadgeCount() {
+    final func updateBadgeCount() {
         self.tabBarItem.badgeValue = String(suggestedSongList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
         if self.tabBarItem.badgeValue == "0" {
             self.tabBarItem.badgeValue = nil
         }
         
-        if let badgeValue = self.tabBarItem.badgeValue, let intValue = Int(badgeValue) {
-            UIApplication.shared.applicationIconBadgeNumber = intValue
-        } else {
-            UIApplication.shared.applicationIconBadgeNumber = 0
-        }
-        
+        guard let badgeValue = self.tabBarItem.badgeValue, let intValue = Int(badgeValue) else { UIApplication.shared.applicationIconBadgeNumber = 0; return }
+        UIApplication.shared.applicationIconBadgeNumber = intValue
     }
 
 }

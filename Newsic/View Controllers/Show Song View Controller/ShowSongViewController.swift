@@ -26,12 +26,8 @@ class ShowSongViewController: NusicDefaultViewController {
     //Data variables
     var cardList:[NusicTrack] = [] {
         didSet {
-            if cardList.count < 3 {
-                self.fetchNewCard(numberOfSongs: 3-cardList.count, cardFetchingHandler: { (fetched) in
-                    
-                })
-
-            }
+            guard cardList != nil, cardList.count < 3 else { return }
+            self.fetchNewCard(numberOfSongs: 3-cardList.count, cardFetchingHandler: { (fetched) in })
         }
     }
     var playlist:NusicPlaylist! = nil
@@ -39,44 +35,40 @@ class ShowSongViewController: NusicDefaultViewController {
     var suggestedTrackList: [NusicTrack] = Array() {
         didSet {
             DispatchQueue.main.async {
-                if let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController {
-                    let songListViewController = parent.songListVC as! SongListTabBarViewController
-                    songListViewController.suggestedTrackList = self.suggestedTrackList
-                    self.updateBadgeIcon(count: self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
-                }
+                guard let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController else { return }
+                let songListViewController = parent.songListVC as! SongListTabBarViewController
+                songListViewController.suggestedTrackList = self.suggestedTrackList
+                self.updateBadgeIcon(count: self.suggestedTrackList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
             }
         }
     }
     var suggestedTrackIdList = [[String : NusicSuggestion]]() {
         didSet {
-            if let appendedTrackId = suggestedTrackIdList.last?.keys.first {
-                fetchDataForLikedTrack(trackId: [appendedTrackId], handler: { (nusicTracks) in
-                    if var nusicTrack = nusicTracks.first {
-                        if let index = self.suggestedTrackIdList.index(where: { (dict) -> Bool in
-                            return dict.keys.first == appendedTrackId
-                        }) {
-                            if let suggestionInfo = self.suggestedTrackIdList[index].first?.value {
-                                nusicTrack.suggestionInfo = suggestionInfo
-                                nusicTrack.trackInfo.suggestedSong = true
-                            }
-                        }
-                        
-                        if let index = self.suggestedTrackList.index(where: { $0.trackInfo.trackId == nusicTrack.trackInfo.trackId }) {
-                            self.suggestedTrackList.remove(at: index)
-                        }
-                        self.suggestedTrackList.append(nusicTrack)
+            guard let appendedTrackId = suggestedTrackIdList.last?.keys.first else { return; }
+            fetchDataForLikedTrack(trackId: [appendedTrackId], handler: { (nusicTracks) in
+                guard let nusicTrack = nusicTracks.first else { return; }
+                if let index = self.suggestedTrackIdList.index(where: { (dict) -> Bool in
+                    return dict.keys.first == appendedTrackId
+                }) {
+                    if let suggestionInfo = self.suggestedTrackIdList[index].first?.value {
+                        nusicTrack.suggestionInfo = suggestionInfo
+                        nusicTrack.trackInfo.suggestedSong = true
                     }
-                })
-            }
+                }
+                
+                if let index = self.suggestedTrackList.index(where: { $0.trackInfo.trackId == nusicTrack.trackInfo.trackId }) {
+                    self.suggestedTrackList.remove(at: index)
+                }
+                self.suggestedTrackList.append(nusicTrack)
+            })
         }
     }
     var likedTrackList:[NusicTrack] = [] {
         didSet {
             DispatchQueue.main.async {
-                if let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController {
-                    let songListViewController = parent.songListVC as! SongListTabBarViewController
-                    songListViewController.likedTrackList = self.likedTrackList
-                }
+                guard let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController else { return }
+                let songListViewController = parent.songListVC as! SongListTabBarViewController
+                songListViewController.likedTrackList = self.likedTrackList
             }
         }
     }
@@ -84,24 +76,16 @@ class ShowSongViewController: NusicDefaultViewController {
         didSet {
             
             // Added track
-            if oldValue.count < likedTrackIdList.count {
-                if let appendedTrackId = likedTrackIdList.last {
-                    fetchDataForLikedTrack(trackId: [appendedTrackId], handler: { (nusicTracks) in
-                        if let nusicTrack = nusicTracks.first {
-                            if !self.likedTrackList.contains(where: { (track) -> Bool in
-                                return track.trackInfo.trackId == nusicTrack.trackInfo.trackId
-                            }) {
-                                self.likedTrackList.append(nusicTrack)
-                            }
-                        }
-                    })
-                }
-            }
-            // Removed Track
-            else {
+            guard oldValue.count < likedTrackIdList.count, let appendedTrackId = likedTrackIdList.last else { return }
+            fetchDataForLikedTrack(trackId: [appendedTrackId], handler: { (nusicTracks) in
+                guard
+                    let nusicTrack = nusicTracks.first,
+                    !self.likedTrackList.contains(where: { (track) -> Bool in
+                        return track.trackInfo.trackId == nusicTrack.trackInfo.trackId
+                    }) else { return; }
                 
-            }
-            
+                self.likedTrackList.append(nusicTrack)
+            })
         }
     }
     var preferredPlayer: NusicPreferredPlayer?
@@ -121,7 +105,7 @@ class ShowSongViewController: NusicDefaultViewController {
     var currentPlayingTrack: SpotifyTrack?
     var playedSongsHistory: [SpotifyTrack]? = []
     var trackFeatures: [SpotifyTrackFeature] = Array()
-    var searchBasedOnArtist: SpotifyArtist?
+    var searchBasedOnArtist: [SpotifyArtist]?
     var searchBasedOnTrack: SpotifyTrack?
     var searchBasedOnGenres: [String: Int]?
     
@@ -141,8 +125,6 @@ class ShowSongViewController: NusicDefaultViewController {
             addCardBorderLayer()
         }
     }
-    var showMoreOpenPosition: CGPoint? = nil
-    var showMoreClosePosition: CGPoint? = nil
     var songListMenuProgress: CGFloat! = 0;
     var initialSwipeLocation: CGPoint! = CGPoint.zero
     var dismissProgress: CGFloat! = 0
@@ -262,8 +244,6 @@ class ShowSongViewController: NusicDefaultViewController {
             showSwiftSpinner()
             _ = checkConnectivity()
         } else {
-//            reloadNavigationBar()
-//            reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
             if isPlayerMenuOpen {
                 togglePlayerMenu()
             }
@@ -287,11 +267,8 @@ class ShowSongViewController: NusicDefaultViewController {
         super.viewDidLayoutSubviews();
         
         if screenRotated {
-//            reloadNavigationBar()
-//            reloadPlayerMenu(for: self.view.safeAreaLayoutGuide.layoutFrame.size)
             screenRotated = false
         }
-        
         if currentSongCardFrame != songCardView.frame {
             currentSongCardFrame = songCardView.frame
         }
@@ -312,6 +289,7 @@ class ShowSongViewController: NusicDefaultViewController {
         
         if checkConnectivity() {
             preferredPlayer = user.settingValues.preferredPlayer
+            setupFirebaseListeners()
             showSwiftSpinner()
             setupMainView()
             setupMenu()
@@ -320,7 +298,6 @@ class ShowSongViewController: NusicDefaultViewController {
             setupPlayerMenu()
             setupNavigationBar()
             setupMoodLabel()
-            setupFirebaseListeners()
             setupSongListVC()
             if preferredPlayer == NusicPreferredPlayer.spotify {
                 setupSpotify()
@@ -336,89 +313,57 @@ class ShowSongViewController: NusicDefaultViewController {
     fileprivate func setupFirebaseListeners() {
         removeFirebaseListeners();
         reference.child("suggestedTracks").child(self.user.userName).observe(.childAdded) { (dataSnapshot) in
-            var isNewSuggestion = false
-            var suggestionDate = Date()
-            if let dict = dataSnapshot.value as? [String: AnyObject] {
-                if let newSuggestionValue = dict["isNewSuggestion"] as? NSNumber {
-                    isNewSuggestion = Bool(truncating: newSuggestionValue)
-                }
-                if let suggestionDateValue = dict["suggestedOn"] as? String {
-                    suggestionDate = Date().fromString(dateString: suggestionDateValue, dateFormat: "yyyy-MM-dd'T'HH:mm:ss+hhmm")
-                }
-            }
-            let trackId = dataSnapshot.key
-            let trackDict = [trackId:NusicSuggestion(isNewSuggestion: isNewSuggestion, suggestionDate: suggestionDate)]
-            if !self.suggestedTrackIdList.contains(where: {$0.keys.contains(trackId)}) {
+            guard let dict = dataSnapshot.value as? [String: AnyObject] else { return; }
+            let trackDict = [dataSnapshot.key:NusicSuggestion(dictionary: dict)]
+            if !self.suggestedTrackIdList.contains(where: {$0.keys.contains(dataSnapshot.key)}) {
                 self.suggestedTrackIdList.append(trackDict)
             }
         }
         
         
         reference.child("suggestedTracks").child(self.user.userName).observe(.childChanged) { (dataSnapshot) in
-            var isNewSuggestion = false
-            var suggestionDate = Date()
-            if let dict = dataSnapshot.value as? [String: AnyObject] {
-                if let newSuggestionValue = dict["isNewSuggestion"] as? NSNumber {
-                    isNewSuggestion = Bool(truncating: newSuggestionValue)
-                }
-                if let suggestionDateValue = dict["suggestedOn"] as? String {
-                    suggestionDate = Date().fromString(dateString: suggestionDateValue, dateFormat: "yyyy-MM-dd'T'HH:mm:ss+hhmm")
-                }
-            }
-            let trackId = dataSnapshot.key
-            let trackDict = [trackId:NusicSuggestion(isNewSuggestion: isNewSuggestion, suggestionDate: suggestionDate)]
+            guard let dict = dataSnapshot.value as? [String: AnyObject] else { return; }
+            let trackDict = [dataSnapshot.key:NusicSuggestion(dictionary: dict)]
             if let index = self.suggestedTrackIdList.index(where: { (dict) -> Bool in
-                return dict.keys.contains(trackId)
+                return dict.keys.contains(dataSnapshot.key)
             }) {
                 self.suggestedTrackIdList.remove(at: index);
                 self.suggestedTrackIdList.append(trackDict)
             }
         }
             
-       if let emotion = moodObject?.emotions.first?.basicGroup.rawValue.lowercased() {
-            reference.child("moodTracks").child(self.user.userName).child(emotion).observe(.childAdded) { (dataSnapshot) in
-                let trackId = dataSnapshot.key
-                if !self.likedTrackIdList.contains(trackId) {
-                    self.likedTrackIdList.append(trackId)
-                    self.reference.child("trackFeatures").child(trackId).observe(.value, with: { (childSnapshot) in
-                        if childSnapshot.exists() {
-                            var features = SpotifyTrackFeature()
-                            features.mapDictionary(featureDictionary: childSnapshot.value as! [String: AnyObject])
-                            self.trackFeatures.append(features)
-                        }
-                    })
-                }
-            }
+        guard let emotion = moodObject?.emotions.first?.basicGroup.rawValue.lowercased() else { return; }
+        reference.child("moodTracks").child(self.user.userName).child(emotion).observe(.childAdded) { (dataSnapshot) in
+            let trackId = dataSnapshot.key
+            guard !self.likedTrackIdList.contains(trackId) else { return; }
+            self.likedTrackIdList.append(trackId)
+            self.reference.child("trackFeatures").child(trackId).observe(.value, with: { (childSnapshot) in
+                guard childSnapshot.exists(), let dict = childSnapshot.value as? [String: AnyObject] else { return; }
+                self.trackFeatures.append(SpotifyTrackFeature(featureDictionary: dict))
+            })
+        }
         
-            reference.child("moodTracks").child(self.user.userName).child(emotion).observe(.childRemoved) { (dataSnapshot) in
-                let trackId = dataSnapshot.key
-                if self.likedTrackIdList.contains(trackId) {
-                    if let likedTrackIdIndex = self.likedTrackIdList.index(of: trackId) {
-                        if let likedTrackIndex = self.likedTrackList.index(where: { $0.trackInfo.linkedFromTrackId == trackId }) {
-                            self.likedTrackList.remove(at: likedTrackIndex)
-                        }
-                        self.likedTrackIdList.remove(at: likedTrackIdIndex)
-                    }
-                    
-                    if let trackFeaturesIndex = self.trackFeatures.index(where: { $0.id == trackId }) {
-                        self.trackFeatures.remove(at: trackFeaturesIndex)
-                    }
-                }
+        reference.child("moodTracks").child(self.user.userName).child(emotion).observe(.childRemoved) { (dataSnapshot) in
+            let trackId = dataSnapshot.key
+            guard self.likedTrackIdList.contains(trackId), let likedTrackIdIndex = self.likedTrackIdList.index(of: trackId) else { return; }
+            if let trackFeaturesIndex = self.trackFeatures.index(where: { $0.id == trackId }) {
+                self.trackFeatures.remove(at: trackFeaturesIndex)
             }
+            if let likedTrackIndex = self.likedTrackList.index(where: { $0.trackInfo.linkedFromTrackId == trackId }) {
+                self.likedTrackList.remove(at: likedTrackIndex)
+            }
+            self.likedTrackIdList.remove(at: likedTrackIdIndex)
         }
     }
     
     fileprivate func removeFirebaseListeners() {
         reference.child("suggestedTracks").child(self.user.userName).removeAllObservers()
-        if let emotion = moodObject?.emotions.first?.basicGroup.rawValue.lowercased() {
-            reference.child("moodTracks").child(self.user.userName).child(emotion).removeAllObservers()
-        }
+        guard let emotion = moodObject?.emotions.first?.basicGroup.rawValue.lowercased() else { return }
+        reference.child("moodTracks").child(self.user.userName).child(emotion).removeAllObservers()
     }
     
     fileprivate func setupMainView() {
-        
         currentMoodDyad = moodObject?.emotions.first?.basicGroup
-        
     }
     
     fileprivate func setupCommandCenter() {
@@ -438,9 +383,10 @@ class ShowSongViewController: NusicDefaultViewController {
         commandCenter.previousTrackCommand.isEnabled = true
         commandCenter.previousTrackCommand.addTarget(self, action: #selector(actionPreviousSong))
         
-        //        commandCenter.likeCommand.isEnabled = true
-        //        commandCenter.likeCommand.addTarget(self, action: #selector(likeSongClicked(_:)))
-        //
+        commandCenter.likeCommand.isEnabled = true
+        commandCenter.likeCommand.localizedTitle = "Like This Track"
+        commandCenter.likeCommand.addTarget(self, action: #selector(actionLikeSong))
+        
     }
     
     fileprivate func setupNavigationBar() {
@@ -468,6 +414,7 @@ class ShowSongViewController: NusicDefaultViewController {
     
     fileprivate func setupSongs() {
         musicSearchType = .normal
+        
         if let selectedSongs = selectedSongs, selectedSongs.count > 0 {
             fetchYouTubeInfo()
         } else {
@@ -514,37 +461,15 @@ class ShowSongViewController: NusicDefaultViewController {
         }
     }
     
-    fileprivate func setShowMoreOrigin() {
-        if currentSongCardFrame != songCardView.frame {
-            currentSongCardFrame = songCardView.frame
-            showMoreOpenPosition = CGPoint(x: songCardView.frame.origin.x + songCardView.frame.size.width/2, y: songCardView.frame.height + songCardBottomConstraint.constant)
-            showMoreOpenPosition?.x = songCardView.frame.origin.x + songCardView.frame.size.width/2 - songCardLeadingConstraint.constant
-            
-            showMoreOpenPosition?.y = self.preferredPlayer == NusicPreferredPlayer.spotify ? self.view.safeAreaLayoutGuide.layoutFrame.height * 0.84 - showMore.frame.width : self.view.safeAreaLayoutGuide.layoutFrame.height * 0.9 - showMore.frame.width
-            showMoreClosePosition = CGPoint(x: songCardView.frame.origin.x + songCardView.frame.size.width/2, y: songCardView.frame.height + songCardBottomConstraint.constant)
-            showMoreClosePosition?.x = (showMoreOpenPosition?.x)!
-            showMoreClosePosition?.y = songCardView.frame.height + songCardBottomConstraint.constant
-            initialPlayerMenuIconCenter = CGRect(origin: showMoreClosePosition!, size: showMore.frame.size)
-            if isPlayerMenuOpen {
-                self.showMore.frame.origin = self.showMoreOpenPosition!
-            } else {
-                self.showMore.frame.origin = self.showMoreClosePosition!
-            }
-            
-        }
-    }
-    
     @IBAction func showMoreClicked(_ sender: UIButton) {
         togglePlayerMenu();
     }
     
     @IBAction func songSeek(_ sender: UISlider) {
-        print("song seeking slider")
         updateElapsedTime(elapsedTime: sender.value, duration: Float((currentPlayingTrack?.audioFeatures?.durationMs)!))
     }
     
     @IBAction func finishSeek(_ sender: UISlider) {
-        print("finish seeking slider")
         if preferredPlayer == NusicPreferredPlayer.spotify {
             seekSong(interval: sender.value)
         } else {
@@ -591,37 +516,35 @@ class ShowSongViewController: NusicDefaultViewController {
         
     }
     
-    func showSwiftSpinner(delay: Double? = nil, text: String? = nil, duration: Double? = nil) {
+    final func showSwiftSpinner(delay: Double? = nil, text: String? = nil, duration: Double? = nil) {
         
         var spinnerText = ""
-        if let text = text {
-            spinnerText = text
-            if let duration = duration {
-                SwiftSpinner.show(duration: duration, title: spinnerText)
-            } else if let delay = delay {
-                let delayInSeconds = DispatchTime.now() + Double(Int64(Double(NSEC_PER_SEC) * delay )) / Double(NSEC_PER_SEC)
-                DispatchQueue.main.asyncAfter(deadline: delayInSeconds, execute: {
-                    if SwiftSpinner.sharedInstance.animating {
-                        SwiftSpinner.show(duration: 1, title: text, animated: true)
-                    }
-                })
-            }
-            else {
-                SwiftSpinner.show(spinnerText, animated: true);
-            }
-            
-        } else {
-            if let currentMoodDyad = moodObject?.emotions.first?.basicGroup {
-                spinnerText = "Loading..."
-                SwiftSpinner.show(spinnerText, animated: true).addTapHandler({
-                    self.goToPreviousViewController()
-                    SwiftSpinner.hide()
-                }, subtitle: "Tap to go the previous screen!")
-            }
+        guard let text = text else {
+            spinnerText = "Loading..."
+            SwiftSpinner.show(spinnerText, animated: true).addTapHandler({
+                self.goToPreviousViewController()
+                SwiftSpinner.hide()
+            }, subtitle: "Tap to go the previous screen!")
+            return;
         }
+        spinnerText = text
+        if let duration = duration {
+            SwiftSpinner.show(duration: duration, title: spinnerText)
+        } else if let delay = delay {
+            let delayInSeconds = DispatchTime.now() + Double(Int64(Double(NSEC_PER_SEC) * delay )) / Double(NSEC_PER_SEC)
+            DispatchQueue.main.asyncAfter(deadline: delayInSeconds, execute: {
+                if SwiftSpinner.sharedInstance.animating {
+                    SwiftSpinner.show(duration: 1, title: text, animated: true)
+                }
+            })
+        }
+        else {
+            SwiftSpinner.show(spinnerText, animated: true);
+        }
+      
     }
     
-    func setupConstraints(for size: CGSize) {
+    final func setupConstraints(for size: CGSize) {
         //Landscape
         if size.width > size.height {
             self.songCardTrailingConstraint.constant = -size.width*(1/3)
@@ -645,7 +568,7 @@ class ShowSongViewController: NusicDefaultViewController {
         }
     }
     
-    func updateBadgeIcon(count: Int) {
+    final func updateBadgeIcon(count: Int) {
         if let items = self.navbar.items, items.count > 0 {
             let text = count > 0 ? String(count) : nil
             (self.navbar.items?.first?.rightBarButtonItem as! BadgeBarButtonItem).badgeText = text
@@ -674,49 +597,36 @@ extension ShowSongViewController: UIGestureRecognizerDelegate {
 
 extension ShowSongViewController {
 //
-    @objc func toggleSongMenu() {
+    @objc final func toggleSongMenu() {
         if let parent = parent as? NusicPageViewController {
             parent.scrollToNextViewController()
         }
     }
     
-    @objc func backToSongPicker() {
+    @objc final func backToSongPicker() {
         goToPreviousViewController()
     }
     
-    @objc func updateAuthObject() {
+    @objc final func updateAuthObject() {
         self.auth = (UIApplication.shared.delegate as! AppDelegate).auth
     }
     
     fileprivate func fetchDataForLikedTrack(trackId: [String], handler: @escaping ([NusicTrack]) -> ()) {
         self.spotifyHandler.getTrackInfo(for: trackId, offset: 0, currentExtractedTrackList: [], trackInfoListHandler: { (spotifyTracks, error) in
-            if let error = error {
-                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue)
-            } else {
-                if let spotifyTracks = spotifyTracks {
-                    
-                    let spotifyArtistList = spotifyTracks.map({ $0.artist.uri }) as! [String]
-                    self.spotifyHandler.getAllGenresForArtists(spotifyArtistList, offset: 0, artistGenresHandler: { (fetchedArtistList, error) in
-                        if let error = error {
-                            error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getGenresForTrackList.rawValue)
-                        } else {
-                            if let fetchedArtistList = fetchedArtistList {
-                                for artist in fetchedArtistList {
-                                    if let index = spotifyTracks.index(where: { (track) -> Bool in
-                                        return track.artist.uri == artist.uri
-                                    }) {
-                                        spotifyTracks[index].artist = artist
-                                    }
-                                }
-                            }
-                            self.getYouTubeResults(tracks: spotifyTracks, youtubeSearchHandler: { (nusicTracks) in
-                                handler(nusicTracks)
-                            })
-                        }
-                    })
-                    
+            guard let spotifyTracks = spotifyTracks, let spotifyArtistList = spotifyTracks.map({ $0.artist.first?.uri }) as? [String] else { error?.presentPopup(for: self); return; }
+            self.spotifyHandler.getAllGenresForArtists(spotifyArtistList, offset: 0, artistGenresHandler: { (fetchedArtistList, error) in
+                guard let fetchedArtistList = fetchedArtistList else { error?.presentPopup(for: self); return; }
+                for artist in fetchedArtistList {
+                    if let index = spotifyTracks.index(where: { (track) -> Bool in
+                        return track.artist.map({$0.uri}).contains(where: { $0 == artist.uri })
+                    }) {
+                        spotifyTracks[index].artist.updateArtist(artist: artist)
+                    }
                 }
-            }
+                self.getYouTubeResults(tracks: spotifyTracks, youtubeSearchHandler: { (nusicTracks) in
+                    handler(nusicTracks)
+                })
+            })
         })
     }
     
@@ -724,29 +634,17 @@ extension ShowSongViewController {
         likedTrackList.removeAll()
         if moodObject?.emotions.first?.basicGroup == EmotionDyad.unknown {
             spotifyHandler.getAllTracksForPlaylist(playlistId: playlist.id!, fetchGenres: true) { (spotifyTracks, error) in
-                if let error = error {
-                    error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue)
-                    
-                } else {
-                    
-                    if let spotifyTracks = spotifyTracks {
-                        
-                        self.getYouTubeResults(tracks: spotifyTracks, youtubeSearchHandler: { (nusicTracks) in
-                            self.likedTrackList = nusicTracks;
-                        })
-                    }
-                }
+                guard let spotifyTracks = spotifyTracks else { error?.presentPopup(for: self, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue); return; }
+                self.getYouTubeResults(tracks: spotifyTracks, youtubeSearchHandler: { (nusicTracks) in
+                    self.likedTrackList = nusicTracks;
+                })
             }
         } else {
             moodObject?.getTrackIdListForEmotionGenre(getAssociatedTrackHandler: { (trackList, error) in
-                if let error = error {
-                    error.presentPopup(for: self)
-                }
-                if let trackList = trackList {
-                    self.fetchDataForLikedTrack(trackId: trackList, handler: { (nusicTracks) in
-                        self.likedTrackList = nusicTracks
-                    })
-                }
+                guard let trackList = trackList else { error?.presentPopup(for: self); return; }
+                self.fetchDataForLikedTrack(trackId: trackList, handler: { (nusicTracks) in
+                    self.likedTrackList = nusicTracks
+                })
             })
         }
     }
@@ -755,30 +653,21 @@ extension ShowSongViewController {
         
         let songCountToSearch = numberOfSongs == nil ? self.cardCount : numberOfSongs
         self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: songCountToSearch!, market: user.territory, moodObject: moodObject, preferredTrackFeatures: trackFeatures, selectedGenreList: self.selectedGenreList) { (results, error) in
-            if let error = error {
-                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
-            }
-            
+            guard error == nil else { error?.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue); return; }
             var nusicTracks:[SpotifyTrack] = [];
             for track in results {
                 nusicTracks.append(track);
                 self.playedSongsHistory?.append(track)
             }
-            if nusicTracks.count == 0 {
-                self.setupSongs();
-            } else {
-                self.getYouTubeResults(tracks: nusicTracks, youtubeSearchHandler: { (tracks) in
-                    self.cardList = tracks
-                    self.initialLoadDone = true
-                    DispatchQueue.main.async {
-                        self.songCardView.reloadData()
-                        self.showSwiftSpinner(text: "Done!", duration: 2)
-                        
-                    }
-                    
-                    
-                })
-            }
+            guard nusicTracks.count > 0 else { self.setupSongs(); return }
+            self.getYouTubeResults(tracks: nusicTracks, youtubeSearchHandler: { (tracks) in
+                self.cardList = tracks
+                self.initialLoadDone = true
+                DispatchQueue.main.async {
+                    self.songCardView.reloadData()
+                    self.showSwiftSpinner(text: "Done!", duration: 2)
+                }
+            })
         }
     }
     
@@ -787,22 +676,19 @@ extension ShowSongViewController {
         for track in selectedSongs! {
             self.playedSongsHistory?.append(track)
         }
-        if selectedSongs!.count == 0 {
-            self.setupSongs();
-        } else {
-            self.getYouTubeResults(tracks: selectedSongs!, youtubeSearchHandler: { (tracks) in
-                var nusicTracks:[NusicTrack] = Array()
-                for var track in tracks {
-                    track.suggestionInfo?.isNewSuggestion = track.trackInfo.suggestedSong
-                    nusicTracks.append(track)
-                }
-                self.cardList = nusicTracks
-                DispatchQueue.main.async {
-                    self.songCardView.reloadData()
-                    self.showSwiftSpinner(text: "Done!", duration: 2)
-                }
-            })
-        }
+        guard let selectedSongs = selectedSongs, selectedSongs.count > 0 else { self.setupSongs(); return }
+        self.getYouTubeResults(tracks: selectedSongs, youtubeSearchHandler: { (tracks) in
+            var nusicTracks:[NusicTrack] = Array()
+            for track in tracks {
+                track.suggestionInfo?.isNewSuggestion = track.trackInfo.suggestedSong
+                nusicTracks.append(track)
+            }
+            self.cardList = nusicTracks
+            DispatchQueue.main.async {
+                self.songCardView.reloadData()
+                self.showSwiftSpinner(text: "Done!", duration: 2)
+            }
+        })
     }
     
     fileprivate func fetchNewCard(numberOfSongs: Int? = 1, cardFetchingHandler: ((Bool) -> ())?){
@@ -812,13 +698,12 @@ extension ShowSongViewController {
             return trackList.count > 0
         }
         
-        fetchNewCardsFromSpotify { (tracks) in
+        fetchNewCardsFromSpotify(numberOfSongs: numberOfSongs) { (tracks) in
             cardFetchingHandler?(addSongsHandler(tracks));
         }
-        
     }
     
-    func fetchNewCardsFromSpotify(numberOfSongs: Int? = 1, fetchedCardsHandler: @escaping ([NusicTrack]) -> ()) {
+    final func fetchNewCardsFromSpotify(numberOfSongs: Int? = 1, fetchedCardsHandler: @escaping ([NusicTrack]) -> ()) {
         switch musicSearchType {
         case NusicTrackSearch.normal:
             fetchNewCardNormal(numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
@@ -839,33 +724,24 @@ extension ShowSongViewController {
         }
     }
     
-    fileprivate func fetchNewCardArtist(basedOnArtist: SpotifyArtist? = nil, numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
-        var artist: SpotifyArtist = SpotifyArtist()
+    fileprivate func fetchNewCardArtist(basedOnArtist: [SpotifyArtist]? = nil, numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {
+        var artists = [SpotifyArtist]()
         if basedOnArtist != nil {
-            artist = basedOnArtist!
+            artists = basedOnArtist!
         } else {
-            if let currentArtist = currentPlayingTrack?.artist {
-                artist = currentArtist
-            }
-        }
-        
-        if artist.id != nil {
-            self.spotifyHandler.fetchRecommendations(for: .artist, numberOfSongs: numberOfSongs, market: user.territory, artists: [artist]) { (results, error) in
-                if let error = error {
-                    error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
+            if let artistList = currentPlayingTrack?.artist {
+                for listedArtist in artistList {
+                    artists.append(listedArtist)
                 }
-                
-                self.getYouTubeResults(tracks: results, youtubeSearchHandler: { (tracks) in
-                    if let cardFetchingHandler = cardFetchingHandler {
-                        cardFetchingHandler(tracks);
-                    }
-                })
-                
             }
-        } else {
-            cardFetchingHandler!([])
         }
         
+        self.spotifyHandler.fetchRecommendations(for: .artist, numberOfSongs: numberOfSongs, market: user.territory, artists: artists) { (results, error) in
+            guard error == nil else { error?.presentPopup(for: self); return; }
+            self.getYouTubeResults(tracks: results, youtubeSearchHandler: { (tracks) in
+                cardFetchingHandler?(tracks);
+            })
+        }
         
     }
     
@@ -882,17 +758,10 @@ extension ShowSongViewController {
         
         if track.trackId != nil {
             self.spotifyHandler.fetchRecommendations(for: .track, numberOfSongs: numberOfSongs, market: user.territory, tracks: [track]) { (results, error) in
-                if let error = error {
-                    error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
-                }
-                
+                guard error == nil else { error?.presentPopup(for: self); return; }
                 self.getYouTubeResults(tracks: results, youtubeSearchHandler: { (tracks) in
-                    if let cardFetchingHandler = cardFetchingHandler {
-                        cardFetchingHandler(tracks);
-                    }
+                    cardFetchingHandler?(tracks);
                 })
-                
-                
             }
         } else {
             cardFetchingHandler!([])
@@ -914,18 +783,11 @@ extension ShowSongViewController {
         }
         
         if currentPlayingTrack != nil {
-            
             self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, market: user.territory, moodObject: moodObject, selectedGenreList: genres) { (results, error) in
-                if let error = error {
-                    error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
-                }
-                
+                guard error == nil else { error?.presentPopup(for: self); return; }
                 self.getYouTubeResults(tracks: results, youtubeSearchHandler: { (tracks) in
-                    if let cardFetchingHandler = cardFetchingHandler {
-                        cardFetchingHandler(tracks);
-                    }
+                    cardFetchingHandler?(tracks);
                 })
-                
             }
         } else {
             cardFetchingHandler!([])
@@ -939,15 +801,13 @@ extension ShowSongViewController {
         }
         
         self.spotifyHandler.fetchRecommendations(for: .genres, numberOfSongs: numberOfSongs, market: user.territory, moodObject: moodObject, preferredTrackFeatures: trackFeaturesAux, selectedGenreList: selectedGenreList) { (results, error) in
-            if let error = error {
-                error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getMusicInGenres.rawValue)
-            }
+            guard error == nil else { error?.presentPopup(for: self); return; }
             var spotifyResults:[SpotifyTrack] = []
             for track in results {
-                let containsCheck = self.playedSongsHistory?.contains(where: { (trackInHistory) -> Bool in
+                
+                if let containsCheck = self.playedSongsHistory?.contains(where: { (trackInHistory) -> Bool in
                     return trackInHistory.trackId == track.trackId
-                })
-                if !containsCheck! {
+                }), !containsCheck {
                     spotifyResults.insert(track, at: 0)
                 }
             }
@@ -956,18 +816,14 @@ extension ShowSongViewController {
                 self.fetchNewCardNormal(numberOfSongs: numberOfSongs, cardFetchingHandler: cardFetchingHandler)
             } else {
                 self.getYouTubeResults(tracks: spotifyResults, youtubeSearchHandler: { (tracks) in
-                    if let cardFetchingHandler = cardFetchingHandler {
-                        cardFetchingHandler(tracks);
-                    }
+                    cardFetchingHandler?(tracks);
                 })
             }
         }
     }
     
     fileprivate func getSongsForSelectedMood() {
-       
-        
-        updateCurrentGenresAndFeatures { (genres, trackFeatures) in
+       updateCurrentGenresAndFeatures { (genres, trackFeatures) in
             self.fetchSongsAndSetup(moodObject: self.moodObject)
         }
     }
@@ -978,28 +834,31 @@ extension ShowSongViewController {
     }
     
     fileprivate func getYouTubeResults(tracks: [SpotifyTrack], youtubeSearchHandler: @escaping ([NusicTrack]) -> ()) {
-        var index = 0
+        let dispatchGroup = DispatchGroup()
         var ytTracks: [NusicTrack] = []
         for track in tracks {
-            YouTubeSearch.getSongInfo(artist: Spotify.getFirstArtist(artistName: track.artist.artistName), songName: track.songName, completionHandler: { (youtubeInfo) in
-                index += 1
-                if let currentIndex = tracks.index(where: { (currentTrack) -> Bool in
-                    return currentTrack.trackId == track.trackId
-                }) {
-                    
-                    let nusicTrack = NusicTrack(trackInfo: tracks[currentIndex], moodInfo: self.moodObject, userName: self.user.userName, youtubeInfo: youtubeInfo);
-                    
-                    ytTracks.append(nusicTrack);
-                }
-                if index == tracks.count {
-                    youtubeSearchHandler(ytTracks)
-                }
-            })
+            dispatchGroup.enter()
+            if let firstArtist = track.artist.first?.artistName {
+                YouTubeSearch.getSongInfo(artist: firstArtist, songName: track.songName, completionHandler: { (youtubeInfo) in
+                    if let currentIndex = tracks.index(where: { (currentTrack) -> Bool in
+                        return currentTrack.trackId == track.trackId
+                    }) {
+                        
+                        let nusicTrack = NusicTrack(trackInfo: tracks[currentIndex], moodInfo: self.moodObject, userName: self.user.userName, youtubeInfo: youtubeInfo);
+                        
+                        ytTracks.append(nusicTrack);
+                    }
+                    dispatchGroup.leave()
+                })
+            }
         }
         
+        dispatchGroup.notify(queue: .global(qos: .default)) {
+            youtubeSearchHandler(ytTracks)
+        }
     }
     
-    func updateCurrentGenresAndFeatures(updateGenresFeaturesHandler: @escaping ([String]?, [SpotifyTrackFeature]?) -> ()) {
+    final func updateCurrentGenresAndFeatures(updateGenresFeaturesHandler: @escaping ([String]?, [SpotifyTrackFeature]?) -> ()) {
         getGenresAndFeaturesForMoods(genresFeaturesHandler: { (genres, trackFeatures) in
             if let genres = genres {
                 self.moodObject?.associatedGenres = genres
@@ -1011,65 +870,48 @@ extension ShowSongViewController {
     
     fileprivate func getGenresAndFeaturesForMoods(genresFeaturesHandler: @escaping([String]?, [SpotifyTrackFeature]?) -> ()) {
         moodObject?.getTrackIdAndFeaturesForEmotion(trackIdAndFeaturesHandler: { (trackIdList, trackFeatures, error) in
-            if let error = error {
-                error.presentPopup(for: self)
-            }
+            guard error == nil else { error?.presentPopup(for: self); return; }
             if let trackIdList = trackIdList {
                 self.spotifyHandler.getGenresForTrackList(trackIdList: trackIdList, trackGenreHandler: { (genres, error) in
-                    if let error = error {
-                        error.presentPopup(for: self, description: SpotifyErrorCodeDescription.getGenresForTrackList.rawValue)
-                    } else {
-                        if let genres = genres {
-                            //print("GENRES EXTRACTED = \(genres)");
-                            genresFeaturesHandler(genres, trackFeatures)
-                            
-                        } else {
-                            genresFeaturesHandler(nil, trackFeatures);
-                        }
-                    }
+                    guard error == nil else { error?.presentPopup(for: self, description: SpotifyErrorCodeDescription.getGenresForTrackList.rawValue); return; }
+                    guard let genres = genres else { genresFeaturesHandler(nil, trackFeatures); return; }
+                    genresFeaturesHandler(genres, trackFeatures)
                 })
             } else {
                 self.moodObject?.getDefaultTrackFeatures(getDefaultTrackFeaturesHandler: { (defaultTrackFeatures, error) in
-                    if let error = error {
-                        error.presentPopup(for: self)
-                    }
-                    if let defaultTrackFeatures = defaultTrackFeatures {
-                        genresFeaturesHandler(nil, defaultTrackFeatures)
-                    } else {
-                        genresFeaturesHandler(nil, nil)
-                    }
+                    guard error == nil else { error?.presentPopup(for: self); return }
+                    guard let defaultTrackFeatures = defaultTrackFeatures else { genresFeaturesHandler(nil, nil); return;}
+                    genresFeaturesHandler(nil, defaultTrackFeatures)
                 })
                 
             }
             
+            
         })
     }
     
-    func addSongsToCardList(for startIndex: Int?, tracks: [NusicTrack]) {
-        for track in tracks {
-            self.addSongToCardPlaylist(index: startIndex, track: track)
-        }
+    final func addSongsToCardList(for startIndex: Int?, tracks: [NusicTrack]) {
+        addSongToCardPlaylist(index: startIndex, tracks: tracks)
         DispatchQueue.main.async {
             self.songCardView.reloadData();
-//            if self.songCardView.currentCardIndex == 0 {
-//                self.songCardView.reloadCardsInIndexRange(0..<3)
-//            } else {
-//                
-//            }
-            
         }
     }
     
-    func getNextSong() {
+    final func removeSongsFromCardList(tracks: [NusicTrack]) {
+        for track in tracks {
+            removeSongFromCardPlaylist(track: track)
+        }
+    }
+    
+    final func getNextSong() {
         let handler: (Bool) -> Void = { didHandle in
-            if self.songCardView.countOfVisibleCards < 3 || !didHandle {
-                self.fetchNewCard(cardFetchingHandler: nil)
-            }
-            else {
+            guard self.songCardView.countOfVisibleCards < 3 || !didHandle else {
                 DispatchQueue.main.sync {
                     self.songCardView.reloadData()
                 }
+                return
             }
+            self.fetchNewCard(cardFetchingHandler: nil)
         }
         
         fetchNewCard { (isFetched) in
@@ -1077,13 +919,13 @@ extension ShowSongViewController {
         }
     }
     
-    func playCard(at index:Int) {
+    final func playCard(at index:Int) {
         if preferredPlayer == NusicPreferredPlayer.spotify {
             actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.trackUri);
         }
     }
     
-    func removeTrackFromLikedTracks(track:NusicTrack, indexPath: IndexPath, removeTrackHandler: @escaping (Bool) -> ()) {
+    final func removeTrackFromLikedTracks(track:NusicTrack, indexPath: IndexPath, removeTrackHandler: @escaping (Bool) -> ()) {
         
         let index = likedTrackList.count - indexPath.row-1
         let strIndex = String(index)
@@ -1099,13 +941,18 @@ extension ShowSongViewController {
         }
     }
     
-    fileprivate func addSongToCardPlaylist(index: Int? = nil, track: NusicTrack) {
-        if index != nil {
-            self.cardList.insert(track, at: index!)
+    fileprivate func addSongToCardPlaylist(index: Int? = nil, tracks: [NusicTrack]) {
+        if let index = index {
+            self.cardList.insert(contentsOf: tracks, at: index)
         } else {
-            self.cardList.append(track)
+            self.cardList.append(contentsOf: tracks)
         }
-        self.playedSongsHistory?.append(track.trackInfo)
+        self.playedSongsHistory?.append(contentsOf: tracks.map({ $0.trackInfo }) as [SpotifyTrack])
+    }
+    
+    fileprivate func removeSongFromCardPlaylist(track: NusicTrack) {
+        guard let index = cardList.index(where: { $0.trackInfo.trackId == track.trackInfo.trackId }) else { return }
+        self.cardList.remove(at: index);
     }
     
     fileprivate func checkConnectivity() -> Bool {
@@ -1127,7 +974,7 @@ extension ShowSongViewController {
         return true;
     }
 
-    func playSelectedCard(track: NusicTrack) {
+    final func playSelectedCard(track: NusicTrack) {
         let frontPosition = songCardView.currentCardIndex;
         
         isSongLiked = true; toggleLikeButtons();
@@ -1138,14 +985,7 @@ extension ShowSongViewController {
         }
     }
     
-    func containsTrack(trackId: String) -> Bool {
-        for track in likedTrackList {
-            if track.trackInfo.trackId == trackId {
-                return true;
-            }
-        }
-        return false;
-    }
+    
 }
 
 

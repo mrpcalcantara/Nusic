@@ -8,114 +8,50 @@
 
 extension Spotify {
     
-    func getTrackInfo(for trackList: [String], offset: Int, currentExtractedTrackList: [SpotifyTrack], trackInfoListHandler: @escaping([SpotifyTrack]?, NusicError?) -> ()) {
-        
-        if trackList.count <= 0 {
-            return;
-        }
+    final func getTrackInfo(for trackList: [String], offset: Int, currentExtractedTrackList: [SpotifyTrack], trackInfoListHandler: @escaping([SpotifyTrack]?, NusicError?) -> ()) {
+        guard trackList.count > 0 else { return; }
         var spotifyTrackList: [SpotifyTrack] = currentExtractedTrackList
         var currentTrackList:[String] = []
         let checkLimit = currentExtractedTrackList.count-offset
-        
-        
-        if checkLimit > 50 {
-            currentTrackList = Array(trackList[offset...offset+49]);
-        } else {
-            currentTrackList = Array(trackList[offset...trackList.count-1])
-        }
-        
         let nextOffset = offset+50
+        //Spotify Limitation: 50 songs is the maximum we can get details from
+        currentTrackList = checkLimit > 50 ? Array(trackList[offset...offset+49]) : Array(trackList[offset...trackList.count-1]);
         
         var trackUriList: [URL] = []
-        
         for trackURI in currentTrackList {
             trackUriList.append(URL(string: Spotify.transformToURI(type: .track, id: trackURI))!)
         }
         
         do {
             let request = try SPTTrack.createRequest(forTracks: trackUriList, withAccessToken: self.auth.session.accessToken!, market: self.user.territory);
-            
             executeSpotifyCall(with: request, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-                if isSuccess {
-                    let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
-                    let extractedTrackList = jsonObject["tracks"] as! [[String:AnyObject]];
-                    for track in extractedTrackList {
-                        let artistInfo = track["artists"] as! [[String: AnyObject]]
-                        let albumInfo = track["album"] as! [String: AnyObject]
-                        let imageInfo = albumInfo["images"] as! [[String: AnyObject]]
-                        var artists = ""
-                        let index = 0
-                        let artistCount = artistInfo.count
-                        var artistId = ""
-                        var artistUri = ""
-                        
-                        for artist in artistInfo {
-                            if let artistName = artist["name"] as? String, let id = artist["id"] as? String, let uri = artist["uri"] as? String {
-                                artists += "\(artistName)"
-                                if index <= artistCount - 1 {
-                                    artists += ", ";
-                                }
-                                artistId = id
-                                artistUri = uri
-                                
-                            }
-                            
-                        }
-                        artists.removeLast(); artists.removeLast();
-                        
-                        var trackId = ""
-                        if let fetchedTrackId = track["id"] as? String {
-                            trackId = fetchedTrackId
-                        }
-                        
-                        var linkedTrackId = trackId
-                        if let linkedFrom:[String: AnyObject] = track["linked_from"] as? [String: AnyObject] {
-                            linkedTrackId = linkedFrom["id"] as! String
-                        }
-                        
-                        
-                        var songExternalHref = ""
-                        if let trackHref = track["external_urls"] as? [String: AnyObject] {
-                            songExternalHref = trackHref["spotify"] as! String
-                        }
-                        
-                        let albumImage = imageInfo[1]["url"] as? String;
-                        if let trackName = track["name"] as? String,
-                            let trackUri = track["uri"] as? String,
-                            let albumImage = albumImage {
-                            let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, linkedFromTrackId: linkedTrackId, songName: trackName, songHref: songExternalHref, artist: SpotifyArtist(artistName: artists, uri: artistUri, id: artistId), audioFeatures: nil);
-                            spotifyTrackList.append(track);
-                        }
+                guard isSuccess else { trackInfoListHandler(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue)); return; }
+                let jsonObject = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
+                let extractedTrackList = jsonObject["tracks"] as! [[String:AnyObject]];
+                for track in extractedTrackList {
+                    if let trackData = try? JSONSerialization.data(withJSONObject: track, options: JSONSerialization.WritingOptions.prettyPrinted), let decodedTrack = try? JSONDecoder().decode(SpotifyTrack.self, from: trackData) {
+                        spotifyTrackList.append(decodedTrack);
                     }
                     
-                    let nextPage = jsonObject["next"] as? String
-                    if nextPage != nil {
-                        self.getTrackInfo(for: trackList, offset: nextOffset, currentExtractedTrackList: currentExtractedTrackList, trackInfoListHandler: { (trackList, error) in
-                            trackInfoListHandler(trackList, nil);
-                        })
-                    } else {
-                        
-                        let sortedList = spotifyTrackList.sorted(by: { (track1, track2) -> Bool in
-                            track1.addedAt!! > track2.addedAt!!
-                        })
-                        trackInfoListHandler(sortedList, nil);
-                    }
+                }
+                if jsonObject["next"] as? String != nil {
+                    self.getTrackInfo(for: trackList, offset: nextOffset, currentExtractedTrackList: currentExtractedTrackList, trackInfoListHandler: { (trackList, error) in
+                        trackInfoListHandler(trackList, nil);
+                    })
                 } else {
-                    switch statusCode {
-                    case 400...499:
-                        trackInfoListHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                    case 500...599:
-                        trackInfoListHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                    default: trackInfoListHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                    }
+                    
+                    let sortedList = spotifyTrackList.sorted(by: { (track1, track2) -> Bool in
+                        track1.songName < track2.songName
+                    })
+                    trackInfoListHandler(sortedList, nil);
                 }
             })
             
         } catch { }
     }
     
-    func getTrackDetails(trackId: String, fetchedTrackDetailsHandler: @escaping (SpotifyTrackFeature?, NusicError?) -> () ) {
+    final func getTrackDetails(trackId: String, fetchedTrackDetailsHandler: @escaping (SpotifyTrackFeature?, NusicError?) -> () ) {
         do {
             let trackUrl = URL(string: "spotify:track:\(trackId)")!
             var trackFeaturesRequest = try SPTTrack.createRequest(forTrack: trackUrl, withAccessToken: auth.session.accessToken!, market: self.user.territory)
@@ -123,24 +59,11 @@ extension Spotify {
             
             executeSpotifyCall(with: trackFeaturesRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-                if isSuccess {
-                    do {
-                        let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
-                        var spotifyTrackFeature = SpotifyTrackFeature()
-                        spotifyTrackFeature.mapDictionary(featureDictionary: jsonObject);
-                        fetchedTrackDetailsHandler(spotifyTrackFeature, nil)
-                    } catch {
-                        print("error parsing track features for track \(trackId)");
-                    }
-                } else {
-                    switch statusCode {
-                    case 400...499:
-                        fetchedTrackDetailsHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                    case 500...599:
-                        fetchedTrackDetailsHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                    default: fetchedTrackDetailsHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                    }
+                guard let decodedTrackFeatures = try? JSONDecoder().decode(SpotifyTrackFeature.self, from: data!), isSuccess else {
+                    fetchedTrackDetailsHandler(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getTrackIdFeaturesForMood.rawValue))
+                    return;
                 }
+                fetchedTrackDetailsHandler(decodedTrackFeatures, nil)
             })
         } catch {
             fetchedTrackDetailsHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
@@ -148,31 +71,22 @@ extension Spotify {
         }
     }
     
-    func getTrackArtist(trackId: String, fetchedTrackArtistHandler: @escaping (String?, NusicError?) -> () ) {
+    final func getTrackArtist(trackId: String, fetchedTrackArtistHandler: @escaping (String?, NusicError?) -> () ) {
         do {
             let trackUrl = URL(string: "spotify:track:\(trackId)")!
             let trackRequest = try SPTTrack.createRequest(forTrack: trackUrl, withAccessToken: auth.session.accessToken!, market: self.user.territory)
             
             executeSpotifyCall(with: trackRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-                if isSuccess {
-                    do {
-                        let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
-                        let firstArtist = jsonObject["artists"] as! [[String: AnyObject]]
-                        fetchedTrackArtistHandler(firstArtist.first?["id"] as? String, nil);
-                    } catch {
-                        
-                    }
-                    
-                } else {
-                    switch statusCode {
-                    case 400...499:
-                        fetchedTrackArtistHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError));
-                    case 500...599:
-                        fetchedTrackArtistHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError));
-                    default: fetchedTrackArtistHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                    }
+                guard isSuccess else {
+                    fetchedTrackArtistHandler(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getTrackInfo.rawValue))
+                    return;
                 }
+                do {
+                    let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject]
+                    let firstArtist = jsonObject["artists"] as! [[String: AnyObject]]
+                    fetchedTrackArtistHandler(firstArtist.first?["id"] as? String, nil);
+                } catch { }
             })
         } catch {
             fetchedTrackArtistHandler(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
@@ -180,8 +94,7 @@ extension Spotify {
         }
     }
     
-    
-    func getAllTracksForPlaylist(playlistId: String, fetchGenres: Bool? = true, nextTrackPageRequest: URLRequest? = nil, currentTrackList: [SpotifyTrack]? = nil, fetchedPlaylistTracks: @escaping([SpotifyTrack]?, NusicError?) -> ()) {
+    final func getAllTracksForPlaylist(playlistId: String, fetchGenres: Bool? = true, nextTrackPageRequest: URLRequest? = nil, currentTrackList: [SpotifyTrack]? = nil, fetchedPlaylistTracks: @escaping([SpotifyTrack]?, NusicError?) -> ()) {
         
         let userId = auth.session.canonicalUsername;
         var currentList: [SpotifyTrack] = currentTrackList != nil ? currentTrackList! : [];
@@ -195,122 +108,63 @@ extension Spotify {
 
         executeSpotifyCall(with: pageRequest!, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
             let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-            if isSuccess {
-                do {
-                    let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
-                    let artistList = jsonObject["items"] as! [[String:AnyObject]];
-                    for artist in artistList {
-                        let trackInfo = artist["track"] as! [String: AnyObject]
-                        let artistInfo = trackInfo["artists"] as! [[String: AnyObject]]
-                        let albumInfo = trackInfo["album"] as! [String: AnyObject]
-                        let imageInfo = albumInfo["images"] as! [[String: AnyObject]]
-                        let addedAt = artist["added_at"] as! String
-                        
-                        let dateFormatter = DateFormatter();
-                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-                        
-                        let dateAdded = dateFormatter.date(from: addedAt)
-                        
-                        var artists = ""
-                        var artistId = ""
-                        var artistUri = ""
-                        let index = 0
-                        let artistCount = artistInfo.count
-                        for artist in artistInfo {
-                            if let artistName = artist["name"] as? String, let id = artist["id"] as? String, let uri = artist["uri"] as? String {
-                                artists += "\(artistName)"
-                                if index <= artistCount - 1 {
-                                    artists += ", ";
-                                }
-                                artistId = id
-                                artistUri = uri
-                                
-                            }
-                            
-                        }
-                        
-                        
-                        artists.removeLast(); artists.removeLast();
-                        
-                        var songExternalHref = ""
-                        if let trackHref = trackInfo["external_urls"] as? [String: AnyObject] {
-                            songExternalHref = trackHref["spotify"] as! String
-                        }
-                        
-                        var trackId = ""
-                        if let fetchedTrackId = trackInfo["id"] as? String {
-                            trackId = fetchedTrackId
-                        }
-                        
-                        var linkedTrackId = trackId
-                        if let linkedFrom:[String: AnyObject] = trackInfo["linked_from"] as? [String: AnyObject] {
-                            linkedTrackId = linkedFrom["id"] as! String
-                        }
-                        //print(artists)
-                        let albumImage = imageInfo[1]["url"] as? String;
-                        if let trackName = trackInfo["name"] as? String,
-                            let trackUri = trackInfo["uri"] as? String,
-                            let albumImage = albumImage {
-                            let track = SpotifyTrack(title: trackName, thumbNailUrl: albumImage, trackUri: trackUri, trackId: trackId, linkedFromTrackId: linkedTrackId, songName: trackName, songHref: songExternalHref, artist: SpotifyArtist(artistName: artists, uri: artistUri, id: artistId), addedAt: dateAdded, audioFeatures: nil);
-                            currentList.append(track);
-                        }
+            guard isSuccess else {
+                fetchedPlaylistTracks(nil, NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue));
+                return;
+                
+            }
+            do {
+                let jsonObject = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: AnyObject];
+                let trackList = jsonObject["items"] as! [[String:AnyObject]]
+                for track in trackList {
+                    if
+                        let trackChild = track["track"] as? [String : AnyObject],
+                        let trackData = try? JSONSerialization.data(withJSONObject: trackChild, options: JSONSerialization.WritingOptions.prettyPrinted),
+                        let decodedTrack = try? JSONDecoder().decode(SpotifyTrack.self, from: trackData) {
+                            currentList.append(decodedTrack);
                     }
                     
-                    let nextPage = jsonObject["next"] as? String
-                    if let nextPage = nextPage {
-                        let nextPageUrl = URL(string: nextPage)
-                        let nextPageUrlRequest = URLRequest(url: nextPageUrl!)
-                        self.getAllTracksForPlaylist(playlistId: playlistId, fetchGenres: fetchGenres, nextTrackPageRequest: nextPageUrlRequest, currentTrackList: currentTrackList, fetchedPlaylistTracks: { (currentTrackList, error) in
-                            fetchedPlaylistTracks(currentList, error);
+                }
+                
+                if let nextPage = jsonObject["next"] as? String {
+                    let nextPageUrl = URL(string: nextPage)
+                    let nextPageUrlRequest = URLRequest(url: nextPageUrl!)
+                    self.getAllTracksForPlaylist(playlistId: playlistId, fetchGenres: fetchGenres, nextTrackPageRequest: nextPageUrlRequest, currentTrackList: currentTrackList, fetchedPlaylistTracks: { (currentTrackList, error) in
+                        fetchedPlaylistTracks(currentList, error);
+                    })
+                } else {
+                    let sortedList = currentList.sorted(by: { (track1, track2) -> Bool in
+                        track1.songName > track2.songName
+                    })
+                    let dispatchGroup = DispatchGroup()
+                    dispatchGroup.enter()
+                    if fetchGenres! {
+                        let spotifyArtistList = sortedList.flatMap({ $0.artist.map({ $0.uri }) }) as! [String]
+                        self.getAllGenresForArtists(spotifyArtistList, offset: 0, artistGenresHandler: { (fetchedArtistList, error) in
+                            guard let fetchedArtistList = fetchedArtistList else { fetchedPlaylistTracks(nil, error); return; }
+                            for artist in fetchedArtistList {
+                                if let index = sortedList.index(where: { (track) -> Bool in
+                                    return track.artist.map({$0.uri}).contains(where: { $0 == artist.uri })
+                                }) {
+                                    sortedList[index].artist.updateArtist(artist: artist)
+                                }
+                            }
+                            dispatchGroup.leave()
                         })
                     } else {
-                        
-                        let sortedList = currentList.sorted(by: { (track1, track2) -> Bool in
-                            track1.addedAt!! > track2.addedAt!!
-                        })
-                        
-                        
-                        
-                        if fetchGenres! {
-                            let spotifyArtistList = sortedList.map({ $0.artist.uri }) as! [String]
-                            self.getAllGenresForArtists(spotifyArtistList, offset: 0, artistGenresHandler: { (fetchedArtistList, error) in
-                                if let error = error {
-                                    fetchedPlaylistTracks(nil, error)
-                                } else {
-                                    if let fetchedArtistList = fetchedArtistList {
-                                        for artist in fetchedArtistList {
-                                            if let index = sortedList.index(where: { (track) -> Bool in
-                                                return track.artist.uri == artist.uri
-                                            }) {
-                                                sortedList[index].artist = artist
-                                            }
-                                        }
-                                    }
-                                    fetchedPlaylistTracks(sortedList, nil)
-                                }
-                            })
-                        } else {
-                            fetchedPlaylistTracks(sortedList, nil);
-                        }
-                        
-                        
+                        dispatchGroup.leave()
                     }
-                } catch { }
-                
-            } else {
-                switch statusCode {
-                case 400...499:
-                    fetchedPlaylistTracks(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                case 500...599:
-                    fetchedPlaylistTracks(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                default: fetchedPlaylistTracks(nil, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
+                    
+                    dispatchGroup.notify(queue: .main, execute: {
+                        fetchedPlaylistTracks(sortedList, nil);
+                    })
                 }
-            }
+            } catch { }
         })
         
     }
     
-    func addTracksToPlaylist(playlistId: String, trackId: String, addTrackHandler: @escaping(Bool, NusicError?) -> ()) {
+    final func addTracksToPlaylist(playlistId: String, trackId: String, addTrackHandler: @escaping(Bool, NusicError?) -> ()) {
         let username: String! = auth.session.canonicalUsername!
         let accessToken: String! = auth.session.accessToken!
         let urlString = "https://api.spotify.com/v1/users/\(username!)/playlists/\(playlistId)/tracks?uris=\(trackId)"
@@ -325,27 +179,12 @@ extension Spotify {
         
         executeSpotifyCall(with: createPlaylistRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
             let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-            if isSuccess {
-                addTrackHandler(true, nil);
-            } else {
-                switch statusCode {
-                case 400...499:
-                    addTrackHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError))
-                case 500...599:
-                    addTrackHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError))
-                default: addTrackHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                }
-            }
+            let error = isSuccess ? nil : NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.addTrack.rawValue)
+            addTrackHandler(isSuccess, error)
         })
-//        do {
-//            
-//        } catch {
-//            addTrackHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-//            print("error creating request adding track \(trackId) to playlist \(playlistId)");
-//        }
     }
     
-    func removeTrackFromPlaylist(playlistId: String, tracks: [String: String], removeTrackHandler: @escaping(Bool, NusicError?) -> ()) {
+    final func removeTrackFromPlaylist(playlistId: String, tracks: [String: String], removeTrackHandler: @escaping(Bool, NusicError?) -> ()) {
         let username: String! = auth.session.canonicalUsername!
         let accessToken: String! = auth.session.accessToken!
         let url = "https://api.spotify.com/v1/users/\(username!)/playlists/\(playlistId)/tracks"
@@ -362,7 +201,6 @@ extension Spotify {
         
         while element != nil {
             if let element = element {
-//                tracksToRemove += "{\"positions\":[\(element.key)],\"uri\":\"\(element.value)\"},"
                 tracksToRemove += "{\"uri\":\"\(element.value)\"},"
             }
             element = iterator.next();
@@ -374,34 +212,18 @@ extension Spotify {
         
         executeSpotifyCall(with: removeTrackRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
             let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1
-            if isSuccess {
-                removeTrackHandler(true, nil);
-            } else {
-                switch statusCode {
-                case 400...499:
-                    removeTrackHandler(true, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.clientError));
-                case 500...599:
-                    removeTrackHandler(true, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.serverError));
-                default: removeTrackHandler(true, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-                }
-            }
+            let error = isSuccess ? nil : NusicError.manageError(statusCode: statusCode, errorCode: NusicErrorCodes.spotifyError, description: SpotifyErrorCodeDescription.removeTrack.rawValue)
+            removeTrackHandler(isSuccess, error)
         })
-//        do {
-//            
-//        } catch {
-//            removeTrackHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.spotifyError, nusicErrorSubCode: NusicErrorSubCode.technicalError));
-//            print("error creating request deleting track from playlist \(playlistId)");
-//        }
     }
     
-    func isTrackInPlaylist(trackId: String, playlistId: String, checkTrackHandler: @escaping (Bool) -> ()) {
-        getAllTracksForPlaylist(playlistId: playlistId) { (trackList, error) in
-            if let trackList = trackList {
-                let containsTrack = trackList.contains(where: { (playlistTrack) -> Bool in
-                    return playlistTrack.trackId == trackId
-                })
-                checkTrackHandler(containsTrack)
-            }
+    final func isTrackInPlaylist(trackId: String, playlistId: String, checkTrackHandler: @escaping (Bool) -> ()) {
+        getAllTracksForPlaylist(playlistId: playlistId, fetchGenres: false) { (trackList, error) in
+            guard let trackList = trackList else { return; }
+            let containsTrack = trackList.contains(where: { (playlistTrack) -> Bool in
+                return playlistTrack.trackId == trackId
+            })
+            checkTrackHandler(containsTrack)
         }
     }
     

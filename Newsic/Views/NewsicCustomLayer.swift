@@ -17,12 +17,11 @@ class NusicCustomLayer: CALayer {
 
 extension CALayer {
     func removeGradientLayer(name: String) {
-        if let index = self.sublayers?.index(where: { (layer) -> Bool in
+        guard let index = self.sublayers?.index(where: { (layer) -> Bool in
             return layer.name == name
-        }) {
-            let borderLayer = self.sublayers![index]
-            borderLayer.removeFromSuperlayer()
-        }
+        }) else { return }
+        let borderLayer = self.sublayers![index]
+        borderLayer.removeFromSuperlayer()
     }
     
     func addGradientBorder(name:String, path: CGPath, colors:[UIColor],width:CGFloat = 1) {

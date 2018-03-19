@@ -10,7 +10,7 @@ import Foundation
 
 extension ChoiceListView {
     
-    func setupToggleView() {
+    final func setupToggleView() {
         toggleView.backgroundColor = UIColor.clear
         
         var containsBlurEffect = false
@@ -31,12 +31,12 @@ extension ChoiceListView {
         setupOpenBezierPaths()
     }
     
-    func manageToggleView() {
+    final func manageToggleView() {
         toggleArrow()
         toggleBezierPaths()
     }
     
-    func setupArrow() {
+    final func setupArrow() {
         if toggleView.subviews.contains(arrowImageView) {
             arrowImageView.removeFromSuperview()
         }
@@ -49,7 +49,7 @@ extension ChoiceListView {
         showOpenArrow()
     }
     
-    func toggleArrow() {
+    final func toggleArrow() {
 //        setupArrow()
         if isOpen {
             showCloseArrow()
@@ -58,12 +58,12 @@ extension ChoiceListView {
         }
     }
     
-    func removeBezierPaths() {
+    final func removeBezierPaths() {
         leftLayer.removeFromSuperlayer()
         rightLayer.removeFromSuperlayer()
     }
     
-    func toggleBezierPaths() {
+    final func toggleBezierPaths() {
         removeBezierPaths()
         if isOpen {
             setupCloseBezierPaths()
@@ -73,14 +73,20 @@ extension ChoiceListView {
     }
     
     fileprivate func setupOpenBezierPaths() {
-        var initialX:CGFloat = 8
+        setupOpenLeftBezierPath()
+        setupOpenRightBezierPath()
+    }
+    
+    fileprivate func setupOpenLeftBezierPath() {
+        let initialX:CGFloat = 8
         let initialY:CGFloat = 0
+        let radius = toggleView.bounds.height/2 - toggleView.bounds.height/4
         
         let leftPath = UIBezierPath();
         let endpointLeft = self.frame.width/2 - (arrowImageView.image?.size.width)!
         leftPath.move(to: CGPoint(x: initialX, y: initialY))
         leftPath.addLine(to: CGPoint(x: initialX, y: toggleView.bounds.height/4))
-        let radius = toggleView.bounds.height/2 - toggleView.bounds.height/4
+        
         leftPath.addArc(withCenter: CGPoint(x: initialX + radius, y: toggleView.bounds.height/4), radius: radius, startAngle: .pi, endAngle: .pi*0.5, clockwise: false)
         leftPath.addLine(to: CGPoint(x: endpointLeft, y: toggleView.bounds.height/2))
         
@@ -91,15 +97,18 @@ extension ChoiceListView {
         leftLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(leftLayer)
-        
-        initialX = self.frame.width - 8
+    }
+    
+    fileprivate func setupOpenRightBezierPath() {
+        let initialX = self.frame.width - 8
+        let initialY:CGFloat = 0
+        let radius = toggleView.bounds.height/2 - toggleView.bounds.height/4
         
         let rightPath = UIBezierPath();
         let endpointRight = self.frame.width/2 + (arrowImageView.image?.size.width)!
-        rightPath.move(to: CGPoint(x: initialX, y: 0))
+        rightPath.move(to: CGPoint(x: initialX, y: initialY))
         rightPath.addLine(to: CGPoint(x: initialX, y: toggleView.bounds.height/4))
-//        rightPath.addLine(to: CGPoint(x: initialX-8, y: toggleView.bounds.height/2))
-        
+
         rightPath.addArc(withCenter: CGPoint(x: initialX - radius, y: toggleView.bounds.height/4), radius: radius, startAngle: 0, endAngle: .pi*0.5, clockwise: true)
         rightPath.addLine(to: CGPoint(x: endpointRight, y: toggleView.bounds.height/2))
         
@@ -113,15 +122,20 @@ extension ChoiceListView {
     }
     
     fileprivate func setupCloseBezierPaths() {
-        var initialX:CGFloat = 8
+        setupCloseLeftBezierPath()
+        setupCloseRightBezierPath()
+    }
+    
+    fileprivate func setupCloseLeftBezierPath() {
+        let initialX:CGFloat = 8
         let initialY:CGFloat = toggleView.bounds.height
+        let radius = toggleView.bounds.height/2 - toggleView.bounds.height/4
         
         let leftPath = UIBezierPath();
         let endpointLeft = self.frame.width/2 - (arrowImageView.image?.size.width)!
         leftPath.move(to: CGPoint(x: initialX, y: initialY))
         leftPath.addLine(to: CGPoint(x: initialX, y: initialY-toggleView.bounds.height/4))
-//        leftPath.addLine(to: CGPoint(x: initialX + 8, y: toggleView.bounds.height/2))
-        let radius = toggleView.bounds.height/2 - toggleView.bounds.height/4
+        
         leftPath.addArc(withCenter: CGPoint(x: initialX + radius, y: 3*toggleView.bounds.height/4), radius: radius, startAngle: .pi, endAngle: .pi*1.5, clockwise: true)
         leftPath.addLine(to: CGPoint(x: endpointLeft, y: toggleView.bounds.height/2))
         
@@ -132,8 +146,11 @@ extension ChoiceListView {
         leftLayer.lineWidth = lineWidth
         
         self.layer.addSublayer(leftLayer)
-        
-        initialX = self.frame.width - 8
+    }
+    fileprivate func setupCloseRightBezierPath() {
+        let initialX = self.frame.width - 8
+        let initialY:CGFloat = toggleView.bounds.height
+        let radius = toggleView.bounds.height/2 - toggleView.bounds.height/4
         
         let rightPath = UIBezierPath();
         let endpointRight = self.frame.width/2 + (arrowImageView.image?.size.width)!

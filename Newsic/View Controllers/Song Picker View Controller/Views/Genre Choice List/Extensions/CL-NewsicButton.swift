@@ -10,14 +10,14 @@ import Foundation
 
 extension ChoiceListView {
     
-    func setupButton() {
+    final func setupButton() {
         fetchSongsButton.allowBlur = true
         fetchSongsButton.tintColor = NusicDefaults.foregroundThemeColor
         fetchSongsButton.setTitle("Get Songs!", for: .normal)
         fetchSongsButton.addTarget(self, action: #selector(triggerButton), for: .touchUpInside)
     }
     
-    @objc func triggerButton() {
+    @objc fileprivate func triggerButton() {
         delegate?.getSongs()
     }
     

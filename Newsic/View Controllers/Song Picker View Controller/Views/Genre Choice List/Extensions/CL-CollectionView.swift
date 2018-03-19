@@ -10,7 +10,7 @@ import Foundation
 
 extension ChoiceListView {
     
-    func setupCollectionView() {
+    final func setupCollectionView() {
         choiceCollectionView.delegate = self
         choiceCollectionView.dataSource = self
         choiceCollectionView.isScrollEnabled = true
@@ -19,7 +19,7 @@ extension ChoiceListView {
         choiceCollectionView.autoresizingMask = [.flexibleHeight, .flexibleBottomMargin]
         choiceCollectionView.backgroundColor = UIColor.clear
         
-        choiceCollectionView.setCollectionViewLayout(NusicCollectionViewLayout(), animated: true)
+        choiceCollectionView.setCollectionViewLayout(ListCollectionViewFlowLayout(), animated: true)
         
         if let layout = choiceCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .vertical
@@ -39,7 +39,7 @@ extension ChoiceListView {
         
     }
     
-    func setupGestureRecognizers() {
+    final func setupGestureRecognizers() {
         let headerTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleListMenu));
         headerTapGestureRecognizer.numberOfTouchesRequired = 1
         headerTapGestureRecognizer.numberOfTapsRequired = 1
@@ -58,15 +58,11 @@ extension ChoiceListView: UICollectionViewDelegate {
         if indexPath.section == Section.genreSection.rawValue {
             chosenGenres.remove(at: indexPath.row)
             delegate?.didTapGenre(value: (cell.choiceLabel.text)!)
-        } else {
-            //            chosenMoods.remove(at: indexPath.row)
-            //            delegate?.didTapMood(value: (cell.moodLabel?.text)!)
         }
         
         collectionView.performBatchUpdates({
             collectionView.deleteItems(at: [indexPath])
         }, completion: nil)
-        //        collectionView.reloadData()
         
     }
     

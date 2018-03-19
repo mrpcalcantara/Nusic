@@ -18,30 +18,8 @@ let backgroundCardScalePercent: CGFloat = 1.5
 
 class SongKolodaView: KolodaView {
     
-//    override func frameForCard(at index: Int) -> CGRect {
-//
-//        if index == 0 {
-//            let topOffset: CGFloat = defaultTopOffset
-////            let xOffset: CGFloat = defaultHorizontalOffset
-//            let width = (self.frame).width
-//            let height = (self.frame).height
-////            let yOffset: CGFloat = topOffset
-//            let frame = CGRect(x: 0, y: 0, width: width, height: height)
-//
-//            return frame
-//        }
-//
-//        else if index == 1 {
-////            let horizontalMargin = -self.bounds.width
-////            let width = self.bounds.width
-////            let height = width * defaultHeightRatio
-//            let width = (self.frame).width
-//            let height = (self.frame).height
-//            print("width = \(width), height = \(height)")
-//            return CGRect(x: 0, y: 0, width: width, height: height)
-//        }
-//
-//        return CGRect.zero
-//    }
- 
 }
+
+
+
+

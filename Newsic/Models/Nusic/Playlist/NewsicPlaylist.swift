@@ -49,39 +49,28 @@ extension NusicPlaylist : FirebaseModel {
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         reference.child(userName).removeValue { (error, databaseReference) in
-            if let error = error {
-                deleteCompleteHandler(self.reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deletePlaylist.rawValue, systemError: error))
-            } else {
-                deleteCompleteHandler(self.reference, nil)
-            }
-            
+            guard error == nil else { deleteCompleteHandler(self.reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deletePlaylist.rawValue, systemError: error)); return; }
+            deleteCompleteHandler(self.reference, nil)
         }
     }
     
-    func getPlaylist(getPlaylistHandler: @escaping(NusicPlaylist?, NusicError?) -> ()) {
+    final func getPlaylist(getPlaylistHandler: @escaping(NusicPlaylist?, NusicError?) -> ()) {
         getData { (dict, error) in
-            if error != nil || dict == nil {
-                getPlaylistHandler(nil, error)
-            } else {
-                let convertedDict = dict as! [String: AnyObject]
-                for (key, value) in convertedDict {
-                    self.id = key;
-                    let nameDict = value as! [String: String]
-                    self.name = nameDict["name"]
-                }
-                getPlaylistHandler(self, nil);
+            guard let convertedDict = dict as? [String: AnyObject] else { getPlaylistHandler(nil, error); return; }
+            for (key, value) in convertedDict {
+                self.id = key;
+                let nameDict = value as! [String: String]
+                self.name = nameDict["name"]
             }
+            getPlaylistHandler(self, nil);
         }
     }
     
-    func addNewPlaylist(addNewPlaylistHandler: @escaping (Bool?, NusicError?) -> ()) {
+    final func addNewPlaylist(addNewPlaylistHandler: @escaping (Bool?, NusicError?) -> ()) {
         deleteData { (reference, error) in
             self.saveData(saveCompleteHandler: { (reference, error) in
-                if let error = error {
-                    addNewPlaylistHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.addNewPlaylist.rawValue, systemError: error))
-                } else {
-                    addNewPlaylistHandler(true, nil)
-                }
+                guard error == nil else { addNewPlaylistHandler(false, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.addNewPlaylist.rawValue, systemError: error)); return; }
+                addNewPlaylistHandler(true, nil)
             })
         }
     }

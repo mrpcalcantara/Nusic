@@ -11,7 +11,7 @@ import PopupDialog
 import SafariServices
 
 extension SideMenuViewController {
-    func setupTableView() {
+    final func setupTableView() {
         settingsTableView.delegate = self;
         settingsTableView.dataSource = self;
         
@@ -129,61 +129,56 @@ extension SideMenuViewController {
     
     //Setup functions for Table View cells and sections
     fileprivate func setupPlayerSettings(for cell: SettingsCell, title: String) {
-        if let value = settings?.preferredPlayer?.rawValue {
-            if let str = NusicPreferredPlayer(rawValue: value) {
-                
-                let buttonSpotify = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifyIconHighlighted"), text: NusicPreferredPlayer.spotify.description())
-                let actionSpotify = { () -> Void in
-                    self.settings?.preferredPlayer = NusicPreferredPlayer.spotify
-                    cell.itemValue.text = buttonSpotify.textLabel.text
-                    if !self.settingsValues.contains(where: { (array) -> Bool in
-                        return array.contains(NusicSettingsLabel.spotifyQuality.rawValue)
-                    }) {
-                        self.settingsValues.insert([NusicSettingsLabel.spotifyQuality.rawValue], at: 1)
-                        self.settingsTableView.reloadData()
-                    }
-                }
-                buttonSpotify.action = actionSpotify
-                
-                let buttonYoutube = YBButton(frame: CGRect.zero, icon: UIImage(named: "YoutubeIconHighlighted"), text: NusicPreferredPlayer.youtube.description())
-                let actionYoutube = { () -> Void in
-                    self.settings?.preferredPlayer = NusicPreferredPlayer.youtube
-                    cell.itemValue.text = buttonYoutube.textLabel.text
-                    if let index = self.settingsValues.index(where: { (array) -> Bool in
-                        return array.contains(NusicSettingsLabel.spotifyQuality.rawValue)
-                    }) {
-                        self.settingsValues.remove(at: index)
-                        self.settingsTableView.reloadData()
-                    }
-                    
-                }
-                buttonYoutube.action = actionYoutube
-                
-                cell.configureCell(title: title, value: str.description(), icon: UIImage(named: "PreferredPlayer"), options: [buttonSpotify, buttonYoutube], enableCell: enablePlayerSwitch!)
-                
+        guard let value = settings?.preferredPlayer?.rawValue, let str = NusicPreferredPlayer(rawValue: value) else { return; }
+        let buttonSpotify = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifyIconHighlighted"), text: NusicPreferredPlayer.spotify.description())
+        let actionSpotify = { () -> Void in
+            self.settings?.preferredPlayer = NusicPreferredPlayer.spotify
+            cell.itemValue.text = buttonSpotify.textLabel.text
+            if !self.settingsValues.contains(where: { (array) -> Bool in
+                return array.contains(NusicSettingsLabel.spotifyQuality.rawValue)
+            }) {
+                self.settingsValues.insert([NusicSettingsLabel.spotifyQuality.rawValue], at: 1)
+                self.settingsTableView.reloadData()
             }
         }
+        buttonSpotify.action = actionSpotify
+        
+        let buttonYoutube = YBButton(frame: CGRect.zero, icon: UIImage(named: "YoutubeIconHighlighted"), text: NusicPreferredPlayer.youtube.description())
+        let actionYoutube = { () -> Void in
+            self.settings?.preferredPlayer = NusicPreferredPlayer.youtube
+            cell.itemValue.text = buttonYoutube.textLabel.text
+            if let index = self.settingsValues.index(where: { (array) -> Bool in
+                return array.contains(NusicSettingsLabel.spotifyQuality.rawValue)
+            }) {
+                self.settingsValues.remove(at: index)
+                self.settingsTableView.reloadData()
+            }
+        }
+        buttonYoutube.action = actionYoutube
+        
+        cell.configure(title: title, value: str.description(), icon: UIImage(named: "PreferredPlayer"))
+        cell.alertController?.configure(options: [buttonSpotify, buttonYoutube])
     }
     
     fileprivate func setupConnectionSettings(for cell: SettingsCell, title: String) {
-        if let useMobileData = settings?.useMobileData {
-            
-            let buttonOn = YBButton(frame: CGRect.zero, icon: UIImage(named: "CheckmarkIcon"), text: (true).toString())
-            let actionOn = { () -> Void in
-                self.settings?.useMobileData = true
-                cell.itemValue.text = buttonOn.textLabel.text
-            }
-            buttonOn.action = actionOn
-            
-            let buttonOff = YBButton(frame: CGRect.zero, icon: UIImage(named: "WrongIcon"), text: (false).toString())
-            let actionOff = { () -> Void in
-                self.settings?.useMobileData = false
-                cell.itemValue.text = buttonOff.textLabel.text
-            }
-            buttonOff.action = actionOff
-            
-            cell.configureCell(title: title, value: useMobileData.toString(), icon: UIImage(named: "MobileData"), options: [buttonOn, buttonOff])
+        guard let useMobileData = settings?.useMobileData else { return; }
+        let buttonOn = YBButton(frame: CGRect.zero, icon: UIImage(named: "CheckmarkIcon"), text: (true).toString())
+        let actionOn = { () -> Void in
+            self.settings?.useMobileData = true
+            cell.itemValue.text = buttonOn.textLabel.text
         }
+        buttonOn.action = actionOn
+        
+        let buttonOff = YBButton(frame: CGRect.zero, icon: UIImage(named: "WrongIcon"), text: (false).toString())
+        let actionOff = { () -> Void in
+            self.settings?.useMobileData = false
+            cell.itemValue.text = buttonOff.textLabel.text
+        }
+        buttonOff.action = actionOff
+        
+        cell.configure(title: title, value: useMobileData.toString(), icon: UIImage(named: "MobileData"))
+        cell.alertController?.configure(options: [buttonOn, buttonOff])
+        
     }
     
     fileprivate func setupActionSettings(for cell: SettingsCell, title: String) {
@@ -200,7 +195,8 @@ extension SideMenuViewController {
         }
         buttonDismiss.action = actionDismiss
         
-        cell.configureCell(title: title, value: "", icon: nil, options: [buttonLogout, buttonDismiss], centerText: true, alertText: "Are you sure?")
+        cell.configure(title: title, value: "", icon: nil, centerText: true)
+        cell.alertController?.configure(options: [buttonLogout, buttonDismiss], alertText: "Are you sure?")
         
     }
     
@@ -215,12 +211,9 @@ extension SideMenuViewController {
         
         let actionDelete: () -> Void = {
             cell.alertController?.dismiss()
-            
             let actionConfirmDelete = { () -> Void in
                 self.nusicUser?.deleteUser(deleteUserHandler: { (isDeleted, error) in
-                    if let error = error {
-                        error.presentPopup(for: self)
-                    }
+                    guard error == nil else { error?.presentPopup(for: self); return; }
                     self.logoutUser();
                 })
             }
@@ -236,41 +229,42 @@ extension SideMenuViewController {
         
         buttonDeleteAccount.action = actionDelete
         
-        cell.configureCell(title: title, value: "", icon: nil, options: [buttonDeleteAccount, buttonDismiss], centerText: true, alertText: "Are you sure? Deleting your account is definitive.")
+        cell.configure(title: title, value: "", icon: nil, centerText: true)
+        cell.alertController?.configure(options: [buttonDeleteAccount, buttonDismiss], alertText: "Are you sure? Deleting your account is definitive.")
         cell.itemDescription.textColor = UIColor.red
     }
     
     fileprivate func setupSpotifySettings(for cell: SettingsCell, title: String) {
-        if let bitrate = settings?.spotifySettings?.bitrate {
-            let buttonHigh = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifySoundQualityHigh"), text: SPTBitrate.high.description())
-            let actionHigh = { () -> Void in
-                self.settings?.spotifySettings?.bitrate = .high
-                cell.itemValue.text = buttonHigh.textLabel.text
-            }
-            buttonHigh.action = actionHigh
-            
-            let buttonNormal = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifySoundQualityMedium"), text: SPTBitrate.normal.description())
-            let actionNormal = { () -> Void in
-                self.settings?.spotifySettings?.bitrate = .normal
-                cell.itemValue.text = buttonNormal.textLabel.text
-            }
-            buttonNormal.action = actionNormal
-            
-            let buttonLow = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifySoundQualityLow"), text: SPTBitrate.low.description())
-            let actionLow = { () -> Void in
-                self.settings?.spotifySettings?.bitrate = .low
-                cell.itemValue.text = buttonLow.textLabel.text
-            }
-            buttonLow.action = actionLow
-            
-            cell.configureCell(title: title, value: bitrate.description(), icon: UIImage(named: "SpotifySoundQuality"), options: [buttonHigh, buttonNormal, buttonLow])
+        guard let bitrate = settings?.spotifySettings?.bitrate else { return; }
+        let buttonHigh = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifySoundQualityHigh"), text: SPTBitrate.high.description())
+        let actionHigh = { () -> Void in
+            self.settings?.spotifySettings?.bitrate = .high
+            cell.itemValue.text = buttonHigh.textLabel.text
         }
+        buttonHigh.action = actionHigh
+        
+        let buttonNormal = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifySoundQualityMedium"), text: SPTBitrate.normal.description())
+        let actionNormal = { () -> Void in
+            self.settings?.spotifySettings?.bitrate = .normal
+            cell.itemValue.text = buttonNormal.textLabel.text
+        }
+        buttonNormal.action = actionNormal
+        
+        let buttonLow = YBButton(frame: CGRect.zero, icon: UIImage(named: "SpotifySoundQualityLow"), text: SPTBitrate.low.description())
+        let actionLow = { () -> Void in
+            self.settings?.spotifySettings?.bitrate = .low
+            cell.itemValue.text = buttonLow.textLabel.text
+        }
+        buttonLow.action = actionLow
+        
+        cell.configure(title: title, value: bitrate.description(), icon: UIImage(named: "SpotifySoundQuality"))
+        cell.alertController?.configure(options: [buttonHigh, buttonNormal, buttonLow])
+        
     }
     
     fileprivate func setupInfoSettings(for cell: SettingsCell, title: String) {
         let buttonPrivacyPolicy = YBButton(frame: CGRect.zero, icon: #imageLiteral(resourceName: "ButtonAppIcon"), text: "Read the privacy policy")
         let actionPrivacyPolicy = { () -> Void in
-//            cell.itemValue.text = buttonPrivacyPolicy.textLabel.text
             if let url = URL(string: "https://www.iubenda.com/privacy-policy/81210825") {
                 let safariViewController = SFSafariViewController(url: url)
                 self.present(safariViewController, animated: true, completion: nil)
@@ -279,7 +273,8 @@ extension SideMenuViewController {
         }
         buttonPrivacyPolicy.action = actionPrivacyPolicy
         
-        cell.configureCell(title: title, value: "", icon: nil, options: [buttonPrivacyPolicy], centerText: true, alertText: "")
+        cell.configure(title: title, value: "", icon: nil, centerText: true)
+        cell.alertController?.configure(options: [buttonPrivacyPolicy], alertText: "")
     }
     
 }

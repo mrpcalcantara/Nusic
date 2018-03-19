@@ -67,12 +67,12 @@ class LikedSongListViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func setupLikedSongListVC() {
+    private func setupLikedSongListVC() {
         self.view.backgroundColor = .clear
         setupTableView()
     }
     
-    func reloadTable() {
+    private func reloadTable() {
         DispatchQueue.main.async {
             if self.songListTableView != nil {
                 self.sortTableView(by: self.songListTableViewHeader.currentSortElement)

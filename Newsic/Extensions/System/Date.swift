@@ -19,13 +19,6 @@ extension Date {
     func fromString(dateString: String, dateFormat: String? = "yyyyMMdd") -> Date {
         let formatter = DateFormatter();
         formatter.dateFormat = dateFormat!
-        
-//        if let timezoneHours = Int(String(dateFormat?.suffix(4)))  {
-//            
-//            formatter.timeZone = TimeZone(secondsFromGMT: <#T##Int#>)
-//        }
-//        
-        
         return formatter.date(from: dateString)!;
     }
 }

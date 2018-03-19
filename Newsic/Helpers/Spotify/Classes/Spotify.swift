@@ -10,7 +10,7 @@ import Foundation
 
 class Spotify {
     
-    fileprivate var genreList:[String] = ["acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "children", "chill", "classical", "club", "comedy", "country", "dance", "dancehall", "death-metal", "deep-house", "detroit-techno", "disco", "disney", "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic", "emo", "folk", "forro", "french", "funk", "garage", "german", "gospel", "goth", "grindcore", "groove", "grunge", "guitar", "happy", "hard-rock", "hardcore", "hardstyle", "heavy-metal", "hip-hop", "holidays", "honky-tonk", "house", "idm", "indian", "indie", "indie-pop", "industrial", "iranian", "j-dance", "j-idol", "j-pop", "j-rock", "jazz", "k-pop", "kids", "latin", "latino", "malay", "mandopop", "metal", "metal-misc", "metalcore", "minimal-techno", "movies", "mpb", "new-age", "new-release", "opera", "pagode", "party", "philippines-opm", "piano", "pop", "pop-film", "post-dubstep", "power-pop", "progressive-house", "psych-rock", "punk", "punk-rock", "r-n-b", "rainy-day", "reggae", "reggaeton", "road-trip", "rock", "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes", "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish", "study", "summer", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music"]
+    fileprivate static var genreList:[String] = ["acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "children", "chill", "classical", "club", "comedy", "country", "dance", "dancehall", "death-metal", "deep-house", "detroit-techno", "disco", "disney", "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic", "emo", "folk", "forro", "french", "funk", "garage", "german", "gospel", "goth", "grindcore", "groove", "grunge", "guitar", "happy", "hard-rock", "hardcore", "hardstyle", "heavy-metal", "hip-hop", "holidays", "honky-tonk", "house", "idm", "indian", "indie", "indie-pop", "industrial", "iranian", "j-dance", "j-idol", "j-pop", "j-rock", "jazz", "k-pop", "kids", "latin", "latino", "malay", "mandopop", "metal", "metal-misc", "metalcore", "minimal-techno", "movies", "mpb", "new-age", "new-release", "opera", "pagode", "party", "philippines-opm", "piano", "pop", "pop-film", "post-dubstep", "power-pop", "progressive-house", "psych-rock", "punk", "punk-rock", "r-n-b", "rainy-day", "reggae", "reggaeton", "road-trip", "rock", "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes", "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish", "study", "summer", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music"]
     static let swapURL: String! = "https://newsic-spotifytokenrefresh.herokuapp.com/swap"
     static let refreshURL: String! = "https://newsic-spotifytokenrefresh.herokuapp.com/refresh"
     static let redirectURI: String! = "newsic://callback"
@@ -26,228 +26,42 @@ class Spotify {
     var user: SPTUser! = nil;
     var genreCount: [String: Int] = Spotify.getAllValuesDict()
     
-    func getGenreForTrack(trackId: String, trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
+    private func getGenreForTrack(trackId: String, trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
         getTrackArtist(trackId: trackId) { (fetchedArtistId, error) in
-            if error != nil {
-                trackGenreHandler(nil, error)
-            } else {
-                if let fetchedArtistId = fetchedArtistId {
-                    self.getGenresForArtist(artistId: fetchedArtistId, fetchedArtistGenresHandler: { (artistGenres, error) in
-                        trackGenreHandler(artistGenres, nil);
-                    })
-                }
-            }
+            guard let fetchedArtistId = fetchedArtistId else { trackGenreHandler(nil, error); return; }
+            self.getGenresForArtist(artistId: fetchedArtistId, fetchedArtistGenresHandler: { (artistGenres, error) in
+                trackGenreHandler(artistGenres, nil);
+            })
         }
     }
     
-    func getGenresForTrackList(trackIdList: [String], trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
-        let count = trackIdList.count;
-        var index = 0
+    final func getGenresForTrackList(trackIdList: [String], trackGenreHandler: @escaping([String]?, NusicError?) -> ()) {
+        guard trackIdList.count > 0 else { trackGenreHandler(nil, nil); return; }
+        let dispatchGroup = DispatchGroup()
         var allGenres:[String] = [];
+        for trackId in trackIdList {
+            dispatchGroup.enter()
+            getGenreForTrack(trackId: trackId, trackGenreHandler: { (genres, error) in
+                guard error == nil else { dispatchGroup.leave(); return; }
+                if let genres = genres {
+                    allGenres.append(contentsOf: genres)
+                }
+                dispatchGroup.leave()
+            })
+        }
         
-        if trackIdList.count == 0 {
-            trackGenreHandler(nil, nil)
-        } else {
-            for trackId in trackIdList {
-                getGenreForTrack(trackId: trackId, trackGenreHandler: { (genres, error) in
-                    if error != nil {
-                        trackGenreHandler(nil, error)
-                    } else {
-                        if let genres = genres {
-                            allGenres.append(contentsOf: genres)
-                        }
-                        index += 1
-                        if index == count {
-                            trackGenreHandler(allGenres, nil);
-                        }
-                    }
-                })
-            }
+        dispatchGroup.notify(queue: .main) {
+            trackGenreHandler(allGenres, nil)
         }
     }
     
-    func getAverageTrackFeatures(preferredTrackFeatures: [SpotifyTrackFeature]) -> SpotifyTrackFeature {
-        
-        let trackCount = Double(preferredTrackFeatures.count)
-        var emotionValues:[String: AnyObject] = [:]
-        
-        var acousticness:Double = 0
-        var danceability:Double = 0
-        var energy:Double = 0
-        var instrumentalness:Double = 0
-        var liveness:Double = 0
-        var loudness:Double = 0
-        var speechiness:Double = 0
-        var tempo:Double = 0
-        var valence:Double = 0
-        
-        
-        
-        for trackFeatures in preferredTrackFeatures {
-            
-            acousticness = trackFeatures.acousticness != nil ? acousticness + trackFeatures.acousticness! : 0
-            danceability = trackFeatures.danceability != nil ? danceability + trackFeatures.danceability! : 0
-            energy = trackFeatures.energy != nil ? energy + trackFeatures.energy! : 0
-            instrumentalness = trackFeatures.instrumentalness != nil ? instrumentalness + trackFeatures.instrumentalness! : 0
-            liveness = trackFeatures.liveness != nil ? liveness + trackFeatures.liveness! : 0
-            loudness = trackFeatures.loudness != nil ? loudness - trackFeatures.loudness! : 0
-            speechiness = trackFeatures.speechiness != nil ? speechiness + trackFeatures.speechiness! : 0
-            tempo = trackFeatures.tempo != nil ?  tempo + trackFeatures.tempo! : 0
-            valence = trackFeatures.valence != nil ? valence + trackFeatures.valence! : 0
-        }
-        
-        acousticness = (acousticness/Double(trackCount));
-        danceability = danceability/Double(trackCount);
-        energy = energy/Double(trackCount);
-        instrumentalness = instrumentalness/Double(trackCount);
-        liveness = liveness/Double(trackCount);
-        loudness = loudness/Double(trackCount);
-        speechiness = speechiness/Double(trackCount);
-        tempo = tempo/Double(trackCount);
-        valence = valence/Double(trackCount);
-        
-        return SpotifyTrackFeature(acousticness: acousticness, analysisUrl: nil, danceability: danceability, durationMs: nil, energy: energy, id: nil, instrumentalness: instrumentalness, key: nil, liveness: liveness, loudness: loudness, mode: nil, speechiness: speechiness, tempo: tempo, timeSignature: nil, trackHref: nil, type: nil, uri: nil, valence: valence, genre: nil, youtubeId: nil)
-        
-    }
-    
-    
-    func getAverageTrackFeaturesRandomized(preferredTrackFeatures: [SpotifyTrackFeature]) -> [String: AnyObject] {
-        let trackCount = Double(preferredTrackFeatures.count)
-        var emotionValues:[String: AnyObject] = [:]
-        
-        var acousticness:Double = 0
-        var danceability:Double = 0
-        var energy:Double = 0
-        var instrumentalness:Double = 0
-        var liveness:Double = 0
-        var loudness:Double = 0
-        var speechiness:Double = 0
-        var tempo:Double = 0
-        var valence:Double = 0
-        
-        
-        
-        for trackFeatures in preferredTrackFeatures {
-            
-            acousticness = trackFeatures.acousticness != nil ? acousticness + trackFeatures.acousticness! : 0
-            danceability = trackFeatures.danceability != nil ? danceability + trackFeatures.danceability! : 0
-            energy = trackFeatures.energy != nil ? energy + trackFeatures.energy! : 0
-            instrumentalness = trackFeatures.instrumentalness != nil ? instrumentalness + trackFeatures.instrumentalness! : 0
-            liveness = trackFeatures.liveness != nil ? liveness + trackFeatures.liveness! : 0
-            loudness = trackFeatures.loudness != nil ? loudness - trackFeatures.loudness! : 0
-            speechiness = trackFeatures.speechiness != nil ? speechiness + trackFeatures.speechiness! : 0
-            tempo = trackFeatures.tempo != nil ?  tempo + trackFeatures.tempo! : 0
-            valence = trackFeatures.valence != nil ? valence + trackFeatures.valence! : 0
-        }
-        
-        var trackFeatures = getAverageTrackFeatures(preferredTrackFeatures: preferredTrackFeatures)
-        
-        
-        trackFeatures.acousticness!.randomInRange(value: trackFeatures.acousticness!, range: 0.2, acceptNegativeValues: false)
-        trackFeatures.danceability!.randomInRange(value: trackFeatures.danceability!, range: 0.2, acceptNegativeValues: false)
-        trackFeatures.energy!.randomInRange(value: trackFeatures.energy!, range: 0.2, acceptNegativeValues: false)
-        trackFeatures.instrumentalness!.randomInRange(value: trackFeatures.instrumentalness!, range: 0.2, acceptNegativeValues: false)
-        trackFeatures.liveness!.randomInRange(value: trackFeatures.liveness!, range: 0.2, acceptNegativeValues: false)
-        trackFeatures.loudness!.randomInRange(value: trackFeatures.loudness!, range: 3, acceptNegativeValues: true)
-        trackFeatures.speechiness!.randomInRange(value: trackFeatures.speechiness!, range: 0.2, acceptNegativeValues: false)
-        trackFeatures.tempo!.randomInRange(value: trackFeatures.tempo!, range: 100, acceptNegativeValues: false, maxValue: 250)
-        trackFeatures.valence!.randomInRange(value: trackFeatures.valence!, range: 0.2, acceptNegativeValues: false)
-        
-        if preferredTrackFeatures.first?.acousticness != nil {
-            emotionValues["acousticness"] = acousticness as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.danceability != nil {
-            emotionValues["danceability"] = danceability as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.energy != nil {
-            emotionValues["energy"] = energy as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.instrumentalness != nil {
-            emotionValues["instrumentalness"] = instrumentalness as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.liveness != nil {
-            emotionValues["liveness"] = liveness as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.loudness != nil {
-            emotionValues["loudness"] = loudness as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.speechiness != nil {
-            emotionValues["speechiness"] = speechiness as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.tempo != nil {
-            emotionValues["tempo"] = tempo as AnyObject
-        }
-        
-        if preferredTrackFeatures.first?.valence != nil {
-            emotionValues["valence"] = valence as AnyObject
-        }
-        
-        return emotionValues;
-    }
-    
-    func trackFeaturesToString(features: [String: AnyObject]) -> String {
-        var result = "&"
-        var iterator = features.makeIterator();
-        
-        var nextElement = iterator.next();
-        
-        while nextElement != nil {
-            if let element = nextElement {
-                let key = element.key
-                let value = element.value as! Double
-                
-                result += "target_\(key)=\(value.roundToDecimalPlaces(places: 3))&"
-            }
-            
-            
-            nextElement = iterator.next();
-        }
-        
-//        let index = result.index(before: result.endIndex);
-//        return result.substring(to: index);
-        result.removeLast()
-        return result;
-    }
-    
-    func getRandomGenreBasedOnPercentage(hasGenreListForEmotion: Bool, selectedGenreList: [String: Int]? = nil) -> String{
-        let sortedKeys: [(key: String, value:Int)];
-        if selectedGenreList == nil {
-            sortedKeys = genreCount.sorted(by: { $0.value > $1.value })
-        } else {
-            sortedKeys = (selectedGenreList?.sorted(by: { $0.value > $1.value }))!;
-        }
-        
-        var percentagesString: [String] = []
-        let percentageRate:Double = hasGenreListForEmotion ? 50 : 100
-        
-        
-        for keyValue in sortedKeys {
-            let percentage = (Double(keyValue.value)/Double(sortedKeys.count))*percentageRate
-            let percentageInt = Int(percentage)
-            for _ in 0..<percentageInt {
-                percentagesString.append(keyValue.key)
-            }
-        }
-        
-        let randomIndex = Int.random(range: 1..<percentagesString.count);
-        return percentagesString[randomIndex];
-        
-    }
-    
-    func getGenreCount(for artistList: [SpotifyArtist]) -> [String: Int] {
+    final func getGenreCount(for artistList: [SpotifyArtist]) -> [String: Int] {
         var countDictionary:[String: Int] = [:];
         
         for artist in artistList {
             if let subGenres = artist.subGenres {
                 for subGenre in subGenres {
-                    if genreList.contains(subGenre) {
+                    if Spotify.genreList.contains(subGenre) {
                         if countDictionary.index(forKey: subGenre) != nil {
                             countDictionary.updateValue(countDictionary[subGenre]!+1, forKey: subGenre)
                         } else {
@@ -262,129 +76,47 @@ class Spotify {
         return genreCount;
     }
     
-    func filterSpotifyGenres(genres: [String]) -> [String] {
-        
-        var filteredList: [String] = []
-        for genre in genres {
-            for listedGenre in genreList {
-                if genre.lowercased().range(of: listedGenre.lowercased()) != nil && !filteredList.contains(listedGenre) {
-                    filteredList.append(listedGenre)
-                }
-            }
-        }
-        return filteredList;
-    }
     
-    func getGenreListString(numberOfSongs:Int, hasList: Bool, selectedGenreList:[String: Int]? = nil) -> String {
-        var hasList = hasList
-        var index = 0
-        var genres = ""
-        var genreListCount = 0
-        var totalCount = genreListCount
-        var selectedGenreList = selectedGenreList
-        
-        if let selectedGenreList = selectedGenreList, selectedGenreList.count > 0 {
-            genreListCount = selectedGenreList.count
-        } else {
-            hasList = false
-            selectedGenreList = nil
-            if genreCount.count < numberOfSongs && genreCount.count > 0 {
-                var list: String = ""
-                for keyValue in genreCount {
-                    if index > 4 {
-                        break;
-                    }
-                    index += 1
-                    list.append("\(keyValue.key),")
-                }
-                list.removeLast()
-                return list
-                
-            } else {
-                genreListCount = numberOfSongs
-            }
-        }
-        
-        totalCount = genreListCount
-        
-        //NOTE: Spotify recommendations max seed genres is 5. This is a workaround by fixing the max count to 5.
-        if numberOfSongs > 5 && genreListCount > 5 {
-           totalCount = 5
-        }
-        
-        while index < totalCount {
-            var separator = ","
-            if index == totalCount-1 {
-                separator = ""
-            }
-            var genre = getRandomGenreBasedOnPercentage(hasGenreListForEmotion: hasList, selectedGenreList: selectedGenreList);
-            genre = genre.replacingOccurrences(of: " ", with: "-")
-            if !genres.contains(genre) {
-                genres += "\(genre)\(separator)"
-            } else {
-                index -= 1;
-            }
-            
-            index += 1;
-        }
-        return genres;
-    }
-    
-    func getRefreshToken(currentSession: SPTSession, refreshTokenCompletionHandler: @escaping (Bool) -> ()) {
+    private func getRefreshToken(currentSession: SPTSession, refreshTokenCompletionHandler: @escaping (Bool) -> ()) {
         let userDefaults = UserDefaults.standard;
         SPTAuth.defaultInstance().renewSession(currentSession, callback: { (error, session) in
-            if error == nil {
-//                print("refresh successful");
-                let sessionData = NSKeyedArchiver.archivedData(withRootObject: session!)
-                userDefaults.set(sessionData, forKey: "SpotifySession")
-                userDefaults.synchronize()
-                
-                self.auth.session = session;
-                refreshTokenCompletionHandler(true)
-            } else {
-//                print("error refreshing session: \(error?.localizedDescription)");
-                refreshTokenCompletionHandler(false)
-            }
-            
+            guard error == nil else { refreshTokenCompletionHandler(false); return; }
+            let sessionData = NSKeyedArchiver.archivedData(withRootObject: session!)
+            userDefaults.set(sessionData, forKey: "SpotifySession")
+            userDefaults.synchronize()
+            self.auth.session = session;
+            refreshTokenCompletionHandler(true)
         })
     }
     
-    func executeSpotifyCall(with request: URLRequest, retryNumber: Int? = 3, retryAfter: Int? = 2, spotifyCallCompletionHandler: @escaping (Data?, HTTPURLResponse?, Error?, Bool) -> ()) {
+    final func executeSpotifyCall(with request: URLRequest, retryNumber: Int? = 3, retryAfter: Int? = 2, spotifyCallCompletionHandler: @escaping (Data?, HTTPURLResponse?, Error?, Bool) -> ()) {
         let session = URLSession.shared;
         session.executeCall(with: request) { (data, response, error, isSuccess) in
             let statusCode = response?.statusCode
-            if let error = error {
-                spotifyCallCompletionHandler(data, response, error, false);
+            guard error == nil else { spotifyCallCompletionHandler(data, response, error, false); return; }
+            if isSuccess {
+                spotifyCallCompletionHandler(data, response, error, true)
             } else {
-                if isSuccess {
-                    spotifyCallCompletionHandler(data, response, error, true)
-                } else {
-                    switch statusCode! {
-                    case 400...499:
-                        if statusCode == HTTPErrorCodes.unauthorized.rawValue {
-                            self.getRefreshToken(currentSession: self.auth.session, refreshTokenCompletionHandler: { (isRefreshSuccessful) in
-                                if isRefreshSuccessful {
-                                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                                    appDelegate.auth = self.auth
-                                    if let url = request.url {
-                                        var newRequest = URLRequest(url: url);
-                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "refreshSuccessful"), object: nil);
-                                        newRequest.addValue("Bearer \(self.auth.session.accessToken!)", forHTTPHeaderField: "Authorization");
-                                        self.executeSpotifyCall(with: newRequest, spotifyCallCompletionHandler: spotifyCallCompletionHandler)
-                                    }
-                                } else {
-                                    spotifyCallCompletionHandler(data, response, error, isSuccess);
-                                }
-                            })
-                        }
-                    case 500...599:
-                        spotifyCallCompletionHandler(data, response, error, false);
-                    default:
-                        spotifyCallCompletionHandler(data, nil, error, false);
+                switch statusCode! {
+                case 400...499:
+                    if statusCode == HTTPErrorCodes.unauthorized.rawValue {
+                        self.getRefreshToken(currentSession: self.auth.session, refreshTokenCompletionHandler: { (isRefreshSuccessful) in
+                            guard isRefreshSuccessful,
+                                let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+                                let url = request.url else { spotifyCallCompletionHandler(data, response, error, isSuccess); return; }
+                            appDelegate.auth = self.auth
+                            var newRequest = URLRequest(url: url);
+                            NotificationCenter.default.post(name: Notification.Name(rawValue: "refreshSuccessful"), object: nil);
+                            newRequest.addValue("Bearer \(self.auth.session.accessToken!)", forHTTPHeaderField: "Authorization");
+                            self.executeSpotifyCall(with: newRequest, spotifyCallCompletionHandler: spotifyCallCompletionHandler)
+                        })
                     }
+                case 500...599:
+                    spotifyCallCompletionHandler(data, response, error, false);
+                default:
+                    spotifyCallCompletionHandler(data, nil, error, false);
                 }
             }
-            
         }
     }
     
@@ -415,6 +147,26 @@ class Spotify {
         } else {
             return artistName.lowercased()
         }
-        
+    }
+    
+    static func getFirstArtist(from list: [String]) -> String {
+        if let firstElement = list.first {
+            return firstElement
+        }
+        return ""
+    }
+    
+    static func filterSpotifyGenres(genres: [String]) -> [String] {
+        var filteredList: [String] = []
+        //Removing the - to match the genres
+        let filteredGenreList = Spotify.genreList.map({ $0.replacingOccurrences(of: "-", with: " ")})
+        for genre in genres {
+            for listedGenre in filteredGenreList {
+                if genre.lowercased().range(of: listedGenre.lowercased()) != nil && !filteredList.contains(listedGenre) {
+                    filteredList.append(listedGenre)
+                }
+            }
+        }
+        return filteredList;
     }
 }

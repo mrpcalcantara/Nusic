@@ -62,13 +62,11 @@ class SongListTabBarViewController: UITabBarController {
     
     fileprivate func setupNavigationBar(image: UIImage? = UIImage(named: "PreferredPlayer")) {
         navbar = UINavigationBar(frame: CGRect(x: 0, y: self.view.safeAreaLayoutGuide.layoutFrame.origin.y, width: self.view.frame.width, height: 44));
-        
         navbar.barStyle = .default
         navbar.translatesAutoresizingMaskIntoConstraints = false
         
         let leftBarButton = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(moveToShowSongVC));
-        self.navigationItem.leftBarButtonItem = leftBarButton
-        
+        self.navigationItem.leftBarButtonItem = leftBarButton        
         let navItem = self.navigationItem
         
         navbar.items = [navItem]
@@ -89,32 +87,25 @@ class SongListTabBarViewController: UITabBarController {
         
     }
     
-    func setupTabBarController() {
+    private func setupTabBarController() {
+        guard let parent = self.parent as? NusicPageViewController, let showSongVC = parent.showSongVC as? ShowSongViewController else { return }
+        self.showSongVC = showSongVC
         self.delegate = self
-        
         self.view.backgroundColor = .clear
-        
-        if let parent = self.parent as? NusicPageViewController {
-            if let showSongVC = parent.showSongVC as? ShowSongViewController {
-                self.showSongVC = showSongVC
-            }
-        }
-        
-        setupChildViewControllers()
-        
         self.tabBar.tintColor = NusicDefaults.foregroundThemeColor
         self.tabBar.barTintColor = NusicDefaults.blackColor
+        setupChildViewControllers()
+        
     }
     
-    func setupChildViewControllers() {
-        if let viewControllers = self.viewControllers {
-            for viewController in viewControllers {
-                setupViewController(viewController: viewController)
-            }
+    private func setupChildViewControllers() {
+        guard let viewControllers = self.viewControllers else { return }
+        for viewController in viewControllers {
+            setupViewController(viewController: viewController)
         }
     }
     
-    func setupViewController(viewController: UIViewController) {
+    private func setupViewController(viewController: UIViewController) {
         switch viewController.className {
         case LikedSongListViewController.className:
             self.likedSongListVC = viewController as? LikedSongListViewController
@@ -127,45 +118,42 @@ class SongListTabBarViewController: UITabBarController {
         }
     }
     
-    func setupLikedSongListVC() {
+    private func setupLikedSongListVC() {
         self.likedSongListVC?.isMoodSelected = isMoodSelected
         self.likedSongListVC?.likedTrackList = likedTrackList
         self.likedSongListVC?.moodObject = moodObject
     }
     
-    func setupSuggestedSongListVC() {
+    private func setupSuggestedSongListVC() {
         self.suggestedSongListVC?.suggestedSongList = suggestedTrackList
         self.suggestedSongListVC?.updateBadgeCount()
     }
     
-    @objc func moveToShowSongVC() {
+    @objc private func moveToShowSongVC() {
         (parent as! NusicPageViewController).scrollToPreviousViewController();
     }
 
-    func playSelectedCard(track: NusicTrack) {
+    final func playSelectedCard(track: NusicTrack) {
+        
+        guard let parent = parent as? NusicPageViewController else { return }
+        parent.scrollToPreviousViewController()
         showSongVC?.playSelectedCard(track: track);
-        if let parent = parent as? NusicPageViewController {
-            parent.scrollToPreviousViewController()
-        }
     }
     
-    func removeTrackFromLikedTracks(track: NusicTrack, indexPath: IndexPath) {
+    final func removeTrackFromLikedTracks(track: NusicTrack, indexPath: IndexPath) {
         
         showSongVC?.removeTrackFromLikedTracks(track: track, indexPath: indexPath, removeTrackHandler: { (isRemoved) in
             track.deleteData(deleteCompleteHandler: { (ref, error) in
-                if error != nil {
-                    print("ERROR DELETING TRACK");
-                } else {
-                    if let index = self.likedTrackList.index(where: { (likedTrack) -> Bool in
-                        return likedTrack.trackInfo == track.trackInfo
-                    }) {
-                        self.likedTrackList.remove(at: index)
-                        
-                        DispatchQueue.main.async {
-                            self.likedSongListVC?.sortTableView(by: (self.likedSongListVC?.songListTableViewHeader.currentSortElement)!)
-                            self.likedSongListVC?.songListTableView.reloadData()
-                        }
-                    }
+                guard let index = self.likedTrackList.index(where: { (likedTrack) -> Bool in
+                    return likedTrack.trackInfo == track.trackInfo
+                }) else {
+                    error?.presentPopup(for: self)
+                    return;
+                }
+                self.likedTrackList.remove(at: index)
+                DispatchQueue.main.async {
+                    self.likedSongListVC?.sortTableView(by: (self.likedSongListVC?.songListTableViewHeader.currentSortElement)!)
+                    self.likedSongListVC?.songListTableView.reloadData()
                 }
             })
             
@@ -176,9 +164,8 @@ class SongListTabBarViewController: UITabBarController {
 extension SongListTabBarViewController: UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if let viewController = viewController as? SuggestedSongListViewController {
-            viewController.tabBarItem.badgeValue = String(viewController.suggestedSongList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
-        }
+        guard let viewController = viewController as? SuggestedSongListViewController else { return }
+        viewController.tabBarItem.badgeValue = String(viewController.suggestedSongList.filter({ ($0.suggestionInfo?.isNewSuggestion)! }).count)
     }
     
 }

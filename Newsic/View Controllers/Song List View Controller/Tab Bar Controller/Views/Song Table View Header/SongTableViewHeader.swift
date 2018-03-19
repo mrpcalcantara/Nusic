@@ -34,7 +34,7 @@ class SongTableViewHeader: UIView {
         super.init(coder: aDecoder)
     }
     
-    func configureLikedList(isMoodSelected: Bool, emotion: String?) {
+    final func configureLikedList(isMoodSelected: Bool, emotion: String?) {
         if isMoodSelected {
             self.displayName.text = "Mood: \(emotion!)"
         } else {
@@ -43,7 +43,7 @@ class SongTableViewHeader: UIView {
         
     }
     
-    func configureSuggestedList() {
+    final func configureSuggestedList() {
         setImages(images: [#imageLiteral(resourceName: "TransparentAppIcon")])
         sortElementImageView.image = sortImages[0]
         self.displayName.text = "Suggested by Nusic"
@@ -56,7 +56,7 @@ class SongTableViewHeader: UIView {
     }
     
     
-    func setupView() {
+    final func setupView() {
         loadFromNib()
         self.frame.size = CGSize(width: 200, height: 100)
         self.backgroundColor = NusicDefaults.clearColor
@@ -81,7 +81,7 @@ class SongTableViewHeader: UIView {
         self.addSubview(contentView)
     }
     
-    func setImages(images: [UIImage]) {
+    private func setImages(images: [UIImage]) {
         self.sortImages = images
     }
     

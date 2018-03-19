@@ -35,9 +35,7 @@ class NusicPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         dataSource = self
-        delegate = self
         
         songPickerVC = UIStoryboard(name: "Main", bundle: nil) .
             instantiateViewController(withIdentifier: "SongPicker")
@@ -56,23 +54,19 @@ class NusicPageViewController: UIPageViewController {
             orderedViewControllers.insert(songPickerVC, at: 1)
         }
         
+        //Disable delay in order to facilitate the scrubbing for the track
         for view in view.subviews {
-            if let myView = view as? UIScrollView {
-//                myView.bounces = false
-                myView.delaysContentTouches = false
-            }
+            guard let myView = view as? UIScrollView else { break }
+            myView.delaysContentTouches = false
         }
 
-        let image = UIImage(named: "BackgroundPattern")
-        if let image = image {
+        if let image = UIImage(named: "BackgroundPattern") {
             backgroundImageView = UIImageView(frame: self.view.frame)
             backgroundImageView.contentMode = .scaleAspectFill
             backgroundImageView.image = image
             self.view.addSubview(backgroundImageView)
             self.view.sendSubview(toBack: backgroundImageView)
         }
-        
-        
         
         let initialViewController = orderedViewControllers[1]
         scrollToViewController(viewController: initialViewController)
@@ -82,38 +76,31 @@ class NusicPageViewController: UIPageViewController {
     }
     
     @objc func addViewControllerToPageVC(viewController: UIViewController) {
-        if !orderedViewControllers.contains(viewController) {
-            orderedViewControllers.insert(viewController, at: orderedViewControllers.count)
-            nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
-        }
-        
+        guard !orderedViewControllers.contains(viewController) else { return }
+        orderedViewControllers.insert(viewController, at: orderedViewControllers.count)
+        nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
     }
     
     @objc func removeViewControllerFromPageVC(viewController: UIViewController) {
-        if orderedViewControllers.contains(viewController) {
-            if let index = orderedViewControllers.index(of: viewController) {
-                orderedViewControllers.remove(at: index)
-                nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
-            }
-        }
+        guard orderedViewControllers.contains(viewController), let index = orderedViewControllers.index(of: viewController) else { return }
+        orderedViewControllers.remove(at: index)
+        nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
     }
     
     /**
      Scrolls to the next view controller.
      */
     func scrollToNextViewController() {
-        if let visibleViewController = viewControllers?.first, let nextViewController = pageViewController(self, viewControllerAfter: visibleViewController) {
-            scrollToViewController(viewController: nextViewController)
-        }
+        guard let visibleViewController = viewControllers?.first, let nextViewController = pageViewController(self, viewControllerAfter: visibleViewController) else { return }
+        scrollToViewController(viewController: nextViewController)
     }
     
     /**
      Scrolls to the previous view controller.
      */
     func scrollToPreviousViewController() {
-        if let visibleViewController = viewControllers?.first, let previousViewController = pageViewController(self, viewControllerBefore: visibleViewController) {
-            scrollToViewController(viewController: previousViewController, direction: .reverse)
-        }
+        guard let visibleViewController = viewControllers?.first, let previousViewController = pageViewController(self, viewControllerBefore: visibleViewController) else { return }
+        scrollToViewController(viewController: previousViewController, direction: .reverse)
     }
     
     /**
@@ -123,16 +110,10 @@ class NusicPageViewController: UIPageViewController {
      - parameter newIndex: the new index to scroll to
      */
     func scrollToViewController(index newIndex: Int) {
-        if let firstViewController = viewControllers?.first, let currentIndex = orderedViewControllers.index(of: firstViewController) {
-            let direction: UIPageViewControllerNavigationDirection = newIndex >= currentIndex ? .forward : .reverse
-            let nextViewController = orderedViewControllers[newIndex]
-            scrollToViewController(viewController: nextViewController, direction: direction)
-        }
-    }
-    
-    private func newColoredViewController(color: String) -> UIViewController {
-        return UIStoryboard(name: "Main", bundle: nil) .
-            instantiateViewController(withIdentifier: "\(color)ViewController")
+        guard let firstViewController = viewControllers?.first, let currentIndex = orderedViewControllers.index(of: firstViewController) else { return }
+        let direction: UIPageViewControllerNavigationDirection = newIndex >= currentIndex ? .forward : .reverse
+        let nextViewController = orderedViewControllers[newIndex]
+        scrollToViewController(viewController: nextViewController, direction: direction)
     }
     
     /**
@@ -152,9 +133,8 @@ class NusicPageViewController: UIPageViewController {
      Notifies '_nusicDelegate' that the current page index was updated.
      */
     private func notifyNusicDelegateOfNewIndex() {
-        if let firstViewController = viewControllers?.first, let index = orderedViewControllers.index(of: firstViewController) {
-            nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageIndex: index)
-        }
+        guard let firstViewController = viewControllers?.first, let index = orderedViewControllers.index(of: firstViewController) else { return }
+        nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageIndex: index)
     }
     
 }
@@ -200,18 +180,9 @@ extension NusicPageViewController: UIPageViewControllerDataSource {
         let nextIndex = viewControllerIndex + 1
         let orderedViewControllersCount = orderedViewControllers.count
         
-        
-        // User is on the last view controller and swiped right to loop to
-        // the first view controller.
-//        guard orderedViewControllersCount < nextIndex else {
-//            return nil
-//        }
-        
         guard orderedViewControllersCount > nextIndex else {
             return nil
         }
-        
-        
         
         return orderedViewControllers[nextIndex]
     }
@@ -226,22 +197,6 @@ extension NusicPageViewController : UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         print("scroll scroll")
-    }
-    
-}
-
-extension NusicPageViewController: UIPageViewControllerDelegate {
-    
-    func pageViewController(_ pageViewController: UIPageViewController,
-                            didFinishAnimating finished: Bool,
-                            previousViewControllers: [UIViewController],
-                            transitionCompleted completed: Bool) {
-        notifyNusicDelegateOfNewIndex()
-        
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-        self.pageViewController(self, viewControllerAfter: pendingViewControllers.first!)
     }
     
 }
@@ -265,16 +220,5 @@ protocol NusicPageViewControllerDelegate: class {
      */
     func nusicPageViewController(nusicPageViewController: NusicPageViewController,
                                     didUpdatePageIndex index: Int)
-    
-//
-//    /**
-//     Called when the new view controller is to be presented
-//
-//     - parameter nusicPageViewController: the NusicPageViewController instance
-//     - parameter enableNext: the next view controller on the stack
-//    */
-//
-//    func nusicPageViewController(nusicPageViewController: NusicPageViewController,
-//                                  enableNext: Bool)
     
 }

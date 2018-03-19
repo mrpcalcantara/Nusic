@@ -26,7 +26,7 @@ class NusicAlertController : YBAlertController {
         self.style = style
     }
     
-    func setupUI() {
+    final func setupUI() {
         super.overlayColor = UIColor.black.withAlphaComponent(0.9)
         
         //Title details
@@ -46,6 +46,15 @@ class NusicAlertController : YBAlertController {
         super.cancelButtonFont = NusicDefaults.font
         super.cancelButtonTextColor = NusicDefaults.foregroundThemeColor
         
+    }
+    
+    final func configure(options: [YBButton]? = nil, alertText: String? = nil) {
+        guard let options = options else { return }
+        self.title = alertText
+        self.style = YBAlertControllerStyle.ActionSheet
+        for option in options {
+            self.addButton(icon: option.icon, title: option.textLabel.text!, action: option.action)
+        }
     }
     
 }

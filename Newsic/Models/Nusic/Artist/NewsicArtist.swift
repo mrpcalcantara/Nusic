@@ -42,21 +42,14 @@ extension NusicArtist: FirebaseModel {
     }
     
     internal func saveData(saveCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
-//        let dict = ["name" : self.name]
-//        reference.child(userName).child(self.id!).updateChildValues(dict) { (error, reference) in
-//            saveCompleteHandler(reference, error)
-//        }
-        //        reference.child(userName).child(self.id!).updateChildValues(dict);
+        saveCompleteHandler(nil, nil)
     }
+    
     
     internal func deleteData(deleteCompleteHandler: @escaping (DatabaseReference?, NusicError?) -> ()) {
         reference.child(userName).removeValue { (error, databaseReference) in
-            if let error = error {
-                deleteCompleteHandler(self.reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteArtist.rawValue, systemError: error))
-            } else {
-                deleteCompleteHandler(self.reference, nil)
-            }
-            
+            let error = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteArtist.rawValue, systemError: error)
+            deleteCompleteHandler(self.reference, error)
         }
     }
     

@@ -53,9 +53,8 @@ class ChoiceListViewHeader: UICollectionReusableView {
         clearButton.borderColor = NusicDefaults.foregroundThemeColor
     }
     
-    func configure(label: String) {
+    final func configure(label: String) {
         setupLabel(label: label)
         setupButton()
-        
     }
 }

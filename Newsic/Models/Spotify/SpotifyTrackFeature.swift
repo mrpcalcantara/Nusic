@@ -31,31 +31,49 @@ struct SpotifyTrackFeature: Hashable {
     var analysisUrl: String? = "";
     var durationMs: Double? = 0;
     var timeSignature: Int? = 0;
-    var genre: String? = ""
     var youtubeId: String? = ""
     
-    init(acousticness: Double? = nil, analysisUrl: String? = nil, danceability: Double? = nil, durationMs: Double? = nil, energy: Double? = nil, id: String? = nil, instrumentalness: Double? = nil, key: Int? = nil, liveness: Double? = nil, loudness: Double? = nil, mode: Int? = nil, speechiness: Double? = nil, tempo: Double? = nil, timeSignature: Int? = nil, trackHref: String? = nil, type: String? = nil, uri: String? = nil, valence: Double? = nil, genre: String? = nil, youtubeId: String? = nil) {
+    init(acousticness: Double? = nil, danceability: Double? = nil, energy: Double? = nil, instrumentalness: Double? = nil, liveness: Double? = nil, loudness: Double? = nil, speechiness: Double? = nil, tempo: Double? = nil, valence: Double? = nil) {
         
         self.acousticness      = acousticness
-        self.analysisUrl       = analysisUrl
         self.danceability      = danceability
-        self.durationMs        = durationMs
         self.energy            = energy
-        self.id                = id
         self.instrumentalness  = instrumentalness
-        self.key               = key
         self.liveness          = liveness
         self.loudness          = loudness
-        self.mode              = mode
         self.speechiness       = speechiness
         self.tempo             = tempo
-        self.timeSignature     = timeSignature
-        self.trackHref         = trackHref
-        self.type              = type
-        self.uri               = uri
         self.valence           = valence
-        self.genre             = genre
-        self.youtubeId         = youtubeId
+    }
+    
+    init(featureDictionary: [String: AnyObject]) {
+        self.init()
+        self.mapDictionary(featureDictionary: featureDictionary)
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: TrackFeatureKeys.self)
+        
+        acousticness      = try container.decodeIfPresent(Double.self, forKey: .acousticness)
+        analysisUrl       = try container.decodeIfPresent(String.self, forKey: .analysisUrl)
+        danceability      = try container.decodeIfPresent(Double.self, forKey: .danceability)
+        durationMs        = try container.decodeIfPresent(Double.self, forKey: .durationMs)
+        energy            = try container.decodeIfPresent(Double.self, forKey: .energy)
+        id                = try container.decodeIfPresent(String.self, forKey: .id)
+        instrumentalness  = try container.decodeIfPresent(Double.self, forKey: .instrumentalness)
+        key               = try container.decodeIfPresent(Int.self, forKey: .key)
+        liveness          = try container.decodeIfPresent(Double.self, forKey: .liveness)
+        loudness          = try container.decodeIfPresent(Double.self, forKey: .loudness)
+        mode              = try container.decodeIfPresent(Int.self, forKey: .mode)
+        speechiness       = try container.decodeIfPresent(Double.self, forKey: .speechiness)
+        tempo             = try container.decodeIfPresent(Double.self, forKey: .tempo)
+        timeSignature     = try container.decodeIfPresent(Int.self, forKey: .timeSignature)
+        trackHref         = try container.decodeIfPresent(String.self, forKey: .trackHref)
+        type              = try container.decodeIfPresent(String.self, forKey: .type)
+        uri               = try container.decodeIfPresent(String.self, forKey: .uri)
+        valence           = try container.decodeIfPresent(Double.self, forKey: .valence)
+        youtubeId         = ""
+        
     }
     
     static func ==(lhs: SpotifyTrackFeature, rhs: SpotifyTrackFeature) -> Bool {
@@ -78,7 +96,6 @@ struct SpotifyTrackFeature: Hashable {
                 lhs.analysisUrl == rhs.analysisUrl &&
                 lhs.durationMs == rhs.durationMs &&
                 lhs.timeSignature == rhs.timeSignature &&
-                lhs.genre == rhs.genre &&
                 lhs.youtubeId == rhs.youtubeId
     }
     
@@ -103,7 +120,6 @@ struct SpotifyTrackFeature: Hashable {
         featureDictionary["type"] = self.type as AnyObject
         featureDictionary["uri"] = self.uri as AnyObject
         featureDictionary["valence"] = self.valence as AnyObject
-        featureDictionary["genre"] = self.genre as AnyObject
         featureDictionary["youtubeId"] = self.youtubeId as AnyObject
         
         return featureDictionary;
@@ -111,27 +127,49 @@ struct SpotifyTrackFeature: Hashable {
     
     mutating func mapDictionary(featureDictionary: [String: AnyObject]) {
         
-        self.acousticness      = featureDictionary["acousticness"] as? Double
-        self.analysisUrl       = featureDictionary["analysis_url"] as? String
-        self.danceability      = featureDictionary["danceability"] as? Double
-        self.durationMs        = featureDictionary["duration_ms"] as? Double
-        self.energy            = featureDictionary["energy"] as? Double
-        self.id                = featureDictionary["id"] as? String
-        self.instrumentalness  = featureDictionary["instrumentalness"] as? Double
-        self.key               = featureDictionary["key"] as? Int
-        self.liveness          = featureDictionary["liveness"] as? Double
-        self.loudness          = featureDictionary["loudness"] as? Double
-        self.mode              = featureDictionary["mode"] as? Int
-        self.speechiness       = featureDictionary["speechiness"] as? Double
-        self.tempo             = featureDictionary["tempo"] as? Double
-        self.timeSignature     = featureDictionary["time_signature"] as? Int
-        self.trackHref         = featureDictionary["track_href"] as? String
-        self.type              = featureDictionary["type"] as? String
-        self.uri               = featureDictionary["uri"] as? String
-        self.valence           = featureDictionary["valence"] as? Double
-        self.genre             = featureDictionary["genre"] as? String
-        self.youtubeId         = featureDictionary["youtubeId"] as? String
+        acousticness      = featureDictionary["acousticness"] as? Double
+        analysisUrl       = featureDictionary["analysis_url"] as? String
+        danceability      = featureDictionary["danceability"] as? Double
+        durationMs        = featureDictionary["duration_ms"] as? Double
+        energy            = featureDictionary["energy"] as? Double
+        id                = featureDictionary["id"] as? String
+        instrumentalness  = featureDictionary["instrumentalness"] as? Double
+        key               = featureDictionary["key"] as? Int
+        liveness          = featureDictionary["liveness"] as? Double
+        loudness          = featureDictionary["loudness"] as? Double
+        mode              = featureDictionary["mode"] as? Int
+        speechiness       = featureDictionary["speechiness"] as? Double
+        tempo             = featureDictionary["tempo"] as? Double
+        timeSignature     = featureDictionary["time_signature"] as? Int
+        trackHref         = featureDictionary["track_href"] as? String
+        type              = featureDictionary["type"] as? String
+        uri               = featureDictionary["uri"] as? String
+        valence           = featureDictionary["valence"] as? Double
+        youtubeId         = featureDictionary["youtubeId"] as? String
     }
     
     
+}
+
+extension SpotifyTrackFeature: Decodable {
+    enum TrackFeatureKeys: String, CodingKey {
+        case acousticness
+        case analysisUrl       = "analysis_url"
+        case danceability
+        case durationMs        = "duration_ms"
+        case energy
+        case id
+        case instrumentalness
+        case key
+        case liveness
+        case loudness
+        case mode
+        case speechiness
+        case tempo
+        case timeSignature     = "time_signature"
+        case trackHref         = "track_href"
+        case type
+        case uri
+        case valence
+    }
 }

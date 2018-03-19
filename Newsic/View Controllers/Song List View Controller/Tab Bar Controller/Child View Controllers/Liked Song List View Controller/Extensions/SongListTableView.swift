@@ -10,7 +10,7 @@ import UIKit
 
 extension LikedSongListViewController {
     
-    func setupTableView() {
+    final func setupTableView() {
         songListTableView.delegate = self;
         songListTableView.dataSource = self;
         
@@ -36,7 +36,7 @@ extension LikedSongListViewController {
         songListTableView.backgroundColor = .clear
     }
     
-    func setupBackgroundView() {
+    final func setupBackgroundView() {
         if sectionTitles.count == 0 {
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: songListTableView.bounds.width, height: songListTableView.bounds.height))
             label.text = "No tracks have been liked so far. Like a song to add to your list!"
@@ -70,12 +70,8 @@ extension LikedSongListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SongTableViewSectionHeader.reuseIdentifier) as? SongTableViewSectionHeader else { return UIView(); }
-        
-        if let text = sectionTitles[section] {
-            cell.configure(text: text)
-        }
-        
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SongTableViewSectionHeader.reuseIdentifier) as? SongTableViewSectionHeader, let text = sectionTitles[section] else { return UIView(); }
+        cell.configure(text: text)
         return cell
     }
     
@@ -112,48 +108,54 @@ extension LikedSongListViewController: UITableViewDataSource {
         return regCell;
     }
     
-    func sortTableView(by type: SpotifyType) {
+    final func sortTableView(by type: SpotifyType) {
         switch type {
         case .artist:
-            sectionTitles = likedTrackList.map { String($0.trackInfo.artist.artistName.capitalizingFirstLetter().first!) }.getFirstLetterArray(removeDuplicates: true).sorted()
-            sectionSongs = sectionTitles.map({ (firstLetter) in
-                return likedTrackList.filter({ (track) -> Bool in
-                    return track.trackInfo.artist.artistName.first?.description == firstLetter
-                })
-            })
+            artistTableViewSort()
         case .track:
-            sectionTitles = likedTrackList.map { String($0.trackInfo.songName.capitalizingFirstLetter().first!) }.getFirstLetterArray(removeDuplicates: true).sorted()
-            sectionSongs = sectionTitles.map({ (firstLetter) in
-                return likedTrackList.filter({ (track) -> Bool in
-                    return track.trackInfo.songName.first?.description == firstLetter
-                })
-            })
+            trackTableViewSort()
         case .genre:
-            let list = likedTrackList.map({ (track) -> String in
-                if let subGenres = track.trackInfo.artist.subGenres {
-                    return subGenres.first!.capitalizingFirstLetter()
-                }
-                return ""
-            })
-            
-            let sortedList = list.filter({ (str) -> Bool in
-                return str != "" || !list.contains(str)
-            }).removeDuplicates().sorted()
-            sectionTitles = sortedList
-            sectionSongs = sortedList.map({ (genre) in
-                return likedTrackList.filter({ (track) -> Bool in
-                    if let subGenres = track.trackInfo.artist.subGenres {
-                        return subGenres.contains(genre.lowercased())
-                    }
-                    return false
-                })
-            })
+            genreTableViewSort()
         default:
             break;
         }
         
     }
     
+    fileprivate func artistTableViewSort() {
+        sectionTitles = likedTrackList.map { String($0.trackInfo.artist.namesToString().capitalizingFirstLetter().first!) }.getFirstLetterArray(removeDuplicates: true).sorted()
+        
+        sectionSongs = sectionTitles.map({ (firstLetter) in
+            return likedTrackList.filter({ (track) -> Bool in
+                return track.trackInfo.artist.namesToString().first?.description == firstLetter
+            })
+        })
+    }
+    
+    fileprivate func trackTableViewSort() {
+        sectionTitles = likedTrackList.map { String($0.trackInfo.songName.capitalizingFirstLetter().first!) }.getFirstLetterArray(removeDuplicates: true).sorted()
+        sectionSongs = sectionTitles.map({ (firstLetter) in
+            return likedTrackList.filter({ (track) -> Bool in
+                return track.trackInfo.songName.first?.description == firstLetter
+            })
+        })
+    }
+    
+    fileprivate func genreTableViewSort() {
+        let list = likedTrackList.map({ (track) -> String in
+            return track.trackInfo.artist.listArtistsGenres().first!.capitalizingFirstLetter()
+        })
+        
+        let sortedList = list.filter({ (str) -> Bool in
+            return str != "" || !list.contains(str)
+        }).removeDuplicates().sorted()
+        sectionTitles = sortedList
+        sectionSongs = sortedList.map({ (genre) in
+            return likedTrackList.filter({ (track) -> Bool in
+                return track.trackInfo.artist.listArtistsGenres().contains(genre.lowercased())
+            })
+        })
+    }
 }
 
 extension LikedSongListViewController : SongTableViewHeaderDelegate {

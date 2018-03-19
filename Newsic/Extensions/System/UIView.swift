@@ -10,7 +10,7 @@ import UIKit
 
 extension UIView {
     
-    func createBlurEffect(style: UIBlurEffectStyle, alpha: CGFloat, customBounds: CGRect? = nil, inFront: Bool? = true) -> UIVisualEffectView {
+    final func createBlurEffect(style: UIBlurEffectStyle, alpha: CGFloat, customBounds: CGRect? = nil, inFront: Bool? = true) -> UIVisualEffectView {
         let blurEffect = UIBlurEffect(style: style)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.frame = customBounds != nil ? customBounds! : self.bounds
@@ -20,23 +20,17 @@ extension UIView {
         return blurView
     }
     
-    func addBlurEffect(style: UIBlurEffectStyle, alpha: CGFloat, customBounds: CGRect? = nil, inFront: Bool? = true) {
-        
+    final func addBlurEffect(style: UIBlurEffectStyle, alpha: CGFloat, customBounds: CGRect? = nil, inFront: Bool? = true) {
         let blurEffect = UIBlurEffect(style: style)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.frame = customBounds != nil ? customBounds! : self.bounds
         blurView.autoresizingMask = [.flexibleHeight, .flexibleWidth, .flexibleLeftMargin, .flexibleRightMargin];
         blurView.tag = 111
         blurView.alpha = alpha
-        if inFront! {
-            self.insertSubview(blurView, at: 0);
-        } else {
-            self.addSubview(blurView)
-        }
-        
+        _ = inFront! ? self.insertSubview(blurView, at: 0) : self.addSubview(blurView)
     }
     
-    func removeBlurEffect() {
+    final func removeBlurEffect() {
         let subviews = self.subviews
         for view in subviews {
             if view.tag == 111 {
@@ -46,7 +40,7 @@ extension UIView {
         }
     }
     
-    func reloadBlurEffect() {
+    final func reloadBlurEffect() {
         for view in subviews {
             if view.tag == 111 {
                 view.frame.size = self.bounds.size
@@ -55,7 +49,7 @@ extension UIView {
         }
     }
     
-    func addShadow(cornerRadius: CGFloat? = 3, shadowColor: CGColor? = UIColor.clear.cgColor, shadowOpacity: Float? = 0.5, shadowOffset: CGSize? = CGSize(width: -2, height: -7), shadowRadius: CGFloat? = 2) {
+    final func addShadow(cornerRadius: CGFloat? = 3, shadowColor: CGColor? = UIColor.clear.cgColor, shadowOpacity: Float? = 0.5, shadowOffset: CGSize? = CGSize(width: -2, height: -7), shadowRadius: CGFloat? = 2) {
         self.layer.cornerRadius = cornerRadius!
         self.layer.masksToBounds = false
         
@@ -70,19 +64,19 @@ extension UIView {
 
     }
     
-    func selectAnimation() {
+    final func selectAnimation() {
         UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
             self.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         }, completion: nil)
     }
     
-    func deselectAnimation() {
+    final func deselectAnimation() {
         UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
             self.transform = CGAffineTransform(scaleX: 1, y: 1)
         }, completion: nil)
     }
     
-    func animateSelection() {
+    final func animateSelection() {
         
         UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
             self.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)

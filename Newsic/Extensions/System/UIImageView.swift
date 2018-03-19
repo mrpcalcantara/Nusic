@@ -10,7 +10,7 @@ import UIKit
 
 extension UIImageView {
     
-    func downloadedFrom(url: URL, contentMode mode: UIViewContentMode = .scaleAspectFit, roundImage: Bool? = false) {
+    final func downloadedFrom(url: URL, contentMode mode: UIViewContentMode = .scaleAspectFit, roundImage: Bool? = false) {
         contentMode = mode
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard
@@ -21,28 +21,26 @@ extension UIImageView {
                 else { return }
             DispatchQueue.main.async() { () -> Void in
                 self.image = image
-                if roundImage! {
-                    self.roundImage();
-                }
+                guard roundImage! else { return }
+                self.roundImage();
+                
             }
             }.resume()
     }
     
-    func downloadedFrom(link: String, contentMode mode: UIViewContentMode = .scaleAspectFit, roundImage: Bool? = false) {
+    final func downloadedFrom(link: String, contentMode mode: UIViewContentMode = .scaleAspectFit, roundImage: Bool? = false) {
         guard let url = URL(string: link) else { return }
         downloadedFrom(url: url, contentMode: mode)
     }
     
-    func roundImage(border: Bool? = false) {
+    final func roundImage(border: Bool? = false) {
         self.layer.cornerRadius = self.frame.height/2
         self.layer.masksToBounds = true;
-        
-        if border! {
-            addRoundBorder()
-        }
+        guard border! else { return }
+        addRoundBorder()
     }
     
-    func addRoundBorder(borderColor: UIColor? = UIColor.white.withAlphaComponent(0.8), borderWidth: CGFloat? = 8) {
+    private func addRoundBorder(borderColor: UIColor? = UIColor.white.withAlphaComponent(0.8), borderWidth: CGFloat? = 8) {
         let path = UIBezierPath(roundedRect: self.bounds, cornerRadius: self.frame.height/2)
         let border = CAShapeLayer()
         border.path = path.cgPath
