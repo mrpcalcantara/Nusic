@@ -17,11 +17,11 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.alcantech.Newsic</string>
+	<string>_bundle_id_</string>
 	<key>PROJECT_ID</key>
-	<string>newsic-54b6e</string>
+	<string>_appname_</string>
 	<key>STORAGE_BUCKET</key>
-	<string>newsic-54b6e.appspot.com</string>
+	<string>_appname_.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -35,6 +35,6 @@
 	<key>GOOGLE_APP_ID</key>
 	<string>1:845666231150:ios:11cfd4a018d87ecb</string>
 	<key>DATABASE_URL</key>
-	<string>https://newsic-54b6e.firebaseio.com/</string>
+	<string>https://_appname_.firebaseio.com/</string>
 </dict>
 </plist>
