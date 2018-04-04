@@ -73,7 +73,7 @@ class SideMenuViewController: NusicDefaultViewController {
 
         navigationBar.barStyle = .default
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "MoodIcon"), for: .normal)
+        button.setImage(UIImage(named: "ButtonAppIcon"), for: .normal)
         button.addTarget(self, action: #selector(dismissMenu), for: .touchUpInside)
         let barButton = UIBarButtonItem(customView: button);
         self.navigationItem.rightBarButtonItem = barButton

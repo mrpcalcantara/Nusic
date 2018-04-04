@@ -10,6 +10,7 @@ import Foundation
 
 enum SpotifyErrorCodeDescription : String {
     case getPlaylistTracks = "An error occurred when extracting all the tracks for the playlist."
+    case getArtistInfo = "An error occured while fetching the artist information."
     case getTrackInfo = "An error occured while fetching the track information."
     case getMusicInGenres = "An error occurred while fetching a new card."
     case getTrackIdFeaturesForMood = "An error occured while fetching the tracks information for the chosen mood."
@@ -20,4 +21,5 @@ enum SpotifyErrorCodeDescription : String {
     case getUser = "An error occured while extracting the user information from Spotify."
     case getGenresForTrackList = "An error occurred extracting the genres for the track list."
     case extractGenresFromUser = "An error occured extracting your preferred genres."
+    case getArtistTopTracks = "An error occurred while fetching the featured artist's top tracks."
 }
