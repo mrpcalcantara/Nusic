@@ -49,19 +49,18 @@ extension UIView {
         }
     }
     
-    final func addShadow(cornerRadius: CGFloat? = 3, shadowColor: CGColor? = UIColor.clear.cgColor, shadowOpacity: Float? = 0.5, shadowOffset: CGSize? = CGSize(width: -2, height: -7), shadowRadius: CGFloat? = 2) {
+    final func addShadow(cornerRadius: CGFloat? = 3, shadowColor: CGColor? = UIColor.clear.cgColor, shadowOpacity: Float? = 0.5, shadowOffset: CGSize? =
+        CGSize(width: -2, height: -7), shadowRadius: CGFloat? = 2) {
+        self.layer.shouldRasterize = true
+        self.layer.rasterizationScale = UIScreen.main.scale
         self.layer.cornerRadius = cornerRadius!
         self.layer.masksToBounds = false
-        
         self.layer.shadowColor = shadowColor!
         self.layer.shadowOpacity = shadowOpacity!
         self.layer.shadowOffset = shadowOffset!
         self.layer.shadowRadius = shadowRadius!
-        let bounds = self.layer.bounds;
+        let bounds = self.layer.frame;
         self.layer.shadowPath = UIBezierPath(rect: bounds).cgPath
-        self.layer.shouldRasterize = true
-        self.layer.rasterizationScale = UIScreen.main.scale
-
     }
     
     final func selectAnimation() {

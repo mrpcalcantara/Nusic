@@ -15,7 +15,9 @@ class NusicPageViewController: UIPageViewController {
     var songPickerVC: UIViewController?
     var sideMenuVC: UIViewController?
     var showSongVC: UIViewController?
+    var nusicWeeklyVC: UIViewController?
     var songListVC: UITabBarController?
+    
     private var backgroundImageView: UIImageView!
     
     private(set) lazy var orderedViewControllers: [UIViewController] = {
@@ -34,7 +36,6 @@ class NusicPageViewController: UIPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         dataSource = self
         
         songPickerVC = UIStoryboard(name: "Main", bundle: nil) .
@@ -45,14 +46,24 @@ class NusicPageViewController: UIPageViewController {
             instantiateViewController(withIdentifier: "SideMenu")
         songListVC = UIStoryboard(name: "Main", bundle: nil) .
             instantiateViewController(withIdentifier: "SongList") as! UITabBarController
+        nusicWeeklyVC = UIStoryboard(name: "Main", bundle: nil) .
+            instantiateViewController(withIdentifier: "NusicWeekly")
         
         if let sideMenuVC = sideMenuVC {
             orderedViewControllers.insert(sideMenuVC, at: 0)
         }
         
-        if let songPickerVC = songPickerVC {
-            orderedViewControllers.insert(songPickerVC, at: 1)
+        if let nusicWeeklyVC = nusicWeeklyVC {
+            orderedViewControllers.insert(nusicWeeklyVC, at: 1)
         }
+        
+        if let songPickerVC = songPickerVC {
+            orderedViewControllers.insert(songPickerVC, at: 2)
+        }
+        
+        
+        
+        
         
         //Disable delay in order to facilitate the scrubbing for the track
         for view in view.subviews {
@@ -68,7 +79,7 @@ class NusicPageViewController: UIPageViewController {
             self.view.sendSubview(toBack: backgroundImageView)
         }
         
-        let initialViewController = orderedViewControllers[1]
+        let initialViewController = orderedViewControllers[2]
         scrollToViewController(viewController: initialViewController)
         nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
         
@@ -86,6 +97,19 @@ class NusicPageViewController: UIPageViewController {
         orderedViewControllers.remove(at: index)
         nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
     }
+    
+//    fileprivate func setupNotifications() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(disablePan), name: Notification.Name(rawValue: "disablePan"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(enablePan), name: Notification.Name(rawValue: "enablePan"), object: nil)
+//    }
+//    
+//    @objc fileprivate func disablePan() {
+//        self.dataSource = nil
+//    }
+//    
+//    @objc fileprivate func enablePan() {
+//        self.dataSource = self
+//    }
     
     /**
      Scrolls to the next view controller.

@@ -14,7 +14,6 @@ extension SideMenuViewController {
     final func setupTableView() {
         settingsTableView.delegate = self;
         settingsTableView.dataSource = self;
-        
         settingsTableView.backgroundColor = UIColor.clear
         
         let view = UINib(nibName: SettingsCell.className, bundle: nil);
@@ -28,11 +27,10 @@ extension SideMenuViewController {
         
         let header = SettingsHeader(frame: CGRect(x: settingsTableView.frame.origin.x, y: settingsTableView.frame.origin.y, width: settingsTableView.frame.width, height: 200))
         
-        header.configure(image: nil, imageURL: profileImageURL?.absoluteString, username: username!)
-        
-        settingsTableView.tableHeaderView = header
         settingsTableView.backgroundColor = UIColor.clear
-
+        guard let username = username else { return }
+        header.configure(image: nil, imageURL: profileImageURL?.absoluteString, username: username)
+        settingsTableView.tableHeaderView = header
     }
 }
 

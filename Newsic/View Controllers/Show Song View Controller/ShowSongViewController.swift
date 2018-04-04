@@ -921,7 +921,7 @@ extension ShowSongViewController {
     
     final func playCard(at index:Int) {
         if preferredPlayer == NusicPreferredPlayer.spotify {
-            actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.trackUri);
+            actionPlaySpotifyTrack(spotifyTrackId: cardList[index].trackInfo.linkedFromTrackId);
         }
     }
     
@@ -981,7 +981,7 @@ extension ShowSongViewController {
         addSongToPosition(track: track, position: frontPosition);
         
         if preferredPlayer == NusicPreferredPlayer.spotify {
-            actionPlaySpotifyTrack(spotifyTrackId: cardList[frontPosition].trackInfo.trackUri);
+            actionPlaySpotifyTrack(spotifyTrackId: cardList[frontPosition].trackInfo.linkedFromTrackId);
         }
     }
     

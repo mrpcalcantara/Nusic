@@ -27,6 +27,9 @@
 		8C21E7121FC6B2730033B477 /* NewsicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21E7111FC6B2730033B477 /* NewsicViewController.swift */; };
 		8C21F9571FE7B7E400B5F94E /* NewsicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21F9561FE7B7E400B5F94E /* NewsicView.swift */; };
 		8C250AB51FBBF616002A108C /* NewsicDefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C250AB41FBBF616002A108C /* NewsicDefaultViewController.swift */; };
+		8C2551C92062566100B522B8 /* NusicWeeklyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2551C82062566100B522B8 /* NusicWeeklyViewController.swift */; };
+		8C2551CC20625A5500B522B8 /* LastFMAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2551CB20625A5500B522B8 /* LastFMAPI.swift */; };
+		8C2551CF20625D2F00B522B8 /* LastFM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2551CE20625D2F00B522B8 /* LastFM.swift */; };
 		8C2605F31FEB61740025DD1E /* ChoiceListViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2605F21FEB61740025DD1E /* ChoiceListViewHeader.swift */; };
 		8C2605F51FEB61830025DD1E /* ChoiceListViewHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C2605F41FEB61830025DD1E /* ChoiceListViewHeader.xib */; };
 		8C268B581FD0086E00BB4C6F /* NewsicCustomLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C268B571FD0086E00BB4C6F /* NewsicCustomLayer.swift */; };
@@ -187,6 +190,9 @@
 		8C21E7111FC6B2730033B477 /* NewsicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicViewController.swift; sourceTree = "<group>"; };
 		8C21F9561FE7B7E400B5F94E /* NewsicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicView.swift; sourceTree = "<group>"; };
 		8C250AB41FBBF616002A108C /* NewsicDefaultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicDefaultViewController.swift; sourceTree = "<group>"; };
+		8C2551C82062566100B522B8 /* NusicWeeklyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NusicWeeklyViewController.swift; sourceTree = "<group>"; };
+		8C2551CB20625A5500B522B8 /* LastFMAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFMAPI.swift; sourceTree = "<group>"; };
+		8C2551CE20625D2F00B522B8 /* LastFM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFM.swift; sourceTree = "<group>"; };
 		8C2605F21FEB61740025DD1E /* ChoiceListViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoiceListViewHeader.swift; sourceTree = "<group>"; };
 		8C2605F41FEB61830025DD1E /* ChoiceListViewHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChoiceListViewHeader.xib; sourceTree = "<group>"; };
 		8C268B571FD0086E00BB4C6F /* NewsicCustomLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicCustomLayer.swift; sourceTree = "<group>"; };
@@ -475,6 +481,38 @@
 				8C55956C1FD4FE6600E70667 /* NewsicError.swift */,
 			);
 			path = "Error Handling";
+			sourceTree = "<group>";
+		};
+		8C2551C62062563300B522B8 /* Child View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8C2551C72062563F00B522B8 /* Nusic Weekly View Controller */,
+			);
+			path = "Child View Controllers";
+			sourceTree = "<group>";
+		};
+		8C2551C72062563F00B522B8 /* Nusic Weekly View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8C2551C82062566100B522B8 /* NusicWeeklyViewController.swift */,
+			);
+			path = "Nusic Weekly View Controller";
+			sourceTree = "<group>";
+		};
+		8C2551CA20625A4700B522B8 /* Last.fm */ = {
+			isa = PBXGroup;
+			children = (
+				8C2551CB20625A5500B522B8 /* LastFMAPI.swift */,
+			);
+			path = Last.fm;
+			sourceTree = "<group>";
+		};
+		8C2551CD20625D2200B522B8 /* Last.fm */ = {
+			isa = PBXGroup;
+			children = (
+				8C2551CE20625D2F00B522B8 /* LastFM.swift */,
+			);
+			path = Last.fm;
 			sourceTree = "<group>";
 		};
 		8C2605F01FEB613F0025DD1E /* Mood Genre Header */ = {
@@ -1054,6 +1092,7 @@
 		8C90E8861F53D8D5002B135F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8C2551CD20625D2200B522B8 /* Last.fm */,
 				8C2877431FDE4CB600772269 /* YouTube */,
 				8CA40DFA1F8B7DC400C95B9D /* Nusic */,
 				8C0C1E931F60F6F700CF8516 /* Mood Hacker */,
@@ -1075,6 +1114,7 @@
 		8C90E8891F53EE43002B135F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				8C2551CA20625A4700B522B8 /* Last.fm */,
 				8C7989371FEA16F90079A99D /* Newsic */,
 				8C2701181FDA45840044D10F /* Connectivity */,
 				8C291A781FD655F900E568EF /* Firebase */,
@@ -1217,6 +1257,7 @@
 		8CC6E71D1F55101C00846080 /* Song Picker View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				8C2551C62062563300B522B8 /* Child View Controllers */,
 				8C0F428D1FE3BAB800EDD9FA /* Views */,
 				8CB529DF1F8375C700C8050F /* Extensions */,
 				8C90E8631F53D838002B135F /* SongPickerViewController.swift */,
@@ -1275,7 +1316,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Miguel Alcantara";
 				TargetAttributes = {
 					8C90E85D1F53D838002B135F = {
@@ -1508,6 +1549,7 @@
 				8C4FBD7A1F59456200712873 /* Emotion.swift in Sources */,
 				8C5B18F21FCBBEF400EBFAE1 /* CollectionViewHeader.swift in Sources */,
 				8C35F95C2049214A00857EF7 /* BadgeBarButtonItem.swift in Sources */,
+				8C2551CF20625D2F00B522B8 /* LastFM.swift in Sources */,
 				8C7C41EB1FFC99D60051845D /* UITableView.swift in Sources */,
 				8C28C5322058D64600441E70 /* ArtistArray.swift in Sources */,
 				8C2847292043EE26006A9B5C /* SuggestedSongListViewController.swift in Sources */,
@@ -1530,6 +1572,7 @@
 				8C0C1E9D1F6114C200CF8516 /* NusicTrack.swift in Sources */,
 				8CCC55341F66587A005090A4 /* UIImage.swift in Sources */,
 				8C18E0BC1F55306B002C4A07 /* YouTubeSearch.swift in Sources */,
+				8C2551CC20625A5500B522B8 /* LastFMAPI.swift in Sources */,
 				8C27011D1FDA55E10044D10F /* FirebaseDatabaseHelper.swift in Sources */,
 				8CB529E11F8375D900C8050F /* MoodCollectionView.swift in Sources */,
 				8C7989391FEA17050079A99D /* NewsicDefaults.swift in Sources */,
@@ -1548,6 +1591,7 @@
 				8C626EA01FE7A27000BF0E08 /* ChoiceList.swift in Sources */,
 				8C0C1E911F5FF3B700CF8516 /* SpotifyTrackFeature.swift in Sources */,
 				8C7C41E21FFC8F3D0051845D /* SettingsHeader.swift in Sources */,
+				8C2551C92062566100B522B8 /* NusicWeeklyViewController.swift in Sources */,
 				8C936DF0200F659900A96B10 /* FirebaseAuthHelper.swift in Sources */,
 				8C2605F31FEB61740025DD1E /* ChoiceListViewHeader.swift in Sources */,
 				8C3166BD2043BE4300380460 /* SongTableViewSectionHeader.swift in Sources */,
@@ -1659,6 +1703,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1666,6 +1711,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -1716,6 +1762,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -1723,6 +1770,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

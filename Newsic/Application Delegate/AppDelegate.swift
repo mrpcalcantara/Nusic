@@ -34,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
+    
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         print("WILL LAUNCH WITH OPTIONS")
@@ -66,8 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         if auth.canHandle(url) {
             auth.handleAuthCallback(withTriggeredAuthURL: url, callback: { (error, session) in
                 guard let session = session else { NotificationCenter.default.post(name: Notification.Name(rawValue: "loginUnsuccessful"), object: false); return; }
@@ -81,8 +82,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
         }
         return false
-        
     }
+    
+//    
+//    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+//        
+//        if auth.canHandle(url) {
+//            auth.handleAuthCallback(withTriggeredAuthURL: url, callback: { (error, session) in
+//                guard let session = session else { NotificationCenter.default.post(name: Notification.Name(rawValue: "loginUnsuccessful"), object: false); return; }
+//                let userDefaults = UserDefaults.standard
+//                let sessionData = NSKeyedArchiver.archivedData(withRootObject: session)
+//                userDefaults.set(sessionData, forKey: "SpotifySession")
+//                userDefaults.synchronize()
+//                NotificationCenter.default.post(name: Notification.Name(rawValue: "loginSuccessful"), object: true)
+//                
+//            })
+//            return true
+//        }
+//        return false
+//        
+//    }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

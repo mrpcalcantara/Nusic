@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="alU-Ei-zcq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="alU-Ei-zcq">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Futura.ttc">
-            <string>Futura-Medium</string>
-        </array>
         <array key="Robot Crush.otf">
             <string>RobotCrush</string>
         </array>
@@ -78,7 +75,7 @@
         <!--Song Picker View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="SongPicker" id="BYZ-38-t0r" customClass="SongPickerViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SongPicker" automaticallyAdjustsScrollViewInsets="NO" id="BYZ-38-t0r" customClass="SongPickerViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" userLabel="Main View">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -203,6 +200,9 @@
                         <outlet property="genreCollectionTrailingConstraint" destination="Sly-RS-Nga" id="14D-c7-QWa"/>
                         <outlet property="genreCollectionView" destination="bqf-Kb-x3U" id="HnR-77-MHD"/>
                         <outlet property="listViewBottomConstraint" destination="zQi-zr-YYv" id="orv-jL-pRN"/>
+                        <outlet property="listViewLeadingConstraint" destination="36z-dP-x5w" id="gaV-wU-mL7"/>
+                        <outlet property="listViewTopConstraint" destination="R1y-jB-uZc" id="agU-qK-Zqk"/>
+                        <outlet property="listViewTrailingConstraint" destination="6Hq-G1-cDP" id="3oq-eN-Yqm"/>
                         <outlet property="mainControlView" destination="Sau-Kp-Sny" id="ecR-4A-EXA"/>
                         <outlet property="moodCollectionBottomConstraint" destination="AAn-8r-AFY" id="GGj-6B-CbK"/>
                         <outlet property="moodCollectionLeadingConstraint" destination="z1z-cv-BeE" id="ZRH-YF-5sB"/>
@@ -644,12 +644,134 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CeU-ux-kfh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="594" y="43"/>
+            <point key="canvasLocation" x="-111" y="43"/>
+        </scene>
+        <!--Nusic Weekly View Controller-->
+        <scene sceneID="0vI-ST-76t">
+            <objects>
+                <viewController storyboardIdentifier="NusicWeekly" automaticallyAdjustsScrollViewInsets="NO" id="Bne-ui-2KJ" customClass="NusicWeeklyViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wvk-UJ-JWm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TransparentAppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="xT1-qY-jHL">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" canCancelContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j5B-54-DHO" userLabel="Artist Scroll View">
+                                <rect key="frame" x="0.0" y="116" width="375" height="516"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YiA-uU-bs0" userLabel="Artist Name Label">
+                                        <rect key="frame" x="8" y="0.0" width="23" height="54"/>
+                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="45"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddU-fv-X78" userLabel="Artist Bio Label">
+                                        <rect key="frame" x="8" y="86" width="23" height="20.5"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" link="YES" staticText="YES"/>
+                                        </accessibility>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="ddU-fv-X78" firstAttribute="leading" secondItem="j5B-54-DHO" secondAttribute="leading" constant="8" id="5nV-rf-Z1d"/>
+                                    <constraint firstItem="ddU-fv-X78" firstAttribute="width" relation="lessThanOrEqual" secondItem="j5B-54-DHO" secondAttribute="width" constant="-16" id="MC0-nv-tiu"/>
+                                    <constraint firstItem="ddU-fv-X78" firstAttribute="top" secondItem="YiA-uU-bs0" secondAttribute="bottom" constant="32" id="MSy-xf-hfL"/>
+                                    <constraint firstAttribute="bottom" secondItem="ddU-fv-X78" secondAttribute="bottom" constant="8" id="Q36-80-KYt"/>
+                                    <constraint firstAttribute="trailing" secondItem="YiA-uU-bs0" secondAttribute="trailing" constant="8" id="S9L-gF-ZdB"/>
+                                    <constraint firstAttribute="trailing" secondItem="ddU-fv-X78" secondAttribute="trailing" constant="8" id="VWg-YI-Xxj"/>
+                                    <constraint firstItem="YiA-uU-bs0" firstAttribute="leading" secondItem="j5B-54-DHO" secondAttribute="leading" constant="8" id="pkz-n4-FIZ"/>
+                                    <constraint firstItem="YiA-uU-bs0" firstAttribute="top" secondItem="j5B-54-DHO" secondAttribute="top" id="q2v-8w-MPm"/>
+                                </constraints>
+                            </scrollView>
+                            <navigationBar contentMode="scaleToFill" largeTitles="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kTl-6Q-GdY">
+                                <rect key="frame" x="0.0" y="20" width="375" height="96"/>
+                                <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="Title" id="pxe-Ye-Bye"/>
+                                </items>
+                            </navigationBar>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dtX-BW-XqS" customClass="NusicButton" customModule="Newsic" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="632" width="375" height="35"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                <state key="normal" title="Play Top Tracks">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="allowBlur" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="playSongs:" destination="Bne-ui-2KJ" eventType="touchUpInside" id="Kfq-mP-Es1"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="j5B-54-DHO" firstAttribute="bottom" secondItem="dtX-BW-XqS" secondAttribute="top" id="3CS-WX-ayy"/>
+                            <constraint firstItem="kTl-6Q-GdY" firstAttribute="leading" secondItem="UNx-kL-k45" secondAttribute="leading" id="7px-ZI-Ox1"/>
+                            <constraint firstItem="kTl-6Q-GdY" firstAttribute="trailing" secondItem="UNx-kL-k45" secondAttribute="trailing" id="Icz-4W-GKj"/>
+                            <constraint firstItem="kTl-6Q-GdY" firstAttribute="top" secondItem="UNx-kL-k45" secondAttribute="top" id="Rxb-Xx-zI9"/>
+                            <constraint firstItem="j5B-54-DHO" firstAttribute="trailing" secondItem="UNx-kL-k45" secondAttribute="trailing" id="VQV-EF-9cD"/>
+                            <constraint firstItem="j5B-54-DHO" firstAttribute="top" secondItem="kTl-6Q-GdY" secondAttribute="bottom" id="VhG-yh-ahI"/>
+                            <constraint firstItem="dtX-BW-XqS" firstAttribute="leading" secondItem="UNx-kL-k45" secondAttribute="leading" id="fI6-G9-obW"/>
+                            <constraint firstItem="j5B-54-DHO" firstAttribute="width" secondItem="UNx-kL-k45" secondAttribute="width" id="iRq-l9-oxp"/>
+                            <constraint firstItem="xT1-qY-jHL" firstAttribute="top" secondItem="wvk-UJ-JWm" secondAttribute="top" id="plX-k4-4kd"/>
+                            <constraint firstItem="dtX-BW-XqS" firstAttribute="bottom" secondItem="UNx-kL-k45" secondAttribute="bottom" id="q9C-qn-AjS"/>
+                            <constraint firstItem="xT1-qY-jHL" firstAttribute="trailing" secondItem="UNx-kL-k45" secondAttribute="trailing" id="qoZ-HE-hUM"/>
+                            <constraint firstItem="xT1-qY-jHL" firstAttribute="leading" secondItem="UNx-kL-k45" secondAttribute="leading" id="r8x-Yq-hNR"/>
+                            <constraint firstItem="UNx-kL-k45" firstAttribute="trailing" secondItem="dtX-BW-XqS" secondAttribute="trailing" id="tBB-xv-BrQ"/>
+                            <constraint firstItem="j5B-54-DHO" firstAttribute="leading" secondItem="UNx-kL-k45" secondAttribute="leading" id="ux4-i4-GXZ"/>
+                            <constraint firstItem="xT1-qY-jHL" firstAttribute="bottom" secondItem="UNx-kL-k45" secondAttribute="bottom" id="vv5-Kb-MqE"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="UNx-kL-k45"/>
+                    </view>
+                    <connections>
+                        <outlet property="artistBioBottomConstraint" destination="Q36-80-KYt" id="GoC-cY-Zvd"/>
+                        <outlet property="artistBioLabel" destination="ddU-fv-X78" id="BTM-Bd-VMN"/>
+                        <outlet property="artistBioLeadingConstraint" destination="5nV-rf-Z1d" id="P6p-Km-ZGW"/>
+                        <outlet property="artistBioScrollView" destination="j5B-54-DHO" id="1r3-Gb-0jU"/>
+                        <outlet property="artistBioTopConstraint" destination="MSy-xf-hfL" id="TfA-Qm-EDn"/>
+                        <outlet property="artistBioTrailingConstraint" destination="VWg-YI-Xxj" id="ChU-U9-1l4"/>
+                        <outlet property="artistBioWidthConstraint" destination="MC0-nv-tiu" id="gle-Au-YZS"/>
+                        <outlet property="artistImageView" destination="xT1-qY-jHL" id="e4d-P3-1rT"/>
+                        <outlet property="artistNameLabel" destination="YiA-uU-bs0" id="81Q-yn-AsF"/>
+                        <outlet property="artistNameLeadingConstraint" destination="pkz-n4-FIZ" id="99x-ub-Gl7"/>
+                        <outlet property="artistNameTopConstraint" destination="q2v-8w-MPm" id="9OD-mS-BxE"/>
+                        <outlet property="artistNameTrailingConstraint" destination="S9L-gF-ZdB" id="BAq-Ep-Nhi"/>
+                        <outlet property="imageViewBottomConstraint" destination="vv5-Kb-MqE" id="Cgr-F1-Cfm"/>
+                        <outlet property="imageViewLeadingConstraint" destination="r8x-Yq-hNR" id="oo8-Lw-JSp"/>
+                        <outlet property="imageViewTopConstraint" destination="plX-k4-4kd" id="p4g-VS-uY3"/>
+                        <outlet property="imageViewTrailingConstraint" destination="qoZ-HE-hUM" id="ES8-fC-KhZ"/>
+                        <outlet property="navigationBar" destination="kTl-6Q-GdY" id="465-TJ-TMk"/>
+                        <outlet property="navigationBarLeadingConstraint" destination="7px-ZI-Ox1" id="hIO-sg-3S8"/>
+                        <outlet property="navigationBarTopConstraint" destination="Rxb-Xx-zI9" id="d9S-0K-8jF"/>
+                        <outlet property="navigationBarTrailingConstraint" destination="Icz-4W-GKj" id="jRx-sE-sfP"/>
+                        <outlet property="playSongsButton" destination="dtX-BW-XqS" id="NYn-Fl-6tq"/>
+                        <outlet property="playSongsButtonBottomConstraint" destination="q9C-qn-AjS" id="qgc-lK-eT1"/>
+                        <outlet property="playSongsButtonLeadingConstraint" destination="fI6-G9-obW" id="LLk-Db-XeJ"/>
+                        <outlet property="playSongsButtonTrailingConstraint" destination="tBB-xv-BrQ" id="Foi-N7-X9O"/>
+                        <outlet property="scrollViewBottomConstraint" destination="3CS-WX-ayy" id="r0n-14-AfG"/>
+                        <outlet property="scrollViewLeadingConstraint" destination="ux4-i4-GXZ" id="IkL-ce-3bC"/>
+                        <outlet property="scrollViewTopConstraint" destination="VhG-yh-ahI" id="MgZ-v4-I2a"/>
+                        <outlet property="scrollViewTrailingConstraint" destination="VQV-EF-9cD" id="2ad-Kn-gGY"/>
+                        <outlet property="scrollViewWidthConstraint" destination="iRq-l9-oxp" id="RTA-cA-dtN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tUG-M6-YBJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="648.79999999999995" y="42.728635682158924"/>
         </scene>
     </scenes>
     <resources>
         <image name="ButtonAppIcon" width="25" height="25"/>
         <image name="SpotifyLogin" width="244" height="44"/>
         <image name="ThumbsUpHighlighted" width="25" height="25"/>
+        <image name="TransparentAppIcon" width="512" height="512"/>
     </resources>
 </document>

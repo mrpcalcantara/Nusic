@@ -36,6 +36,8 @@ class SongPickerViewController: NusicDefaultViewController {
         }
     }
     
+    let collectionViewsPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panCollectionViews(_:)))
+    
     //Nusic data variables
     var nusicPlaylist: NusicPlaylist! = nil;
     var moodObject: NusicMood? = NusicMood();
@@ -61,6 +63,9 @@ class SongPickerViewController: NusicDefaultViewController {
                 }
                 
             }
+            
+            let nusicWeeklyViewController = parent.nusicWeeklyVC as! NusicWeeklyViewController
+            nusicWeeklyViewController.spotify = self.spotifyHandler
             
             guard let fcmTokenId = UserDefaults.standard.value(forKey: "fcmTokenId") as? String else { return }
             FirebaseAuthHelper.addApnsDeviceToken(apnsToken: fcmTokenId, userId: nusicUser.userName, apnsTokenCompletionHandler: { (isSuccess, error) in
@@ -91,11 +96,12 @@ class SongPickerViewController: NusicDefaultViewController {
     var loadingFinished: Bool = false {
         didSet {
             handleNotificationSong()
-            guard sectionMoods.count == 0 else { return }
+            guard self.spotifyHandler.user != nil && self.spotifyHandler.user.canonicalUserName != nil, sectionMoods.count == 0 else { SwiftSpinner.show(duration: 2, title: "Done!", animated: true); return }
             FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
                 self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
                 self.sectionMoods = dyadList.map({ $0.value })
                 SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
+                (self.parent as! NusicPageViewController).scrollToPreviousViewController()
             }
         }
     }
@@ -106,7 +112,7 @@ class SongPickerViewController: NusicDefaultViewController {
     var fullPlaylistList:[SPTPartialPlaylist] = []
     var genreList:[SpotifyGenres] = SpotifyGenres.allShownValues;
     var sectionGenres: [[SpotifyGenres]] = Array(Array())
-    var spotifyHandler = Spotify();
+    var spotifyHandler = Spotify()
     var user: SPTUser? = nil;
     var fetchedSongsForMood: [String: [SpotifyTrack]] = [:]
     var selectedSongsForMood: [String: [SpotifyTrack]] = [:]
@@ -133,9 +139,6 @@ class SongPickerViewController: NusicDefaultViewController {
     }
     
     //Constraints
-    @IBOutlet weak var menuTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var menuLeadingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var moodCollectionTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var moodCollectionLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var moodCollectionBottomConstraint: NSLayoutConstraint!
@@ -145,20 +148,18 @@ class SongPickerViewController: NusicDefaultViewController {
     @IBOutlet weak var genreCollectionBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var genreCollectionTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var genreCollectionTopConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var listViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var listViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var listViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var listViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nusicWeeklyView: UIView!
     //Outlets
     @IBOutlet weak var mainControlView: UIView!
-    @IBOutlet weak var moodText: UITextView!
     @IBOutlet weak var moodCollectionView: UICollectionView!
-    @IBOutlet weak var moodGenreSegmentedControl: UISegmentedControl!
     @IBOutlet weak var genreCollectionView: UICollectionView!
     @IBOutlet weak var searchButton: UIButton!
-    @IBOutlet weak var menuView: UIView!
-    @IBOutlet weak var userView: UIView!
-    @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var userProfileImageView: UIImageView!
-    @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var navigationBar: UINavigationBar!
     
     
@@ -265,11 +266,11 @@ class SongPickerViewController: NusicDefaultViewController {
         nusicControl.delegate = self
         nusicControl.thumbColor = NusicDefaults.foregroundThemeColor
         nusicControl.borderColor = NusicDefaults.foregroundThemeColor
-        nusicControl.selectedIndex = 0
-        toggleCollectionViews(for: 0);
+        nusicControl.selectedIndex = 1
+        toggleCollectionViews(for: 1);
     }
     
-    fileprivate func setupNavigationBar(image: UIImage? = UIImage(named: "SettingsIcon")) {
+    fileprivate func setupNavigationBar(image: UIImage? = UIImage(named: "ButtonAppIcon")) {
         navigationBar.barStyle = .default
         
         let leftBarButton = UIBarButtonItem(image: image!, style: .plain, target: self, action: #selector(toggleMenu));
@@ -317,8 +318,7 @@ class SongPickerViewController: NusicDefaultViewController {
         moodCollectionView.layer.zPosition = -1
         genreCollectionView.layer.zPosition = -1
         
-        let collectionViewsPanGestureRecoginizer = UIPanGestureRecognizer(target: self, action: #selector(panCollectionViews(_:)))
-        self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecoginizer)
+        self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecognizer)
         
     }
     
@@ -328,7 +328,7 @@ class SongPickerViewController: NusicDefaultViewController {
     
     @objc fileprivate func toggleMenu() {
         let parent = self.parent as! NusicPageViewController
-        parent.scrollToViewController(index: 0)
+        parent.scrollToPreviousViewController()
     }
     
     @objc fileprivate func goToShowSongVC() {
@@ -580,6 +580,7 @@ extension SongPickerViewController: UIGestureRecognizerDelegate {
         case .changed:
             if allowMove {
                 segmentedControlMove(progress, toIndex);
+                print(progress)
             }
         case .cancelled:
             segmentedControlMove(1, nusicControl.selectedIndex)
