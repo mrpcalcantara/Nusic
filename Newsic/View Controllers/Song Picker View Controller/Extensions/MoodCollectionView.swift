@@ -119,26 +119,6 @@ extension SongPickerViewController {
             self.mainControlView.removeGestureRecognizer(collectionViewsPanGestureRecognizer)
             self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecognizer)
             NotificationCenter.default.post(name: Notification.Name(rawValue: "enablePan"), object: nil)
-        case 2:
-            self.moodCollectionLeadingConstraint.constant = -self.moodCollectionView.frame.width + 8
-            self.moodCollectionTrailingConstraint.constant =  self.moodCollectionView.frame.width + 8
-            self.genreCollectionLeadingConstraint.constant =  2 * self.genreCollectionView.frame.width + 8
-            self.genreCollectionTrailingConstraint.constant =  2 * -self.genreCollectionView.frame.width + 8
-            
-            UIView.animate(withDuration: 0.3, animations: {
-                self.moodCollectionView.alpha = 0
-                self.genreCollectionView.alpha = 0
-                self.manageButton(for: self.genreCollectionView)
-                self.mainControlView.layoutIfNeeded()
-            }, completion: { (completed) in
-                
-            })
-            if selectedSongsForGenre.count > 0 {
-                toggleChoiceMenu(willOpen: true)
-            }
-            isMoodSelected = false
-            self.mainControlView.removeGestureRecognizer(collectionViewsPanGestureRecognizer)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "disablePan"), object: nil)
         default:
             print("no index found")
         }

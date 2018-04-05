@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SwiftSpinner
 
 class NusicWeeklyViewController: NusicDefaultViewController {
     
@@ -56,33 +57,14 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     var artistTopTracks: [SpotifyTrack] = [SpotifyTrack]()
     var spotify: Spotify = Spotify() {
         didSet {
-            let dispatchGroup = DispatchGroup()
-            dispatchGroup.enter()
-            spotify.getArtistInfo(for: "4tZwfgrHOc3mvqYlEYSvVi") { (artist, error) in
-                guard let artistName = artist?.artistName else { error?.presentPopup(for: self); return }
-                self.currentArtist = artist
-                LastFMAPI.getArtistInfo(for: artistName, completionHandler: { (lastFMObj, error) in
-                    guard let lastFM = lastFMObj else { return }
-                    self.lastFM = lastFM
-                    dispatchGroup.leave()
-                })
-            }
-            dispatchGroup.enter()
-            spotify.getArtistTopTracks(for: "4tZwfgrHOc3mvqYlEYSvVi") { (tracks, error) in
-                guard let tracks = tracks, error == nil else { return; }
-                self.artistTopTracks = tracks
-                dispatchGroup.leave()
-                print("top tracks count = \(tracks.count)")
-            }
-            
-            dispatchGroup.notify(queue: .main) {
-                self.loadingFinished = true
-            }
+            setupFirebaseListeners()
         }
     }
     
-    //Actions
+    //Firebase
+    let reference: DatabaseReference = Database.database().reference()
     
+    //Actions
     @IBAction func playSongs(_ sender: Any) {
         guard let loadingFinished = loadingFinished, loadingFinished else { return }
         let parent = self.parent as! NusicPageViewController
@@ -115,14 +97,18 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        if let loadingFinished = loadingFinished, !loadingFinished {
+            DispatchQueue.main.async {
+                SwiftSpinner.show("Loading...")
+            }
+        }
         super.viewWillAppear(animated)
         self.view.layoutIfNeeded()
         self.artistBioLabel.layoutIfNeeded()
-        
+        artistBioScrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
-//        artistBioScrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
         super.viewDidAppear(animated)
     }
     
@@ -141,20 +127,14 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     
     fileprivate func setupNavigationBar() {
         navigationBar.prefersLargeTitles = true
-        navigationBar.largeTitleTextAttributes = [
-//            NSAttributedStringKey.font:NusicDefaults.font,
-                                                  NSAttributedStringKey.foregroundColor: NusicDefaults.whiteColor]
-        
-        let label = UILabel()
-        label.font = NusicDefaults.font
-        label.textColor = NusicDefaults.foregroundThemeColor
-        label.text = "Nusic Weekly"
-        navigationItem.title = "Nusic Weekly"
+        navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: NusicDefaults.whiteColor]
         navigationBar.tintColor = NusicDefaults.whiteColor
-        let leftBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "SettingsIcon"), style: .plain, target: self, action: #selector(toggleMenu));
         
+        navigationItem.title = "Nusic Weekly"
+        
+        let leftBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "SettingsIcon"), style: .plain, target: self, action: #selector(toggleMenu));
         self.navigationItem.leftBarButtonItem = leftBarButton
-        let showSongImage = UIImage(named: "PreferredPlayer")?.withRenderingMode(.alwaysTemplate)
+        
         let rightBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "MoodIcon"), style: .plain, target: self, action: #selector(goToSongPickerVC));
         self.navigationItem.rightBarButtonItem = rightBarButton
         
@@ -171,9 +151,9 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         parent.scrollToNextViewController()
     }
     
-    
     fileprivate func setupArtistNameLabel() {
         artistNameLabel.addShadow()
+        artistNameLabel.font = UIFont(name: "Synthetic Sharps", size: 50)
         artistNameLabel.textColor = NusicDefaults.foregroundThemeColor
         artistNameLabel.backgroundColor = NusicDefaults.clearColor
         artistNameTopConstraint.constant = self.view.bounds.height - self.navigationBar.bounds.height - self.artistNameLabel.bounds.height - self.artistBioTopConstraint.constant - self.playSongsButton.bounds.height
@@ -198,14 +178,15 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         artistBioScrollView.delegate = self
     }
     
-    private func updateValuesUI(){
+    fileprivate func updateValuesUI(){
         guard let lastFM = self.lastFM, let imageURL = URL(string: lastFM.imageUrl) else { return }
         DispatchQueue.main.async {
-            var image = UIImage()
+            let image = UIImage()
             image.downloadImage(from: imageURL, downloadImageHandler: { (downloadedImage) in
                 UIView.transition(with: self.artistImageView, duration: 0.5, options: [.transitionCrossDissolve], animations: {
                     DispatchQueue.main.async {
                         self.artistImageView.image = downloadedImage
+                        SwiftSpinner.show(duration: 1, title: "Done!")
                     }
                     
                 }, completion: nil)
@@ -222,30 +203,79 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         
     }
     
+    fileprivate func fetchArtistInfo(artistID: String) {
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        spotify.getArtistInfo(for: artistID) { (artist, error) in
+            guard let artistName = artist?.artistName else { error?.presentPopup(for: self); return }
+            self.currentArtist = artist
+            LastFMAPI.getArtistInfo(for: artistName, completionHandler: { (lastFMObj, error) in
+                guard let lastFM = lastFMObj else { return }
+                self.lastFM = lastFM
+                self.lastFM?.imageUrl = self.currentArtist?.imageUrl != "" ? (self.currentArtist?.imageUrl)! : lastFM.imageUrl
+                dispatchGroup.leave()
+            })
+        }
+        dispatchGroup.enter()
+        spotify.getArtistTopTracks(for: artistID) { (tracks, error) in
+            guard let tracks = tracks, error == nil else { return; }
+            for index in 0..<tracks.count {
+                let track = tracks[index]
+                if let currentArtist = self.currentArtist, let index = track.artist.index(of: currentArtist) {
+                    track.artist[index] = currentArtist
+                }
+                self.artistTopTracks.append(track)
+            }
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            self.loadingFinished = true
+        }
+    }
+
+    fileprivate func reloadViews(alpha: CGFloat) {
+        
+        artistImageView.removeBlurEffect()
+        artistImageView.addBlurEffect(style: .dark, alpha: alpha)
+        navigationBar.removeBlurEffect()
+        navigationBar.addBlurEffect(style: .dark, alpha: alpha)
+    }
+
+    fileprivate func setupFirebaseListeners() {
+        removeFirebaseListeners();
+        reference.child("weeklyArtist/id").observe(.value) { (dataSnapshot) in
+            guard dataSnapshot.exists(),
+                let artistID = dataSnapshot.value as? String
+                else { return }
+            self.fetchArtistInfo(artistID: artistID)
+        }
+        
+    }
+    
+    fileprivate func removeFirebaseListeners() {
+        reference.child("weeklyArtist/id").removeAllObservers()
+    }
+
 }
 
 extension NusicWeeklyViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset)
         var alpha: CGFloat = 0
         if scrollView.contentOffset.y < 0 {
             alpha = 0
-        } else if scrollView.contentOffset.y > 100 {
+        } else if scrollView.contentOffset.y > self.view.bounds.height/2-self.view.safeAreaInsets.top {
             alpha = 1
         } else {
-            alpha = scrollView.contentOffset.y/100
+            alpha = scrollView.contentOffset.y/(self.view.bounds.height/2-self.view.safeAreaInsets.top)
         }
         
         UIView.animate(withDuration: 0.2) {
             self.navigationBar.alpha = 1-alpha
-//            self.nusicWeeklyLabel.alpha = 1-alpha
         }
-            
-        artistImageView.removeBlurEffect()
-        artistImageView.addBlurEffect(style: .dark, alpha: alpha)
-        navigationBar.removeBlurEffect()
-        navigationBar.addBlurEffect(style: .dark, alpha: alpha)
+        
+        reloadViews(alpha: alpha)
 
     }
 }

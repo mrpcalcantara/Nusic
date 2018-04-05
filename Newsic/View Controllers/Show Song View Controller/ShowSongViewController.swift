@@ -89,7 +89,7 @@ class ShowSongViewController: NusicDefaultViewController {
         }
     }
     var preferredPlayer: NusicPreferredPlayer?
-    var musicSearchType: NusicTrackSearch = .normal
+    var musicSearchType: NusicTrackSearch = .none
     var moodObject: NusicMood? = nil;
     var currentMoodDyad: EmotionDyad? = EmotionDyad.unknown
     var initialLoadDone: Bool = false
@@ -413,7 +413,7 @@ class ShowSongViewController: NusicDefaultViewController {
     }
     
     fileprivate func setupSongs() {
-        musicSearchType = .normal
+        musicSearchType = musicSearchType != .none ? musicSearchType : .normal
         
         if let selectedSongs = selectedSongs, selectedSongs.count > 0 {
             fetchYouTubeInfo()
@@ -721,7 +721,10 @@ extension ShowSongViewController {
             fetchNewCardTrack(basedOnTrack: searchBasedOnTrack, numberOfSongs: numberOfSongs!, cardFetchingHandler: { (tracks) in
                 fetchedCardsHandler(tracks)
             })
+        default:
+            return
         }
+        
     }
     
     fileprivate func fetchNewCardArtist(basedOnArtist: [SpotifyArtist]? = nil, numberOfSongs: Int, cardFetchingHandler: (([NusicTrack]) -> ())?) {

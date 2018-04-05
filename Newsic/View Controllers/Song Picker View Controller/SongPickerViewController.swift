@@ -35,45 +35,16 @@ class SongPickerViewController: NusicDefaultViewController {
             moodCollectionView.reloadData()
         }
     }
+    var nusicParent: NusicPageViewController?
     
     let collectionViewsPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panCollectionViews(_:)))
+    let scrollToNusicWeeklyGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeToNusicWeekly))
+    let scrollToShowSongGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeToShowSong))
     
     //Nusic data variables
     var nusicPlaylist: NusicPlaylist! = nil;
     var moodObject: NusicMood? = NusicMood();
-    var nusicUser: NusicUser! = nil {
-        didSet {
-            let parent = self.parent as! NusicPageViewController
-            let sideMenu = parent.sideMenuVC as! SideMenuViewController
-            
-            sideMenu.username = self.nusicUser.displayName != "" ? self.nusicUser.displayName : self.nusicUser.userName;
-            
-            sideMenu.preferredPlayer = self.nusicUser.settingValues.preferredPlayer
-            sideMenu.useMobileData = self.nusicUser.settingValues.useMobileData
-            sideMenu.enablePlayerSwitch = self.nusicUser.isPremium! ? true : false
-            
-            sideMenu.nusicUser = nusicUser
-
-            if self.spotifyHandler.user.smallestImage != nil, let imageURL = self.spotifyHandler.user.smallestImage.imageURL {
-                sideMenu.profileImageURL = imageURL
-            } 
-            nusicUser.saveUser { (isSaved, error) in
-                if let error = error {
-                    error.presentPopup(for: self)
-                }
-                
-            }
-            
-            let nusicWeeklyViewController = parent.nusicWeeklyVC as! NusicWeeklyViewController
-            nusicWeeklyViewController.spotify = self.spotifyHandler
-            
-            guard let fcmTokenId = UserDefaults.standard.value(forKey: "fcmTokenId") as? String else { return }
-            FirebaseAuthHelper.addApnsDeviceToken(apnsToken: fcmTokenId, userId: nusicUser.userName, apnsTokenCompletionHandler: { (isSuccess, error) in
-                guard error == nil else { error?.presentPopup(for: self); return }
-                print("adding APNS token = \(isSuccess!)")
-            })
-        }
-    }
+    var nusicUser: NusicUser! = nil
     var isMoodSelected: Bool = true
     var isMoodCellSelected: Bool = false {
         didSet {
@@ -100,16 +71,13 @@ class SongPickerViewController: NusicDefaultViewController {
             FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
                 self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
                 self.sectionMoods = dyadList.map({ $0.value })
-                SwiftSpinner.show(duration: 2, title: "Done!", animated: true)
-                (self.parent as! NusicPageViewController).scrollToPreviousViewController()
             }
         }
     }
     
-    //Spotify variables
-    var currentPlaylistIndex: Int = 0
-    var fullArtistList:[SpotifyArtist] = [];
-    var fullPlaylistList:[SPTPartialPlaylist] = []
+    //Spotify variabless
+    var fullArtistList = [SpotifyArtist]();
+    var fullPlaylistList = [SPTPartialPlaylist]()
     var genreList:[SpotifyGenres] = SpotifyGenres.allShownValues;
     var sectionGenres: [[SpotifyGenres]] = Array(Array())
     var spotifyHandler = Spotify()
@@ -154,7 +122,6 @@ class SongPickerViewController: NusicDefaultViewController {
     @IBOutlet weak var listViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var listViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchButtonHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var nusicWeeklyView: UIView!
     //Outlets
     @IBOutlet weak var mainControlView: UIView!
     @IBOutlet weak var moodCollectionView: UICollectionView!
@@ -241,18 +208,13 @@ class SongPickerViewController: NusicDefaultViewController {
  
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard nusicUser == nil else { return; }
-        DispatchQueue.main.async {
-            SwiftSpinner.show("Loading..", animated: true)
-        }
-        
         setupCollectionCellViews();
         setupView()
         setupListMenu()
         setupSegmentedControl()
         setupNavigationBar()
         setupNotificationHandlers()
-        setupUser()
+        loadingFinished = true
     }
     
     fileprivate func setupSegmentedControl() {
@@ -282,9 +244,11 @@ class SongPickerViewController: NusicDefaultViewController {
         if pageViewController.orderedViewControllers.contains(pageViewController.showSongVC!) {
             rightBarButton.tintColor = UIColor.white
             rightBarButton.isEnabled = true
+            mainControlView.addGestureRecognizer(scrollToShowSongGestureRecognizer)
         } else {
             rightBarButton.tintColor = UIColor.gray
             rightBarButton.isEnabled = false
+            mainControlView.removeGestureRecognizer(scrollToShowSongGestureRecognizer)
         }
         self.navigationItem.rightBarButtonItem = rightBarButton
         nusicControl.frame.size.height = 44
@@ -301,14 +265,15 @@ class SongPickerViewController: NusicDefaultViewController {
         if pageViewController.orderedViewControllers.contains(pageViewController.showSongVC!) {
             navigationBar.topItem?.rightBarButtonItem?.tintColor = UIColor.white
             navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
+            mainControlView.addGestureRecognizer(scrollToShowSongGestureRecognizer)
         } else {
             navigationBar.topItem?.rightBarButtonItem?.tintColor = UIColor.gray
             navigationBar.topItem?.rightBarButtonItem?.isEnabled = false
+            mainControlView.removeGestureRecognizer(scrollToShowSongGestureRecognizer)
         }
     }
     
     fileprivate func setupView() {
-        
         self.mainControlView.backgroundColor = UIColor.clear
         self.genreCollectionView.backgroundColor = UIColor.clear
         self.moodCollectionView.backgroundColor = UIColor.clear
@@ -320,6 +285,21 @@ class SongPickerViewController: NusicDefaultViewController {
         
         self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecognizer)
         
+        guard let nusicParent = self.parent as? NusicPageViewController else { return }
+        self.nusicParent = nusicParent
+        
+        scrollToNusicWeeklyGestureRecognizer.direction = .right
+        self.mainControlView.addGestureRecognizer(scrollToNusicWeeklyGestureRecognizer)
+        
+        scrollToShowSongGestureRecognizer.direction = .left
+    }
+    
+    @objc func swipeToNusicWeekly() {
+        nusicParent?.scrollToPreviousViewController()
+    }
+    
+    @objc func swipeToShowSong() {
+        nusicParent?.scrollToNextViewController()
     }
     
     fileprivate func setupNotificationHandlers() {
@@ -353,174 +333,6 @@ class SongPickerViewController: NusicDefaultViewController {
         self.present(dialog, animated: true, completion: nil)
     }
     
-    fileprivate func setupUser() {
-        let dispatchGroup = DispatchGroup()
-        
-        fullArtistList = [];
-        //Get User Info
-        dispatchGroup.enter()
-        self.spotifyHandler.getUser { (user, error) in
-            guard let user = user else {
-                self.showLoginErrorPopup();
-                self.loadingFinished = true;
-                return;
-            }
-            self.spotifyHandler.user = user;
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            self.handleUserLogin()
-        }
-    }
-    
-    fileprivate func handleUserLogin() {
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        var tempUser: NusicUser?
-        FirebaseAuthHelper.handleSpotifyLogin(
-            accessToken: self.spotifyHandler.auth.session.accessToken,
-            user: self.spotifyHandler.user,
-            loginCompletionHandler: { (user, error) in
-                guard error == nil, let userName = user?.uid else {
-                    self.showLoginErrorPopup()
-                    self.loadingFinished = true
-                    return
-                }
-                tempUser = NusicUser(user: self.spotifyHandler.user)
-                self.moodObject?.userName = userName
-                self.spotifyPlaylistCheck();
-                dispatchGroup.leave()
-        })
-        
-        dispatchGroup.notify(queue: .main) {
-            guard let user = tempUser else { return }
-            self.manageUserData(user: user)
-        }
-    }
-    
-    fileprivate func manageUserData(user: NusicUser) {
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        user.getUser(getUserHandler: { (fbUser, error) in
-            guard error == nil else { error?.presentPopup(for: self); return; }
-            if fbUser == nil || fbUser?.userName == "" {
-                self.nusicUser = user
-                self.extractGenresFromSpotify(genreExtractionHandler: { (isSuccessful) in
-                    guard isSuccessful else { error?.presentPopup(for: self, description: SpotifyErrorCodeDescription.extractGenresFromUser.rawValue); return;}
-                })
-            } else {
-                self.nusicUser = fbUser!
-                //TEMPORARY: Due to the DB restructure, migrate data if user version is < 1.1
-                guard self.nusicUser.version == "1.0" else { self.fetchFavoriteGenres(); return; }
-                FirebaseDatabaseHelper.migrateData(userId: self.nusicUser.userName, migrationCompletionHandler: { (success, error) in
-                    guard error == nil else { error?.presentPopup(for: self); return; }
-                    self.fetchFavoriteGenres()
-                })
-            }
-        })
-    }
-    
-    fileprivate func extractGenresFromSpotify(genreExtractionHandler: @escaping (Bool) -> ()) {
-        //Get Followed Artists
-        SwiftSpinner.show("Extracting Followed Artists..", animated: true)
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        DispatchQueue.main.async {
-            SwiftSpinner.show("Extracting Playlists..", animated: true)
-        }
-        spotifyHandler.getFollowedArtistsForUser(user: spotifyHandler.user, followedArtistsHandler: { (followedArtistsList, error) in
-            guard error == nil else { genreExtractionHandler(false); return; }
-            
-            DispatchQueue.global(qos: .default).async {
-                for artist in followedArtistsList {
-                    self.fullArtistList.append(artist)
-                }
-                dispatchGroup.leave()
-            }
-        })
-        
-        dispatchGroup.wait()
-        
-        //Get All Playlists from user
-        dispatchGroup.enter()
-        DispatchQueue.main.async {
-            SwiftSpinner.show("Extracting Artists from Playlists..", animated: true)
-        }
-        self.spotifyHandler.getAllPlaylists(fetchedPlaylistsHandler: { (playlistList, error) in
-            guard error == nil else { genreExtractionHandler(false); return; }
-            
-            DispatchQueue.global(qos: .default).async {
-                self.fullPlaylistList = playlistList
-                //Get All Artists for each playlist
-                self.currentPlaylistIndex = 0;
-                dispatchGroup.leave()
-            }
-        })
-        
-        dispatchGroup.wait()
-        
-        // Get all artists from playlists
-        for playlist in self.fullPlaylistList {
-            let playlistId = playlist.uri.absoluteString.substring(from: (playlist.uri.absoluteString.range(of: "playlist:")?.upperBound)!)
-            dispatchGroup.enter()
-            DispatchQueue.main.async {
-                SwiftSpinner.show("Extracting Genres..", animated: true)
-            }
-            self.spotifyHandler.getAllArtistsForPlaylist(userId: playlist.owner.canonicalUserName!, playlistId: playlistId, fetchedPlaylistArtists: { (results, error) in
-                guard error == nil else { genreExtractionHandler(false); return; }
-                self.spotifyHandler.getAllGenresForArtists(results, offset: 0, artistGenresHandler: { (artistList, error) in
-                    
-                    if let artistList = artistList {
-                        for artist in artistList {
-                            self.fullArtistList.append(artist);
-                        }
-                    }
-                    dispatchGroup.leave()
-                })
-            })
-        }
-        
-        //Save genres to Firebase
-        dispatchGroup.notify(queue: .main) {
-            let dict = self.spotifyHandler.getGenreCount(for: self.fullArtistList);
-            self.nusicUser.favoriteGenres = NusicGenre.convertGenreCountToGenres(userName: self.nusicUser.userName, dict: dict);
-            self.nusicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
-                if let error = error {
-                    error.presentPopup(for: self)
-                }
-            })
-            genreExtractionHandler(true)
-            self.loadingFinished = true;
-        }
-        
-    }
-    
-    fileprivate func spotifyPlaylistCheck() {
-        nusicPlaylist = NusicPlaylist(userName: self.spotifyHandler.user.canonicalUserName);
-        nusicPlaylist.getPlaylist { (playlist, error) in
-            guard error == nil else { error?.presentPopup(for: self); return; }
-            guard let playlistId = playlist?.id else { self.createPlaylistSpotify(); return; }
-            self.spotifyHandler.checkPlaylistExists(playlistId: playlistId, playlistExistHandler: { (isExisting, error) in
-                guard let isExisting = isExisting, !isExisting else { error?.presentPopup(for: self, description: SpotifyErrorCodeDescription.checkPlaylist.rawValue); return; }
-                self.createPlaylistSpotify()
-                FirebaseDatabaseHelper.deleteAllTracks(user: self.spotifyHandler.user.canonicalUserName, deleteTracksCompleteHandler: nil)
-            })
-        }
-    }
-    
-    fileprivate func createPlaylistSpotify() {
-        self.spotifyHandler.createNusicPlaylist(playlistName: "Liked in Nusic", playlistCreationHandler: { (isCreated, playlist, error) in
-            guard let isCreated = isCreated, isCreated == true else { error?.presentPopup(for: self); return; }
-            self.nusicPlaylist = playlist;
-            playlist?.addNewPlaylist(addNewPlaylistHandler: { (isAdded, error) in
-                if let error = error {
-                    error.presentPopup(for: self)
-                }
-            })
-        })
-    }
-    
     @objc fileprivate func handleNotificationSong() {
         guard let suggestedTrackId = UserDefaults.standard.string(forKey: "suggestedSpotifyTrackId") else { return; }
         if let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController, let songPickerVC = parent.songPickerVC {
@@ -538,17 +350,6 @@ class SongPickerViewController: NusicDefaultViewController {
                 self.passDataToShowSong()
             }
             
-        })
-    }
-
-    fileprivate func fetchFavoriteGenres() {
-        self.nusicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount, error) in
-            guard let dbGenreCount = dbGenreCount else { self.spotifyHandler.genreCount = Spotify.getAllValuesDict(); return; }
-            self.spotifyHandler.genreCount = dbGenreCount;
-            self.nusicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
-                guard error == nil else { error?.presentPopup(for: self); return }
-            });
-            self.loadingFinished = true;
         })
     }
 
