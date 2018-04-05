@@ -9,6 +9,7 @@
 import Foundation
 
 enum NusicTrackSearch {
+    case none
     case normal
     case genre
     case artist

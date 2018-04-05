@@ -79,8 +79,7 @@ class NusicPageViewController: UIPageViewController {
             self.view.sendSubview(toBack: backgroundImageView)
         }
         
-        let initialViewController = orderedViewControllers[2]
-        scrollToViewController(viewController: initialViewController)
+        
         nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
         
         
@@ -209,18 +208,6 @@ extension NusicPageViewController: UIPageViewControllerDataSource {
         }
         
         return orderedViewControllers[nextIndex]
-    }
-    
-}
-
-extension NusicPageViewController : UIScrollViewDelegate {
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        print("started dragging")
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print("scroll scroll")
     }
     
 }

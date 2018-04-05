@@ -176,8 +176,12 @@ extension Spotify {
                     return;
                 }
                 do {
-                    let artist = try JSONDecoder().decode(SpotifyArtist.self, from: data!)
-                    fetchedArtistInfoHandler(artist, nil);
+                    let parsedArtist = try JSONDecoder().decode(SpotifyArtist.self, from: data!)
+                    self.getAllGenresForArtists([parsedArtist.uri!], offset: 0, artistGenresHandler: { (artists, error) in
+                        guard let artist = artists?.first, error == nil else { fetchedArtistInfoHandler(nil, error); return }
+                        fetchedArtistInfoHandler(artist, nil);
+                    })
+                    
                 } catch {
                     print("error parsing artist genres for artist \(artistId)");
                 }

@@ -15,7 +15,6 @@ final class LastFMAPI {
     
     static func getArtistInfo(for artistName: String, completionHandler: @escaping (LastFM?, Error?) -> ()) {
         var urlString = "\(getArtistInfoURL)\(artistName.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!)&api_key=3c3bcd01bdc52f57a53f26e4c97150a0&format=json"
-        print("\(urlString)")
         guard let url = URL(string: urlString) else { return }
         let request = URLRequest(url: url)
         URLSession.shared.executeCall(with: request) { (data, response, error, isSuccess) in

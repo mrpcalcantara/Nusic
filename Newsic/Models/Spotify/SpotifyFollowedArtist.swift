@@ -18,13 +18,15 @@ class SpotifyArtist: Hashable {
     var popularity: Int? = -1
     var uri: String? = ""
     var id: String? = ""
+    var imageUrl: String? = ""
     
-    init(artistName: String? = nil, subGenres: [String]? = nil, popularity: Int? = nil, uri: String? = nil, id: String? = nil) {
+    init(artistName: String? = nil, subGenres: [String]? = nil, popularity: Int? = nil, uri: String? = nil, id: String? = nil, imageUrl: String? = "") {
         self.artistName = artistName;
         self.subGenres = subGenres;
         self.popularity = popularity;
         self.uri = uri;
         self.id = id;
+        self.imageUrl = imageUrl
     }
     
     required init(from decoder: Decoder) throws {
@@ -43,6 +45,14 @@ class SpotifyArtist: Hashable {
                 }
             }
             
+            var images = try container.nestedUnkeyedContainer(forKey: .images)
+            while !images.isAtEnd {
+                let image = try images.nestedContainer(keyedBy: ImageKeys.self)
+                if let width = try image.decodeIfPresent(Int.self, forKey: .width), width == 640 {
+                    imageUrl = try image.decodeIfPresent(String.self, forKey: .url)
+                    break;
+                }
+            }
             subGenres = Spotify.filterSpotifyGenres(genres: genreList)
         } catch {}
         
@@ -95,6 +105,13 @@ extension SpotifyArtist: Decodable {
         case artistName = "name"
         case popularity
         case subGenres = "genres"
+        case images
+    }
+    
+    enum ImageKeys: CodingKey {
+        case url
+        case width
+        case height
     }
     
 }
