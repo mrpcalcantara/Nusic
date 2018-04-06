@@ -53,7 +53,11 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         }
     }
     var lastFM: LastFM? = nil
-    var currentArtist: SpotifyArtist? = nil
+    var currentArtist: SpotifyArtist? = nil {
+        didSet {
+            updateArtistInfo()
+        }
+    }
     var artistTopTracks: [SpotifyTrack] = [SpotifyTrack]()
     var spotify: Spotify = Spotify() {
         didSet {
@@ -219,13 +223,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         dispatchGroup.enter()
         spotify.getArtistTopTracks(for: artistID) { (tracks, error) in
             guard let tracks = tracks, error == nil else { return; }
-            for index in 0..<tracks.count {
-                let track = tracks[index]
-                if let currentArtist = self.currentArtist, let index = track.artist.index(of: currentArtist) {
-                    track.artist[index] = currentArtist
-                }
-                self.artistTopTracks.append(track)
-            }
+            self.artistTopTracks = tracks
             dispatchGroup.leave()
         }
         
@@ -244,6 +242,20 @@ class NusicWeeklyViewController: NusicDefaultViewController {
 
     fileprivate func setupFirebaseListeners() {
         removeFirebaseListeners();
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        var artistID = ""
+        guard let currentTimestamp = Int(dateFormatter.string(from: Date())) else { return }
+        reference.child("weeklyArtist").queryOrdered(byChild: "isActive").queryEqual(toValue: true).observe(.value) { (dataSnapshot) in
+            guard dataSnapshot.exists() else { self.fetchLastWeeklyArtist(); return }
+            if let element = dataSnapshot.children.nextObject() as? DataSnapshot {
+                artistID = element.childSnapshot(forPath: "id").value as! String
+            }
+            guard artistID != "" else { self.fetchLastWeeklyArtist(); return }
+            self.fetchArtistInfo(artistID: artistID)
+            
+            
+        }
         reference.child("weeklyArtist/id").observe(.value) { (dataSnapshot) in
             guard dataSnapshot.exists(),
                 let artistID = dataSnapshot.value as? String
@@ -253,10 +265,28 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         
     }
     
+    fileprivate func fetchLastWeeklyArtist() {
+        reference.child("weeklyArtist").queryOrdered(byChild: "startDate").queryLimited(toLast: 1).observe(.value) { (dataSnapshot) in
+            guard dataSnapshot.exists() else { return }
+            var artistID = ""
+            while let element = dataSnapshot.children.nextObject() as? DataSnapshot {
+                artistID = element.childSnapshot(forPath: "id").value as! String
+            }
+            self.fetchArtistInfo(artistID: artistID)
+        }
+    }
+    
     fileprivate func removeFirebaseListeners() {
         reference.child("weeklyArtist/id").removeAllObservers()
     }
 
+    fileprivate func updateArtistInfo() {
+        for index in 0..<artistTopTracks.count {
+            if let currentArtist = self.currentArtist, let artistIndex = artistTopTracks[index].artist.index(where: { $0.id == currentArtist.id }) {
+                artistTopTracks[index].artist[artistIndex] = currentArtist
+            }
+        }
+    }
 }
 
 extension NusicWeeklyViewController: UIScrollViewDelegate {

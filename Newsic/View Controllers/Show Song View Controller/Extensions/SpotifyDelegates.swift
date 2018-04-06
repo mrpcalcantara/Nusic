@@ -34,8 +34,9 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStartPlayingTrack trackUri: String!) {
         self.isPlaying = true
-        guard detectConnectivity(), let currentTrack = audioStreaming.metadata.currentTrack else { return; }
-        let currentNusicTrack = self.cardList[songCardView.currentCardIndex]
+        guard detectConnectivity(), let currentTrack = audioStreaming.metadata.currentTrack, let trackIndex = self.cardList.index(where: { $0.trackInfo.trackUri == trackUri }) else { return; }
+        
+        let currentNusicTrack = self.cardList[trackIndex]
         if let isNewSuggestion = currentNusicTrack.suggestionInfo?.isNewSuggestion, isNewSuggestion == true {
             currentNusicTrack.setSuggestedValue(value: false, suggestedHandler: nil)
         }
@@ -48,10 +49,8 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         self.currentPlayingTrack = currentNusicTrack.trackInfo;
         self.activateAudioSession()
         setupSongProgress(duration: Float(currentTrack.duration))
-        guard let imageURL = currentTrack.albumCoverArtURL, let url = URL(string: imageURL) else {
-            updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: nil, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
-            return
-        }
+        updateNowPlayingCenter(title: currentTrack.name, artist: currentTrack.artistName, albumArt: nil, currentTime: 0, songLength: currentTrack.duration as NSNumber, playbackRate: 1)
+        guard let imageURL = currentTrack.albumCoverArtURL, let url = URL(string: imageURL) else { return }
         UIImage().downloadImage(from: url) { (image) in
             self.currentPlayingTrack?.thumbNail = image
             guard let songName = self.currentPlayingTrack?.songName, let artistName = self.currentPlayingTrack?.artist.namesToString() else { return }
@@ -232,7 +231,6 @@ extension ShowSongViewController {
     }
     
     final func updateNowPlayingCenter(title: String, artist: String, albumArt: AnyObject? = nil, currentTime: NSNumber, songLength: NSNumber, playbackRate: Double){
-        
         var trackInfo: [String: AnyObject] = [
             
             MPMediaItemPropertyTitle: title as AnyObject,
@@ -241,7 +239,6 @@ extension ShowSongViewController {
             MPMediaItemPropertyPlaybackDuration: songLength as AnyObject,
             MPNowPlayingInfoPropertyPlaybackRate: playbackRate as AnyObject
         ]
-        
         guard let image = albumArt as? UIImage else { return }
         trackInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(image: image) as AnyObject
         DispatchQueue.main.async {
