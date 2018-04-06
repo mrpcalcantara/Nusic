@@ -30,7 +30,7 @@ extension ShowSongViewController: KolodaViewDelegate {
                 let ytId = self.currentPlayingTrack?.audioFeatures?.youtubeId
                 url = URL(string: "https://www.youtube.com/watch?v=\(ytId)");
             }
-            let appendedText = "Suggested by #nusic"
+            let appendedText = "Suggested by #nusic #nusicapp"
             let array: [Any] = [url as Any, appendedText as Any]
             let activityVC = UIActivityViewController(activityItems: array, applicationActivities: nil)
             activityVC.completionWithItemsHandler = { activity, isSuccess, returneditems, activityError in

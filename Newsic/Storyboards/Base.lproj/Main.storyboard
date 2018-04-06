@@ -660,14 +660,14 @@
                             <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" canCancelContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j5B-54-DHO" userLabel="Artist Scroll View">
                                 <rect key="frame" x="0.0" y="116" width="375" height="516"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YiA-uU-bs0" userLabel="Artist Name Label">
-                                        <rect key="frame" x="8" y="0.0" width="0.0" height="0.0"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YiA-uU-bs0" userLabel="Artist Name Label">
+                                        <rect key="frame" x="8" y="0.0" width="42" height="54"/>
                                         <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="45"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddU-fv-X78" userLabel="Artist Bio Label">
-                                        <rect key="frame" x="8" y="32" width="0.0" height="0.0"/>
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddU-fv-X78" userLabel="Artist Bio Label">
+                                        <rect key="frame" x="8" y="86" width="42" height="20.5"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" link="YES" staticText="YES"/>
                                         </accessibility>
@@ -675,16 +675,25 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q5V-ir-Prd" userLabel="Artist Similar Label">
+                                        <rect key="frame" x="8" y="114.5" width="42" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="q5V-ir-Prd" secondAttribute="bottom" constant="8" id="0vA-mt-Exy"/>
                                     <constraint firstItem="ddU-fv-X78" firstAttribute="leading" secondItem="j5B-54-DHO" secondAttribute="leading" constant="8" id="5nV-rf-Z1d"/>
                                     <constraint firstItem="ddU-fv-X78" firstAttribute="width" relation="lessThanOrEqual" secondItem="j5B-54-DHO" secondAttribute="width" constant="-16" id="MC0-nv-tiu"/>
                                     <constraint firstItem="ddU-fv-X78" firstAttribute="top" secondItem="YiA-uU-bs0" secondAttribute="bottom" constant="32" id="MSy-xf-hfL"/>
-                                    <constraint firstAttribute="bottom" secondItem="ddU-fv-X78" secondAttribute="bottom" constant="8" id="Q36-80-KYt"/>
                                     <constraint firstAttribute="trailing" secondItem="YiA-uU-bs0" secondAttribute="trailing" constant="8" id="S9L-gF-ZdB"/>
+                                    <constraint firstAttribute="trailing" secondItem="q5V-ir-Prd" secondAttribute="trailing" constant="8" id="VU4-ow-duD"/>
                                     <constraint firstAttribute="trailing" secondItem="ddU-fv-X78" secondAttribute="trailing" constant="8" id="VWg-YI-Xxj"/>
+                                    <constraint firstItem="q5V-ir-Prd" firstAttribute="leading" secondItem="j5B-54-DHO" secondAttribute="leading" constant="8" id="Y3F-GH-rhI"/>
                                     <constraint firstItem="YiA-uU-bs0" firstAttribute="leading" secondItem="j5B-54-DHO" secondAttribute="leading" constant="8" id="pkz-n4-FIZ"/>
                                     <constraint firstItem="YiA-uU-bs0" firstAttribute="top" secondItem="j5B-54-DHO" secondAttribute="top" id="q2v-8w-MPm"/>
+                                    <constraint firstItem="q5V-ir-Prd" firstAttribute="top" secondItem="ddU-fv-X78" secondAttribute="bottom" constant="8" id="qXK-Dp-Mgs"/>
                                 </constraints>
                             </scrollView>
                             <navigationBar contentMode="scaleToFill" largeTitles="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kTl-6Q-GdY">
@@ -732,7 +741,6 @@
                         <viewLayoutGuide key="safeArea" id="UNx-kL-k45"/>
                     </view>
                     <connections>
-                        <outlet property="artistBioBottomConstraint" destination="Q36-80-KYt" id="GoC-cY-Zvd"/>
                         <outlet property="artistBioLabel" destination="ddU-fv-X78" id="BTM-Bd-VMN"/>
                         <outlet property="artistBioLeadingConstraint" destination="5nV-rf-Z1d" id="P6p-Km-ZGW"/>
                         <outlet property="artistBioScrollView" destination="j5B-54-DHO" id="1r3-Gb-0jU"/>
@@ -744,6 +752,11 @@
                         <outlet property="artistNameLeadingConstraint" destination="pkz-n4-FIZ" id="99x-ub-Gl7"/>
                         <outlet property="artistNameTopConstraint" destination="q2v-8w-MPm" id="9OD-mS-BxE"/>
                         <outlet property="artistNameTrailingConstraint" destination="S9L-gF-ZdB" id="BAq-Ep-Nhi"/>
+                        <outlet property="artistSImilarBottomConstraint" destination="0vA-mt-Exy" id="cqu-d2-jP3"/>
+                        <outlet property="artistSimilarLabel" destination="q5V-ir-Prd" id="34O-jA-EEw"/>
+                        <outlet property="artistSimilarLeadingConstraint" destination="Y3F-GH-rhI" id="CRc-9y-8eg"/>
+                        <outlet property="artistSimilarTopConstraint" destination="qXK-Dp-Mgs" id="kXN-7G-HfQ"/>
+                        <outlet property="artistSimilarTrailingConstraint" destination="VU4-ow-duD" id="e1G-CW-jD9"/>
                         <outlet property="imageViewBottomConstraint" destination="vv5-Kb-MqE" id="Cgr-F1-Cfm"/>
                         <outlet property="imageViewLeadingConstraint" destination="r8x-Yq-hNR" id="oo8-Lw-JSp"/>
                         <outlet property="imageViewTopConstraint" destination="plX-k4-4kd" id="p4g-VS-uY3"/>
