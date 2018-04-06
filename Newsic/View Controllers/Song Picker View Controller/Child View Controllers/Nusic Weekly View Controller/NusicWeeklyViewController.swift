@@ -15,6 +15,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     @IBOutlet weak var artistImageView: UIImageView!
     @IBOutlet weak var artistNameLabel: UILabel!
     @IBOutlet weak var artistBioLabel: UILabel!
+    @IBOutlet weak var artistSimilarLabel: UILabel!
     @IBOutlet weak var artistBioScrollView: UIScrollView!
     @IBOutlet weak var navigationBar: UINavigationBar!
     @IBOutlet weak var playSongsButton: UIButton!
@@ -32,6 +33,9 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     @IBOutlet weak var imageViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var playSongsButtonTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var playSongsButtonLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var playSongsButtonBottomConstraint: NSLayoutConstraint!
     
     //Scroll View Elements Constraints
     @IBOutlet weak var artistNameTrailingConstraint: NSLayoutConstraint!
@@ -40,11 +44,13 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     @IBOutlet weak var artistBioLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var artistBioWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var artistBioTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var artistBioBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var artistBioTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var playSongsButtonTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var playSongsButtonLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var playSongsButtonBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var artistSImilarBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var artistSimilarTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var artistSimilarLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var artistSimilarTopConstraint: NSLayoutConstraint!
+    
+    
     
     
     var loadingFinished: Bool? = false {
@@ -125,6 +131,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         setupArtistImageView()
         setupArtistBioLabel()
         setupArtistNameLabel()
+        setupArtistSimilarLabel()
         setupArtistScrollView()
         setupNavigationBar()
     }
@@ -157,7 +164,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     
     fileprivate func setupArtistNameLabel() {
         artistNameLabel.addShadow()
-        artistNameLabel.font = UIFont(name: "Synthetic Sharps", size: 50)
+        artistNameLabel.font = UIFont(name: "Synthetic Sharps", size: 80)
         artistNameLabel.textColor = NusicDefaults.foregroundThemeColor
         artistNameLabel.backgroundColor = NusicDefaults.clearColor
         artistNameTopConstraint.constant = self.view.bounds.height - self.navigationBar.bounds.height - self.artistNameLabel.bounds.height - self.artistBioTopConstraint.constant - self.playSongsButton.bounds.height
@@ -167,7 +174,11 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     fileprivate func setupArtistBioLabel() {
         artistBioLabel.textColor = NusicDefaults.whiteColor
         artistBioLabel.backgroundColor = NusicDefaults.clearColor
-        
+    }
+    
+    fileprivate func setupArtistSimilarLabel() {
+        artistSimilarLabel.textColor = NusicDefaults.whiteColor
+        artistSimilarLabel.backgroundColor = NusicDefaults.clearColor
     }
     
     fileprivate func setupArtistImageView() {
@@ -203,6 +214,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
                 NSAttributedStringKey.font : UIFont.systemFont(ofSize: 60, weight: UIFont.Weight.heavy)
                 ])
             self.artistNameLabel.attributedText = attributedArtistName
+            self.artistSimilarLabel.text = "Also look for: \(lastFM.listSimilarArtists())"
         }
         
     }
