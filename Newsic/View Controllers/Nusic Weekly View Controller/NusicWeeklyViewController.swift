@@ -56,6 +56,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     var loadingFinished: Bool? = false {
         didSet {
             updateValuesUI()
+            handleNotificationSong()
         }
     }
     var lastFM: LastFM? = nil
@@ -103,6 +104,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNotificationHandlers()
         setupUI()
     }
     
@@ -162,12 +164,36 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         parent.scrollToNextViewController()
     }
     
+    fileprivate func setupNotificationHandlers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNotificationSong), name: NSNotification.Name(rawValue: "nusicADayNotificationPushed"), object: nil)
+    }
+    
+    @objc fileprivate func handleNotificationSong() {
+        guard let suggestedTrackId = UserDefaults.standard.string(forKey: "suggestedSpotifyTrackId"), let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController, let songPickerVC = parent.songPickerVC as? SongPickerViewController else { return; }
+        parent.scrollToViewController(viewController: songPickerVC)
+        
+        songPickerVC.isMoodSelected = false
+        songPickerVC.moodObject = NusicMood(emotions: [.init(basicGroup: .unknown)], date: Date(), associatedGenres: [])
+        spotify.getTrackInfo(for: [suggestedTrackId], offset: 0, currentExtractedTrackList: [], trackInfoListHandler: { (tracks, error) in
+            guard let track = tracks else { error?.presentPopup(for: self); return; }
+            UserDefaults.standard.removeObject(forKey: "suggestedSpotifyTrackId")
+            UserDefaults.standard.synchronize()
+            track.first?.suggestedSong = true
+            songPickerVC.selectedSongsForGenre[EmotionDyad.unknown.rawValue] = track
+            DispatchQueue.main.async {
+                songPickerVC.passDataToShowSong()
+            }
+            
+        })
+    }
+    
     fileprivate func setupArtistNameLabel() {
         artistNameLabel.addShadow()
         artistNameLabel.font = UIFont(name: "Synthetic Sharps", size: 80)
         artistNameLabel.textColor = NusicDefaults.foregroundThemeColor
         artistNameLabel.backgroundColor = NusicDefaults.clearColor
-        artistNameTopConstraint.constant = self.view.bounds.height - self.navigationBar.bounds.height - self.artistNameLabel.bounds.height - self.artistBioTopConstraint.constant - self.playSongsButton.bounds.height
+        artistNameTopConstraint.constant = self.view.bounds.height - self.navigationBar.bounds.height - self.artistNameLabel.bounds.height - self.artistBioTopConstraint.constant - self.playSongsButton.bounds.height - self.view.safeAreaInsets.bottom - self.view.safeAreaInsets.top
+        print(self.view.safeAreaInsets)
         self.view.layoutIfNeeded()
     }
     
@@ -267,12 +293,6 @@ class NusicWeeklyViewController: NusicDefaultViewController {
             self.fetchArtistInfo(artistID: artistID)
             
             
-        }
-        reference.child("weeklyArtist/id").observe(.value) { (dataSnapshot) in
-            guard dataSnapshot.exists(),
-                let artistID = dataSnapshot.value as? String
-                else { return }
-            self.fetchArtistInfo(artistID: artistID)
         }
         
     }

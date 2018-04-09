@@ -51,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure();
         
         Messaging.messaging().delegate = self
+        Messaging.messaging().subscribe(toTopic: "nusicWeekly")
         registerForPushNotifications()
         
         // Setup Spotify Values
@@ -83,25 +84,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return false
     }
-    
-//    
-//    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-//        
-//        if auth.canHandle(url) {
-//            auth.handleAuthCallback(withTriggeredAuthURL: url, callback: { (error, session) in
-//                guard let session = session else { NotificationCenter.default.post(name: Notification.Name(rawValue: "loginUnsuccessful"), object: false); return; }
-//                let userDefaults = UserDefaults.standard
-//                let sessionData = NSKeyedArchiver.archivedData(withRootObject: session)
-//                userDefaults.set(sessionData, forKey: "SpotifySession")
-//                userDefaults.synchronize()
-//                NotificationCenter.default.post(name: Notification.Name(rawValue: "loginSuccessful"), object: true)
-//                
-//            })
-//            return true
-//        }
-//        return false
-//        
-//    }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -235,43 +217,14 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         // Print full message.
         print(userInfo)
         guard UIApplication.shared.applicationState == .active,
-            let rootVC = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController,
             let aps = userInfo["aps"] as? [String: AnyObject],
             let alert = aps["alert"] as? [String: AnyObject],
             let title = alert["title"] as? String,
             let message = alert["body"] as? String else { return; }
         
-        let alertDialog = PopupDialog(title: title, message: message)
-        if let viewC = alertDialog.viewController as? PopupDialogDefaultViewController {
-            viewC.titleFont            = UIFont(name: "Futura", size: 16)!
-            viewC.titleColor           = UIColor(white: 1, alpha: 1)
-            viewC.titleTextAlignment   = .center
-            viewC.messageFont          = UIFont(name: "Futura", size: 16)!
-            viewC.messageColor         = UIColor(white: 0.6, alpha: 1)
-            viewC.messageTextAlignment = .center
+        if userInfo["spotifyTrackId"] as? String != nil {
+            handleSuggestedTrack(title: title, message: message, userInfo: userInfo)
         }
-        
-        let action1 = { () -> Void in
-            self.handleReceivedRemoteNotification(userInfo: userInfo)
-        }
-        
-        let action2 = { () -> Void in
-            alertDialog.dismiss(animated: true, completion: nil)
-        }
-        let button1 = PopupDialogButton(title: "Show Me!", action: action1)
-        button1.titleFont      = UIFont(name: "Futura", size: 16)!
-        button1.titleColor     = NusicDefaults.foregroundThemeColor
-        button1.buttonColor    = UIColor(white: 0.15, alpha: 1)
-        button1.separatorColor = UIColor(white: 0.9, alpha: 1)
-        
-        let button2 = PopupDialogButton(title: "Cancel", action: action2)
-        button2.titleFont      = UIFont(name: "Futura", size: 16)!
-        button2.titleColor     = NusicDefaults.foregroundThemeColor
-        button2.buttonColor    = UIColor(white: 0.15, alpha: 1)
-        button2.separatorColor = UIColor(white: 0.9, alpha: 1)
-        alertDialog.addButtons([button1, button2])
-        
-        rootVC.present(alertDialog, animated: true, completion: nil)
         
         // Change this to your preferred presentation option
         completionHandler([])
@@ -298,6 +251,14 @@ extension AppDelegate : MessagingDelegate {
     }
     
     func handleReceivedRemoteNotification(userInfo: [AnyHashable: Any]) {
+        if userInfo["spotifyTrackId"] as? String != nil {
+            launchSuggestedTrack(userInfo: userInfo)
+        } else {
+            handleNusicWeekly(userInfo: userInfo)
+        }
+    }
+    
+    func launchSuggestedTrack(userInfo: [AnyHashable: Any]) {
         UIApplication.shared.applicationIconBadgeNumber += 1
         UserDefaults.standard.set(userInfo["spotifyTrackId"] as! String, forKey: "suggestedSpotifyTrackId")
         UserDefaults.standard.synchronize()
@@ -305,6 +266,45 @@ extension AppDelegate : MessagingDelegate {
         if let messageID = userInfo[gcmMessageIDKey] {
             print("Message ID: \(messageID)")
         }
+    }
+    
+    func handleSuggestedTrack(title:String, message: String, userInfo: [AnyHashable: Any]) {
+        guard let rootVC = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController else { return }
+        let alertDialog = PopupDialog(title: title, message: message)
+        if let viewC = alertDialog.viewController as? PopupDialogDefaultViewController {
+            viewC.titleFont            = UIFont(name: "Futura", size: 16)!
+            viewC.titleColor           = UIColor(white: 1, alpha: 1)
+            viewC.titleTextAlignment   = .center
+            viewC.messageFont          = UIFont(name: "Futura", size: 16)!
+            viewC.messageColor         = UIColor(white: 0.6, alpha: 1)
+            viewC.messageTextAlignment = .center
+        }
+        
+        let action1 = { () -> Void in
+            self.launchSuggestedTrack(userInfo: userInfo)
+        }
+        
+        let action2 = { () -> Void in
+            alertDialog.dismiss(animated: true, completion: nil)
+        }
+        let button1 = PopupDialogButton(title: "Show Me!", action: action1)
+        button1.titleFont      = UIFont(name: "Futura", size: 16)!
+        button1.titleColor     = NusicDefaults.foregroundThemeColor
+        button1.buttonColor    = UIColor(white: 0.15, alpha: 1)
+        button1.separatorColor = UIColor(white: 0.9, alpha: 1)
+        
+        let button2 = PopupDialogButton(title: "Cancel", action: action2)
+        button2.titleFont      = UIFont(name: "Futura", size: 16)!
+        button2.titleColor     = NusicDefaults.foregroundThemeColor
+        button2.buttonColor    = UIColor(white: 0.15, alpha: 1)
+        button2.separatorColor = UIColor(white: 0.9, alpha: 1)
+        alertDialog.addButtons([button1, button2])
+        
+        rootVC.present(alertDialog, animated: true, completion: nil)
+    }
+    
+    func handleNusicWeekly(userInfo: [AnyHashable: Any]) {
+        print(userInfo)
     }
 }
 

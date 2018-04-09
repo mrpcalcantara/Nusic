@@ -167,7 +167,7 @@ extension Spotify {
  
     final func getArtistInfo(for artistId: String, fetchedArtistInfoHandler: @escaping (SpotifyArtist?, NusicError?) -> () ) {
         do {
-            let trackUrl = URL(string: "spotify:artist:\(artistId)")!
+            let trackUrl = URL(string: Spotify.transformToURI(type: .artist, id: artistId))!
             let artistGenresRequest = try SPTArtist.createRequest(forArtist: trackUrl, withAccessToken: auth.session.accessToken!);
             executeSpotifyCall(with: artistGenresRequest, spotifyCallCompletionHandler: { (data, httpResponse, error, isSuccess) in
                 let statusCode:Int! = httpResponse != nil ? httpResponse?.statusCode : -1

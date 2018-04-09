@@ -66,7 +66,7 @@ class SongPickerViewController: NusicDefaultViewController {
     
     var loadingFinished: Bool = false {
         didSet {
-            handleNotificationSong()
+//            handleNotificationSong()
             guard self.spotifyHandler.user != nil && self.spotifyHandler.user.canonicalUserName != nil, sectionMoods.count == 0 else { SwiftSpinner.show(duration: 2, title: "Done!", animated: true); return }
             FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
                 self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
@@ -213,7 +213,6 @@ class SongPickerViewController: NusicDefaultViewController {
         setupListMenu()
         setupSegmentedControl()
         setupNavigationBar()
-        setupNotificationHandlers()
         loadingFinished = true
     }
     
@@ -302,9 +301,7 @@ class SongPickerViewController: NusicDefaultViewController {
         nusicParent?.scrollToNextViewController()
     }
     
-    fileprivate func setupNotificationHandlers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleNotificationSong), name: NSNotification.Name(rawValue: "nusicADayNotificationPushed"), object: nil)
-    }
+    
     
     @objc fileprivate func toggleMenu() {
         let parent = self.parent as! NusicPageViewController
@@ -333,25 +330,7 @@ class SongPickerViewController: NusicDefaultViewController {
         self.present(dialog, animated: true, completion: nil)
     }
     
-    @objc fileprivate func handleNotificationSong() {
-        guard let suggestedTrackId = UserDefaults.standard.string(forKey: "suggestedSpotifyTrackId") else { return; }
-        if let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController, let songPickerVC = parent.songPickerVC {
-            parent.scrollToViewController(viewController: songPickerVC)
-        }
-        self.isMoodSelected = false
-        self.moodObject = NusicMood(emotions: [.init(basicGroup: .unknown)], date: Date(), associatedGenres: [])
-        spotifyHandler.getTrackInfo(for: [suggestedTrackId], offset: 0, currentExtractedTrackList: [], trackInfoListHandler: { (tracks, error) in
-            guard let track = tracks else { error?.presentPopup(for: self); return; }
-            UserDefaults.standard.removeObject(forKey: "suggestedSpotifyTrackId")
-            UserDefaults.standard.synchronize()
-            track.first?.suggestedSong = true
-            self.selectedSongsForGenre[EmotionDyad.unknown.rawValue] = track
-            DispatchQueue.main.async {
-                self.passDataToShowSong()
-            }
-            
-        })
-    }
+    
 
 }
 
