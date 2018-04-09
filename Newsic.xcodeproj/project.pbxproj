@@ -483,14 +483,6 @@
 			path = "Error Handling";
 			sourceTree = "<group>";
 		};
-		8C2551C62062563300B522B8 /* Child View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				8C2551C72062563F00B522B8 /* Nusic Weekly View Controller */,
-			);
-			path = "Child View Controllers";
-			sourceTree = "<group>";
-		};
 		8C2551C72062563F00B522B8 /* Nusic Weekly View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -1058,6 +1050,7 @@
 		8C90E8831F53D885002B135F /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				8C2551C72062563F00B522B8 /* Nusic Weekly View Controller */,
 				8C3166AB2043BAD000380460 /* Song List View Controller */,
 				8C7BE3271F78AD50004D9F15 /* Side Menu View Controller */,
 				8C848EDA1F5676770070C08A /* Spotify Login View Controller */,
@@ -1257,7 +1250,6 @@
 		8CC6E71D1F55101C00846080 /* Song Picker View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				8C2551C62062563300B522B8 /* Child View Controllers */,
 				8C0F428D1FE3BAB800EDD9FA /* Views */,
 				8CB529DF1F8375C700C8050F /* Extensions */,
 				8C90E8631F53D838002B135F /* SongPickerViewController.swift */,

@@ -64,7 +64,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     var nusicUser: NusicUser! = nil {
         didSet {
-            
+            nusicUser.version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
             nusicUser.saveUser { (isSaved, error) in
                 guard error == nil else { error?.presentPopup(for: self); return; }
             }

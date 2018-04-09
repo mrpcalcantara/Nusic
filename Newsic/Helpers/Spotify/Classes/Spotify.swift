@@ -110,6 +110,8 @@ class Spotify {
                             newRequest.addValue("Bearer \(self.auth.session.accessToken!)", forHTTPHeaderField: "Authorization");
                             self.executeSpotifyCall(with: newRequest, spotifyCallCompletionHandler: spotifyCallCompletionHandler)
                         })
+                    } else {
+                        spotifyCallCompletionHandler(data, response, error, false);
                     }
                 case 500...599:
                     spotifyCallCompletionHandler(data, response, error, false);

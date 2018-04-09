@@ -736,7 +736,7 @@
                             <constraint firstItem="xT1-qY-jHL" firstAttribute="leading" secondItem="UNx-kL-k45" secondAttribute="leading" id="r8x-Yq-hNR"/>
                             <constraint firstItem="UNx-kL-k45" firstAttribute="trailing" secondItem="dtX-BW-XqS" secondAttribute="trailing" id="tBB-xv-BrQ"/>
                             <constraint firstItem="j5B-54-DHO" firstAttribute="leading" secondItem="UNx-kL-k45" secondAttribute="leading" id="ux4-i4-GXZ"/>
-                            <constraint firstItem="xT1-qY-jHL" firstAttribute="bottom" secondItem="UNx-kL-k45" secondAttribute="bottom" id="vv5-Kb-MqE"/>
+                            <constraint firstItem="xT1-qY-jHL" firstAttribute="bottom" secondItem="wvk-UJ-JWm" secondAttribute="bottom" id="vv5-Kb-MqE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="UNx-kL-k45"/>
                     </view>
