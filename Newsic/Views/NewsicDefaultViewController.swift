@@ -11,6 +11,8 @@ import PopupDialog
 import SwiftSpinner
 
 class NusicDefaultViewController: UIViewController {
+    
+    private static let insetBackgroundViewTag = 98721 //Cool number
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -86,4 +86,32 @@ extension UIView {
         })
     }
     
+    final func addSafeAreaExterior() {
+        if self.viewWithTag(12345) != nil {
+            self.viewWithTag(12345)?.removeFromSuperview()
+        }
+        
+        let insetView = UIView(frame: .zero)
+        insetView.tag = 12345
+        insetView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(insetView)
+        
+        insetView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        insetView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        insetView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        insetView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.frame = CGRect.zero
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        insetView.addSubview(blurView)
+        
+        blurView.leadingAnchor.constraint(equalTo: insetView.leadingAnchor).isActive = true
+        blurView.trailingAnchor.constraint(equalTo: insetView.trailingAnchor).isActive = true
+        blurView.topAnchor.constraint(equalTo: insetView.topAnchor).isActive = true
+        blurView.bottomAnchor.constraint(equalTo: insetView.bottomAnchor).isActive = true
+    }
+    
+    
 }

@@ -199,8 +199,10 @@ extension SongPickerViewController {
             UIView.animate(withDuration: 0.3, animations: {
                 DispatchQueue.main.async {
                     self.searchButton.alpha = 0
-                    guard self.isMoodCellSelected else { return }
+                    self.view.viewWithTag(12345)?.alpha = 0
+                    guard self.isMoodCellSelected else { return }                    
                     self.searchButton.alpha = 1
+                    self.view.viewWithTag(12345)?.alpha = 1
                 }
                 
             }) { (isCompleted) in
@@ -214,6 +216,7 @@ extension SongPickerViewController {
             UIView.animate(withDuration: 0.3, animations: {
                 DispatchQueue.main.async {
                     self.searchButton.alpha = 1
+                    self.view.viewWithTag(12345)?.alpha = 1
                     if self.selectedSongsForGenre.count == 0 {
                         self.searchButtonHeightConstraint.constant = 35
                         self.searchButton.setTitle("Random it up!", for: .normal)

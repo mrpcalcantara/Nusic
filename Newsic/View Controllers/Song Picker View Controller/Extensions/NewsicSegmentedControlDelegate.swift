@@ -27,10 +27,13 @@ extension SongPickerViewController: NusicSegmentedControlDelegate {
             moodCollectionView.alpha = showProgress
             genreCollectionView.alpha = hideProgress
             searchButton.alpha = hideProgress
+            self.view.viewWithTag(12345)?.alpha = hideProgress
         } else {
             moodCollectionView.alpha = hideProgress
             genreCollectionView.alpha = showProgress
             searchButton.alpha = showProgress
+            self.view.viewWithTag(12345)?.alpha = showProgress
+            
         }
     }
 

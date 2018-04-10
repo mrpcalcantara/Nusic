@@ -66,7 +66,6 @@ class SongPickerViewController: NusicDefaultViewController {
     
     var loadingFinished: Bool = false {
         didSet {
-//            handleNotificationSong()
             guard self.spotifyHandler.user != nil && self.spotifyHandler.user.canonicalUserName != nil, sectionMoods.count == 0 else { SwiftSpinner.show(duration: 2, title: "Done!", animated: true); return }
             FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
                 self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
@@ -179,6 +178,8 @@ class SongPickerViewController: NusicDefaultViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.view.layoutIfNeeded()
+        self.mainControlView.layoutIfNeeded()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -197,12 +198,14 @@ class SongPickerViewController: NusicDefaultViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        guard self.loadingFinished else { return; }
         moodCollectionView.collectionViewLayout.invalidateLayout()
         genreCollectionView.collectionViewLayout.invalidateLayout()
         reloadCellsData(for: moodCollectionView)
         reloadCellsData(for: genreCollectionView)
         reloadListMenu()
         reloadNavigationBar()
+        self.view.addSafeAreaExterior()
         self.view.layoutIfNeeded()
     }
  
@@ -250,11 +253,12 @@ class SongPickerViewController: NusicDefaultViewController {
             mainControlView.removeGestureRecognizer(scrollToShowSongGestureRecognizer)
         }
         self.navigationItem.rightBarButtonItem = rightBarButton
-        nusicControl.frame.size.height = 44
+        nusicControl.frame.size.height = self.navigationBar.bounds.height
         self.navigationItem.titleView = nusicControl
         
         let navItem = self.navigationItem
         navigationBar.items = [navItem]
+        
         self.view.layoutIfNeeded()
         
     }
@@ -270,17 +274,23 @@ class SongPickerViewController: NusicDefaultViewController {
             navigationBar.topItem?.rightBarButtonItem?.isEnabled = false
             mainControlView.removeGestureRecognizer(scrollToShowSongGestureRecognizer)
         }
+        self.view.layoutIfNeeded()
     }
     
     fileprivate func setupView() {
         self.mainControlView.backgroundColor = UIColor.clear
         self.genreCollectionView.backgroundColor = UIColor.clear
+//        genreCollectionView.layer.zPosition = -1
+//        genreCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
         self.moodCollectionView.backgroundColor = UIColor.clear
+//        moodCollectionView.layer.zPosition = -1
+//        moodCollectionView.translatesAutoresizingMaskIntoConstraints = false
         self.searchButton.backgroundColor = UIColor.clear
         self.searchButton.setTitle("Random it up!", for: .normal)
         
-        moodCollectionView.layer.zPosition = -1
-        genreCollectionView.layer.zPosition = -1
+        
+        
         
         self.mainControlView.addGestureRecognizer(collectionViewsPanGestureRecognizer)
         

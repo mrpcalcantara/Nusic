@@ -11,7 +11,6 @@ import UIKit
 extension ShowSongViewController {
         
     final func setupPlayerMenu() {
-        setupConstraints(for: self.view.frame.size)
         
         showMore.setImage(UIImage(named: "ShowMore")?.withRenderingMode(.alwaysTemplate), for: .normal)
         showMore.tintColor = NusicDefaults.foregroundThemeColor
@@ -65,7 +64,6 @@ extension ShowSongViewController {
     }
     
     final func reloadPlayerMenu(for size: CGSize) {
-        setupConstraints(for: size)
         self.view.layoutIfNeeded()
     }
     

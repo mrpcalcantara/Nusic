@@ -11,7 +11,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Robot Crush.otf">
+        <array key="Robot Crush.ttf">
             <string>RobotCrush</string>
         </array>
     </customFonts>
@@ -75,7 +75,7 @@
         <!--Song Picker View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="SongPicker" automaticallyAdjustsScrollViewInsets="NO" id="BYZ-38-t0r" customClass="SongPickerViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SongPicker" id="BYZ-38-t0r" customClass="SongPickerViewController" customModule="Newsic" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" userLabel="Main View">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -83,7 +83,7 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sau-Kp-Sny" userLabel="Control View">
                                 <rect key="frame" x="0.0" y="72" width="375" height="595"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TJk-WK-DBD" userLabel="List View">
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TJk-WK-DBD" userLabel="List View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="595"/>
                                         <subviews>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="black" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bqf-Kb-x3U" userLabel="Genre Collection View">
@@ -154,12 +154,13 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="na7-Jq-MEC" secondAttribute="bottom" id="4yj-HG-k0R"/>
-                                            <constraint firstItem="8t3-hW-Upx" firstAttribute="top" secondItem="TJk-WK-DBD" secondAttribute="top" id="5yh-dv-De2"/>
-                                            <constraint firstAttribute="bottom" secondItem="8t3-hW-Upx" secondAttribute="bottom" id="AAn-8r-AFY"/>
+                                            <constraint firstItem="8t3-hW-Upx" firstAttribute="top" secondItem="TJk-WK-DBD" secondAttribute="top" identifier="moodTop" id="5yh-dv-De2"/>
+                                            <constraint firstItem="na7-Jq-MEC" firstAttribute="bottom" secondItem="8t3-hW-Upx" secondAttribute="bottom" id="AAn-8r-AFY"/>
+                                            <constraint firstItem="8t3-hW-Upx" firstAttribute="height" secondItem="bqf-Kb-x3U" secondAttribute="height" priority="750" id="IUr-3U-Kup"/>
                                             <constraint firstItem="na7-Jq-MEC" firstAttribute="top" secondItem="bqf-Kb-x3U" secondAttribute="bottom" id="POC-Qr-hu5"/>
                                             <constraint firstAttribute="trailing" secondItem="bqf-Kb-x3U" secondAttribute="trailing" constant="16" id="Sly-RS-Nga"/>
                                             <constraint firstAttribute="trailing" secondItem="na7-Jq-MEC" secondAttribute="trailing" id="aH4-07-xcN"/>
-                                            <constraint firstItem="bqf-Kb-x3U" firstAttribute="top" secondItem="TJk-WK-DBD" secondAttribute="top" id="b8x-VJ-s8f"/>
+                                            <constraint firstItem="bqf-Kb-x3U" firstAttribute="top" secondItem="TJk-WK-DBD" secondAttribute="top" identifier="genreTop" id="b8x-VJ-s8f"/>
                                             <constraint firstItem="na7-Jq-MEC" firstAttribute="leading" secondItem="TJk-WK-DBD" secondAttribute="leading" id="hA1-w2-QMg"/>
                                             <constraint firstAttribute="trailing" secondItem="8t3-hW-Upx" secondAttribute="trailing" constant="16" id="jXN-8W-5xa"/>
                                             <constraint firstItem="bqf-Kb-x3U" firstAttribute="leading" secondItem="TJk-WK-DBD" secondAttribute="leading" constant="16" id="kS7-Ac-QMR"/>
@@ -186,8 +187,8 @@
                             <constraint firstItem="d8y-yY-fNU" firstAttribute="trailing" secondItem="fdZ-Cf-t8R" secondAttribute="trailing" id="3dk-Ms-NCN"/>
                             <constraint firstItem="d8y-yY-fNU" firstAttribute="leading" secondItem="fdZ-Cf-t8R" secondAttribute="leading" id="79T-CQ-1no"/>
                             <constraint firstItem="fdZ-Cf-t8R" firstAttribute="trailing" secondItem="Sau-Kp-Sny" secondAttribute="trailing" id="LMl-sm-W11"/>
-                            <constraint firstItem="d8y-yY-fNU" firstAttribute="top" secondItem="fdZ-Cf-t8R" secondAttribute="top" id="XXq-Am-daN"/>
-                            <constraint firstItem="Sau-Kp-Sny" firstAttribute="top" secondItem="d8y-yY-fNU" secondAttribute="bottom" constant="8" id="lMN-9m-EPl"/>
+                            <constraint firstItem="d8y-yY-fNU" firstAttribute="top" secondItem="fdZ-Cf-t8R" secondAttribute="top" identifier="songPickerNavbarTop" id="XXq-Am-daN"/>
+                            <constraint firstItem="Sau-Kp-Sny" firstAttribute="top" secondItem="d8y-yY-fNU" secondAttribute="bottom" constant="8" identifier="songPickerControlViewTop" id="lMN-9m-EPl"/>
                             <constraint firstItem="fdZ-Cf-t8R" firstAttribute="bottom" secondItem="Sau-Kp-Sny" secondAttribute="bottom" id="lPZ-Xg-JMM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fdZ-Cf-t8R"/>
@@ -660,14 +661,14 @@
                             <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" canCancelContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j5B-54-DHO" userLabel="Artist Scroll View">
                                 <rect key="frame" x="0.0" y="116" width="375" height="516"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YiA-uU-bs0" userLabel="Artist Name Label">
-                                        <rect key="frame" x="8" y="0.0" width="42" height="54"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YiA-uU-bs0" userLabel="Artist Name Label">
+                                        <rect key="frame" x="8" y="0.0" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="45"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddU-fv-X78" userLabel="Artist Bio Label">
-                                        <rect key="frame" x="8" y="86" width="42" height="20.5"/>
+                                    <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddU-fv-X78" userLabel="Artist Bio Label">
+                                        <rect key="frame" x="8" y="32" width="0.0" height="0.0"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" link="YES" staticText="YES"/>
                                         </accessibility>
@@ -675,8 +676,8 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q5V-ir-Prd" userLabel="Artist Similar Label">
-                                        <rect key="frame" x="8" y="114.5" width="42" height="20.5"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q5V-ir-Prd" userLabel="Artist Similar Label">
+                                        <rect key="frame" x="8" y="40" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>

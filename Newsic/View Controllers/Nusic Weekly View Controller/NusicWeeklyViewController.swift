@@ -55,6 +55,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     
     var loadingFinished: Bool? = false {
         didSet {
+            
             updateValuesUI()
             handleNotificationSong()
         }
@@ -115,9 +116,14 @@ class NusicWeeklyViewController: NusicDefaultViewController {
             }
         }
         super.viewWillAppear(animated)
-        self.view.layoutIfNeeded()
+        
+       
         self.artistBioLabel.layoutIfNeeded()
         artistBioScrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+        
+        
+        
+        self.view.layoutIfNeeded()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -136,6 +142,8 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         setupArtistSimilarLabel()
         setupArtistScrollView()
         setupNavigationBar()
+        view.addSafeAreaExterior()
+        
     }
     
     fileprivate func setupNavigationBar() {
@@ -193,7 +201,6 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         artistNameLabel.textColor = NusicDefaults.foregroundThemeColor
         artistNameLabel.backgroundColor = NusicDefaults.clearColor
         artistNameTopConstraint.constant = self.view.bounds.height - self.navigationBar.bounds.height - self.artistNameLabel.bounds.height - self.artistBioTopConstraint.constant - self.playSongsButton.bounds.height - self.view.safeAreaInsets.bottom - self.view.safeAreaInsets.top
-        print(self.view.safeAreaInsets)
         self.view.layoutIfNeeded()
     }
     
@@ -301,7 +308,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         reference.child("weeklyArtist").queryOrdered(byChild: "startDate").queryLimited(toLast: 1).observe(.value) { (dataSnapshot) in
             guard dataSnapshot.exists() else { return }
             var artistID = ""
-            while let element = dataSnapshot.children.nextObject() as? DataSnapshot {
+            if let element = dataSnapshot.children.nextObject() as? DataSnapshot {
                 artistID = element.childSnapshot(forPath: "id").value as! String
             }
             self.fetchArtistInfo(artistID: artistID)
