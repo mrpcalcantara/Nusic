@@ -155,7 +155,7 @@
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="na7-Jq-MEC" secondAttribute="bottom" id="4yj-HG-k0R"/>
                                             <constraint firstItem="8t3-hW-Upx" firstAttribute="top" secondItem="TJk-WK-DBD" secondAttribute="top" identifier="moodTop" id="5yh-dv-De2"/>
-                                            <constraint firstItem="na7-Jq-MEC" firstAttribute="bottom" secondItem="8t3-hW-Upx" secondAttribute="bottom" id="AAn-8r-AFY"/>
+                                            <constraint firstAttribute="bottom" secondItem="8t3-hW-Upx" secondAttribute="bottom" id="AAn-8r-AFY"/>
                                             <constraint firstItem="8t3-hW-Upx" firstAttribute="height" secondItem="bqf-Kb-x3U" secondAttribute="height" priority="750" id="IUr-3U-Kup"/>
                                             <constraint firstItem="na7-Jq-MEC" firstAttribute="top" secondItem="bqf-Kb-x3U" secondAttribute="bottom" id="POC-Qr-hu5"/>
                                             <constraint firstAttribute="trailing" secondItem="bqf-Kb-x3U" secondAttribute="trailing" constant="16" id="Sly-RS-Nga"/>
