@@ -76,7 +76,7 @@ extension NusicTrack : FirebaseModel {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ"
         let dateString = dateFormatter.string(from: Date())
         guard let dict = trackInfo.audioFeatures?.toDictionary() else { return; }
-        Database.database().reference().child("trackFeatures").child(trackInfo.trackId!).updateChildValues(dict) { (error, reference) in
+        Database.database().reference().child("trackFeatures").child(trackInfo.linkedFromTrackId!).updateChildValues(dict) { (error, reference) in
             if let error = error {
                 saveCompleteHandler(reference, NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.technicalError, nusicErrorDescription: FirebaseErrorCodeDescription.deleteLikedTracks.rawValue, systemError: error))
             }
@@ -105,13 +105,21 @@ extension NusicTrack : FirebaseModel {
     }
     
     private func updateMoodTrack(track: String, value: Bool?) {
-        if track == self.trackInfo.linkedFromTrackId, let moodInfo = self.moodInfo, self.isLiked! {
+        if let moodInfo = self.moodInfo, self.isLiked! {
+            var trackToDelete = ""
+            if track == self.trackInfo.linkedFromTrackId {
+                trackToDelete = self.trackInfo.linkedFromTrackId
+            } else if track == self.trackInfo.trackId {
+                trackToDelete = self.trackInfo.trackId
+            }
+            
+            guard trackToDelete != "" else { return }
             for emotion in moodInfo.emotions {
                 Database.database().reference()
                     .child("moodTracks")
                     .child(self.userName)
                     .child(emotion.basicGroup.rawValue.lowercased())
-                    .child(self.trackInfo.linkedFromTrackId)
+                    .child(trackToDelete)
                     .setValue(value)
             }
         }
@@ -127,5 +135,14 @@ extension Array where Element == NusicTrack {
             }
         }
         return false;
+    }
+    
+    func setLikedList() -> [NusicTrack] {
+        var likedList = [NusicTrack]()
+        for track in self {
+            track.isLiked = true
+            likedList.append(track)
+        }
+        return likedList
     }
 }

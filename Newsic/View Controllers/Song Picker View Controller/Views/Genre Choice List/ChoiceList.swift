@@ -117,7 +117,7 @@ class ChoiceListView: NusicView {
         setupGestureRecognizers()
         self.maxY = maxY
         startY = self.frame.origin.y
-        
+        self.addSafeAreaExterior()
     }
     
     fileprivate func layoutChoiceView() {

@@ -544,30 +544,6 @@ class ShowSongViewController: NusicDefaultViewController {
       
     }
     
-    final func setupConstraints(for size: CGSize) {
-        //Landscape
-        if size.width > size.height {
-            self.songCardTrailingConstraint.constant = -size.width*(1/3)
-            self.dislikeSongCenterXConstraint.constant = -size.width*(1/6)
-            self.previousTrackCenterXConstraint.constant = -size.width*(1/6)
-            self.pausePlayCenterXConstraint.constant = -size.width*(1/6)
-            self.likeSongCenterXConstraint.constant = -size.width*(1/6)
-            self.showMoreCenterXConstraint.constant = -size.width*(1/6)
-            self.nextTrackCenterXConstraint.constant = -size.width*(1/6)
-            self.songProgressTrailingConstraint.constant = -size.width*(1/3)
-        } else {
-            self.dislikeSongCenterXConstraint.constant = 0
-            self.previousTrackCenterXConstraint.constant = 0
-            self.pausePlayCenterXConstraint.constant = 0
-            self.likeSongCenterXConstraint.constant = 0
-            self.showMoreCenterXConstraint.constant = 0
-            self.nextTrackCenterXConstraint.constant = 0
-            self.songProgressTrailingConstraint.constant = 0
-            self.songCardTrailingConstraint.constant = -8
-            
-        }
-    }
-    
     final func updateBadgeIcon(count: Int) {
         if let items = self.navbar.items, items.count > 0 {
             let text = count > 0 ? String(count) : nil
@@ -624,7 +600,7 @@ extension ShowSongViewController {
                     }
                 }
                 self.getYouTubeResults(tracks: spotifyTracks, youtubeSearchHandler: { (nusicTracks) in
-                    handler(nusicTracks)
+                    handler(nusicTracks.setLikedList())
                 })
             })
         })
@@ -636,14 +612,14 @@ extension ShowSongViewController {
             spotifyHandler.getAllTracksForPlaylist(playlistId: playlist.id!, fetchGenres: true) { (spotifyTracks, error) in
                 guard let spotifyTracks = spotifyTracks else { error?.presentPopup(for: self, description: SpotifyErrorCodeDescription.getPlaylistTracks.rawValue); return; }
                 self.getYouTubeResults(tracks: spotifyTracks, youtubeSearchHandler: { (nusicTracks) in
-                    self.likedTrackList = nusicTracks;
+                    self.likedTrackList = nusicTracks.setLikedList();
                 })
             }
         } else {
             moodObject?.getTrackIdListForEmotionGenre(getAssociatedTrackHandler: { (trackList, error) in
                 guard let trackList = trackList else { error?.presentPopup(for: self); return; }
                 self.fetchDataForLikedTrack(trackId: trackList, handler: { (nusicTracks) in
-                    self.likedTrackList = nusicTracks
+                    self.likedTrackList = nusicTracks.setLikedList()
                 })
             })
         }

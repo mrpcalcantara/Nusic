@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure();
         
         Messaging.messaging().delegate = self
-        Messaging.messaging().subscribe(toTopic: "nusicWeekly")
+        
         registerForPushNotifications()
         
         // Setup Spotify Values

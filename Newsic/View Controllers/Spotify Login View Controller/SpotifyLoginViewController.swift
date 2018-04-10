@@ -11,6 +11,7 @@ import SwiftSpinner
 import SafariServices
 import PopupDialog
 import FirebaseAuth
+import FirebaseMessaging
 
 class SpotifyLoginViewController: NusicDefaultViewController {
     
@@ -47,13 +48,12 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     var nusicPlaylist: NusicPlaylist! = nil;
     var loadingFinished: Bool = false {
         didSet {
-            removeNotificationObservers()
             let pageViewController = NusicPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
             UIApplication.shared.keyWindow?.rootViewController = pageViewController
+            removeNotificationObservers()
             passDataToSideMenu()
             passDataToNusicWeekly()
             passDataToSongPicker()
-            
             guard let rootVC = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController, let nusicWeeklyVC = rootVC.nusicWeeklyVC else { return }
             rootVC.scrollToViewController(viewController: nusicWeeklyVC)
             self.present(rootVC, animated: true, completion: {
@@ -64,7 +64,11 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     var nusicUser: NusicUser! = nil {
         didSet {
-            nusicUser.version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+            if nusicUser.version != Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String {
+                Messaging.messaging().subscribe(toTopic: "nusicWeekly")
+                nusicUser.version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+            }
+            
             nusicUser.saveUser { (isSaved, error) in
                 guard error == nil else { error?.presentPopup(for: self); return; }
             }
