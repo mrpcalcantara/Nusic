@@ -495,7 +495,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     fileprivate func fetchFavoriteGenres() {
         self.nusicUser.getFavoriteGenres(getGenresHandler: { (dbGenreCount, error) in
-            guard let dbGenreCount = dbGenreCount else { self.spotifyHandler.genreCount = Spotify.getAllValuesDict(); return; }
+            guard let dbGenreCount = dbGenreCount else { self.spotifyHandler.genreCount = Spotify.getAllValuesDict(); self.loadingFinished = true; return; }
             self.spotifyHandler.genreCount = dbGenreCount;
             self.nusicUser.saveFavoriteGenres(saveGenresHandler: { (isSaved, error) in
                 guard error == nil else { error?.presentPopup(for: self); return }
