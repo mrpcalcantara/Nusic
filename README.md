@@ -20,13 +20,8 @@ These instructions will let you download the project, setup and run it on your l
 
 * Download the project by selecting the branch 'master' and click on Open in Xcode.
 * When prompted, set the folder where you want to save and click Clone.
-* Open the terminal, go to the folder where the project is located and install the pods, executing the command:
-
-```
-pod install
-```
-
-- Wait for it to install and open the .xcworkspace file.
+* Clean and build the project
+* Wait for it to install and open the .xcworkspace file.
 
 
 ## Deployment
