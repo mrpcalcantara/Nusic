@@ -139,7 +139,7 @@
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="na7-Jq-MEC" customClass="NusicButton" customModule="Newsic" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="560" width="375" height="35"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="35" id="ieg-f5-GXs"/>
+                                                    <constraint firstAttribute="height" priority="750" constant="35" id="ieg-f5-GXs"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
                                                 <state key="normal" title="Get Songs"/>
@@ -156,7 +156,7 @@
                                             <constraint firstAttribute="bottom" secondItem="na7-Jq-MEC" secondAttribute="bottom" id="4yj-HG-k0R"/>
                                             <constraint firstItem="8t3-hW-Upx" firstAttribute="top" secondItem="TJk-WK-DBD" secondAttribute="top" identifier="moodTop" id="5yh-dv-De2"/>
                                             <constraint firstItem="na7-Jq-MEC" firstAttribute="top" secondItem="8t3-hW-Upx" secondAttribute="bottom" id="AAn-8r-AFY"/>
-                                            <constraint firstItem="8t3-hW-Upx" firstAttribute="height" secondItem="bqf-Kb-x3U" secondAttribute="height" priority="750" id="IUr-3U-Kup"/>
+                                            <constraint firstItem="8t3-hW-Upx" firstAttribute="height" secondItem="bqf-Kb-x3U" secondAttribute="height" id="IUr-3U-Kup"/>
                                             <constraint firstItem="na7-Jq-MEC" firstAttribute="top" secondItem="bqf-Kb-x3U" secondAttribute="bottom" id="POC-Qr-hu5"/>
                                             <constraint firstAttribute="trailing" secondItem="bqf-Kb-x3U" secondAttribute="trailing" constant="16" id="Sly-RS-Nga"/>
                                             <constraint firstAttribute="trailing" secondItem="na7-Jq-MEC" secondAttribute="trailing" id="aH4-07-xcN"/>
