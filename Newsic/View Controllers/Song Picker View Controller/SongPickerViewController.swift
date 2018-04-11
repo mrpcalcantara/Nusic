@@ -68,6 +68,7 @@ class SongPickerViewController: NusicDefaultViewController {
         didSet {
             guard self.spotifyHandler.user != nil && self.spotifyHandler.user.canonicalUserName != nil, sectionMoods.count == 0 else { SwiftSpinner.show(duration: 2, title: "Done!", animated: true); return }
             FirebaseDatabaseHelper.fetchAllMoods(user: self.spotifyHandler.user.canonicalUserName) { (dyadList, error) in
+                self.toggleCollectionViews(for: 0)
                 self.sectionMoodTitles = dyadList.keys.map({ $0.rawValue })
                 self.sectionMoods = dyadList.map({ $0.value })
             }
@@ -230,8 +231,7 @@ class SongPickerViewController: NusicDefaultViewController {
         nusicControl.delegate = self
         nusicControl.thumbColor = NusicDefaults.foregroundThemeColor
         nusicControl.borderColor = NusicDefaults.foregroundThemeColor
-        nusicControl.selectedIndex = 1
-        toggleCollectionViews(for: 1);
+        nusicControl.selectedIndex = 0
     }
     
     fileprivate func setupNavigationBar(image: UIImage? = UIImage(named: "ButtonAppIcon")) {

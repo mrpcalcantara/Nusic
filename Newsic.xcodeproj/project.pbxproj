@@ -10,6 +10,7 @@
 		7B5F74827AC66FEE25628BD4 /* Pods_NewsicTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE72F769C47D6A380F86AEA0 /* Pods_NewsicTests.framework */; };
 		8C09622E1F614FA60025A65E /* NewsicArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C09622D1F614FA60025A65E /* NewsicArtist.swift */; };
 		8C0962301F61550D0025A65E /* NewsicGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C09622F1F61550D0025A65E /* NewsicGenre.swift */; };
+		8C0A1899207DD95400676E55 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C0A1898207DD95400676E55 /* GoogleService-Info.plist */; };
 		8C0C1E911F5FF3B700CF8516 /* SpotifyTrackFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E901F5FF3B700CF8516 /* SpotifyTrackFeature.swift */; };
 		8C0C1E961F60F7F300CF8516 /* HTTPErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E951F60F7F300CF8516 /* HTTPErrorCodes.swift */; };
 		8C0C1E981F61005100CF8516 /* NusicUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E971F61005100CF8516 /* NusicUser.swift */; };
@@ -72,7 +73,6 @@
 		8C3914F120009B9C004AF43B /* NusicTrackSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3914F020009B9C004AF43B /* NusicTrackSearch.swift */; };
 		8C3914F32000AEFD004AF43B /* SpotifyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3914F22000AEFD004AF43B /* SpotifyType.swift */; };
 		8C3A6F1B1FCD769C00BA7981 /* ShowSongDataTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3A6F1A1FCD769C00BA7981 /* ShowSongDataTransfer.swift */; };
-		8C3C35082036F1010092B953 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C3C35072036F1010092B953 /* GoogleService-Info.plist */; };
 		8C4D43731F57CF9100FD0A92 /* YoutubeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4D43721F57CF9100FD0A92 /* YoutubeDelegate.swift */; };
 		8C4D43751F57CFD000FD0A92 /* SpotifyDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4D43741F57CFD000FD0A92 /* SpotifyDelegates.swift */; };
 		8C4FBD781F5940A500712873 /* MoodHacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C4FBD771F5940A500712873 /* MoodHacker.swift */; };
@@ -174,6 +174,7 @@
 		2A0567402413796844BC0250 /* Pods-NewsicTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NewsicTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NewsicTests/Pods-NewsicTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8C09622D1F614FA60025A65E /* NewsicArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicArtist.swift; sourceTree = "<group>"; };
 		8C09622F1F61550D0025A65E /* NewsicGenre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicGenre.swift; sourceTree = "<group>"; };
+		8C0A1898207DD95400676E55 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Newsic/Supporting Files/DEV/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		8C0C1E901F5FF3B700CF8516 /* SpotifyTrackFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyTrackFeature.swift; sourceTree = "<group>"; };
 		8C0C1E951F60F7F300CF8516 /* HTTPErrorCodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPErrorCodes.swift; sourceTree = "<group>"; };
 		8C0C1E971F61005100CF8516 /* NusicUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NusicUser.swift; sourceTree = "<group>"; };
@@ -235,7 +236,6 @@
 		8C3914F020009B9C004AF43B /* NusicTrackSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NusicTrackSearch.swift; sourceTree = "<group>"; };
 		8C3914F22000AEFD004AF43B /* SpotifyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyType.swift; sourceTree = "<group>"; };
 		8C3A6F1A1FCD769C00BA7981 /* ShowSongDataTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowSongDataTransfer.swift; sourceTree = "<group>"; };
-		8C3C35072036F1010092B953 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Newsic/Supporting Files/DEV/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		8C4D43721F57CF9100FD0A92 /* YoutubeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YoutubeDelegate.swift; sourceTree = "<group>"; };
 		8C4D43741F57CFD000FD0A92 /* SpotifyDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyDelegates.swift; sourceTree = "<group>"; };
 		8C4FBD771F5940A500712873 /* MoodHacker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodHacker.swift; sourceTree = "<group>"; };
@@ -372,6 +372,14 @@
 				B3A6FFA35B32287CA01B7ABA /* Pods-Newsic.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		8C0A1897207DD93F00676E55 /* DEV */ = {
+			isa = PBXGroup;
+			children = (
+				8C0A1898207DD95400676E55 /* GoogleService-Info.plist */,
+			);
+			path = DEV;
 			sourceTree = "<group>";
 		};
 		8C0C1E921F60F6D000CF8516 /* Spotify */ = {
@@ -790,14 +798,6 @@
 			path = "Helper Views";
 			sourceTree = "<group>";
 		};
-		8C3C35052036EC7A0092B953 /* DEV */ = {
-			isa = PBXGroup;
-			children = (
-				8C3C35072036F1010092B953 /* GoogleService-Info.plist */,
-			);
-			path = DEV;
-			sourceTree = "<group>";
-		};
 		8C3C35062036EC7E0092B953 /* PROD */ = {
 			isa = PBXGroup;
 			children = (
@@ -1077,8 +1077,8 @@
 		8C90E8851F53D8B2002B135F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8C0A1897207DD93F00676E55 /* DEV */,
 				8C3C35062036EC7E0092B953 /* PROD */,
-				8C3C35052036EC7A0092B953 /* DEV */,
 				8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */,
 				8C90E86D1F53D838002B135F /* Info.plist */,
 			);
@@ -1369,7 +1369,6 @@
 				8C3166C12043BE4300380460 /* SongTableViewCellBackup.xib in Resources */,
 				8C7C41F31FFCCCF20051845D /* SettingsCellHeader.xib in Resources */,
 				8C5E02B42017217700413DBB /* Robot Crush Italic.ttf in Resources */,
-				8C3C35082036F1010092B953 /* GoogleService-Info.plist in Resources */,
 				8C2D05E6201EE7FA00518B68 /* MoodGenreListCell.xib in Resources */,
 				8C63A15A1FFF49C400613FC9 /* ShowSong.xcassets in Resources */,
 				8C63A15D1FFF49FC00613FC9 /* SongPicker.xcassets in Resources */,
@@ -1381,6 +1380,7 @@
 				8C2847242043DC3B006A9B5C /* GoogleService-Info.plist in Resources */,
 				8C77714B201C59CA004A5455 /* GoogleService-Info.plist in Resources */,
 				8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */,
+				8C0A1899207DD95400676E55 /* GoogleService-Info.plist in Resources */,
 				8C90E86C1F53D838002B135F /* LaunchScreen.storyboard in Resources */,
 				8C79893D1FEA53D20079A99D /* ChoiceList.xib in Resources */,
 				8C90E8691F53D838002B135F /* Assets.xcassets in Resources */,
