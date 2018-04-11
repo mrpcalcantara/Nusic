@@ -68,7 +68,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
                 Messaging.messaging().subscribe(toTopic: "nusicWeekly")
                 nusicUser.version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
             }
-            
+            nusicUser.isPremium = self.spotifyHandler.user.isPremium()
             nusicUser.saveUser { (isSaved, error) in
                 guard error == nil else { error?.presentPopup(for: self); return; }
             }
@@ -378,6 +378,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         user.getUser(getUserHandler: { (fbUser, error) in
             guard error == nil else { error?.presentPopup(for: self); return; }
             if fbUser == nil || fbUser?.userName == "" {
+                user.setPremium(with: self.spotifyHandler.user.isPremium());
                 self.nusicUser = user
                 self.extractGenresFromSpotify(genreExtractionHandler: { (isSuccessful) in
                     guard isSuccessful else { error?.presentPopup(for: self, description: SpotifyErrorCodeDescription.extractGenresFromUser.rawValue); return;}

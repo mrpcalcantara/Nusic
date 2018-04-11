@@ -259,4 +259,14 @@ extension NusicUser: FirebaseModel {
         }
     }
     
+    final func setPremium(with premiumValue: Bool) {
+        self.isPremium = premiumValue
+        switch premiumValue {
+        case true:
+            self.settingValues.preferredPlayer = .spotify
+        case false:
+            self.settingValues.preferredPlayer = .youtube
+        }
+    }
+    
 }
