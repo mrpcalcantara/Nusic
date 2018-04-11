@@ -37,6 +37,7 @@
 		8C2701171FDA45150044D10F /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2701161FDA45150044D10F /* Connectivity.swift */; };
 		8C27011B1FDA46090044D10F /* ConnectivityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27011A1FDA46090044D10F /* ConnectivityStatus.swift */; };
 		8C27011D1FDA55E10044D10F /* FirebaseDatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27011C1FDA55E10044D10F /* FirebaseDatabaseHelper.swift */; };
+		8C281499207DC360000C605F /* SPTUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C281498207DC360000C605F /* SPTUser.swift */; };
 		8C2847242043DC3B006A9B5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */; };
 		8C2847292043EE26006A9B5C /* SuggestedSongListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2847282043EE26006A9B5C /* SuggestedSongListViewController.swift */; };
 		8C28472B2043F616006A9B5C /* SuggestedSongListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28472A2043F616006A9B5C /* SuggestedSongListTableView.swift */; };
@@ -200,6 +201,7 @@
 		8C2701161FDA45150044D10F /* Connectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
 		8C27011A1FDA46090044D10F /* ConnectivityStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityStatus.swift; sourceTree = "<group>"; };
 		8C27011C1FDA55E10044D10F /* FirebaseDatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseHelper.swift; sourceTree = "<group>"; };
+		8C281498207DC360000C605F /* SPTUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPTUser.swift; sourceTree = "<group>"; };
 		8C2847282043EE26006A9B5C /* SuggestedSongListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedSongListViewController.swift; sourceTree = "<group>"; };
 		8C28472A2043F616006A9B5C /* SuggestedSongListTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedSongListTableView.swift; sourceTree = "<group>"; };
 		8C2877441FDE4CC200772269 /* YoutubeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeResult.swift; sourceTree = "<group>"; };
@@ -681,6 +683,7 @@
 				8C7A58401FD7A0D3006A2E43 /* SPTAuth.swift */,
 				8C58ACEC1FFE202500E68FD5 /* SPTBitrate.swift */,
 				8C28C5312058D64600441E70 /* ArtistArray.swift */,
+				8C281498207DC360000C605F /* SPTUser.swift */,
 			);
 			path = Spotify;
 			sourceTree = "<group>";
@@ -1554,6 +1557,7 @@
 				8C29A5502021797000148178 /* ListCollectionViewFlowLayout.swift in Sources */,
 				8C250AB51FBBF616002A108C /* NewsicDefaultViewController.swift in Sources */,
 				8C7C41E81FFC928C0051845D /* SettingsCell.swift in Sources */,
+				8C281499207DC360000C605F /* SPTUser.swift in Sources */,
 				8C77714D201C7945004A5455 /* Koloda-SongCard.swift in Sources */,
 				8C2011571F98849A003DE2AD /* SpotifyGenres.swift in Sources */,
 				8C18E0BE1F5530E9002C4A07 /* SpotifyTrack.swift in Sources */,

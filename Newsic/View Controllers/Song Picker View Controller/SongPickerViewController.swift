@@ -206,7 +206,7 @@ class SongPickerViewController: NusicDefaultViewController {
         reloadListMenu()
         reloadNavigationBar()
         self.view.addSafeAreaExterior()
-        self.view.layoutIfNeeded()
+//        self.view.layoutIfNeeded()
     }
  
     override func viewDidLoad() {

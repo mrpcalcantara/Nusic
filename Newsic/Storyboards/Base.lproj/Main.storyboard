@@ -11,7 +11,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Robot Crush.ttf">
+        <array key="Robot Crush.otf">
             <string>RobotCrush</string>
         </array>
     </customFonts>
@@ -110,7 +110,7 @@
                                                 </collectionReusableView>
                                             </collectionView>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="black" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8t3-hW-Upx">
-                                                <rect key="frame" x="16" y="0.0" width="343" height="595"/>
+                                                <rect key="frame" x="16" y="0.0" width="343" height="560"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="cp9-Te-6Sc">
                                                     <size key="itemSize" width="50" height="50"/>
                                                     <size key="headerReferenceSize" width="50" height="50"/>
@@ -155,7 +155,7 @@
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="na7-Jq-MEC" secondAttribute="bottom" id="4yj-HG-k0R"/>
                                             <constraint firstItem="8t3-hW-Upx" firstAttribute="top" secondItem="TJk-WK-DBD" secondAttribute="top" identifier="moodTop" id="5yh-dv-De2"/>
-                                            <constraint firstAttribute="bottom" secondItem="8t3-hW-Upx" secondAttribute="bottom" id="AAn-8r-AFY"/>
+                                            <constraint firstItem="na7-Jq-MEC" firstAttribute="top" secondItem="8t3-hW-Upx" secondAttribute="bottom" id="AAn-8r-AFY"/>
                                             <constraint firstItem="8t3-hW-Upx" firstAttribute="height" secondItem="bqf-Kb-x3U" secondAttribute="height" priority="750" id="IUr-3U-Kup"/>
                                             <constraint firstItem="na7-Jq-MEC" firstAttribute="top" secondItem="bqf-Kb-x3U" secondAttribute="bottom" id="POC-Qr-hu5"/>
                                             <constraint firstAttribute="trailing" secondItem="bqf-Kb-x3U" secondAttribute="trailing" constant="16" id="Sly-RS-Nga"/>

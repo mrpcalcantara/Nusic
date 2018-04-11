@@ -200,7 +200,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         artistNameLabel.font = UIFont(name: "Synthetic Sharps", size: 80)
         artistNameLabel.textColor = NusicDefaults.foregroundThemeColor
         artistNameLabel.backgroundColor = NusicDefaults.clearColor
-        artistNameTopConstraint.constant = self.view.bounds.height - self.navigationBar.bounds.height - self.artistNameLabel.bounds.height - self.artistBioTopConstraint.constant - self.playSongsButton.bounds.height - self.view.safeAreaInsets.bottom - self.view.safeAreaInsets.top
+        artistNameTopConstraint.constant = self.view.bounds.height - self.navigationBar.bounds.height - self.artistNameLabel.bounds.height - self.artistBioTopConstraint.constant - self.playSongsButton.bounds.height - self.view.safeAreaInsets.bottom - self.view.safeAreaInsets.top - 40
         self.view.layoutIfNeeded()
     }
     
