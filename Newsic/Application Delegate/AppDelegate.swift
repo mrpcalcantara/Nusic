@@ -64,7 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupPopupDialogAppearance()
         
         UserDefaults.standard.setValue(false, forKey: "appOpened")
-        
         // Override point for customization after application launch.
         return true
     }
