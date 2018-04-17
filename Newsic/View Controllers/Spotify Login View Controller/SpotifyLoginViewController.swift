@@ -520,6 +520,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     fileprivate func passDataToSideMenu() {
         guard let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController else { return }
         let sideMenu = parent.sideMenuVC as! SideMenuViewController
+        guard let nusicUser = self.nusicUser else { return; }
         sideMenu.username = self.nusicUser.displayName != "" ? self.nusicUser.displayName : self.nusicUser.userName;
         sideMenu.preferredPlayer = self.nusicUser.settingValues.preferredPlayer
         sideMenu.useMobileData = self.nusicUser.settingValues.useMobileData
