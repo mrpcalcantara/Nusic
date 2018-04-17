@@ -143,7 +143,10 @@ extension LikedSongListViewController: UITableViewDataSource {
     
     fileprivate func genreTableViewSort() {
         let list = likedTrackList.map({ (track) -> String in
-            return track.trackInfo.artist.listArtistsGenres().first!.capitalizingFirstLetter()
+            if let firstLetter = track.trackInfo.artist.listArtistsGenres().first?.capitalizingFirstLetter() {
+                return firstLetter
+            }
+            return ""
         })
         
         let sortedList = list.filter({ (str) -> Bool in

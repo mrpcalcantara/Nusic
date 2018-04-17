@@ -9,6 +9,8 @@
 import UIKit
 import PopupDialog
 import SafariServices
+import MessageUI
+import SwiftSpinner
 
 extension SideMenuViewController {
     final func setupTableView() {
@@ -37,8 +39,16 @@ extension SideMenuViewController {
 extension SideMenuViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if settingsValues[indexPath.section][0] == NusicSettingsLabel.logout.rawValue || settingsValues[indexPath.section][0] == NusicSettingsLabel.privacyPolicy.rawValue {
+        let title = settingsValues[indexPath.section][0]
+        switch title {
+        case NusicSettingsLabel.contactMe.rawValue:
             cell.accessoryType = .none
+        case NusicSettingsLabel.logout.rawValue:
+            cell.accessoryType = .none
+        case NusicSettingsLabel.privacyPolicy.rawValue:
+            cell.accessoryType = .none
+        default:
+            cell.accessoryType = .disclosureIndicator
         }
     }
     
@@ -74,7 +84,7 @@ extension SideMenuViewController : UITableViewDelegate {
             header.headerLabel.text = NusicSettingsTitle.connectionSettings.rawValue
         case NusicSettingsLabel.privacyPolicy.rawValue:
             header.headerLabel.text = NusicSettingsTitle.infoSettings.rawValue
-        case NusicSettingsLabel.logout.rawValue:
+        case NusicSettingsLabel.contactMe.rawValue:
             header.headerLabel.text = NusicSettingsTitle.actionSettings.rawValue
         case NusicSettingsLabel.spotifyQuality.rawValue:
             header.headerLabel.text = NusicSettingsTitle.spotifySettings.rawValue
@@ -113,6 +123,8 @@ extension SideMenuViewController : UITableViewDataSource {
             setupDeleteAccountSettings(for: cell, title: title)
         case NusicSettingsLabel.privacyPolicy.rawValue:
             setupInfoSettings(for: cell, title: title)
+        case NusicSettingsLabel.contactMe.rawValue:
+            setupContactSettings(for: cell, title: title)
         default:
             return UITableViewCell()
         }
@@ -275,4 +287,63 @@ extension SideMenuViewController {
         cell.alertController?.configure(options: [buttonPrivacyPolicy], alertText: "")
     }
     
+    fileprivate func setupContactSettings(for cell: SettingsCell, title: String) {
+        let buttonContact = YBButton(frame: CGRect.zero, icon: #imageLiteral(resourceName: "ButtonAppIcon"), text: "Contact me!")
+        let actionContact = { () -> Void in
+            self.sendEmail()
+        }
+        buttonContact.action = actionContact
+        
+        cell.configure(title: title, value: "", icon: nil, centerText: true)
+        cell.alertController?.configure(options: [buttonContact], alertText: "")
+    }
+    
+    
+
+    
+}
+
+extension SideMenuViewController: MFMailComposeViewControllerDelegate {
+    fileprivate func sendEmail() {
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["malcantara.fl@gmail.com"])
+            mail.setSubject("#Nusic iOS")
+            var bodyText = ""
+            if let userName = nusicUser?.userName {
+                bodyText += "\n\nUser: \(userName)"
+            }
+            
+            mail.setMessageBody(bodyText, isHTML: false)
+            present(mail, animated: true)
+        } else {
+            guard let url = URL(string: "mailto:malcantara.fl@gmail.com?subject=Nusic") else { showErrorPopup(); return; }
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+    
+    fileprivate func showErrorPopup() {
+        let popupDialog = PopupDialog(title: "Error", message: "Something went wrong while opening the Mail app. Please contact me at malcantara.fl@gmail.com")
+        popupDialog.transitionStyle = .zoomIn
+        
+        
+        let okButton = DefaultButton(title: "OK", action: {
+            self.dismiss(animated: true, completion: nil)
+        })
+        
+        popupDialog.addButton(okButton);
+        self.present(popupDialog, animated: true, completion: nil)
+    }
+    
+    internal func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        switch result {
+        case .sent:
+            SwiftSpinner.show(duration: 1, title: "Sent!")
+        default:
+            print("Cancelled")
+        }
+        
+        controller.dismiss(animated: true)
+    }
 }

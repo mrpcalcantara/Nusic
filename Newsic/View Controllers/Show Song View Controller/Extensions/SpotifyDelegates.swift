@@ -69,14 +69,18 @@ extension ShowSongViewController: SPTAudioStreamingDelegate {
         self.isPlaying = false
         songCardView.swipe(.left, force: true)
         guard UIApplication.shared.applicationState == .background else { return }
+        
         presentedCardIndex += 1
+        UserDefaults.standard.set(presentedCardIndex, forKey: "cardIndexInBackground")
         playCard(at: presentedCardIndex)
         getNextSong()
         
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePlaybackStatus isPlaying: Bool) {
+        
         _ = isPlaying ? self.activateAudioSession() : self.deactivateAudioSession()
+        self.isPlaying = isPlaying
     }
 }
 
@@ -133,13 +137,15 @@ extension ShowSongViewController {
     }
     
     final func spotifyPausePlay() {
-        self.isPlaying = !self.isPlaying;
-        if self.isPlaying && currentPlayingTrack == nil {
-            actionPlaySpotifyTrack(spotifyTrackId: cardList[songCardView.currentCardIndex].trackInfo.linkedFromTrackId)
-        }
+        self.isPlaying = !self.isPlaying
         player?.setIsPlaying(isPlaying, callback: { (error) in
-            self.togglePausePlayIcon()
+            //            self.togglePausePlayIcon()
+            if self.isPlaying && self.currentPlayingTrack == nil {
+                self.actionPlaySpotifyTrack(spotifyTrackId: self.cardList[self.songCardView.currentCardIndex].trackInfo.linkedFromTrackId)
+            }
         })
+        
+        
         
         
     }
@@ -166,7 +172,9 @@ extension ShowSongViewController {
         
     }
 
-    @objc final func actionPreviousSong() {
+    @objc final func actionPreviousSong()
+    {
+        clickPrevious = true
         songCardView.revertAction()
     }
     
@@ -207,7 +215,6 @@ extension ShowSongViewController {
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = playSong ? 1 : 0
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.playbackState.position
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-        self.isPlaying = playSong
         spotifyPausePlay()
     }
     
@@ -216,7 +223,6 @@ extension ShowSongViewController {
         self.activateAudioSession()
         player?.playSpotifyURI(Spotify.transformToURI(type: .track, id: spotifyTrackId), startingWith: 0, startingWithPosition: 0, callback: { (error) in
             self.isPlaying = true;
-            self.togglePausePlayIcon()
             if (error != nil) {
                 self.actionPlaySpotifyTrack(spotifyTrackId: spotifyTrackId)
             }

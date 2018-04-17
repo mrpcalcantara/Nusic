@@ -64,7 +64,7 @@ class LastFM: Decodable {
     //Functions
     func listSimilarArtists() -> String {
         var artists = ""
-        guard let similarArtists = similarArtists else { return "" }
+        guard let similarArtists = similarArtists, similarArtists.count > 0 else { return "" }
         similarArtists.forEach { (artist) in
             artists.append("\(artist), ")
         }

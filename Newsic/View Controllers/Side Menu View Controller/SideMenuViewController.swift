@@ -66,7 +66,7 @@ class SideMenuViewController: NusicDefaultViewController {
         }
         settingsValues.append([NusicSettingsLabel.useMobileData.rawValue])
         settingsValues.append([NusicSettingsLabel.privacyPolicy.rawValue])
-        settingsValues.append([NusicSettingsLabel.logout.rawValue, NusicSettingsLabel.deleteAccount.rawValue])
+        settingsValues.append([NusicSettingsLabel.contactMe.rawValue, NusicSettingsLabel.logout.rawValue, NusicSettingsLabel.deleteAccount.rawValue])
     }
     
     fileprivate func setupNavigationBar() {
