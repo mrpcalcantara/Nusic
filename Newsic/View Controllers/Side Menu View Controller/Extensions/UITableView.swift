@@ -311,10 +311,6 @@ extension SideMenuViewController: MFMailComposeViewControllerDelegate {
             mail.setToRecipients(["malcantara.fl@gmail.com"])
             mail.setSubject("#Nusic iOS")
             var bodyText = ""
-            if let userName = nusicUser?.userName {
-                bodyText += "\n\nUser: \(userName)"
-            }
-            
             mail.setMessageBody(bodyText, isHTML: false)
             present(mail, animated: true)
         } else {
