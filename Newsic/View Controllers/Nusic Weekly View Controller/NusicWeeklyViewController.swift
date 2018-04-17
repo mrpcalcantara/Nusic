@@ -50,14 +50,11 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     @IBOutlet weak var artistSimilarLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var artistSimilarTopConstraint: NSLayoutConstraint!
     
-    
-    
-    
     var loadingFinished: Bool? = false {
         didSet {
-            
             updateValuesUI()
             handleNotificationSong()
+            requestUserReview()
         }
     }
     var lastFM: LastFM? = nil
@@ -325,6 +322,23 @@ class NusicWeeklyViewController: NusicDefaultViewController {
                 artistTopTracks[index].artist[artistIndex] = currentArtist
             }
         }
+    }
+
+    fileprivate func requestUserReview() {
+        var showReviewController = false
+        if let didShowDate = UserDefaults.standard.value(forKey: "didShowReviewDate") as? Date {
+            let currentDate = Date()
+            let days:Double = 60*60*24*100
+            if didShowDate.addingTimeInterval(days) < currentDate {
+                showReviewController = true
+            }
+        } else {
+            showReviewController = true
+        }
+        
+        guard showReviewController else { return; }
+        SKStoreReviewController.requestReview()
+        UserDefaults.standard.set(Date(), forKey: "didShowReviewDate")
     }
 }
 

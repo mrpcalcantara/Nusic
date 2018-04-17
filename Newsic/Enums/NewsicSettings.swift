@@ -23,4 +23,5 @@ enum NusicSettingsLabel: String {
     case logout = "Logout"
     case deleteAccount = "Delete Account"
     case privacyPolicy = "Privacy Policy"
+    case contactMe = "Contact me!"
 }
