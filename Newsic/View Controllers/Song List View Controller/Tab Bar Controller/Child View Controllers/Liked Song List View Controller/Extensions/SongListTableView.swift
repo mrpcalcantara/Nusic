@@ -127,7 +127,7 @@ extension LikedSongListViewController: UITableViewDataSource {
         
         sectionSongs = sectionTitles.map({ (firstLetter) in
             return likedTrackList.filter({ (track) -> Bool in
-                return track.trackInfo.artist.namesToString().first?.description == firstLetter
+                return track.trackInfo.artist.namesToString().first?.description.lowercased() == firstLetter?.lowercased()
             })
         })
     }
@@ -136,7 +136,7 @@ extension LikedSongListViewController: UITableViewDataSource {
         sectionTitles = likedTrackList.map { String($0.trackInfo.songName.capitalizingFirstLetter().first!) }.getFirstLetterArray(removeDuplicates: true).sorted()
         sectionSongs = sectionTitles.map({ (firstLetter) in
             return likedTrackList.filter({ (track) -> Bool in
-                return track.trackInfo.songName.first?.description == firstLetter
+                return track.trackInfo.songName.first?.description.lowercased() == firstLetter?.lowercased()
             })
         })
     }
