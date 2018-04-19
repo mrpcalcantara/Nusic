@@ -13,7 +13,7 @@ import SwiftSpinner
 extension ShowSongViewController: KolodaViewDelegate {
     
     func kolodaShouldMoveBackgroundCard(_ koloda: Koloda.KolodaView) -> Bool {
-        return false;
+        return true;
     }
     
     func koloda(_ koloda: KolodaView, didSelectCardAt index: Int) {
@@ -90,6 +90,7 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
+        self.isPlaying = false
         
         self.hideLikeButtons()
         didUserSwipe = true;
@@ -104,12 +105,22 @@ extension ShowSongViewController: KolodaViewDelegate {
     }
     
     func koloda(_ koloda: KolodaView, didShowCardAt index: Int) {
-        guard index < cardList.count, currentPlayingTrack?.trackId != cardList[index].trackInfo.trackId else { return }
-        presentedCardIndex = index
+        
+        var appBackgroundCardIndex = -1
+        if let cardInd = UserDefaults.standard.value(forKey: "cardIndexInBackground") as? Int {
+            appBackgroundCardIndex = cardInd
+        }
+        
+        //clicked previous or presented index = current index
+        guard presentedCardIndex <= index || clickPrevious else {
+            swipeCardsUntilPresented(swipeCount: presentedCardIndex-index)
+            return
+        }
         let cardView = koloda.viewForCard(at: index) as! SongOverlayView
+        presentedCardIndex = index
         isSongLiked = likedTrackList.containsTrack(trackId: cardList[index].trackInfo.trackId)
         toggleLikeButtons();
-        
+        guard index == 0 || appBackgroundCardIndex < index else { return; }
         if preferredPlayer == NusicPreferredPlayer.spotify {
             playCard(at: index)
         } else {
@@ -117,7 +128,7 @@ extension ShowSongViewController: KolodaViewDelegate {
             setupYTPlayer(for: cardView, with: youtubeTrackId)
             ytPlayTrack()
         }
-        
+        clickPrevious = false
     }
     
     func kolodaShouldApplyAppearAnimation(_ koloda: KolodaView) -> Bool {
@@ -324,7 +335,14 @@ extension ShowSongViewController {
             });
         })
     }
-}
+    
+    fileprivate func swipeCardsUntilPresented(swipeCount: Int) {
+        for index in 1...swipeCount {
+            songCardView.swipe(.left)
+        }
+    }
+ 
+ }
 
 
 

@@ -23,28 +23,13 @@ class SongTableViewSectionHeader: UITableViewHeaderFooterView {
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-//        loadFromNib()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-//
-//        loadFromNib()
-    }
-    
-    fileprivate func loadFromNib() {
-        let contentView = UINib(nibName: self.className, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! SongTableViewSectionHeader
-        contentView.displayName.textColor = NusicDefaults.foregroundThemeColor
-        self.displayName = contentView.displayName
-        contentView.background.backgroundColor = NusicDefaults.blackColor
-        contentView.removeBlurEffect()
-        contentView.addBlurEffect(style: .dark, alpha: 1)
-        self.addSubview(contentView)
     }
     
     final func configure(text: String) {
-        self.contentView.backgroundColor = NusicDefaults.clearColor
-        self.background.backgroundColor = NusicDefaults.clearColor
         self.removeBlurEffect()
         self.addBlurEffect(style: .dark, alpha: 1)
         self.displayName.textColor = NusicDefaults.foregroundThemeColor

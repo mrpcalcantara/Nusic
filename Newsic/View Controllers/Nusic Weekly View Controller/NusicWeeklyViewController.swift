@@ -50,14 +50,11 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     @IBOutlet weak var artistSimilarLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var artistSimilarTopConstraint: NSLayoutConstraint!
     
-    
-    
-    
     var loadingFinished: Bool? = false {
         didSet {
-            
             updateValuesUI()
             handleNotificationSong()
+            requestUserReview()
         }
     }
     var lastFM: LastFM? = nil
@@ -110,19 +107,14 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if let loadingFinished = loadingFinished, !loadingFinished {
             DispatchQueue.main.async {
                 SwiftSpinner.show("Loading...")
             }
         }
-        super.viewWillAppear(animated)
-        
-       
         self.artistBioLabel.layoutIfNeeded()
         artistBioScrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-        
-        
-        
         self.view.layoutIfNeeded()
     }
     
@@ -290,7 +282,6 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
         var artistID = ""
-        guard let currentTimestamp = Int(dateFormatter.string(from: Date())) else { return }
         reference.child("weeklyArtist").queryOrdered(byChild: "isActive").queryEqual(toValue: true).observe(.value) { (dataSnapshot) in
             guard dataSnapshot.exists() else { self.fetchLastWeeklyArtist(); return }
             if let element = dataSnapshot.children.nextObject() as? DataSnapshot {
@@ -298,10 +289,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
             }
             guard artistID != "" else { self.fetchLastWeeklyArtist(); return }
             self.fetchArtistInfo(artistID: artistID)
-            
-            
         }
-        
     }
     
     fileprivate func fetchLastWeeklyArtist() {
@@ -325,6 +313,23 @@ class NusicWeeklyViewController: NusicDefaultViewController {
                 artistTopTracks[index].artist[artistIndex] = currentArtist
             }
         }
+    }
+
+    fileprivate func requestUserReview() {
+        var showReviewController = false
+        if let didShowDate = UserDefaults.standard.value(forKey: "didShowReviewDate") as? Date {
+            let currentDate = Date()
+            let days:Double = 60*60*24*100
+            if didShowDate.addingTimeInterval(days) < currentDate {
+                showReviewController = true
+            }
+        } else {
+            showReviewController = true
+        }
+        
+        guard showReviewController else { return; }
+        SKStoreReviewController.requestReview()
+        UserDefaults.standard.set(Date(), forKey: "didShowReviewDate")
     }
 }
 

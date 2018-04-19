@@ -13,12 +13,14 @@ extension ShowSongViewController {
     final func setupPlayerMenu() {
         
         showMore.setImage(UIImage(named: "ShowMore")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        showMore.imageView?.contentMode = .scaleAspectFill
         showMore.tintColor = NusicDefaults.foregroundThemeColor
         showMore.alpha = 1
         showMore.translatesAutoresizingMaskIntoConstraints = false;
         
         previousSong.contentMode = .center
         previousSong.setImage(UIImage(named: "ThumbsDown"), for: .normal)
+        previousSong.imageView?.contentMode = .scaleAspectFill
         previousSong.isHidden = true
         previousSong.translatesAutoresizingMaskIntoConstraints = false;
         previousSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
@@ -29,19 +31,23 @@ extension ShowSongViewController {
 
         pausePlay.contentMode = .center
         pausePlay.setImage(UIImage(named: "PlayTrack"), for: .normal)
+        pausePlay.imageView?.contentMode = .scaleAspectFill
         pausePlay.isHidden = true
         pausePlay.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         
         nextSong.contentMode = .center
         nextSong.setImage(UIImage(named: "ThumbsUp"), for: .normal)
+        nextSong.imageView?.contentMode = .scaleAspectFill
         nextSong.isHidden = true
         nextSong.transform = CGAffineTransform(scaleX: 0.75, y: 0.75);
         
         previousTrack.setImage(UIImage(named: "Rewind"), for: .normal)
+        previousTrack.imageView?.contentMode = .scaleAspectFill
         previousTrack.isHidden = true
         previousTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         
         nextTrack.setImage(UIImage(named: "FastForward"), for: .normal)
+        nextTrack.imageView?.contentMode = .scaleAspectFill
         nextTrack.isHidden = true
         nextTrack.transform = CGAffineTransform(scaleX: 1.25, y: 1.25);
         
@@ -157,26 +163,16 @@ extension ShowSongViewController {
         self.likeSongTopConstraint.constant -= self.view.frame.height * 0.20
         self.songProgressBottomConstraint.constant -= self.view.frame.height * 0.10
         self.songProgressTopConstraint.constant -= self.view.frame.height * 0.10
-        if self.preferredPlayer == NusicPreferredPlayer.spotify {
-            self.songCardBottomConstraint.constant -= self.view.frame.height * 0.20
-            self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.15
-        } else {
-            self.songCardBottomConstraint.constant -= self.view.frame.height * 0.15
-            self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.10
-        }
+        self.songCardBottomConstraint.constant -= self.view.frame.height * 0.20
+        self.showMoreBottomConstraint.constant -= self.view.frame.height * 0.15
         self.view.layoutIfNeeded();
     }
     
     final func showButtons() {
         self.songProgressBottomConstraint.constant += self.view.frame.height * 0.10
         self.songProgressTopConstraint.constant += self.view.frame.height * 0.10
-        if self.preferredPlayer == NusicPreferredPlayer.spotify {
-            self.songCardBottomConstraint.constant += self.view.frame.height * 0.20
-            self.showMoreBottomConstraint.constant += self.view.frame.height * 0.15
-        } else {
-            self.songCardBottomConstraint.constant += self.view.frame.height * 0.15
-            self.showMoreBottomConstraint.constant += self.view.frame.height * 0.10
-        }
+        self.songCardBottomConstraint.constant += self.view.frame.height * 0.20
+        self.showMoreBottomConstraint.constant += self.view.frame.height * 0.15
         self.pausePlayTopConstraint.constant += self.view.frame.height * 0.20
         self.previousTrackCenterXConstraint.constant += -self.trackStackView.bounds.width/4
         self.previousTrackTopConstraint.constant += self.view.frame.height * 0.20
