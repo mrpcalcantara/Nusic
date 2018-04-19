@@ -65,6 +65,7 @@
 		8C3166C42043BEA600380460 /* SongListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3166C32043BEA600380460 /* SongListTableView.swift */; };
 		8C3166C62043CDBD00380460 /* SongListTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3166C52043CDBD00380460 /* SongListTabBarViewController.swift */; };
 		8C321EA2202BFD6600E529A8 /* NusicTypeSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C321EA1202BFD6600E529A8 /* NusicTypeSearch.swift */; };
+		8C34BED620885F9500FB0649 /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C34BED520885F9500FB0649 /* OnboardingPageViewController.swift */; };
 		8C35F95A204916EB00857EF7 /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C35F959204916EB00857EF7 /* UIBarButtonItem.swift */; };
 		8C35F95C2049214A00857EF7 /* BadgeBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C35F95B2049214A00857EF7 /* BadgeBarButtonItem.swift */; };
 		8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C3654BE1F551ABE006C12D9 /* OverlayView.xib */; };
@@ -131,6 +132,8 @@
 		8C90E8691F53D838002B135F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C90E8681F53D838002B135F /* Assets.xcassets */; };
 		8C90E86C1F53D838002B135F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C90E86A1F53D838002B135F /* LaunchScreen.storyboard */; };
 		8C90E88B1F53EE87002B135F /* MusicGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C90E88A1F53EE87002B135F /* MusicGraph.swift */; };
+		8C91D14E20886B5200605C62 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C91D14D20886B5200605C62 /* OnboardingViewController.swift */; };
+		8C91D15120886E5E00605C62 /* NusicPageViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C91D15020886E5E00605C62 /* NusicPageViewControllerDelegate.swift */; };
 		8C936DEC200F63A200A96B10 /* FirebaseAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C936DEB200F63A200A96B10 /* FirebaseAuth.swift */; };
 		8C936DF0200F659900A96B10 /* FirebaseAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C936DEF200F659900A96B10 /* FirebaseAuthHelper.swift */; };
 		8C9DB4F71F6B840400F35268 /* NewsicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9DB4F61F6B840400F35268 /* NewsicButton.swift */; };
@@ -146,6 +149,10 @@
 		8CB47FA01F581DC5008D8847 /* SpotifyFollowedArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB47F9F1F581DC5008D8847 /* SpotifyFollowedArtist.swift */; };
 		8CB47FA41F582977008D8847 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB47FA31F582977008D8847 /* UIImageView.swift */; };
 		8CB529E11F8375D900C8050F /* MoodCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB529E01F8375D900C8050F /* MoodCollectionView.swift */; };
+		8CB7444B208880F500E7C92F /* OnboardingGeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB74449208880F500E7C92F /* OnboardingGeneralViewController.swift */; };
+		8CB7444C208880F500E7C92F /* OnboardingGeneralViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8CB7444A208880F500E7C92F /* OnboardingGeneralViewController.xib */; };
+		8CB7444E20888A9E00E7C92F /* UIPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7444D20888A9E00E7C92F /* UIPageViewController.swift */; };
+		8CB744512088902F00E7C92F /* Onboarding.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CB744502088902F00E7C92F /* Onboarding.xcassets */; };
 		8CC6E7161F54044800846080 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC6E7151F54044800846080 /* Int.swift */; };
 		8CCC55341F66587A005090A4 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC55331F66587A005090A4 /* UIImage.swift */; };
 		8CCC55361F67975F005090A4 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC55351F67975F005090A4 /* Double.swift */; };
@@ -228,6 +235,7 @@
 		8C3166C32043BEA600380460 /* SongListTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongListTableView.swift; sourceTree = "<group>"; };
 		8C3166C52043CDBD00380460 /* SongListTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListTabBarViewController.swift; sourceTree = "<group>"; };
 		8C321EA1202BFD6600E529A8 /* NusicTypeSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NusicTypeSearch.swift; sourceTree = "<group>"; };
+		8C34BED520885F9500FB0649 /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		8C35F959204916EB00857EF7 /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		8C35F95B2049214A00857EF7 /* BadgeBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeBarButtonItem.swift; sourceTree = "<group>"; };
 		8C3654BE1F551ABE006C12D9 /* OverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
@@ -299,6 +307,8 @@
 		8C90E86D1F53D838002B135F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C90E8721F53D838002B135F /* NewsicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NewsicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C90E88A1F53EE87002B135F /* MusicGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicGraph.swift; sourceTree = "<group>"; };
+		8C91D14D20886B5200605C62 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OnboardingViewController.swift; path = "Newsic/View Controllers/Spotify Login View Controller/Onboarding Page View Controller/OnboardingViewController.swift"; sourceTree = SOURCE_ROOT; };
+		8C91D15020886E5E00605C62 /* NusicPageViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NusicPageViewControllerDelegate.swift; sourceTree = "<group>"; };
 		8C936DEB200F63A200A96B10 /* FirebaseAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuth.swift; sourceTree = "<group>"; };
 		8C936DEF200F659900A96B10 /* FirebaseAuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthHelper.swift; sourceTree = "<group>"; };
 		8C9DB4F61F6B840400F35268 /* NewsicButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicButton.swift; sourceTree = "<group>"; };
@@ -314,6 +324,10 @@
 		8CB47F9F1F581DC5008D8847 /* SpotifyFollowedArtist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyFollowedArtist.swift; sourceTree = "<group>"; };
 		8CB47FA31F582977008D8847 /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		8CB529E01F8375D900C8050F /* MoodCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodCollectionView.swift; sourceTree = "<group>"; };
+		8CB74449208880F500E7C92F /* OnboardingGeneralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGeneralViewController.swift; sourceTree = "<group>"; };
+		8CB7444A208880F500E7C92F /* OnboardingGeneralViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnboardingGeneralViewController.xib; sourceTree = "<group>"; };
+		8CB7444D20888A9E00E7C92F /* UIPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPageViewController.swift; sourceTree = "<group>"; };
+		8CB744502088902F00E7C92F /* Onboarding.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Onboarding.xcassets; sourceTree = "<group>"; };
 		8CC6E7151F54044800846080 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		8CC6E71A1F550F8500846080 /* Newsic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Newsic-Bridging-Header.h"; sourceTree = "<group>"; };
 		8CCC55331F66587A005090A4 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -418,6 +432,7 @@
 		8C0C1E991F6100AC00CF8516 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				8C91D15020886E5E00605C62 /* NusicPageViewControllerDelegate.swift */,
 				8C0C1E9A1F6100CC00CF8516 /* FirebaseModel.swift */,
 			);
 			path = Protocols;
@@ -681,6 +696,7 @@
 				8C7C41EC1FFCC2FF0051845D /* Bool.swift */,
 				8C2B05E7200C6EFC00BA525C /* ArrayString.swift */,
 				8C35F959204916EB00857EF7 /* UIBarButtonItem.swift */,
+				8CB7444D20888A9E00E7C92F /* UIPageViewController.swift */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -775,6 +791,25 @@
 			children = (
 				8C2847262043EE0B006A9B5C /* Suggested Song List View Controller */,
 				8C2847252043EDD2006A9B5C /* Liked Song List View Controller */,
+			);
+			path = "Child View Controllers";
+			sourceTree = "<group>";
+		};
+		8C34BED420885F7A00FB0649 /* Onboarding Page View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8C91D14D20886B5200605C62 /* OnboardingViewController.swift */,
+				8C34BED520885F9500FB0649 /* OnboardingPageViewController.swift */,
+				8C34BED720885FE000FB0649 /* Child View Controllers */,
+			);
+			path = "Onboarding Page View Controller";
+			sourceTree = "<group>";
+		};
+		8C34BED720885FE000FB0649 /* Child View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8CB74449208880F500E7C92F /* OnboardingGeneralViewController.swift */,
+				8CB7444A208880F500E7C92F /* OnboardingGeneralViewController.xib */,
 			);
 			path = "Child View Controllers";
 			sourceTree = "<group>";
@@ -975,6 +1010,7 @@
 		8C848EDA1F5676770070C08A /* Spotify Login View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				8C34BED420885F7A00FB0649 /* Onboarding Page View Controller */,
 				8C848EDB1F5676A00070C08A /* SpotifyLoginViewController.swift */,
 			);
 			path = "Spotify Login View Controller";
@@ -1066,6 +1102,7 @@
 		8C90E8841F53D897002B135F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8CB7444F2088901F00E7C92F /* Onboarding */,
 				8C63A15B1FFF49F100613FC9 /* Song Picker */,
 				8C63A1581FFF49B300613FC9 /* Show Song */,
 				8C63A1551FFF495400613FC9 /* Settings */,
@@ -1242,6 +1279,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		8CB7444F2088901F00E7C92F /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				8CB744502088902F00E7C92F /* Onboarding.xcassets */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		8CC6E7191F550F6000846080 /* Bridging Headers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1383,8 +1428,10 @@
 				8C0A1899207DD95400676E55 /* GoogleService-Info.plist in Resources */,
 				8C90E86C1F53D838002B135F /* LaunchScreen.storyboard in Resources */,
 				8C79893D1FEA53D20079A99D /* ChoiceList.xib in Resources */,
+				8CB744512088902F00E7C92F /* Onboarding.xcassets in Resources */,
 				8C90E8691F53D838002B135F /* Assets.xcassets in Resources */,
 				8C3166BE2043BE4300380460 /* SongTableViewSectionHeader.xib in Resources */,
+				8CB7444C208880F500E7C92F /* OnboardingGeneralViewController.xib in Resources */,
 				8C5E02A7201707A800413DBB /* Synthetic Sharps Italic.otf in Resources */,
 				8C3166BB2043BE4300380460 /* SongTableViewHeader.xib in Resources */,
 				8C63A1571FFF496100613FC9 /* Settings.xcassets in Resources */,
@@ -1548,6 +1595,7 @@
 				8C7C41EB1FFC99D60051845D /* UITableView.swift in Sources */,
 				8C28C5322058D64600441E70 /* ArtistArray.swift in Sources */,
 				8C2847292043EE26006A9B5C /* SuggestedSongListViewController.swift in Sources */,
+				8C91D15120886E5E00605C62 /* NusicPageViewControllerDelegate.swift in Sources */,
 				8C3A6F1B1FCD769C00BA7981 /* ShowSongDataTransfer.swift in Sources */,
 				8C26C35A1FE517F600365142 /* NewsicUserSettings.swift in Sources */,
 				8CD0C7271FD541D90095A309 /* URLSession.swift in Sources */,
@@ -1560,6 +1608,7 @@
 				8C281499207DC360000C605F /* SPTUser.swift in Sources */,
 				8C77714D201C7945004A5455 /* Koloda-SongCard.swift in Sources */,
 				8C2011571F98849A003DE2AD /* SpotifyGenres.swift in Sources */,
+				8CB7444B208880F500E7C92F /* OnboardingGeneralViewController.swift in Sources */,
 				8C18E0BE1F5530E9002C4A07 /* SpotifyTrack.swift in Sources */,
 				8CA40DFC1F8B85C200C95B9D /* SongPlayerMenu.swift in Sources */,
 				8CA40DF31F8B7C7B00C95B9D /* SpotifyUsers.swift in Sources */,
@@ -1581,6 +1630,7 @@
 				8C28472B2043F616006A9B5C /* SuggestedSongListTableView.swift in Sources */,
 				8C29A54E2021703B00148178 /* Emotions.swift in Sources */,
 				8C2B05E8200C6EFC00BA525C /* ArrayString.swift in Sources */,
+				8C91D14E20886B5200605C62 /* OnboardingViewController.swift in Sources */,
 				8C7C41ED1FFCC2FF0051845D /* Bool.swift in Sources */,
 				8C7A58411FD7A0D3006A2E43 /* SPTAuth.swift in Sources */,
 				8C291A7B1FD6561800E568EF /* FirebaseErrorCodeDescription.swift in Sources */,
@@ -1591,6 +1641,7 @@
 				8C936DF0200F659900A96B10 /* FirebaseAuthHelper.swift in Sources */,
 				8C2605F31FEB61740025DD1E /* ChoiceListViewHeader.swift in Sources */,
 				8C3166BD2043BE4300380460 /* SongTableViewSectionHeader.swift in Sources */,
+				8C34BED620885F9500FB0649 /* OnboardingPageViewController.swift in Sources */,
 				8C90E88B1F53EE87002B135F /* MusicGraph.swift in Sources */,
 				8C21E7121FC6B2730033B477 /* NewsicViewController.swift in Sources */,
 				8C0962301F61550D0025A65E /* NewsicGenre.swift in Sources */,
@@ -1631,6 +1682,7 @@
 				8CD0C7291FD55B4D0095A309 /* SpotifyErrorCodeDescription.swift in Sources */,
 				8C7C41DE1FFC8D2F0051845D /* SideMenuViewController.swift in Sources */,
 				8C90E8621F53D838002B135F /* AppDelegate.swift in Sources */,
+				8CB7444E20888A9E00E7C92F /* UIPageViewController.swift in Sources */,
 				8C7C0A411FEA76820077B109 /* CL-CollectionView.swift in Sources */,
 				8CD7344B1FEB69A7009B461F /* NSObject.swift in Sources */,
 				8C7C0A3F1FEA76780077B109 /* CL-ToggleView.swift in Sources */,

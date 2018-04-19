@@ -129,11 +129,6 @@ class SongOverlayView: OverlayView {
         self.albumImage.alpha = 0
     }
     
-    fileprivate func loadViewFromNib() -> UIView {
-        let view: UIView = UINib(nibName: "OverlayView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! UIView
-        return view
-    }
-    
     override func update(progress: CGFloat) {
         alpha = progress < 0.75 ? progress : 0.75
         
