@@ -290,7 +290,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k6E-Yi-lJS">
                                 <rect key="frame" x="155.5" y="551" width="64" height="64"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="64" id="0mj-FM-nls"/>
                                     <constraint firstAttribute="width" secondItem="k6E-Yi-lJS" secondAttribute="height" multiplier="1:1" id="fFm-D3-wem"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="64" id="yhm-MC-ZkM"/>
                                 </constraints>
                                 <color key="tintColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <connections>

@@ -99,7 +99,11 @@ class ShowSongViewController: NusicDefaultViewController {
     var player: SPTAudioStreamingController?
     var spotifyHandler: Spotify! = nil;
     var auth: SPTAuth! = nil;
-    var isPlaying: Bool = false;
+    var isPlaying: Bool = false {
+        didSet {
+            self.togglePausePlayIcon()
+        }
+    }
     var selectedGenreList: [String: Int]? = nil
     var selectedSongs: [SpotifyTrack]? = nil
     var currentPlayingTrack: SpotifyTrack?
@@ -113,7 +117,8 @@ class ShowSongViewController: NusicDefaultViewController {
     //Koloda Cards
     var isSongLiked: Bool = false;
     var didUserSwipe: Bool = false;
-    var presentedCardIndex: Int = 0;
+    var presentedCardIndex: Int = -1;
+    var appBackgroundCardIndex: Int = 0;
     var playOnCellularData: Bool?
     var isMoodSelected: Bool = false;
     var shouldCompleteTransition: Bool = false;
@@ -130,6 +135,7 @@ class ShowSongViewController: NusicDefaultViewController {
     var dismissProgress: CGFloat! = 0
     var seguePerformed: Bool = false;
     var newMoodOrGenre: Bool = true
+    var clickPrevious: Bool = false
     
     //Table View
     var sectionTitles: [String?] = []

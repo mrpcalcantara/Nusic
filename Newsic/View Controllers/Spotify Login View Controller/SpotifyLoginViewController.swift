@@ -64,10 +64,11 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     var nusicUser: NusicUser! = nil {
         didSet {
-            if nusicUser.version != Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String {
-                Messaging.messaging().subscribe(toTopic: "nusicWeekly")
-                nusicUser.version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-            }
+            
+//            if nusicUser.version != Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String {
+//                Messaging.messaging().subscribe(toTopic: "nusicWeekly")
+//                nusicUser.version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+//            }
             nusicUser.isPremium = self.spotifyHandler.user.isPremium()
             nusicUser.saveUser { (isSaved, error) in
                 guard error == nil else { error?.presentPopup(for: self); return; }
@@ -78,6 +79,10 @@ class SpotifyLoginViewController: NusicDefaultViewController {
                 guard error == nil else { error?.presentPopup(for: self); return }
                 print("adding APNS token = \(isSuccess!)")
             })
+            
+            guard UserDefaults.standard.value(forKey: "subscribedToTopic") == nil else { return }
+            Messaging.messaging().subscribe(toTopic: "nusicWeekly")
+            UserDefaults.standard.set(true, forKey: "subscribedToTopic")
         }
     }
     
@@ -520,6 +525,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     fileprivate func passDataToSideMenu() {
         guard let parent = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController else { return }
         let sideMenu = parent.sideMenuVC as! SideMenuViewController
+        guard let nusicUser = self.nusicUser else { return; }
         sideMenu.username = self.nusicUser.displayName != "" ? self.nusicUser.displayName : self.nusicUser.userName;
         sideMenu.preferredPlayer = self.nusicUser.settingValues.preferredPlayer
         sideMenu.useMobileData = self.nusicUser.settingValues.useMobileData

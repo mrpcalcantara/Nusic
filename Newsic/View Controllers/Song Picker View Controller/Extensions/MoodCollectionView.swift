@@ -188,8 +188,9 @@ extension SongPickerViewController {
     final func getIndexPathForGenre(_ value: String) -> IndexPath? {
         let genreDict = SpotifyGenres.genreDictionary
         for genre in genreDict.keys {
-            guard let genreValues = genreDict[genre], genreValues.contains(SpotifyGenres(rawValue: value)!), let genreIndex = sectionGenreTitles.index(of: genre) else { return nil }
-            return IndexPath(row: 0, section: genreIndex)
+            if let genreValues = genreDict[genre], genreValues.contains(SpotifyGenres(rawValue: value)!), let genreIndex = sectionGenreTitles.index(of: genre) {
+                return IndexPath(row: 0, section: genreIndex)
+            }
         }
         return nil;
     }
