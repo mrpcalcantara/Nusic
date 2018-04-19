@@ -64,10 +64,11 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     var nusicUser: NusicUser! = nil {
         didSet {
-            if nusicUser.version != Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String {
-                Messaging.messaging().subscribe(toTopic: "nusicWeekly")
-                nusicUser.version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-            }
+            
+//            if nusicUser.version != Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String {
+//                Messaging.messaging().subscribe(toTopic: "nusicWeekly")
+//                nusicUser.version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+//            }
             nusicUser.isPremium = self.spotifyHandler.user.isPremium()
             nusicUser.saveUser { (isSaved, error) in
                 guard error == nil else { error?.presentPopup(for: self); return; }
@@ -78,6 +79,10 @@ class SpotifyLoginViewController: NusicDefaultViewController {
                 guard error == nil else { error?.presentPopup(for: self); return }
                 print("adding APNS token = \(isSuccess!)")
             })
+            
+            guard UserDefaults.standard.value(forKey: "subscribedToTopic") == nil else { return }
+            Messaging.messaging().subscribe(toTopic: "nusicWeekly")
+            UserDefaults.standard.set(true, forKey: "subscribedToTopic")
         }
     }
     

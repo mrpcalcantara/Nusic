@@ -51,10 +51,9 @@ class MoodGenreListCell: UICollectionViewCell {
         self.layer.shouldRasterize = true;
         self.layer.rasterizationScale = UIScreen.main.scale
         self.section = nil
-//        self.cellSize = nil
         self.items?.removeAll()
         if self.listCollectionView.numberOfItems(inSection: 0) > 0 {
-            self.listCollectionView.scrollRectToVisible(CGRect.zero, animated: false)
+            self.listCollectionView.setContentOffset(CGPoint.zero, animated: false)
         }
         self.listCollectionView.dataSource = nil
         self.listCollectionView.reloadData()

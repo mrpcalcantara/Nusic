@@ -85,7 +85,6 @@ extension SongPickerViewController : ChoiceListDelegate {
     }
     
     final func didPanHeader(_ translationX: CGFloat, _ translationY: CGFloat) {
-        listViewBottomConstraint.constant = self.view.frame.height-translationY
         self.view.layoutIfNeeded()
         self.view.sizeToFit()
     }
@@ -117,7 +116,6 @@ extension SongPickerViewController : ChoiceListDelegate {
 extension SongPickerViewController {
     
     final func showChoiceMenu() {
-        self.listViewBottomConstraint.constant = self.view.frame.height/2
         let point = CGPoint(x: listMenuView.frame.origin.x, y: self.view.safeAreaLayoutGuide.layoutFrame.height/2)
         willMove(to: point, animated: true)
         listMenuView.animateMove(to: point)
@@ -125,7 +123,6 @@ extension SongPickerViewController {
     }
     
     final func hideChoiceMenu() {
-        self.listViewBottomConstraint.constant = listMenuView.toggleViewHeight
         let point = CGPoint(x: listMenuView.frame.origin.x, y: self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight)
         willMove(to: point, animated: true)
         listMenuView.animateMove(to: point)
@@ -133,8 +130,6 @@ extension SongPickerViewController {
     }
     
     final func openChoiceMenu() {
-        self.listViewBottomConstraint.constant = listMenuView.toggleViewHeight
-        //        print(self.view.safeAreaLayoutGuide.layoutFrame.maxY)
         let point = CGPoint(x: listMenuView.frame.origin.x, y: self.view.safeAreaLayoutGuide.layoutFrame.maxY - listMenuView.toggleViewHeight)
         willMove(to: point, animated: true)
         listMenuView.animateMove(to: point)
@@ -142,7 +137,6 @@ extension SongPickerViewController {
     }
     
     final func closeChoiceMenu() {
-        self.listViewBottomConstraint.constant = 0
         willMove(to: CGPoint(x: listMenuView.frame.origin.x, y: self.view.frame.height), animated: true)
         listMenuView.isShowing = false
     }
