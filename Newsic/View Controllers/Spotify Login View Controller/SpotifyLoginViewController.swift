@@ -64,11 +64,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     var nusicUser: NusicUser! = nil {
         didSet {
-            
-//            if nusicUser.version != Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String {
-//                Messaging.messaging().subscribe(toTopic: "nusicWeekly")
-//                nusicUser.version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-//            }
             nusicUser.isPremium = self.spotifyHandler.user.isPremium()
             nusicUser.saveUser { (isSaved, error) in
                 guard error == nil else { error?.presentPopup(for: self); return; }
@@ -101,6 +96,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     @IBOutlet weak var nusicLabl: UILabel!
     @IBOutlet weak var nusicFullTitle: UILabel!
     
+    @IBOutlet weak var onboardingContainerView: UIView!
     @IBAction func spotifyLoginButton(_ sender: UIButton) {
        
         toActivateTimer = true
@@ -120,6 +116,8 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         checkFirebaseConnectivity()
         removeNotificationObservers()
         addNotificationObservers()
+        
+        
         
     }
     
