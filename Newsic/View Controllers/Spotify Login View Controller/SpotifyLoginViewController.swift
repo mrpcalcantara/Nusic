@@ -26,16 +26,18 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     var loadFullTitle: Bool = false {
         didSet {
             if loadFullTitle {
-                self.nusicLabl.layer.removeAllAnimations()
-                self.nusicLabl.transform = CGAffineTransform(scaleX: 2, y: 2)
+                self.nusicTitleLogo.layer.removeAllAnimations()
+                self.nusicTitleLogo.transform = CGAffineTransform(scaleX: 2, y: 2)
                 self.view.layoutIfNeeded()
                 UIView.animate(withDuration: 2, delay: 1, options: .curveEaseInOut, animations: {
-                    self.nusicLabl.alpha = 0.5
+                    self.nusicTitleLogo.alpha = 0.5
                     self.nusicFullTitle.alpha = 1
                     self.view.layoutIfNeeded()
                 }, completion: nil)
             } else {
                 self.nusicFullTitle.alpha = 0
+                self.nusicTitleLogo.alpha = 0
+                self.onboardingContainerView.alpha = 0
             }
         }
     }
@@ -95,6 +97,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var nusicLabl: UILabel!
     @IBOutlet weak var nusicFullTitle: UILabel!
+    @IBOutlet weak var nusicTitleLogo: UILabel!
     
     @IBOutlet weak var onboardingContainerView: UIView!
     @IBAction func spotifyLoginButton(_ sender: UIButton) {
@@ -109,6 +112,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         super.viewDidLoad();
         setupBackground()
         setupSpotify()
+        setupLogo()
         self.view.bringSubview(toFront: loginButton)
         self.view.bringSubview(toFront: nusicFullTitle)
         self.view.layoutIfNeeded()
@@ -289,6 +293,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
             self.loadFullTitle = true
         }
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
+            self.onboardingContainerView.alpha = 1
             self.loginButton.alpha = 1;
             self.view.layoutIfNeeded()
         }, completion: nil)
@@ -297,6 +302,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     fileprivate func animateLogo() {
         loginButton.alpha = 0
         nusicFullTitle.alpha = 0
+        onboardingContainerView.alpha = 0
         
         UIView.animate(withDuration: 1, animations: {
             self.nusicLabl.alpha = 1;

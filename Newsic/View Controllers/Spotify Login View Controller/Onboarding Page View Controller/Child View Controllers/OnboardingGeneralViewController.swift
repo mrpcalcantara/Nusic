@@ -19,30 +19,34 @@ class OnboardingGeneralViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        // Do any additional setup after loading the view.
+        setData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     fileprivate func setupView() {
-        view.backgroundColor = NusicDefaults.clearColor
-        
         stepLabel.textColor = NusicDefaults.whiteColor
         stepLabel.font = NusicDefaults.font
         stepLabel.lineBreakMode = .byWordWrapping
         stepLabel.numberOfLines = 0
+        stepLabel.minimumScaleFactor = 0.2
         
         imageView.contentMode = .scaleAspectFit
-        
-        stepLabel.text = text
-        imageView.image = image
+    }
+    
+    fileprivate func setData() {
+        DispatchQueue.main.async {
+            self.stepLabel.text = self.text
+            self.imageView.image = self.image
+            self.view.backgroundColor = NusicDefaults.clearColor
+        }
     }
     
     final func configure(image: UIImage?, text: String?) {

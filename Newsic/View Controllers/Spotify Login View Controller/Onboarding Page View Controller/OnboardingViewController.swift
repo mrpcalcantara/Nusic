@@ -22,6 +22,8 @@ class OnboardingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        pageControl.currentPageIndicatorTintColor = NusicDefaults.foregroundThemeColor
+        pageControl.pageIndicatorTintColor = NusicDefaults.whiteColor
     }
 
     override func didReceiveMemoryWarning() {
