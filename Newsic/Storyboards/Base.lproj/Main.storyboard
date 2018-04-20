@@ -11,7 +11,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Robot Crush.ttf">
+        <array key="Robot Crush.otf">
             <string>RobotCrush</string>
         </array>
     </customFonts>
@@ -47,22 +47,31 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="N" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNX-a4-ASH">
+                                <rect key="frame" x="161" y="287.5" width="54" height="93"/>
+                                <fontDescription key="fontDescription" name="RobotCrush" family="Robot Crush" pointSize="100"/>
+                                <color key="textColor" red="0.39590120315551758" green="0.85688549280166626" blue="0.3645932674407959" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="N" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NbY-gZ-rWP" userLabel="Nusic Title Logo">
                                 <rect key="frame" x="177" y="44" width="21.5" height="37.5"/>
                                 <fontDescription key="fontDescription" name="RobotCrush" family="Robot Crush" pointSize="40"/>
-                                <color key="textColor" red="0.39590120315551758" green="0.85688549280166626" blue="0.3645932674407959" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="textColor" red="0.3959012032" green="0.85688549280000004" blue="0.36459326739999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="NbY-gZ-rWP" firstAttribute="top" secondItem="GYs-BA-23b" secondAttribute="top" id="46p-j4-VHb"/>
                             <constraint firstItem="ig3-Ym-Y5X" firstAttribute="top" secondItem="GYs-BA-23b" secondAttribute="bottom" constant="16" id="4Xs-Xm-zOX"/>
                             <constraint firstItem="GYs-BA-23b" firstAttribute="centerX" secondItem="ckI-yp-Fw4" secondAttribute="centerX" id="5FU-Xb-xPA"/>
                             <constraint firstItem="bNX-a4-ASH" firstAttribute="centerX" secondItem="nfP-bc-mRV" secondAttribute="centerX" id="9Ly-Oi-IfI"/>
                             <constraint firstItem="Tgc-jo-MXh" firstAttribute="top" secondItem="ig3-Ym-Y5X" secondAttribute="bottom" constant="8" id="ENq-hi-eGN"/>
                             <constraint firstItem="nfP-bc-mRV" firstAttribute="trailing" secondItem="ig3-Ym-Y5X" secondAttribute="trailing" constant="8" id="PG7-vD-TtW"/>
+                            <constraint firstItem="NbY-gZ-rWP" firstAttribute="centerX" secondItem="ckI-yp-Fw4" secondAttribute="centerX" id="XDy-Fv-JZf"/>
+                            <constraint firstItem="GYs-BA-23b" firstAttribute="bottom" secondItem="NbY-gZ-rWP" secondAttribute="bottom" id="Yt3-eM-uNo"/>
                             <constraint firstItem="GYs-BA-23b" firstAttribute="top" secondItem="nfP-bc-mRV" secondAttribute="top" constant="24" id="b7T-l6-L5x"/>
                             <constraint firstItem="Tgc-jo-MXh" firstAttribute="centerX" secondItem="nfP-bc-mRV" secondAttribute="centerX" id="cVr-Bg-WjL"/>
-                            <constraint firstItem="bNX-a4-ASH" firstAttribute="top" secondItem="GYs-BA-23b" secondAttribute="top" id="gKP-Ev-vIm"/>
+                            <constraint firstItem="bNX-a4-ASH" firstAttribute="centerY" secondItem="ckI-yp-Fw4" secondAttribute="centerY" id="hVy-uL-wo2"/>
                             <constraint firstItem="nfP-bc-mRV" firstAttribute="bottom" secondItem="Tgc-jo-MXh" secondAttribute="bottom" constant="24" id="ih5-NG-rNG"/>
                             <constraint firstItem="ig3-Ym-Y5X" firstAttribute="leading" secondItem="nfP-bc-mRV" secondAttribute="leading" constant="8" id="nGt-Er-cVO"/>
                         </constraints>
@@ -75,6 +84,7 @@
                         <outlet property="nusicFullTitle" destination="GYs-BA-23b" id="3n7-84-m8U"/>
                         <outlet property="nusicLabelCenterXConstraint" destination="9Ly-Oi-IfI" id="Sas-9b-S94"/>
                         <outlet property="nusicLabl" destination="bNX-a4-ASH" id="bWV-4z-91Q"/>
+                        <outlet property="nusicTitleLogo" destination="NbY-gZ-rWP" id="mb9-eT-D36"/>
                         <outlet property="onboardingContainerView" destination="ig3-Ym-Y5X" id="cSL-XA-3AQ"/>
                     </connections>
                 </viewController>

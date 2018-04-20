@@ -317,6 +317,11 @@ class NusicWeeklyViewController: NusicDefaultViewController {
 
     fileprivate func requestUserReview() {
         var showReviewController = false
+        var loginNumber = 0
+        if let numberOfLogins = UserDefaults.standard.value(forKey: "numberOfLogins") as? Int {
+            loginNumber = numberOfLogins
+        }
+        
         if let didShowDate = UserDefaults.standard.value(forKey: "didShowReviewDate") as? Date {
             let currentDate = Date()
             let days:Double = 60*60*24*100
@@ -327,7 +332,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
             showReviewController = true
         }
         
-        guard showReviewController else { return; }
+        guard showReviewController && loginNumber > 2 else { return; }
         SKStoreReviewController.requestReview()
         UserDefaults.standard.set(Date(), forKey: "didShowReviewDate")
     }

@@ -14,6 +14,7 @@ enum NusicSettingsTitle: String {
     case connectionSettings = "Connection"
     case actionSettings = "Actions"
     case infoSettings = "Informations"
+    case feedbackSettings = "Feedback"
 }
 
 enum NusicSettingsLabel: String {
@@ -24,4 +25,5 @@ enum NusicSettingsLabel: String {
     case deleteAccount = "Delete Account"
     case privacyPolicy = "Privacy Policy"
     case contactMe = "Contact me!"
+    case rateApp = "Rate the app"
 }
