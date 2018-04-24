@@ -58,9 +58,11 @@ class SpotifyLoginViewController: NusicDefaultViewController {
             passDataToSongPicker()
             guard let rootVC = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController, let nusicWeeklyVC = rootVC.nusicWeeklyVC else { return }
             rootVC.scrollToViewController(viewController: nusicWeeklyVC)
-            self.present(rootVC, animated: true, completion: {
-                self.removeFromParentViewController()
-            })
+            DispatchQueue.main.async {
+                self.present(rootVC, animated: true, completion: {
+                    self.removeFromParentViewController()
+                })
+            }
         }
     }
     
@@ -110,7 +112,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        setupBackground()
         setupSpotify()
         setupLogo()
         self.view.bringSubview(toFront: loginButton)
@@ -169,16 +170,6 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     fileprivate func setupView() {
         loginButton.setImage(UIImage(named: "SpotifyLogin"), for: .normal);
         setupLabel()
-    }
-    
-    fileprivate func setupBackground() {
-        guard let image = UIImage(named: "BackgroundPattern") else { return }
-        let imageView = UIImageView(frame: self.view.frame)
-        imageView.contentMode = .scaleAspectFill
-        imageView.image = image
-        self.view.addSubview(imageView)
-        self.view.sendSubview(toBack: imageView)
-        
     }
     
     fileprivate func checkFirebaseConnectivity() {

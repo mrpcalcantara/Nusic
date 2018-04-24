@@ -15,6 +15,11 @@ class OnboardingPageViewController: UIPageViewController {
         // The view controllers will be shown in this order
         return []
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setViewControllers([orderedViewControllers.first!], direction: .forward, animated: true, completion: nil)
+    }
 
     override func viewDidLoad() {
         
@@ -27,7 +32,7 @@ class OnboardingPageViewController: UIPageViewController {
         setupNusicWeeklyVC()
         // Do any additional setup after loading the view.
         nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
-        setViewControllers([orderedViewControllers.first!], direction: .forward, animated: true, completion: nil)
+        
         
     }
 
@@ -67,7 +72,7 @@ class OnboardingPageViewController: UIPageViewController {
     fileprivate func setupSongListVC() {
         let songListVC = OnboardingGeneralViewController(nibName: OnboardingGeneralViewController.className, bundle: nil)
         guard let image = UIDevice.current.userInterfaceIdiom == .pad ? UIImage(named: "SongList-iPad") : UIImage(named: "SongList") else { return }
-        songListVC.configure(image: image, text: "Check your liked tracks so far as well as our daily suggested track, which is based on the tracks you liked the day before")
+        songListVC.configure(image: image, text: "Check your liked tracks so far and our daily suggested tracks based on the tracks you liked the day before")
         orderedViewControllers.append(songListVC)
     }
     

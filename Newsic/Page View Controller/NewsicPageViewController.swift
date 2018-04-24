@@ -75,8 +75,8 @@ class NusicPageViewController: UIPageViewController {
             backgroundImageView = UIImageView(frame: self.view.frame)
             backgroundImageView.contentMode = .scaleAspectFill
             backgroundImageView.image = image
-            self.view.addSubview(backgroundImageView)
-            self.view.sendSubview(toBack: backgroundImageView)
+//            self.view.addSubview(backgroundImageView)
+//            self.view.sendSubview(toBack: backgroundImageView)
         }
         
         

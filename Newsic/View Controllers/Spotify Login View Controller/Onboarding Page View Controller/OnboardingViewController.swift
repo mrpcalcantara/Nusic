@@ -37,14 +37,12 @@ class OnboardingViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        if let pageViewController = segue.destination as? OnboardingPageViewController {
-            pageViewController.nusicDelegate = self
-            self.pageViewController = pageViewController
-        }
+        guard let pageViewController = segue.destination as? OnboardingPageViewController else { return }
+        pageViewController.nusicDelegate = self
+        self.pageViewController = pageViewController
     }
  
     @IBAction func pageControlClicked(_ sender: UIPageControl) {
-        print(sender.currentPage)
         pageViewController?.scrollToViewController(for: sender.currentPage)
     }
     

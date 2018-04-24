@@ -29,14 +29,19 @@ class OnboardingGeneralViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        image = nil
+        DispatchQueue.main.async {
+            self.imageView.image = nil
+        }
     }
     
     fileprivate func setupView() {
         stepLabel.textColor = NusicDefaults.whiteColor
-        stepLabel.font = NusicDefaults.font
+        let font = UIDevice.current.userInterfaceIdiom == .phone ? NusicDefaults.font?.withSize(14) : NusicDefaults.font?.withSize(22)
+        stepLabel.font = font
         stepLabel.lineBreakMode = .byWordWrapping
         stepLabel.numberOfLines = 0
-        stepLabel.minimumScaleFactor = 0.2
+        
         
         imageView.contentMode = .scaleAspectFit
     }
@@ -44,8 +49,10 @@ class OnboardingGeneralViewController: UIViewController {
     fileprivate func setData() {
         DispatchQueue.main.async {
             self.stepLabel.text = self.text
+            self.stepLabel.sizeToFit()
             self.imageView.image = self.image
             self.view.backgroundColor = NusicDefaults.clearColor
+            self.view.layoutIfNeeded()
         }
     }
     
