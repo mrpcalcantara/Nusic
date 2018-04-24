@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LikedSongListViewController: UIViewController {
+class LikedSongListViewController: NusicDefaultViewController {
 
     //Outlets
     @IBOutlet weak var songListTableView: UITableView!
