@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseDatabase
 
-class SuggestedSongListViewController: UIViewController {
+class SuggestedSongListViewController: NusicDefaultViewController {
 
     //Outlets
     @IBOutlet weak var suggestedSongListTableView: UITableView!

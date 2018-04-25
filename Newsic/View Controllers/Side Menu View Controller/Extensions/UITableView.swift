@@ -85,6 +85,8 @@ extension SideMenuViewController : UITableViewDelegate {
         case NusicSettingsLabel.privacyPolicy.rawValue:
             header.headerLabel.text = NusicSettingsTitle.infoSettings.rawValue
         case NusicSettingsLabel.contactMe.rawValue:
+            header.headerLabel.text = NusicSettingsTitle.feedbackSettings.rawValue
+        case NusicSettingsLabel.logout.rawValue:
             header.headerLabel.text = NusicSettingsTitle.actionSettings.rawValue
         case NusicSettingsLabel.spotifyQuality.rawValue:
             header.headerLabel.text = NusicSettingsTitle.spotifySettings.rawValue
@@ -125,6 +127,8 @@ extension SideMenuViewController : UITableViewDataSource {
             setupInfoSettings(for: cell, title: title)
         case NusicSettingsLabel.contactMe.rawValue:
             setupContactSettings(for: cell, title: title)
+        case NusicSettingsLabel.rateApp.rawValue:
+            setupRatingSettings(for: cell, title: title)
         default:
             return UITableViewCell()
         }
@@ -298,7 +302,17 @@ extension SideMenuViewController {
         cell.alertController?.configure(options: [buttonContact], alertText: "")
     }
     
-    
+    fileprivate func setupRatingSettings(for cell: SettingsCell, title: String) {
+        let buttonContact = YBButton(frame: CGRect.zero, icon: #imageLiteral(resourceName: "ButtonAppIcon"), text: "Rate the app!")
+        let actionContact = { () -> Void in
+            guard let url = URL(string: "https://itunes.apple.com/us/app/nusic/id1314807539?ls=1&mt=8&action=write-review") else { return }
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        buttonContact.action = actionContact
+        
+        cell.configure(title: title, value: "", icon: nil, centerText: true)
+        cell.alertController?.configure(options: [buttonContact], alertText: "")
+    }
 
     
 }
@@ -310,7 +324,7 @@ extension SideMenuViewController: MFMailComposeViewControllerDelegate {
             mail.mailComposeDelegate = self
             mail.setToRecipients(["malcantara.fl@gmail.com"])
             mail.setSubject("#Nusic iOS")
-            var bodyText = ""
+            let bodyText = ""
             mail.setMessageBody(bodyText, isHTML: false)
             present(mail, animated: true)
         } else {

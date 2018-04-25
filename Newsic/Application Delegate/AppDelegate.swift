@@ -64,6 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupPopupDialogAppearance()
         
         UserDefaults.standard.setValue(false, forKey: "appOpened")
+        incrementNumberOfLogins()
+        
         // Override point for customization after application launch.
         return true
     }
@@ -132,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Failed to register: \(error)")
     }
 
-    func setupNavigationBarAppearance() {
+    fileprivate func setupNavigationBarAppearance() {
         let navigationBarAppearance = UINavigationBar.appearance()
         navigationBarAppearance.shadowImage = UIImage();
         navigationBarAppearance.setBackgroundImage(UIImage(), for: .default);
@@ -142,7 +144,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBarAppearance.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.black]
     }
     
-    func setupPopupDialogAppearance() {
+    fileprivate func setupPopupDialogAppearance() {
         let dialogAppearance = PopupDialogDefaultView.appearance()
         dialogAppearance.titleFont            = UIFont(name: "Futura", size: 16)!
         dialogAppearance.titleColor           = UIColor(white: 1, alpha: 1)
@@ -173,7 +175,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DestructiveButton.appearance().titleColor = UIColor.red
     }
     
-    func registerForPushNotifications() {
+    fileprivate func registerForPushNotifications() {
         UNUserNotificationCenter.current().delegate = self
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
             (granted, error) in
@@ -185,7 +187,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func getNotificationSettings() {
+    fileprivate func getNotificationSettings() {
         UNUserNotificationCenter.current().getNotificationSettings { (settings) in
             print("Notification settings: \(settings)")
             guard settings.authorizationStatus == .authorized else { return }
@@ -250,15 +252,13 @@ extension AppDelegate : MessagingDelegate {
         print("Received data message: \(remoteMessage.appData)")
     }
     
-    func handleReceivedRemoteNotification(userInfo: [AnyHashable: Any]) {
+    fileprivate func handleReceivedRemoteNotification(userInfo: [AnyHashable: Any]) {
         if userInfo["spotifyTrackId"] as? String != nil {
             launchSuggestedTrack(userInfo: userInfo)
-        } else {
-            handleNusicWeekly(userInfo: userInfo)
         }
     }
     
-    func launchSuggestedTrack(userInfo: [AnyHashable: Any]) {
+    fileprivate func launchSuggestedTrack(userInfo: [AnyHashable: Any]) {
         UIApplication.shared.applicationIconBadgeNumber += 1
         UserDefaults.standard.set(userInfo["spotifyTrackId"] as! String, forKey: "suggestedSpotifyTrackId")
         UserDefaults.standard.synchronize()
@@ -268,7 +268,7 @@ extension AppDelegate : MessagingDelegate {
         }
     }
     
-    func handleSuggestedTrack(title:String, message: String, userInfo: [AnyHashable: Any]) {
+    fileprivate func handleSuggestedTrack(title:String, message: String, userInfo: [AnyHashable: Any]) {
         guard let rootVC = UIApplication.shared.keyWindow?.rootViewController as? NusicPageViewController else { return }
         let alertDialog = PopupDialog(title: title, message: message)
         if let viewC = alertDialog.viewController as? PopupDialogDefaultViewController {
@@ -303,8 +303,12 @@ extension AppDelegate : MessagingDelegate {
         rootVC.present(alertDialog, animated: true, completion: nil)
     }
     
-    func handleNusicWeekly(userInfo: [AnyHashable: Any]) {
-        print(userInfo)
+    fileprivate func incrementNumberOfLogins() {
+        var numberOfLogins = 1
+        if let numberOfLoginsUD = UserDefaults.standard.value(forKey: "numberOfLogins") as? Int {
+            numberOfLogins = numberOfLoginsUD + 1
+        }
+        UserDefaults.standard.set(numberOfLogins, forKey: "numberOfLogins")
     }
 }
 
