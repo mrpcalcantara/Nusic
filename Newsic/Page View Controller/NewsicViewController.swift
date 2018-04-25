@@ -10,39 +10,18 @@ import UIKit
 
 class NusicViewController: UIViewController {
     
-    
     @IBOutlet weak var containerView: UIView!
-    
-    var nusicPageViewController: NusicPageViewController? {
-        didSet {
-            nusicPageViewController?.nusicDelegate = self
-        }
-    }
+    weak var nusicDelegate: NusicPageViewControllerDelegate?
+    var pageViewController: UIPageViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let nusicPageViewController = segue.destination as? NusicPageViewController {
-            self.nusicPageViewController = nusicPageViewController
+        if let pageViewController = segue.destination as? UIPageViewController {
+            self.pageViewController = pageViewController
         }
     }
     
-    
 }
-
-extension NusicViewController: NusicPageViewControllerDelegate {
-    
-    func nusicPageViewController(nusicPageViewController: NusicPageViewController,
-                                    didUpdatePageCount count: Int) {
-        
-    }
-    
-    func nusicPageViewController(nusicPageViewController: NusicPageViewController,
-                                    didUpdatePageIndex index: Int) {
-        
-    }
-    
-}
-

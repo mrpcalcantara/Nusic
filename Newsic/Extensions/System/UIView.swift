@@ -113,5 +113,9 @@ extension UIView {
         blurView.bottomAnchor.constraint(equalTo: insetView.bottomAnchor).isActive = true
     }
     
+    final func loadViewFromNib() -> UIView {
+        let view: UIView = UINib(nibName: self.className, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! UIView
+        return view
+    }
     
 }

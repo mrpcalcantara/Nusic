@@ -75,8 +75,8 @@ class NusicPageViewController: UIPageViewController {
             backgroundImageView = UIImageView(frame: self.view.frame)
             backgroundImageView.contentMode = .scaleAspectFill
             backgroundImageView.image = image
-            self.view.addSubview(backgroundImageView)
-            self.view.sendSubview(toBack: backgroundImageView)
+//            self.view.addSubview(backgroundImageView)
+//            self.view.sendSubview(toBack: backgroundImageView)
         }
         
         
@@ -96,19 +96,6 @@ class NusicPageViewController: UIPageViewController {
         orderedViewControllers.remove(at: index)
         nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageCount: orderedViewControllers.count)
     }
-    
-//    fileprivate func setupNotifications() {
-//        NotificationCenter.default.addObserver(self, selector: #selector(disablePan), name: Notification.Name(rawValue: "disablePan"), object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(enablePan), name: Notification.Name(rawValue: "enablePan"), object: nil)
-//    }
-//    
-//    @objc fileprivate func disablePan() {
-//        self.dataSource = nil
-//    }
-//    
-//    @objc fileprivate func enablePan() {
-//        self.dataSource = self
-//    }
     
     /**
      Scrolls to the next view controller.
@@ -137,27 +124,6 @@ class NusicPageViewController: UIPageViewController {
         let direction: UIPageViewControllerNavigationDirection = newIndex >= currentIndex ? .forward : .reverse
         let nextViewController = orderedViewControllers[newIndex]
         scrollToViewController(viewController: nextViewController, direction: direction)
-    }
-    
-    /**
-     Scrolls to the given 'viewController' page.
-     
-     - parameter viewController: the view controller to show.
-     */
-    func scrollToViewController(viewController: UIViewController,
-                                        direction: UIPageViewControllerNavigationDirection = .forward) {
-        setViewControllers([viewController],
-                           direction: direction,
-                           animated: true,
-                           completion: nil)
-    }
-    
-    /**
-     Notifies '_nusicDelegate' that the current page index was updated.
-     */
-    private func notifyNusicDelegateOfNewIndex() {
-        guard let firstViewController = viewControllers?.first, let index = orderedViewControllers.index(of: firstViewController) else { return }
-        nusicDelegate?.nusicPageViewController(nusicPageViewController: self, didUpdatePageIndex: index)
     }
     
 }
@@ -209,27 +175,5 @@ extension NusicPageViewController: UIPageViewControllerDataSource {
         
         return orderedViewControllers[nextIndex]
     }
-    
-}
-
-protocol NusicPageViewControllerDelegate: class {
-    
-    /**
-     Called when the number of pages is updated.
-     
-     - parameter nusicPageViewController: the NusicPageViewController instance
-     - parameter count: the total number of pages.
-     */
-    func nusicPageViewController(nusicPageViewController: NusicPageViewController,
-                                    didUpdatePageCount count: Int)
-    
-    /**
-     Called when the current index is updated.
-     
-     - parameter nusicPageViewController: the NusicPageViewController instance
-     - parameter index: the index of the currently visible page.
-     */
-    func nusicPageViewController(nusicPageViewController: NusicPageViewController,
-                                    didUpdatePageIndex index: Int)
     
 }
