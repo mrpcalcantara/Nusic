@@ -10,7 +10,7 @@ import Foundation
 
 final class LastFMAPI {
     
-    static var apiKey = "3c3bcd01bdc52f57a53f26e4c97150a0"
+    static var apiKey = ""
     static var getArtistInfoURL = "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist="
     
     static let noBioFound = "No bio was found for this artist."
