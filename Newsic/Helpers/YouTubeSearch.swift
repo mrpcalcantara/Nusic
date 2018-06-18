@@ -11,7 +11,7 @@ import youtube_ios_player_helper
 
 final class YouTubeSearch {
     
-    static let apiKey = "AIzaSyCH4d-0xxEQG_z7lOww59fKZYMKVQ_yZR4"
+    static let apiKey = ""
     
     static func getSongInfo(artist: String, songName: String, completionHandler: @escaping (YouTubeResult?) -> ()) {
         let query = "\(artist) \(songName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
