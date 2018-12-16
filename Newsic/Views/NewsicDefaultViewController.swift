@@ -25,7 +25,7 @@ class NusicDefaultViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         self.backgroundImageView.frame.size = view.frame.size
-        self.view.sendSubview(toBack: backgroundImageView)
+        self.view.sendSubviewToBack(backgroundImageView)
         
     }
     
@@ -41,7 +41,7 @@ class NusicDefaultViewController: UIViewController {
         backgroundImageView.frame = self.view.frame
         backgroundImageView.clipsToBounds = true
         self.view.addSubview(backgroundImageView)
-        self.view.sendSubview(toBack: backgroundImageView)
+        self.view.sendSubviewToBack(backgroundImageView)
         
         DispatchQueue.main.async {
             self.backgroundImageView.image = image

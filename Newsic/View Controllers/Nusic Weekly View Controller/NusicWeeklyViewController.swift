@@ -140,7 +140,7 @@ class NusicWeeklyViewController: NusicDefaultViewController {
     
     fileprivate func setupNavigationBar() {
         navigationBar.prefersLargeTitles = true
-        navigationBar.largeTitleTextAttributes = [NSAttributedStringKey.foregroundColor: NusicDefaults.whiteColor]
+        navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: NusicDefaults.whiteColor]
         navigationBar.tintColor = NusicDefaults.whiteColor
         
         navigationItem.title = "Nusic Weekly"
@@ -192,7 +192,8 @@ class NusicWeeklyViewController: NusicDefaultViewController {
         artistNameLabel.font = UIFont(name: "Synthetic Sharps", size: 80)
         artistNameLabel.textColor = NusicDefaults.foregroundThemeColor
         artistNameLabel.backgroundColor = NusicDefaults.clearColor
-        artistNameTopConstraint.constant = self.view.bounds.height - self.navigationBar.bounds.height - self.artistNameLabel.bounds.height - self.artistBioTopConstraint.constant - self.playSongsButton.bounds.height - self.view.safeAreaInsets.bottom - self.view.safeAreaInsets.top - 40
+        let height = self.view.bounds.height - self.navigationBar.bounds.height - self.artistNameLabel.bounds.height - self.playSongsButton.bounds.height
+        artistNameTopConstraint.constant = height - self.artistBioTopConstraint.constant  - self.view.safeAreaInsets.bottom - self.view.safeAreaInsets.top - 40
         self.view.layoutIfNeeded()
     }
     
@@ -233,10 +234,10 @@ class NusicWeeklyViewController: NusicDefaultViewController {
             })
             self.artistBioLabel.text = lastFM.bio
             let attributedArtistName = NSAttributedString(string: lastFM.name, attributes: [
-                NSAttributedStringKey.foregroundColor : NusicDefaults.foregroundThemeColor,
-                NSAttributedStringKey.strokeColor : UIColor.black,
-                NSAttributedStringKey.strokeWidth : -1,
-                NSAttributedStringKey.font : UIFont.systemFont(ofSize: 60, weight: UIFont.Weight.heavy)
+                NSAttributedString.Key.foregroundColor : NusicDefaults.foregroundThemeColor,
+                NSAttributedString.Key.strokeColor : UIColor.black,
+                NSAttributedString.Key.strokeWidth : -1,
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 60, weight: UIFont.Weight.heavy)
                 ])
             self.artistNameLabel.attributedText = attributedArtistName
             self.artistSimilarLabel.text = "Also look for: \(lastFM.listSimilarArtists())"

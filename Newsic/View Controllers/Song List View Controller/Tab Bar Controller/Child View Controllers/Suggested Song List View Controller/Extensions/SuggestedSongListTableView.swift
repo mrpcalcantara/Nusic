@@ -30,9 +30,9 @@ extension SuggestedSongListViewController {
     
     fileprivate func setupView() {
         suggestedSongListTableView.isHidden = false
-        suggestedSongListTableView.rowHeight = UITableViewAutomaticDimension
+        suggestedSongListTableView.rowHeight = UITableView.automaticDimension
         suggestedSongListTableView.estimatedRowHeight = 90.0
-        suggestedSongListTableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        suggestedSongListTableView.sectionHeaderHeight = UITableView.automaticDimension
         suggestedSongListTableView.tableFooterView = UIView();
         suggestedSongListTableView.backgroundColor = .clear
         

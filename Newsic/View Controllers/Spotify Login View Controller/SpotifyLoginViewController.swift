@@ -60,7 +60,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
             rootVC.scrollToViewController(viewController: nusicWeeklyVC)
             DispatchQueue.main.async {
                 self.present(rootVC, animated: true, completion: {
-                    self.removeFromParentViewController()
+                    self.removeFromParent()
                 })
             }
         }
@@ -114,8 +114,8 @@ class SpotifyLoginViewController: NusicDefaultViewController {
         super.viewDidLoad();
         setupSpotify()
         setupLogo()
-        self.view.bringSubview(toFront: loginButton)
-        self.view.bringSubview(toFront: nusicFullTitle)
+        self.view.bringSubviewToFront(loginButton)
+        self.view.bringSubviewToFront(nusicFullTitle)
         self.view.layoutIfNeeded()
         
         checkFirebaseConnectivity()
@@ -145,7 +145,7 @@ class SpotifyLoginViewController: NusicDefaultViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated);
-        self.removeFromParentViewController()
+        self.removeFromParent()
         if timer != nil {
             deactivateTimer()
         }

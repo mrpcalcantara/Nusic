@@ -23,13 +23,13 @@ extension ChoiceListView {
         
         if let layout = choiceCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .vertical
-            layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+            layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         }
         
         let headerNib = UINib(nibName: ChoiceListViewHeader.className, bundle: nil)
         let view = UINib(nibName: MusicChoiceCell.className, bundle: nil);
         
-        choiceCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ChoiceListViewHeader.reuseIdentifier)
+        choiceCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ChoiceListViewHeader.reuseIdentifier)
         choiceCollectionView.register(view, forCellWithReuseIdentifier: MusicChoiceCell.reuseIdentifier);
         
         let genreLayout = choiceCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
@@ -87,9 +87,9 @@ extension ChoiceListView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        if kind == UICollectionElementKindSectionHeader {
+        if kind == UICollectionView.elementKindSectionHeader {
             
-            let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ChoiceListViewHeader.reuseIdentifier, for: indexPath) as! ChoiceListViewHeader
+            let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ChoiceListViewHeader.reuseIdentifier, for: indexPath) as! ChoiceListViewHeader
 //            let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "collectionViewHeader", for: indexPath) as! CollectionViewHeader
             if indexPath.section == Section.genreSection.rawValue {
                 headerCell.configure(label: "Genres picked")

@@ -16,7 +16,7 @@ extension UIPageViewController {
      - parameter viewController: the view controller to show.
      */
     final func scrollToViewController(viewController: UIViewController,
-                                direction: UIPageViewControllerNavigationDirection = .forward) {
+                                direction: UIPageViewController.NavigationDirection = .forward) {
         setViewControllers([viewController],
                            direction: direction,
                            animated: true,

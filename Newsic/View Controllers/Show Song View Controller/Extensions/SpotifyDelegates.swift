@@ -153,7 +153,7 @@ extension ShowSongViewController {
     // MARK: Activate audio session
     final func activateAudioSession() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: .defaultToSpeaker)
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             print("activateAudioSession() - error starting")
@@ -255,7 +255,8 @@ extension ShowSongViewController {
   
     func detectConnectivity() -> Bool {
         if Connectivity.isConnectedToNetwork() == .connectedCellular && !playOnCellularData! {
-            let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
+            let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?", transitionStyle: .zoomIn, tapGestureDismissal: false,
+                                     panGestureDismissal: false, completion: nil)
             
             dialog.addButton(DefaultButton(title: "Yes, keep playing!", action: {
                 self.playOnCellularData = true
@@ -276,3 +277,8 @@ extension ShowSongViewController {
     }
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
+}

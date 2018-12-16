@@ -19,7 +19,7 @@ extension SongPickerViewController {
         moodCollectionView.delegate = self;
         moodCollectionView.dataSource = self;
         moodCollectionView.allowsMultipleSelection = false;
-        moodCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
+        moodCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
         moodCollectionView.register(view, forCellWithReuseIdentifier: MoodGenreListCell.reuseIdentifier);
         
         let moodLayout = moodCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
@@ -30,7 +30,7 @@ extension SongPickerViewController {
         genreCollectionView.delegate = self;
         genreCollectionView.dataSource = self;
         genreCollectionView.allowsMultipleSelection = true;
-        genreCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
+        genreCollectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier)
         genreCollectionView.register(view, forCellWithReuseIdentifier: MoodGenreListCell.reuseIdentifier);
         
         let genreLayout = genreCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
@@ -373,7 +373,7 @@ extension SongPickerViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        if kind == UICollectionElementKindSectionHeader, let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier, for: indexPath) as? CollectionViewHeader {
+        if kind == UICollectionView.elementKindSectionHeader, let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionViewHeader.reuseIdentifier, for: indexPath) as? CollectionViewHeader {
             if collectionView == genreCollectionView {
                 headerCell.configure(label: sectionGenreTitles[indexPath.section]);
             } else {
@@ -455,7 +455,7 @@ extension SongPickerViewController: MoodGenreListCellDelegate {
     final func willDisplayGenreCell(cell: MoodGenreCell, label: String, section: Int, indexPath: IndexPath) {
         if let tracks = self.fetchedSongsForGenre[label] {
             cell.trackList = tracks
-            cell.imageList = tracks.flatMap({ $0.thumbNail })
+            cell.imageList = tracks.compactMap({ $0.thumbNail })
         } else {
             let genre = self.sectionGenres[section][indexPath.row]
             let dict = ["\(genre.rawValue.lowercased())":1]
@@ -477,7 +477,7 @@ extension SongPickerViewController: MoodGenreListCellDelegate {
         }
         if let tracks = self.fetchedSongsForMood[label]  {
             cell.trackList = tracks
-            cell.imageList = tracks.flatMap({ $0.thumbNail })
+            cell.imageList = tracks.compactMap({ $0.thumbNail })
         } else {
             if section < self.sectionMoods.count && self.sectionMoods[section].count > 0, self.nusicUser != nil {
                 let mood = self.sectionMoods[section][indexPath.row]

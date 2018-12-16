@@ -290,7 +290,7 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
             messageLabel.frame = CGRect(x: paddingX, y: posY + paddingY, width: rect.width, height: rect.height)
             containerView.addSubview(messageLabel)
             containerView.addConstraints([
-                NSLayoutConstraint(item: messageLabel, attribute: .rightMargin, relatedBy: NSLayoutRelation.equal, toItem: containerView, attribute: .rightMargin, multiplier: 1, constant: -paddingX),
+                NSLayoutConstraint(item: messageLabel, attribute: .rightMargin, relatedBy: NSLayoutConstraint.Relation.equal, toItem: containerView, attribute: .rightMargin, multiplier: 1, constant: -paddingX),
                 NSLayoutConstraint(item: messageLabel, attribute: .leftMargin, relatedBy: .equal, toItem: containerView, attribute: .leftMargin, multiplier: 1.0, constant: paddingX),
                 NSLayoutConstraint(item: messageLabel, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1.0, constant: posY + paddingY),
                 NSLayoutConstraint(item: messageLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: rect.height)
@@ -318,9 +318,9 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
             
             containerView.addConstraints([
                 NSLayoutConstraint(item: buttons[i], attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: buttonHeight),
-                NSLayoutConstraint(item: buttons[i], attribute: NSLayoutAttribute.rightMargin, relatedBy: NSLayoutRelation.equal, toItem: containerView, attribute: NSLayoutAttribute.rightMargin, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: buttons[i], attribute: NSLayoutAttribute.leftMargin, relatedBy: NSLayoutRelation.equal, toItem: containerView, attribute: NSLayoutAttribute.leftMargin, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: buttons[i], attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: containerView, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: posY)
+                NSLayoutConstraint(item: buttons[i], attribute: NSLayoutConstraint.Attribute.rightMargin, relatedBy: NSLayoutConstraint.Relation.equal, toItem: containerView, attribute: NSLayoutConstraint.Attribute.rightMargin, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: buttons[i], attribute: NSLayoutConstraint.Attribute.leftMargin, relatedBy: NSLayoutConstraint.Relation.equal, toItem: containerView, attribute: NSLayoutConstraint.Attribute.leftMargin, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: buttons[i], attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: containerView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: posY)
                 ])
             posY += buttons[i].frame.height
         }
@@ -346,16 +346,16 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
         
         if style == YBAlertControllerStyle.ActionSheet {
             self.view.addConstraints([
-                NSLayoutConstraint(item: containerView, attribute: NSLayoutAttribute.width, relatedBy: .equal, toItem: self.view, attribute: .width, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: containerView, attribute: NSLayoutAttribute.centerX, relatedBy: .equal, toItem: self.view, attribute: NSLayoutAttribute.centerX, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: containerView, attribute: NSLayoutAttribute.bottom, relatedBy: .equal, toItem: self.view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: containerView, attribute: NSLayoutConstraint.Attribute.width, relatedBy: .equal, toItem: self.view, attribute: .width, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: containerView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: .equal, toItem: self.view, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: containerView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: .equal, toItem: self.view, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1.0, constant: 0),
                 NSLayoutConstraint(item: containerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: posY)
                 ])
         } else {
             self.view.addConstraints([
-                NSLayoutConstraint(item: containerView, attribute: NSLayoutAttribute.width, relatedBy: .equal, toItem: self.view, attribute: .width, multiplier: 0.9, constant: 0),
-                NSLayoutConstraint(item: containerView, attribute: NSLayoutAttribute.centerX, relatedBy: .equal, toItem: self.view, attribute: NSLayoutAttribute.centerX, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: containerView, attribute: NSLayoutAttribute.centerY, relatedBy: .equal, toItem: self.view, attribute: NSLayoutAttribute.centerY, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: containerView, attribute: NSLayoutConstraint.Attribute.width, relatedBy: .equal, toItem: self.view, attribute: .width, multiplier: 0.9, constant: 0),
+                NSLayoutConstraint(item: containerView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: .equal, toItem: self.view, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: containerView, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: .equal, toItem: self.view, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1.0, constant: 0),
                 NSLayoutConstraint(item: containerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: posY)
                 ])
         }
@@ -409,7 +409,7 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
         button.action = action
         button.buttonColor = buttonIconColor
         button.buttonFont = buttonFont
-        button.addTarget(self, action: #selector(buttonTapped(button:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(buttonTapped(button:)), for: UIControl.Event.touchUpInside)
         buttons.append(button)
     }
     
@@ -420,7 +420,7 @@ public class YBAlertController: UIViewController, UIGestureRecognizerDelegate {
         button.target = target
         button.selector = selector
         button.buttonFont = buttonFont
-        button.addTarget(self, action: #selector(buttonTapped(button:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(buttonTapped(button:)), for: UIControl.Event.touchUpInside)
         buttons.append(button)
     }
     

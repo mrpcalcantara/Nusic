@@ -121,7 +121,7 @@ class NusicPageViewController: UIPageViewController {
      */
     func scrollToViewController(index newIndex: Int) {
         guard let firstViewController = viewControllers?.first, let currentIndex = orderedViewControllers.index(of: firstViewController) else { return }
-        let direction: UIPageViewControllerNavigationDirection = newIndex >= currentIndex ? .forward : .reverse
+        let direction: UIPageViewController.NavigationDirection = newIndex >= currentIndex ? .forward : .reverse
         let nextViewController = orderedViewControllers[newIndex]
         scrollToViewController(viewController: nextViewController, direction: direction)
     }

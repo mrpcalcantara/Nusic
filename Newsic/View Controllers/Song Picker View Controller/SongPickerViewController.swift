@@ -333,7 +333,8 @@ class SongPickerViewController: NusicDefaultViewController {
     }
     
     fileprivate func showMobileDataPopup(){
-        let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using mobile data and have set the app to not use this data. Please connect to a WiFi network or enable Mobile Data usage in the Settings.", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
+        let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using mobile data and have set the app to not use this data. Please connect to a WiFi network or enable Mobile Data usage in the Settings.", transitionStyle: .zoomIn, tapGestureDismissal: false,
+                                 panGestureDismissal: false, completion: nil)
         
         dialog.addButton(DefaultButton(title: "Got it!", action: nil))
         
@@ -351,7 +352,7 @@ extension SongPickerViewController: UIGestureRecognizerDelegate {
         let translation = gestureRecognizer.translation(in: gestureRecognizer.view!)
         let divisor = gestureRecognizer.view != nil ? gestureRecognizer.view!.frame.width : 200
         var progress = (translation.x / divisor )
-        let panDirection: UISwipeGestureRecognizerDirection = translation.x < 0 ? .left : .right;
+        let panDirection: UISwipeGestureRecognizer.Direction = translation.x < 0 ? .left : .right;
         progress = CGFloat(fminf(fmaxf(Float(abs(progress)), 0.0), 1.0))
         var toIndex = panDirection == .left ? nusicControl.selectedIndex + 1 : nusicControl.selectedIndex - 1
         var allowMove = true

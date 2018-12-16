@@ -49,7 +49,7 @@ class FirebaseAuthHelper {
                 }
                 Auth.auth().signIn(withCustomToken: firebaseToken, completion: { (user, error) in
                     nusicError = error == nil ? nil : NusicError(nusicErrorCode: NusicErrorCodes.firebaseError, nusicErrorSubCode: NusicErrorSubCode.functionalError, nusicErrorDescription: FirebaseErrorCodeDescription.getCustomToken.rawValue, systemError: error)
-                    loginCompletionHandler(user, nusicError)
+                    loginCompletionHandler(user?.user, nusicError)
                 })
                 
             } catch {

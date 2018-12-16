@@ -43,7 +43,7 @@ class OnboardingPageViewController: UIPageViewController {
     
     final func scrollToViewController(for index: Int) {
         guard let firstViewController = viewControllers?.first, let currentIndex = orderedViewControllers.index(of: firstViewController) else { return }
-        let direction: UIPageViewControllerNavigationDirection = index >= currentIndex ? .forward : .reverse
+        let direction: UIPageViewController.NavigationDirection = index >= currentIndex ? .forward : .reverse
         guard index >= 0 && index < orderedViewControllers.count else { return }
         scrollToViewController(viewController: orderedViewControllers[index], direction: direction)
     }

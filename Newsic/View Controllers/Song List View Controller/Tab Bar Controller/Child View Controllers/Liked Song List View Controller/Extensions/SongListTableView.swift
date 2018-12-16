@@ -29,7 +29,7 @@ extension LikedSongListViewController {
     
     fileprivate func setupView() {
         songListTableView.isHidden = false
-        songListTableView.rowHeight = UITableViewAutomaticDimension
+        songListTableView.rowHeight = UITableView.automaticDimension
         songListTableView.estimatedRowHeight = 90.0
         songListTableView.estimatedSectionHeaderHeight = 60
         songListTableView.tableFooterView = UIView();

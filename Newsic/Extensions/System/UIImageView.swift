@@ -10,7 +10,7 @@ import UIKit
 
 extension UIImageView {
     
-    final func downloadedFrom(url: URL, contentMode mode: UIViewContentMode = .scaleAspectFit, roundImage: Bool? = false) {
+    final func downloadedFrom(url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit, roundImage: Bool? = false) {
         contentMode = mode
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard
@@ -28,7 +28,7 @@ extension UIImageView {
             }.resume()
     }
     
-    final func downloadedFrom(link: String, contentMode mode: UIViewContentMode = .scaleAspectFit, roundImage: Bool? = false) {
+    final func downloadedFrom(link: String, contentMode mode: UIView.ContentMode = .scaleAspectFit, roundImage: Bool? = false) {
         guard let url = URL(string: link) else { return }
         downloadedFrom(url: url, contentMode: mode)
     }

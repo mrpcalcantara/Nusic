@@ -146,8 +146,8 @@ extension MoodGenreListCell: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        guard let cellSize = cellSize else { return UIEdgeInsetsMake(0, 0, 0, 0) }
+        guard let cellSize = cellSize else { return UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0) }
         let inset = (collectionView.frame.width - cellSize.width)/2
-        return UIEdgeInsetsMake(0, inset, 0, inset)
+        return UIEdgeInsets.init(top: 0, left: inset, bottom: 0, right: inset)
     }
 }

@@ -412,8 +412,8 @@ class ShowSongViewController: NusicDefaultViewController {
     
     fileprivate func setupMenu() {
         
-        self.view.sendSubview(toBack: trackStackView)
-        self.view.sendSubview(toBack: songCardView)
+        self.view.sendSubviewToBack(trackStackView)
+        self.view.sendSubviewToBack(songCardView)
         fetchLikedTracks()
         
     }
@@ -945,7 +945,8 @@ extension ShowSongViewController {
         var message = ""
         if Connectivity.isConnectedToNetwork() == .notConnected {
             message = "No connectivity to the network. Please try again when you're connected to a network."
-            let popup = PopupDialog(title: title, message: message, transitionStyle: .zoomIn, gestureDismissal: false, completion: nil);
+            let popup = PopupDialog(title: title, message: message, transitionStyle: .zoomIn, tapGestureDismissal: false,
+                                    panGestureDismissal: false, completion: nil);
             
             let backButton = DefaultButton(title: "OK", action: {
                 self.dismiss(animated: true, completion: nil)

@@ -33,7 +33,12 @@ extension ShowSongViewController: YTPlayerViewDelegate {
     
     final func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
         if Connectivity.isConnectedToNetwork() == .connectedCellular && !playOnCellularData! {
-            let dialog = PopupDialog(title: "Warning!", message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?", transitionStyle: .zoomIn, gestureDismissal: false, completion: nil)
+            let dialog = PopupDialog(title: "Warning!",
+                                     message: "We detected that you are using cellular data and you have disabled this. Do you wish to continue listening to music on cellular data?",
+                                     transitionStyle: .zoomIn,
+                                     tapGestureDismissal: false,
+                                     panGestureDismissal: false,
+                                     completion: nil)
             
             dialog.addButton(DefaultButton(title: "Yes, keep playing!", action: {
                 self.playOnCellularData = true

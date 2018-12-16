@@ -6,8 +6,8 @@ target 'Newsic' do
   use_frameworks!
   # Pods for Nusic
 
-  pod 'Koloda', '~> 4.0'
-  pod "youtube-ios-player-helper", "~> 0.1.4"
+  pod 'Koloda'
+  pod 'youtube-ios-player-helper'
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
   pod 'Firebase/Database'
@@ -15,9 +15,9 @@ target 'Newsic' do
   pod 'SwiftSpinner'
   pod 'PopupDialog'
 
-  target 'NewsicTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+  #target 'NewsicTests' do
+  #  inherit! :search_paths
+  #  # Pods for testing
+  #end
 
 end

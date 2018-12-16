@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7B5F74827AC66FEE25628BD4 /* Pods_NewsicTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE72F769C47D6A380F86AEA0 /* Pods_NewsicTests.framework */; };
 		8C09622E1F614FA60025A65E /* NewsicArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C09622D1F614FA60025A65E /* NewsicArtist.swift */; };
 		8C0962301F61550D0025A65E /* NewsicGenre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C09622F1F61550D0025A65E /* NewsicGenre.swift */; };
-		8C0A1899207DD95400676E55 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C0A1898207DD95400676E55 /* GoogleService-Info.plist */; };
 		8C0C1E911F5FF3B700CF8516 /* SpotifyTrackFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E901F5FF3B700CF8516 /* SpotifyTrackFeature.swift */; };
 		8C0C1E961F60F7F300CF8516 /* HTTPErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E951F60F7F300CF8516 /* HTTPErrorCodes.swift */; };
 		8C0C1E981F61005100CF8516 /* NusicUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0C1E971F61005100CF8516 /* NusicUser.swift */; };
@@ -39,7 +37,6 @@
 		8C27011B1FDA46090044D10F /* ConnectivityStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27011A1FDA46090044D10F /* ConnectivityStatus.swift */; };
 		8C27011D1FDA55E10044D10F /* FirebaseDatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27011C1FDA55E10044D10F /* FirebaseDatabaseHelper.swift */; };
 		8C281499207DC360000C605F /* SPTUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C281498207DC360000C605F /* SPTUser.swift */; };
-		8C2847242043DC3B006A9B5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */; };
 		8C2847292043EE26006A9B5C /* SuggestedSongListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2847282043EE26006A9B5C /* SuggestedSongListViewController.swift */; };
 		8C28472B2043F616006A9B5C /* SuggestedSongListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28472A2043F616006A9B5C /* SuggestedSongListTableView.swift */; };
 		8C2877451FDE4CC200772269 /* YoutubeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2877441FDE4CC200772269 /* YoutubeResult.swift */; };
@@ -101,7 +98,6 @@
 		8C63A15A1FFF49C400613FC9 /* ShowSong.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C63A1591FFF49C400613FC9 /* ShowSong.xcassets */; };
 		8C63A15D1FFF49FC00613FC9 /* SongPicker.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C63A15C1FFF49FC00613FC9 /* SongPicker.xcassets */; };
 		8C64F45D1F56C9540006B644 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C64F45C1F56C9540006B644 /* Spotify.swift */; };
-		8C77714B201C59CA004A5455 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C77714A201C59CA004A5455 /* GoogleService-Info.plist */; };
 		8C77714D201C7945004A5455 /* Koloda-SongCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C77714C201C7945004A5455 /* Koloda-SongCard.swift */; };
 		8C7989351FEA16160079A99D /* MusicChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C7989331FEA16160079A99D /* MusicChoiceCell.swift */; };
 		8C7989361FEA16160079A99D /* MusicChoiceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C7989341FEA16160079A99D /* MusicChoiceCell.xib */; };
@@ -163,16 +159,6 @@
 		8CFD735C1F68F57E004E7D08 /* NewsicPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CFD735B1F68F57E004E7D08 /* NewsicPlaylist.swift */; };
 		E73A4AF07C6809503B8CCB36 /* Pods_Newsic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16EA3F326FCB40183FD4C8ED /* Pods_Newsic.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		8C90E8731F53D838002B135F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8C90E8561F53D838002B135F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8C90E85D1F53D838002B135F;
-			remoteInfo = Newsic;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		16EA3F326FCB40183FD4C8ED /* Pods_Newsic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Newsic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -305,7 +291,6 @@
 		8C90E8681F53D838002B135F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C90E86B1F53D838002B135F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C90E86D1F53D838002B135F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8C90E8721F53D838002B135F /* NewsicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NewsicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C90E88A1F53EE87002B135F /* MusicGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicGraph.swift; sourceTree = "<group>"; };
 		8C91D14D20886B5200605C62 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OnboardingViewController.swift; path = "Newsic/View Controllers/Spotify Login View Controller/Onboarding Page View Controller/OnboardingViewController.swift"; sourceTree = SOURCE_ROOT; };
 		8C91D15020886E5E00605C62 /* NusicPageViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NusicPageViewControllerDelegate.swift; sourceTree = "<group>"; };
@@ -335,7 +320,6 @@
 		8CD0C7261FD541D90095A309 /* URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
 		8CD0C7281FD55B4D0095A309 /* SpotifyErrorCodeDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyErrorCodeDescription.swift; sourceTree = "<group>"; };
 		8CD0C72A1FD55E450095A309 /* NewsicErrorSubCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsicErrorSubCode.swift; sourceTree = "<group>"; };
-		8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8CD7344A1FEB69A7009B461F /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
 		8CFD735B1F68F57E004E7D08 /* NewsicPlaylist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsicPlaylist.swift; sourceTree = "<group>"; };
 		B3A6FFA35B32287CA01B7ABA /* Pods-Newsic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Newsic.release.xcconfig"; path = "Pods/Target Support Files/Pods-Newsic/Pods-Newsic.release.xcconfig"; sourceTree = "<group>"; };
@@ -351,14 +335,6 @@
 				8C848ED81F5675BF0070C08A /* SpotifyAuthentication.framework in Frameworks */,
 				8C848ED91F5675BF0070C08A /* SpotifyMetadata.framework in Frameworks */,
 				E73A4AF07C6809503B8CCB36 /* Pods_Newsic.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8C90E86F1F53D838002B135F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				7B5F74827AC66FEE25628BD4 /* Pods_NewsicTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1041,7 +1017,6 @@
 			isa = PBXGroup;
 			children = (
 				8C90E85E1F53D838002B135F /* Newsic.app */,
-				8C90E8721F53D838002B135F /* NewsicTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1116,7 +1091,6 @@
 			children = (
 				8C0A1897207DD93F00676E55 /* DEV */,
 				8C3C35062036EC7E0092B953 /* PROD */,
-				8CD11B551F5FB6E3000004EA /* GoogleService-Info.plist */,
 				8C90E86D1F53D838002B135F /* Info.plist */,
 			);
 			path = "Supporting Files";
@@ -1316,8 +1290,8 @@
 				8C90E85A1F53D838002B135F /* Sources */,
 				8C90E85B1F53D838002B135F /* Frameworks */,
 				8C90E85C1F53D838002B135F /* Resources */,
-				3274931E586E73798FEADF14 /* [CP] Embed Pods Frameworks */,
-				F344235E047DD744721F1B34 /* [CP] Copy Pods Resources */,
+				8C7F6A2821C70A1500D8DAD0 /* Firebase Environment */,
+				DD078C30C9027E6C58B1D08D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1327,27 +1301,6 @@
 			productName = Newsic;
 			productReference = 8C90E85E1F53D838002B135F /* Newsic.app */;
 			productType = "com.apple.product-type.application";
-		};
-		8C90E8711F53D838002B135F /* NewsicTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8C90E87E1F53D838002B135F /* Build configuration list for PBXNativeTarget "NewsicTests" */;
-			buildPhases = (
-				A34D4A260BA2AD4E663608A4 /* [CP] Check Pods Manifest.lock */,
-				8C90E86E1F53D838002B135F /* Sources */,
-				8C90E86F1F53D838002B135F /* Frameworks */,
-				8C90E8701F53D838002B135F /* Resources */,
-				BBE04DF67DC9976D56BF496A /* [CP] Embed Pods Frameworks */,
-				A3DDD989D4A78DD9354759F7 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				8C90E8741F53D838002B135F /* PBXTargetDependency */,
-			);
-			name = NewsicTests;
-			productName = NewsicTests;
-			productReference = 8C90E8721F53D838002B135F /* NewsicTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -1362,7 +1315,7 @@
 					8C90E85D1F53D838002B135F = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = VNFY2URN36;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -1375,12 +1328,6 @@
 								enabled = 1;
 							};
 						};
-					};
-					8C90E8711F53D838002B135F = {
-						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = P3D83YHARN;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 8C90E85D1F53D838002B135F;
 					};
 				};
 			};
@@ -1398,7 +1345,6 @@
 			projectRoot = "";
 			targets = (
 				8C90E85D1F53D838002B135F /* Newsic */,
-				8C90E8711F53D838002B135F /* NewsicTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1422,10 +1368,7 @@
 				8C2605F51FEB61830025DD1E /* ChoiceListViewHeader.xib in Resources */,
 				8C5E02A8201707A800413DBB /* Synthetic Sharps.otf in Resources */,
 				8C5E02B22017217700413DBB /* Robot Crush.otf in Resources */,
-				8C2847242043DC3B006A9B5C /* GoogleService-Info.plist in Resources */,
-				8C77714B201C59CA004A5455 /* GoogleService-Info.plist in Resources */,
 				8C3654BF1F551ABE006C12D9 /* OverlayView.xib in Resources */,
-				8C0A1899207DD95400676E55 /* GoogleService-Info.plist in Resources */,
 				8C90E86C1F53D838002B135F /* LaunchScreen.storyboard in Resources */,
 				8C79893D1FEA53D20079A99D /* ChoiceList.xib in Resources */,
 				8CB744512088902F00E7C92F /* Onboarding.xcassets in Resources */,
@@ -1443,25 +1386,39 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8C90E8701F53D838002B135F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3274931E586E73798FEADF14 /* [CP] Embed Pods Frameworks */ = {
+		8C7F6A2821C70A1500D8DAD0 /* Firebase Environment */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Firebase Environment";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Name of the resource we're selectively copying\nGOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist\n\n# Get references to dev and prod versions of the GoogleService-Info.plist\n# NOTE: These should only live on the file system and should NOT be part of the target (since we'll be adding them to the target manually)\nGOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/${TARGET_NAME}/Supporting\\ Files/DEV/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_PROD=${PROJECT_DIR}/${TARGET_NAME}/Supporting\\ Files/PROD/${GOOGLESERVICE_INFO_PLIST}\n\n# Make sure the dev version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_DEV}\"\nif [ ! -f $GOOGLESERVICE_INFO_DEV ]\nthen\necho \"No Development GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\nexit 1\nfi\n\n# Make sure the prod version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_PROD}\"\nif [ ! -f $GOOGLESERVICE_INFO_PROD ]\nthen\necho \"No Production GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\nexit 1\nfi\n\n# Get a reference to the destination location for the GoogleService-Info.plist\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Will copy ${GOOGLESERVICE_INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\n# Copy over the prod GoogleService-Info.plist for Release builds\nif [ \"${CONFIGURATION}\" == \"Release\" ]\nthen\necho \"Using ${GOOGLESERVICE_INFO_PROD}\"\ncp \"${GOOGLESERVICE_INFO_PROD}\" \"${PLIST_DESTINATION}\"\nelse\necho \"Using ${GOOGLESERVICE_INFO_DEV}\"\ncp \"${GOOGLESERVICE_INFO_DEV}\" \"${PLIST_DESTINATION}\"\nfi\n";
+		};
+		DD078C30C9027E6C58B1D08D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Newsic/Pods-Newsic-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/DynamicBlurView/DynamicBlurView.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Koloda/Koloda.framework",
 				"${BUILT_PRODUCTS_DIR}/PopupDialog/PopupDialog.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
@@ -1472,9 +1429,12 @@
 				"${BUILT_PRODUCTS_DIR}/youtube-ios-player-helper/youtube_ios_player_helper.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DynamicBlurView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Koloda.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PopupDialog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
@@ -1487,54 +1447,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Newsic/Pods-Newsic-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A34D4A260BA2AD4E663608A4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-NewsicTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A3DDD989D4A78DD9354759F7 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NewsicTests/Pods-NewsicTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BBE04DF67DC9976D56BF496A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NewsicTests/Pods-NewsicTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E3FCC2598DBBECBB50A0D0DF /* [CP] Check Pods Manifest.lock */ = {
@@ -1553,21 +1465,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F344235E047DD744721F1B34 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Newsic/Pods-Newsic-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1698,22 +1595,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8C90E86E1F53D838002B135F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		8C90E8741F53D838002B135F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8C90E85D1F53D838002B135F /* Newsic */;
-			targetProxy = 8C90E8731F53D838002B135F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		8C90E8651F53D838002B135F /* Main.storyboard */ = {
@@ -1875,11 +1757,11 @@
 					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.alcantech.Newsic;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Newsic/Bridging Headers/Newsic-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -1910,42 +1792,10 @@
 					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.alcantech.Newsic;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Newsic/Bridging Headers/Newsic-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Release;
-		};
-		8C90E87F1F53D838002B135F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A0567402413796844BC0250 /* Pods-NewsicTests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = P3D83YHARN;
-				INFOPLIST_FILE = NewsicTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.alctech.NewsicTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Newsic.app/Newsic";
-			};
-			name = Debug;
-		};
-		8C90E8801F53D838002B135F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1EDDD7477DB2EDD939758989 /* Pods-NewsicTests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = P3D83YHARN;
-				INFOPLIST_FILE = NewsicTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.alctech.NewsicTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Newsic.app/Newsic";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -1966,15 +1816,6 @@
 			buildConfigurations = (
 				8C90E87C1F53D838002B135F /* Debug */,
 				8C90E87D1F53D838002B135F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8C90E87E1F53D838002B135F /* Build configuration list for PBXNativeTarget "NewsicTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8C90E87F1F53D838002B135F /* Debug */,
-				8C90E8801F53D838002B135F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

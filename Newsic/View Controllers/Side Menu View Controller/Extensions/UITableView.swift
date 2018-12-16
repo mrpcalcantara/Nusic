@@ -306,7 +306,7 @@ extension SideMenuViewController {
         let buttonContact = YBButton(frame: CGRect.zero, icon: #imageLiteral(resourceName: "ButtonAppIcon"), text: "Rate the app!")
         let actionContact = { () -> Void in
             guard let url = URL(string: "https://itunes.apple.com/us/app/nusic/id1314807539?ls=1&mt=8&action=write-review") else { return }
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
         }
         buttonContact.action = actionContact
         
@@ -329,7 +329,7 @@ extension SideMenuViewController: MFMailComposeViewControllerDelegate {
             present(mail, animated: true)
         } else {
             guard let url = URL(string: "mailto:malcantara.fl@gmail.com?subject=Nusic") else { showErrorPopup(); return; }
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
         }
     }
     
@@ -356,4 +356,9 @@ extension SideMenuViewController: MFMailComposeViewControllerDelegate {
         
         controller.dismiss(animated: true)
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }

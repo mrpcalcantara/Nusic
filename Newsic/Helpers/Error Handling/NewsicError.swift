@@ -37,7 +37,7 @@ class NusicError: NSObject, Error {
             
         }
         
-        let dialog = PopupDialog(title: "Error!", message: popupMessage, gestureDismissal: false)
+        let dialog = PopupDialog(title: "Error!", message: popupMessage, tapGestureDismissal: false, panGestureDismissal: false)
         dialog.transitionStyle = .zoomIn
         
         let okButton = DefaultButton(title: "Got it!") {
